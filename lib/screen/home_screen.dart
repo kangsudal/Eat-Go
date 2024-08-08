@@ -51,6 +51,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(
+          Icons.refresh,
+          color: EatGoPalette.backgroundColor1,
+          size: 45,
+        ),
+      ),
       body: Align(
         alignment: Alignment.center,
         child: SizedBox(
