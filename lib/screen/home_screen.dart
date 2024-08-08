@@ -1,0 +1,305 @@
+import 'package:eat_go/palette.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _scaffoldKey,
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            iconSize: 40,
+            color: pointColor,
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              _scaffoldKey.currentState!.openEndDrawer();
+            },
+          ),
+        ],
+      ),
+      endDrawer: Drawer(
+        // width: MediaQuery.of(context).size.width * 0.64,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: EatGoPalette.backgroundColor1,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: ListView(
+              children: [
+                DrawerMainMenu(),
+                DrawerFilter(),
+                DrawerFooter(),
+              ],
+            ),
+          ),
+        ),
+      ),
+      body: Align(
+        alignment: Alignment.center,
+        child: SizedBox(
+          height: 250,
+          child: Column(
+            children: [
+              Text(
+                'SHAKE!',
+                style: GoogleFonts.poppins(
+                  //HomeScreen에서 'SHAKE' 글씨
+                  fontSize: 70,
+                  fontWeight: FontWeight.w700,
+                  color: pointColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DrawerMainMenu extends StatelessWidget {
+  const DrawerMainMenu({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle style = TextStyle(
+      color: EatGoPalette.mainTextColor,
+      fontSize: 22,
+      fontWeight: FontWeight.w600,
+    );
+    return Column(
+      children: [
+        ListTile(
+          title: Text(
+            '전체',
+            style: style,
+          ),
+        ),
+        ListTile(
+          title: Text(
+            '관심 항목',
+            style: style,
+          ),
+        ),
+        ListTile(
+          title: Text(
+            '기록',
+            style: style,
+          ),
+        ),
+        ListTile(
+          title: Text(
+            '나의 레시피',
+            style: style,
+          ),
+        ),
+        const Divider(thickness: 1),
+      ],
+    );
+  }
+}
+
+class DrawerFilter extends StatelessWidget {
+  const DrawerFilter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    int count = -9999;
+
+    TextStyle style = TextStyle(
+      color: EatGoPalette.mainTextColor,
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 15, top: 30, bottom: 6),
+          child: Text(
+            '필터',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+          ),
+        ),
+        Padding(
+          //ListTile처럼 왼쪽부분에 padding 넣어줌
+          padding: const EdgeInsets.only(left: 15.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "예: '두부 버섯' 띄어쓰기로 구분합니다",
+                      hintStyle: TextStyle(
+                        fontSize: 11,
+                        color: pointColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ),
+              Text(
+                '$count개',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: EatGoPalette.mainTextColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 17, top: 8, bottom: 4),
+          child: Row(
+            children: [
+              Expanded(child: Text('밥', style: style)),
+              CupertinoSwitch(
+                value: true,
+                onChanged: (isTrue) {},
+                activeColor: pointColor,
+                trackColor: Colors.black,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 17, bottom: 4),
+          child: Row(
+            children: [
+              Expanded(child: Text('후식', style: style)),
+              CupertinoSwitch(
+                value: true,
+                onChanged: (isTrue) {},
+                activeColor: pointColor,
+                trackColor: Colors.black,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 17, bottom: 4),
+          child: Row(
+            children: [
+              Expanded(child: Text('반찬', style: style)),
+              CupertinoSwitch(
+                value: true,
+                onChanged: (isTrue) {},
+                activeColor: pointColor,
+                trackColor: Colors.black,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 17, bottom: 4),
+          child: Row(
+            children: [
+              Expanded(child: Text('일품', style: style)),
+              CupertinoSwitch(
+                value: true,
+                onChanged: (isTrue) {},
+                activeColor: pointColor,
+                trackColor: Colors.black,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 17, bottom: 4),
+          child: Row(
+            children: [
+              Expanded(child: Text('국&찌개', style: style)),
+              CupertinoSwitch(
+                value: true,
+                onChanged: (isTrue) {},
+                activeColor: pointColor,
+                trackColor: Colors.black,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 17, bottom: 8),
+          child: Row(
+            children: [
+              Expanded(child: Text('기타', style: style)),
+              CupertinoSwitch(
+                value: true,
+                onChanged: (isTrue) {},
+                activeColor: pointColor,
+                trackColor: Colors.black,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Divider(thickness: 1),
+      ],
+    );
+  }
+}
+
+class DrawerFooter extends StatelessWidget {
+  const DrawerFooter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 10),
+          Container(
+            // color: Colors.blue,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.coffee,
+                  size: 40,
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  'BUY ME A YUMMY TREAT!',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Container(
+              padding: EdgeInsets.all(10),
+              // color: Colors.yellow,
+              child: Text('ABOUT THIS APP')),
+        ],
+      ),
+    );
+  }
+}
