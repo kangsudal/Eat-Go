@@ -21,6 +21,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: false,
         fontFamily: 'Pretendard',
         textTheme: TextTheme(
+          displayLarge: GoogleFonts.poppins(
+            //sign in에 사용
+            color: pointColor,
+            fontSize: 70,
+            fontWeight: FontWeight.bold,
+          ),
           titleLarge: GoogleFonts.poppins(
             //AppBar의 title에 사용
             color: EatGoPalette.mainTextColor,
