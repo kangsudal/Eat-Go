@@ -124,8 +124,22 @@ class DrawerMainMenu extends StatelessWidget {
   }
 }
 
-class DrawerFilter extends StatelessWidget {
+class DrawerFilter extends StatefulWidget {
   const DrawerFilter({super.key});
+
+  @override
+  State<DrawerFilter> createState() => _DrawerFilterState();
+}
+
+class _DrawerFilterState extends State<DrawerFilter> {
+  Map<String, bool> categories = {
+    '밥': false,
+    '후식': true,
+    '반찬': true,
+    '일품': true,
+    '국&찌개': true,
+    '기타': true,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -136,6 +150,7 @@ class DrawerFilter extends StatelessWidget {
       fontSize: 15,
       fontWeight: FontWeight.w600,
     );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -178,91 +193,31 @@ class DrawerFilter extends StatelessWidget {
             ],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(left: 17, top: 8, bottom: 4),
-          child: Row(
-            children: [
-              Expanded(child: Text('밥', style: style)),
-              CupertinoSwitch(
-                value: true,
-                onChanged: (isTrue) {},
-                activeColor: pointColor,
-                trackColor: Colors.black,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 17, bottom: 4),
-          child: Row(
-            children: [
-              Expanded(child: Text('후식', style: style)),
-              CupertinoSwitch(
-                value: true,
-                onChanged: (isTrue) {},
-                activeColor: pointColor,
-                trackColor: Colors.black,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 17, bottom: 4),
-          child: Row(
-            children: [
-              Expanded(child: Text('반찬', style: style)),
-              CupertinoSwitch(
-                value: true,
-                onChanged: (isTrue) {},
-                activeColor: pointColor,
-                trackColor: Colors.black,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 17, bottom: 4),
-          child: Row(
-            children: [
-              Expanded(child: Text('일품', style: style)),
-              CupertinoSwitch(
-                value: true,
-                onChanged: (isTrue) {},
-                activeColor: pointColor,
-                trackColor: Colors.black,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 17, bottom: 4),
-          child: Row(
-            children: [
-              Expanded(child: Text('국&찌개', style: style)),
-              CupertinoSwitch(
-                value: true,
-                onChanged: (isTrue) {},
-                activeColor: pointColor,
-                trackColor: Colors.black,
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 17, bottom: 8),
-          child: Row(
-            children: [
-              Expanded(child: Text('기타', style: style)),
-              CupertinoSwitch(
-                value: true,
-                onChanged: (isTrue) {},
-                activeColor: pointColor,
-                trackColor: Colors.black,
-              ),
-            ],
-          ),
-        ),
         const SizedBox(height: 8),
+        ...categories.entries.map(
+          (element) {
+            return Padding(
+              padding: EdgeInsets.only(left: 17, bottom: 4),
+              child: Row(
+                children: [
+                  Expanded(child: Text(element.key, style: style)),
+                  CupertinoSwitch(
+                    value: element.value,
+                    onChanged: (isTrue) {
+                      setState(() {
+                        categories[element.key] = isTrue;
+                        // debugPrint('${element.key}: ${categories[element.key]}');
+                      });
+                    },
+                    activeColor: pointColor,
+                    trackColor: Colors.black,
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 12),
         const Divider(thickness: 1),
       ],
     );
