@@ -143,7 +143,7 @@ class _DrawerFilterState extends State<DrawerFilter> {
 
   @override
   Widget build(BuildContext context) {
-    int count = -9999;
+    int count = -999;
 
     TextStyle style = TextStyle(
       color: EatGoPalette.mainTextColor,
@@ -182,12 +182,18 @@ class _DrawerFilterState extends State<DrawerFilter> {
                   ),
                 ),
               ),
-              Text(
-                '$count개',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: EatGoPalette.mainTextColor,
-                  fontWeight: FontWeight.w600,
+              SizedBox(
+                width: 48,
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    '$count개',
+                    style: TextStyle(
+                      // fontSize: 13,
+                      color: EatGoPalette.mainTextColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
             ],
