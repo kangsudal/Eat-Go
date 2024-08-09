@@ -17,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Random random = Random();
   Color? randomColor;
+  bool? bookmarked;
 
   @override
   Widget build(BuildContext context) {
@@ -69,36 +70,139 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Align(
-        alignment: Alignment(0.0, 0.0),
+        alignment: const Alignment(0, -0.25),
         child: randomColor == null
-            ? SizedBox(
-                height: 250,
-                child: Column(
+            ? Container(
+                // color: Colors.yellow,
+                child: Wrap(
                   children: [
-                    Text(
-                      'SHAKE!',
-                      style: GoogleFonts.poppins(
-                        //HomeScreen에서 'SHAKE' 글씨
-                        fontSize: 70,
-                        fontWeight: FontWeight.w700,
-                        color: pointColor,
-                      ),
+                    Column(
+                      children: [
+                        Text(
+                          'SHAKE!',
+                          style: GoogleFonts.poppins(
+                            //HomeScreen에서 'SHAKE' 글씨
+                            fontSize: 70,
+                            fontWeight: FontWeight.w700,
+                            color: pointColor,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               )
             : Container(
-                color: Colors.yellow,
-                height: randomColor!.value * 0.00000005 + 20,
+                // color: Colors.yellow,
+                height: randomColor!.value * 0.00000008 + 170,
                 width: double.infinity,
                 child: Column(
                   children: [
-                    Container(
-                      width: randomColor!.value * 0.00000005,
-                      height: randomColor!.value * 0.00000005,
-                      color: randomColor,
+                    Stack(
+                      children: [
+                        Container(
+                          width: randomColor!.value * 0.00000008,
+                          height: randomColor!.value * 0.00000008,
+                          decoration: BoxDecoration(
+                            color: randomColor,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(35),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 15,
+                          right: 15,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (bookmarked == null) {
+                                  bookmarked = true;
+                                } else {
+                                  bookmarked = !bookmarked!;
+                                }
+                                debugPrint('$bookmarked');
+                              });
+                            },
+                            child: CircleAvatar(
+                              radius: 22,
+                              backgroundColor: EatGoPalette.backgroundColor1,
+                              child: Icon(
+                                bookmarked == null || bookmarked == false
+                                    ? Icons.bookmark_border_sharp
+                                    : Icons.bookmark,
+                                color: pointColor,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Text('${randomColor!.value}')
+                    SizedBox(height: 30),
+                    Text(
+                      '${randomColor!.value}', //포니언 스프
+                      style: TextStyle(
+                        fontSize: 40,
+                        color: pointColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 110,
+                          height: 40,
+                          decoration: const BoxDecoration(
+                            color: pointColor,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'RESTAURANT',
+                              style: TextStyle(
+                                color: EatGoPalette.backgroundColor1,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: -0.7,
+                                fontFamily: 'poppins',
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 15),
+                        Container(
+                          width: 110,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: EatGoPalette.backgroundColor1,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            border: Border.all(
+                              color: pointColor,
+                              width: 2.5,
+                            ),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'RECIPE',
+                              style: TextStyle(
+                                color: pointColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: -0.7,
+                                fontFamily: 'poppins',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
