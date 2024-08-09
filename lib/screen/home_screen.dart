@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:eat_go/palette.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  Random random = Random();
+  Color? randomColor;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+            randomColor = Color(random.nextInt(0xFFFFFFFF));
+          });
+        },
         child: Icon(
           Icons.refresh,
           color: EatGoPalette.backgroundColor1,
@@ -60,23 +69,39 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Align(
-        alignment: Alignment.center,
-        child: SizedBox(
-          height: 250,
-          child: Column(
-            children: [
-              Text(
-                'SHAKE!',
-                style: GoogleFonts.poppins(
-                  //HomeScreen에서 'SHAKE' 글씨
-                  fontSize: 70,
-                  fontWeight: FontWeight.w700,
-                  color: pointColor,
+        alignment: Alignment(0.0, 0.0),
+        child: randomColor == null
+            ? SizedBox(
+                height: 250,
+                child: Column(
+                  children: [
+                    Text(
+                      'SHAKE!',
+                      style: GoogleFonts.poppins(
+                        //HomeScreen에서 'SHAKE' 글씨
+                        fontSize: 70,
+                        fontWeight: FontWeight.w700,
+                        color: pointColor,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Container(
+                color: Colors.yellow,
+                height: randomColor!.value * 0.00000005 + 20,
+                width: double.infinity,
+                child: Column(
+                  children: [
+                    Container(
+                      width: randomColor!.value * 0.00000005,
+                      height: randomColor!.value * 0.00000005,
+                      color: randomColor,
+                    ),
+                    Text('${randomColor!.value}')
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
