@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:eat_go/palette.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,12 +19,35 @@ class _HomeScreenState extends State<HomeScreen> {
   Random random = Random();
   Color? randomColor;
   bool? bookmarked;
+  bool pinned = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        centerTitle: false,
+        title: IconButton(
+          onPressed: () {
+            setState(() {
+              pinned = !pinned;
+              print(pinned);
+            });
+          },
+          icon: pinned
+              ? Image.asset(
+                  'assets/icons/pinned_true.png',
+                  color: pointColor,
+                  width: 25,
+                  height: 25,
+                  fit: BoxFit.scaleDown,
+                )
+              : SvgPicture.asset(
+                  'assets/icons/pinned_false.svg',
+                  colorFilter:
+                      const ColorFilter.mode(pointColor, BlendMode.srcIn),
+                ),
+        ),
         actions: [
           IconButton(
             iconSize: 40,
