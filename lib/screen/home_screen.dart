@@ -81,16 +81,19 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            randomColor = Color(random.nextInt(0xFFFFFFFF));
-          });
-        },
-        child: Icon(
-          Icons.refresh,
-          color: EatGoPalette.backgroundColor1,
-          size: 45,
+      floatingActionButton: Visibility(
+        visible: !pinned,
+        child: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              randomColor = Color(random.nextInt(0xFFFFFFFF));
+            });
+          },
+          child: Icon(
+            Icons.refresh,
+            color: EatGoPalette.backgroundColor1,
+            size: 45,
+          ),
         ),
       ),
       body: Align(
