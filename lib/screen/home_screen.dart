@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/all_recipe_list_screen.dart';
+import 'package:eat_go/screen/bookmark_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -269,6 +270,13 @@ class DrawerMainMenu extends StatelessWidget {
             '관심 항목',
             style: style,
           ),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const BookmarkScreen(),
+              ),
+            );
+          },
         ),
         ListTile(
           title: Text(
