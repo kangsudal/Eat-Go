@@ -27,14 +27,15 @@ class MyApp extends StatelessWidget {
             fontSize: 70,
             fontWeight: FontWeight.bold,
           ),
-          titleLarge: GoogleFonts.poppins(
-            //AppBar의 title에 사용
-            color: EatGoPalette.mainTextColor,
-          ),
         ),
         appBarTheme: AppBarTheme(
           color: EatGoPalette.appBarColor,
           elevation: 0,
+          titleTextStyle: GoogleFonts.poppins(
+            color: EatGoPalette.mainTextColor,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         scaffoldBackgroundColor: EatGoPalette.backgroundColor1,
       ),
