@@ -1,3 +1,4 @@
+import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -23,22 +24,70 @@ class SignInScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.displayLarge!,
             ),
             const SizedBox(height: 15),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: GestureDetector(
-                child: Image.asset('assets/icons/apple_sq_ctn.png'),
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, "/home");
-                },
+            GestureDetector(
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                width: MediaQuery.of(context).size.width * 0.7,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  border: Border.all(
+                    color: EatGoPalette.mainTextColor,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/icons/Google.png'),
+                    const SizedBox(width: 5),
+                    const Text(
+                      'Continue with Google',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/home");
+              },
             ),
             const SizedBox(height: 10),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: GestureDetector(
-                child: Image.asset('assets/icons/google_light_sq_ctn.png'),
-                onTap: () {},
+            GestureDetector(
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                width: MediaQuery.of(context).size.width * 0.7,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  border: Border.all(
+                    color: EatGoPalette.mainTextColor,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/icons/Apple.png'),
+                    const SizedBox(width: 5),
+                    const Text(
+                      'Continue with Apple',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, "/home");
+              },
             ),
           ],
         ),
