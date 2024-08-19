@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Random random = Random();
   Color? randomColor;
   bool? bookmarked;
-  bool pinned = false;
+  bool isShakingLocked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,23 +33,13 @@ class _HomeScreenState extends State<HomeScreen> {
         title: IconButton(
           onPressed: () {
             setState(() {
-              pinned = !pinned;
-              print(pinned);
+              isShakingLocked = !isShakingLocked;
+              print(isShakingLocked);
             });
           },
-          icon: pinned
-              ? Image.asset(
-                  'assets/icons/pinned_true.png',
-                  color: pointColor,
-                  width: 25,
-                  height: 25,
-                  fit: BoxFit.scaleDown,
-                )
-              : SvgPicture.asset(
-                  'assets/icons/pinned_false.svg',
-                  colorFilter:
-                      const ColorFilter.mode(pointColor, BlendMode.srcIn),
-                ),
+          icon: isShakingLocked
+              ? const Icon(Icons.lock, color: pointColor)
+              : const Icon(Icons.lock_open, color: pointColor),
         ),
         actions: [
           IconButton(
@@ -85,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: Visibility(
-        visible: !pinned,
+        visible: !isShakingLocked,
         child: FloatingActionButton(
           onPressed: () {
             setState(() {
