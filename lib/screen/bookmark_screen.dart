@@ -32,8 +32,8 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bookmarkedRecipeList =
-        recipeList.where((recipe) => recipe.bookmarked == true).toList();
+    // bookmarkedRecipeList =
+    //     recipeList.where((recipe) => recipe.bookmarked == true).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -47,8 +47,10 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 30.0, right: 30, top: 10),
-        child: ListView(
-          children: bookmarkedRecipeList.map((FakeRecipe element) {
+        child: ListView.builder(
+          itemCount: bookmarkedRecipeList.length,
+          itemBuilder: (BuildContext context, int index) {
+            FakeRecipe element = bookmarkedRecipeList[index];
             return Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
               child: Container(
@@ -106,7 +108,10 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                 ),
               ),
             );
-          }).toList(),
+          },
+          // children: bookmarkedRecipeList.map((FakeRecipe element) {
+
+          // }).toList(),
         ),
       ),
     );
