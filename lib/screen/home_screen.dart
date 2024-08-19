@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/all_recipe_list_screen.dart';
 import 'package:eat_go/screen/bookmark_screen.dart';
+import 'package:eat_go/screen/history_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -283,6 +284,13 @@ class DrawerMainMenu extends StatelessWidget {
             '기록',
             style: style,
           ),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const HistoryScreen(),
+              ),
+            );
+          },
         ),
         ListTile(
           title: Text(

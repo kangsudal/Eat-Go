@@ -1,3 +1,4 @@
+import 'package:eat_go/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -26,7 +27,9 @@ class SignInScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.7,
               child: GestureDetector(
                 child: Image.asset('assets/icons/apple_sq_ctn.png'),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, "/home");
+                },
               ),
             ),
             const SizedBox(height: 10),

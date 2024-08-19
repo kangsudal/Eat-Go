@@ -39,7 +39,10 @@ class MyApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: EatGoPalette.backgroundColor1,
       ),
-      home: const HomeScreen(), //const SignInScreen(),
+      home: const SignInScreen(),
+      routes: {
+        "/home": (_) => HomeScreen(),
+      },
     );
   }
 }
