@@ -6,7 +6,6 @@ import 'package:eat_go/screen/bookmark_screen.dart';
 import 'package:eat_go/screen/history_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -327,7 +326,7 @@ class _DrawerFilterState extends State<DrawerFilter> {
         Padding(
           padding: EdgeInsets.only(left: 15, top: 30, bottom: 6),
           child: Text(
-            '필터',
+            '집에 있는 재료로 검색하여 필터',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
           ),
         ),

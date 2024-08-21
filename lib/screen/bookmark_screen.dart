@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:eat_go/model/fake_recipe.dart';
 import 'package:eat_go/palette.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class BookmarkScreen extends StatefulWidget {
   const BookmarkScreen({super.key});
@@ -20,9 +22,15 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
   @override
   void initState() {
     super.initState();
+    final uuid = Uuid();
     //dummy data
     recipeList = List.generate(recipeCount, (idx) {
-      return FakeRecipe(random.nextInt(0xFFFFFFFF), bookmarked: true);
+      return FakeRecipe(
+        random.nextInt(0xFFFFFFFF),
+        bookmarked: true,
+        id: uuid.v1(),
+        createdAt: DateTime.now(),
+      );
     });
     //dummy data end
     //filter recipe list by bookmarked
@@ -116,13 +124,4 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
       ),
     );
   }
-}
-
-class FakeRecipe extends Color {
-  bool bookmarked;
-
-  FakeRecipe(
-    super.value, {
-    this.bookmarked = false,
-  });
 }
