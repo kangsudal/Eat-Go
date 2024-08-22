@@ -28,7 +28,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
       return FakeRecipe(
         random.nextInt(0xFFFFFFFF),
         bookmarked: true,
-        id: uuid.v1(),
+        id: uuid.v4(),
         createdAt: DateTime.now(),
       );
     });

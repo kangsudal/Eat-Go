@@ -5,8 +5,7 @@ class User {
   final String id;
   final String name;
   final String email;
-
-//supportAmount 빠짐
+  final double supportAmount;
   final bool isPremium;
   final DateTime premiumExpiration;
   final List<BookmarkedRecipe> bookmarks;
@@ -16,6 +15,7 @@ class User {
     required this.id,
     required this.name,
     required this.email,
+    required this.supportAmount,
     required this.isPremium,
     required this.premiumExpiration,
     required this.bookmarks,
