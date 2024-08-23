@@ -91,10 +91,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       : NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(
-                        '레시피명$index',
-                        style: TextStyle(
-                          color: EatGoPalette.mainTextColor,
+                      title: Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(
+                          '레시피명$index',
+                          style: TextStyle(
+                            color: EatGoPalette.mainTextColor,
+                          ),
                         ),
                       ),
                       subtitle: Text(
@@ -102,6 +105,47 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         style: TextStyle(
                           color: EatGoPalette.subTextColor,
                         ),
+                      ),
+                      trailing: Column(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              size: 30,
+                              Icons.delete,
+                              color: pointColor,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    insetPadding: EdgeInsets.zero,
+                                    title: Text(
+                                      '이 기록을 삭제하시겠습니까?',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('예'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('아니오'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     );
                   },
