@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^6.2.1
   uuid: ^4.4.2
   sliding_up_panel: ^2.0.0+1
+  fl_chart: ^0.68.0
 
 dev_dependencies:
   flutter_test:

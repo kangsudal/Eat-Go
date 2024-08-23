@@ -4,6 +4,8 @@ import 'package:eat_go/model/bookmarked_recipe.dart';
 import 'package:eat_go/model/confirmed_recipe.dart';
 import 'package:eat_go/model/user.dart';
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/screen/custom_widget.dart';
+import 'package:eat_go/screen/top3_more_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:uuid/uuid.dart';
@@ -190,7 +192,13 @@ class BackgroundWidget extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Top3MoreScreen(),
+                    ),
+                  );
+                },
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text('더보기'),
@@ -216,74 +224,20 @@ class Top3Cards extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(bottom: 5),
           // color: Colors.purple,
-          child: Card(),
+          child: CustomCard(),
         ),
         Container(
           margin: EdgeInsets.only(bottom: 5),
           // color: Colors.purple,
-          child: Card(),
+          child: CustomCard(),
         ),
         Container(
           margin: EdgeInsets.only(bottom: 5),
           // color: Colors.purple,
-          child: Card(),
+          child: CustomCard(),
         ),
       ],
     );
   }
 }
 
-class Card extends StatelessWidget {
-  const Card({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: pointColor,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-            ),
-            height: MediaQuery.of(context).size.height * 0.1,
-            width: MediaQuery.of(context).size.height * 0.1,
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '레시피 명',
-                  style: const TextStyle(fontSize: 16),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.check_circle_outline,
-                      color: pointColor,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 3),
-                    Text(
-                      'N번 먹었어요',
-                      style: TextStyle(
-                        color: EatGoPalette.subTextColor,
-                        fontSize: 11,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
