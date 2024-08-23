@@ -21,6 +21,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     left: const Radius.circular(30),
     right: const Radius.circular(30),
   );
+  bool _isPanelOpen = false;
 
   @override
   void initState() {
@@ -59,6 +60,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
           });
         },
         borderRadius: borderRadius,
+        onPanelSlide: (position) {
+          setState(() {
+            _isPanelOpen = position > 0.3;
+          });
+        },
         panel: Padding(
           padding: const EdgeInsets.only(
             top: 40.0,
@@ -66,27 +72,46 @@ class _HistoryScreenState extends State<HistoryScreen> {
             right: 30,
             bottom: 130,
           ),
-          child: ListView.separated(
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  '레시피명$index',
-                  style: TextStyle(
-                    color: EatGoPalette.mainTextColor,
-                  ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'TIMESTAMP',
+                style: TextStyle(
+                  color: EatGoPalette.subTextColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
                 ),
-                subtitle: Text(
-                  'subtitle',
-                  style: TextStyle(
-                    color: EatGoPalette.subTextColor,
-                  ),
+              ),
+              SizedBox(height: 13),
+              Expanded(
+                child: ListView.separated(
+                  physics: _isPanelOpen
+                      ? AlwaysScrollableScrollPhysics()
+                      : NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                        '레시피명$index',
+                        style: TextStyle(
+                          color: EatGoPalette.mainTextColor,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'subtitle',
+                        style: TextStyle(
+                          color: EatGoPalette.subTextColor,
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Divider();
+                  },
+                  itemCount: confirmedRecipeCount,
                 ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return Divider();
-            },
-            itemCount: confirmedRecipeCount,
+              ),
+            ],
           ),
         ),
         body: BackgroundWidget(),
