@@ -16,10 +16,7 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  Random random = Random();
-  int recipeCount = 4;
-  late Uuid uuid;
-  late User me;
+  late int confirmedRecipeCount;
   BorderRadius borderRadius = BorderRadius.horizontal(
     left: const Radius.circular(30),
     right: const Radius.circular(30),
@@ -29,33 +26,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   void initState() {
     super.initState();
     //dummy data
-    uuid = Uuid();
-    me = User(
-      id: uuid.v4(),
-      name: 'fakeName',
-      email: 'email@email.com',
-      isPremium: false,
-      premiumExpiration: DateTime.now(),
-      // 3개의 북마크된 레시피
-      bookmarks: List.generate(
-        3,
-        (index) => BookmarkedRecipe(
-          recipeId: uuid.v4(),
-          bookmarkedAt: DateTime.now().subtract(Duration(days: index * 5)),
-        ),
-      ),
-
-      // 10개의 확인된 레시피
-      confirmedRecipes: List.generate(
-        10,
-        (index) => ConfirmedRecipe(
-          recipeId: uuid.v4(),
-          confirmedAt: [DateTime.now().subtract(Duration(days: index))],
-        ),
-      ),
-      supportAmount: 0,
-    );
-
+    confirmedRecipeCount = 20;
     //dummy data end
   }
 
@@ -90,15 +61,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
         borderRadius: borderRadius,
         panel: Padding(
           padding: const EdgeInsets.only(
-            top: 50.0,
+            top: 40.0,
             left: 30,
             right: 30,
+            bottom: 130,
           ),
           child: ListView.separated(
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(
-                  'data',
+                  '레시피명$index',
                   style: TextStyle(
                     color: EatGoPalette.mainTextColor,
                   ),
@@ -114,10 +86,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
             separatorBuilder: (BuildContext context, int index) {
               return Divider();
             },
-            itemCount: me.confirmedRecipes.length,
+            itemCount: confirmedRecipeCount,
           ),
         ),
-        body: BackgroundWidget(me: me),
+        body: BackgroundWidget(),
       ),
     );
   }
@@ -126,17 +98,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
 class BackgroundWidget extends StatelessWidget {
   const BackgroundWidget({
     super.key,
-    required this.me,
   });
-
-  final User me;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 30.0, right: 30, top: 10),
       child: Container(
-        decoration: BoxDecoration(color: Colors.yellow),
+        // decoration: BoxDecoration(color: Colors.yellow),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -148,7 +117,7 @@ class BackgroundWidget extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Top3Cards(me: me),
+            Top3Cards(),
             Align(
               alignment: Alignment.centerRight,
               child: GestureDetector(
@@ -169,10 +138,7 @@ class BackgroundWidget extends StatelessWidget {
 class Top3Cards extends StatelessWidget {
   const Top3Cards({
     super.key,
-    required this.me,
   });
-
-  final User me;
 
   @override
   Widget build(BuildContext context) {
@@ -180,18 +146,18 @@ class Top3Cards extends StatelessWidget {
       children: [
         Container(
           margin: EdgeInsets.only(bottom: 5),
-          color: Colors.purple,
-          child: Card(me: me, order: 0),
+          // color: Colors.purple,
+          child: Card(),
         ),
         Container(
           margin: EdgeInsets.only(bottom: 5),
-          color: Colors.purple,
-          child: Card(me: me, order: 1),
+          // color: Colors.purple,
+          child: Card(),
         ),
         Container(
           margin: EdgeInsets.only(bottom: 5),
-          color: Colors.purple,
-          child: Card(me: me, order: 2),
+          // color: Colors.purple,
+          child: Card(),
         ),
       ],
     );
@@ -201,12 +167,7 @@ class Top3Cards extends StatelessWidget {
 class Card extends StatelessWidget {
   const Card({
     super.key,
-    required this.me,
-    required this.order,
   });
-
-  final User me;
-  final int order;
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +189,7 @@ class Card extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  me.confirmedRecipes[order].recipeId,
+                  '레시피 명',
                   style: const TextStyle(fontSize: 16),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -241,7 +202,7 @@ class Card extends StatelessWidget {
                     ),
                     const SizedBox(width: 3),
                     Text(
-                      '${me.confirmedRecipes[order].confirmedCount}번 먹었어요',
+                      'N번 먹었어요',
                       style: TextStyle(
                         color: EatGoPalette.subTextColor,
                         fontSize: 11,

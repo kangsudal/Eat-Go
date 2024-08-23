@@ -1,4 +1,4 @@
-import 'package:eat_go/model/bookmarked_recipe.dart';
+/*import 'package:eat_go/model/bookmarked_recipe.dart';
 import 'package:eat_go/model/confirmed_recipe.dart';
 
 class User {
@@ -45,3 +45,4 @@ class User {
 //   };
 // }
 }
+*/

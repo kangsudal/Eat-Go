@@ -1,4 +1,4 @@
-class BookmarkedRecipe {
+/*class BookmarkedRecipe {
   final String recipeId;
   final DateTime bookmarkedAt;
 
@@ -19,3 +19,4 @@ class BookmarkedRecipe {
 //   };
 // }
 }
+*/
