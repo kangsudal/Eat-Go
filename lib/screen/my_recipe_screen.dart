@@ -59,82 +59,134 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
           itemCount: bookmarkedRecipeList.length,
           itemBuilder: (BuildContext context, int index) {
             FakeRecipe element = bookmarkedRecipeList[index];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Container(
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  border: Border.all(color: EatGoPalette.lineColor),
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 70,
+            return Container(
+              padding: const EdgeInsets.all(15),
+              margin: const EdgeInsets.only(bottom: 20.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: EatGoPalette.lineColor),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      color: Color(element.value),
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: Container(
                       height: 70,
-                      decoration: BoxDecoration(
-                        color: Color(element.value),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: Container(
-                        //TODO: 이 Column이 세로로 꽉 차도록 만들고싶음
-                        color: Colors.blue,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('${element.value}'),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Text('${element.value}'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        showCupertinoDialog(
-                          context: context,
-                          builder: (context) {
-                            return CupertinoAlertDialog(
-                              content: Text('관심 항목에서 삭제하시겠습니까?'),
-                              actions: [
-                                CupertinoDialogAction(
-                                  child: const Text('예'),
-                                  onPressed: () {
-                                    setState(() {
-                                      element.bookmarked =
-                                          !(element.bookmarked);
-                                    });
-                                    Navigator.pop(context);
-                                  },
+                      // color: Colors.blue,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text('${element.value}')),
+                          ),
+                          Container(
+                            // color: Colors.pink,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check_circle_outline,
+                                      color: pointColor,
+                                      size: 17,
+                                    ),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      '-99',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: pointColor,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                CupertinoDialogAction(
-                                  child: const Text('아니오'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
+                                SizedBox(width: 7),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.bookmark,
+                                      color: pointColor,
+                                      size: 17,
+                                    ),
+                                    SizedBox(width: 1),
+                                    Text(
+                                      '-99',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: pointColor,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
-                            );
-                          },
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.bookmark,
-                        color: pointColor,
+                            ),
+                          ),
+                        ],
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                  IconButton(
+                    padding: EdgeInsets.all(5),
+                    constraints: const BoxConstraints(),
+                    onPressed: () {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            content: Text('관심 항목에서 삭제하시겠습니까?'),
+                            actions: [
+                              CupertinoDialogAction(
+                                child: const Text('예'),
+                                onPressed: () {
+                                  setState(() {
+                                    element.bookmarked =
+                                        !(element.bookmarked);
+                                  });
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              CupertinoDialogAction(
+                                child: const Text('아니오'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.more_vert,
+                      color: pointColor,
+                    ),
+                  )
+                ],
               ),
             );
           },
           // children: bookmarkedRecipeList.map((FakeRecipe element) {
 
           // }).toList(),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(
+          Icons.edit_outlined,
+          color: EatGoPalette.backgroundColor1,
+          size: 38,
         ),
       ),
     );

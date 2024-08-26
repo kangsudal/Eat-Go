@@ -23,7 +23,6 @@ class EatGoPalette {
 }
 
 const MaterialColor pointColor = MaterialColor(
-  //mac에서 작업중. 변경예정??
   0xFF3CB371,
   <int, Color>{
     50: Color(0xFF3CB371),

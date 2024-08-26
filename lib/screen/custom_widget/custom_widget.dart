@@ -30,6 +30,7 @@ class Top3Card extends StatelessWidget {
                   style: const TextStyle(fontSize: 16),
                   overflow: TextOverflow.ellipsis,
                 ),
+                SizedBox(height: 8),
                 Row(
                   children: [
                     const Icon(
