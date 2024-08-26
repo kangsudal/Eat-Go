@@ -79,6 +79,7 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
                     const SizedBox(width: 20),
                     Expanded(
                       child: Container(
+                        //TODO: 이 Column이 세로로 꽉 차도록 만들고싶음
                         color: Colors.blue,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
