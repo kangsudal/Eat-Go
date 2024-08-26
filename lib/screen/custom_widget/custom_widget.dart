@@ -1,8 +1,8 @@
 import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
 
-class CustomCard extends StatelessWidget {
-  const CustomCard({
+class Top3Card extends StatelessWidget {
+  const Top3Card({
     super.key,
   });
 

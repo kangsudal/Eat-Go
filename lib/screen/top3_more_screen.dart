@@ -1,5 +1,5 @@
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/custom_widget.dart';
+import 'package:eat_go/screen/custom_widget/custom_widget.dart';
 import 'package:flutter/material.dart';
 
 //그래프
@@ -41,7 +41,7 @@ class Top3MoreScreen extends StatelessWidget {
                   return Container(
                     margin: EdgeInsets.only(bottom: 5),
                     // color: Colors.purple,
-                    child: CustomCard(),
+                    child: Top3Card(),
                   );
                 },
                 itemCount: top3Count,

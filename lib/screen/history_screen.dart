@@ -4,7 +4,7 @@ import 'package:eat_go/model/bookmarked_recipe.dart';
 import 'package:eat_go/model/confirmed_recipe.dart';
 import 'package:eat_go/model/user.dart';
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/custom_widget.dart';
+import 'package:eat_go/screen/custom_widget/custom_widget.dart';
 import 'package:eat_go/screen/top3_more_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -223,17 +223,17 @@ class Top3Cards extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(bottom: 5),
           // color: Colors.purple,
-          child: CustomCard(),
+          child: Top3Card(),
         ),
         Container(
           margin: EdgeInsets.only(bottom: 5),
           // color: Colors.purple,
-          child: CustomCard(),
+          child: Top3Card(),
         ),
         Container(
           margin: EdgeInsets.only(bottom: 5),
           // color: Colors.purple,
-          child: CustomCard(),
+          child: Top3Card(),
         ),
       ],
     );
