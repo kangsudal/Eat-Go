@@ -4,6 +4,7 @@ import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/all_recipe_list_screen.dart';
 import 'package:eat_go/screen/bookmark_screen.dart';
 import 'package:eat_go/screen/history_screen.dart';
+import 'package:eat_go/screen/my_recipe_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -286,6 +287,13 @@ class DrawerMainMenu extends StatelessWidget {
             '나의 레시피',
             style: style,
           ),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const MyRecipeScreen(),
+              ),
+            );
+          },
         ),
         const Divider(thickness: 1),
       ],

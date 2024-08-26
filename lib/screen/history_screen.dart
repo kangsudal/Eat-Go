@@ -46,7 +46,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         ),
       ),
       body: SlidingUpPanel(
-        minHeight: MediaQuery.of(context).size.height * 0.4,
+        minHeight: MediaQuery.of(context).size.height * 0.38,
         maxHeight: MediaQuery.of(context).size.height,
         onPanelOpened: () {
           setState(() {
@@ -188,6 +188,7 @@ class BackgroundWidget extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
+            SizedBox(height: 13),
             Top3Cards(),
             Align(
               alignment: Alignment.centerRight,
@@ -240,4 +241,3 @@ class Top3Cards extends StatelessWidget {
     );
   }
 }
-

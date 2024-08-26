@@ -40,8 +40,8 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // bookmarkedRecipeList =
-    //     recipeList.where((recipe) => recipe.bookmarked == true).toList();
+    bookmarkedRecipeList =
+        recipeList.where((recipe) => recipe.bookmarked == true).toList();
 
     return Scaffold(
       appBar: AppBar(
