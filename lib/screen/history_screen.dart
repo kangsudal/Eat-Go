@@ -19,9 +19,8 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen> {
   late int confirmedRecipeCount;
-  BorderRadius borderRadius = BorderRadius.horizontal(
-    left: const Radius.circular(30),
-    right: const Radius.circular(30),
+  BorderRadius borderRadius = BorderRadius.vertical(
+    top: const Radius.circular(30),
   );
   bool _isPanelOpen = false;
 
@@ -55,9 +54,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
         },
         onPanelClosed: () {
           setState(() {
-            borderRadius = BorderRadius.horizontal(
-              left: const Radius.circular(30),
-              right: const Radius.circular(30),
+            borderRadius = BorderRadius.vertical(
+              top: const Radius.circular(30),
             );
           });
         },

@@ -17,7 +17,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
   Random random = Random();
   late List<FakeRecipe> recipeList;
   late List<FakeRecipe> bookmarkedRecipeList;
-  int recipeCount = 4;
+  int recipeCount = 10;
 
   @override
   void initState() {

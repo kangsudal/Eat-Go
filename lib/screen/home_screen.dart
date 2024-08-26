@@ -55,8 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       endDrawer: Drawer(
         // width: MediaQuery.of(context).size.width * 0.64,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20)),
         ),
         child: Container(
           decoration: BoxDecoration(
