@@ -59,122 +59,7 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
           itemCount: bookmarkedRecipeList.length,
           itemBuilder: (BuildContext context, int index) {
             FakeRecipe element = bookmarkedRecipeList[index];
-            return Container(
-              padding: const EdgeInsets.all(15),
-              margin: const EdgeInsets.only(bottom: 20.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: EatGoPalette.lineColor),
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: Color(element.value),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Container(
-                      height: 70,
-                      // color: Colors.blue,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('${element.value}')),
-                          ),
-                          Container(
-                            // color: Colors.pink,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check_circle_outline,
-                                      color: pointColor,
-                                      size: 17,
-                                    ),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      '-99',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: pointColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(width: 7),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.bookmark,
-                                      color: pointColor,
-                                      size: 17,
-                                    ),
-                                    SizedBox(width: 1),
-                                    Text(
-                                      '-99',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: pointColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    padding: EdgeInsets.all(5),
-                    constraints: const BoxConstraints(),
-                    onPressed: () {
-                      showCupertinoDialog(
-                        context: context,
-                        builder: (context) {
-                          return CupertinoAlertDialog(
-                            content: Text('관심 항목에서 삭제하시겠습니까?'),
-                            actions: [
-                              CupertinoDialogAction(
-                                child: const Text('예'),
-                                onPressed: () {
-                                  setState(() {
-                                    element.bookmarked =
-                                        !(element.bookmarked);
-                                  });
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              CupertinoDialogAction(
-                                child: const Text('아니오'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.more_vert,
-                      color: pointColor,
-                    ),
-                  )
-                ],
-              ),
-            );
+            return CustomListTile(element: element);
           },
           // children: bookmarkedRecipeList.map((FakeRecipe element) {
 
@@ -188,6 +73,138 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
           color: EatGoPalette.backgroundColor1,
           size: 38,
         ),
+      ),
+    );
+  }
+}
+
+class CustomListTile extends StatefulWidget {
+  //일반 ListTile은 leading의 height 제약이 있어서, 만듬
+  final FakeRecipe element;
+
+  const CustomListTile({super.key, required this.element});
+
+  @override
+  State<CustomListTile> createState() => _CustomListTileState();
+}
+
+class _CustomListTileState extends State<CustomListTile> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.only(bottom: 20.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: EatGoPalette.lineColor),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              color: Color(widget.element.value),
+            ),
+          ),
+          const SizedBox(width: 20),
+          Expanded(
+            child: Container(
+              height: 70,
+              // color: Colors.blue,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text('${widget.element.value}')),
+                  ),
+                  Container(
+                    // color: Colors.pink,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle_outline,
+                              color: pointColor,
+                              size: 17,
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              '-99',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: pointColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 7),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.bookmark,
+                              color: pointColor,
+                              size: 17,
+                            ),
+                            SizedBox(width: 1),
+                            Text(
+                              '-99',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: pointColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          IconButton(
+            padding: EdgeInsets.all(5),
+            constraints: const BoxConstraints(),
+            onPressed: () {
+              showCupertinoDialog(
+                context: context,
+                builder: (context) {
+                  return CupertinoAlertDialog(
+                    content: Text('관심 항목에서 삭제하시겠습니까?'),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: const Text('예'),
+                        onPressed: () {
+                          setState(() {
+                            widget.element.bookmarked =
+                                !(widget.element.bookmarked);
+                          });
+                          Navigator.pop(context);
+                        },
+                      ),
+                      CupertinoDialogAction(
+                        child: const Text('아니오'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            icon: const Icon(
+              Icons.more_vert,
+              color: pointColor,
+            ),
+          )
+        ],
       ),
     );
   }
