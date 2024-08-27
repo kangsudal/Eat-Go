@@ -17,7 +17,6 @@ class MyRecipeScreen extends StatefulWidget {
 class _MyRecipeScreenState extends State<MyRecipeScreen> {
   Random random = Random();
   late List<FakeRecipe> recipeList;
-  late List<FakeRecipe> bookmarkedRecipeList;
   int recipeCount = 10;
 
   @override
@@ -34,9 +33,6 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
       );
     });
     //dummy data end
-    //filter recipe list by bookmarked
-    bookmarkedRecipeList =
-        recipeList.where((recipe) => recipe.bookmarked == true).toList();
   }
 
   @override
@@ -57,9 +53,9 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
       body: Padding(
         padding: const EdgeInsets.only(left: 30.0, right: 30),
         child: ListView.builder(
-          itemCount: bookmarkedRecipeList.length,
+          itemCount: recipeList.length,
           itemBuilder: (BuildContext context, int index) {
-            FakeRecipe element = bookmarkedRecipeList[index];
+            FakeRecipe element = recipeList[index];
             return CustomListTile(
               leading: Container(
                 width: 70,
@@ -126,40 +122,44 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
                   ],
                 ),
               ),
-              trailing: IconButton(
-                padding: EdgeInsets.all(5),
-                constraints: const BoxConstraints(),
-                onPressed: () {
-                  showCupertinoDialog(
-                    context: context,
-                    builder: (context) {
-                      return CupertinoAlertDialog(
-                        content: Text('관심 항목에서 삭제하시겠습니까?'),
-                        actions: [
-                          CupertinoDialogAction(
-                            child: const Text('예'),
-                            onPressed: () {
-                              setState(() {
-                                element.bookmarked = !(element.bookmarked);
-                              });
-                              Navigator.pop(context);
-                            },
-                          ),
-                          CupertinoDialogAction(
-                            child: const Text('아니오'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
+              trailing: PopupMenuButton(
+                icon: Icon(Icons.more_vert),
+                iconColor: pointColor,
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem(
+                      child: Text('수정'),
+                    ),
+                    PopupMenuItem(
+                      child: Text('삭제'),
+                      onTap: () {
+                        showCupertinoDialog(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoAlertDialog(
+                              content: Text('나의 레시피에서 삭제하시겠습니까?'),
+                              actions: [
+                                CupertinoDialogAction(
+                                  child: const Text('예'),
+                                  onPressed: () {
+                                    setState(() {});
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                CupertinoDialogAction(
+                                  child: const Text('아니오'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ];
                 },
-                icon: const Icon(
-                  Icons.more_vert,
-                  color: pointColor,
-                ),
               ),
             );
           },
