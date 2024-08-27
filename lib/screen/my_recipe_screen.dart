@@ -54,16 +54,13 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 30.0, right: 30, top: 20),
+        padding: const EdgeInsets.only(left: 30.0, right: 30),
         child: ListView.builder(
           itemCount: bookmarkedRecipeList.length,
           itemBuilder: (BuildContext context, int index) {
             FakeRecipe element = bookmarkedRecipeList[index];
             return CustomListTile(element: element);
           },
-          // children: bookmarkedRecipeList.map((FakeRecipe element) {
-
-          // }).toList(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
