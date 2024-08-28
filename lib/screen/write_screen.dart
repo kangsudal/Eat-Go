@@ -165,7 +165,10 @@ class _WriteScreenState extends State<WriteScreen> {
                     ),
                   ),
                 ),
-              const SizedBox(height: 30),
+              // const SizedBox(height: 30),
+              //완성된 모습 업로드
+              UploadCompletedImg(),
+              SizedBox(height: 30),
             ],
           ),
         ),
@@ -380,6 +383,43 @@ class IngredientsTextField extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: EatGoPalette.lineColor, width: 1),
             ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class UploadCompletedImg extends StatelessWidget {
+  const UploadCompletedImg({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('완성된 요리 모습', style: TextStyle(fontSize: 15)),
+        const SizedBox(height: 8),
+        Container(
+          height: 43,
+          decoration: BoxDecoration(
+            border: Border.all(color: pointColor),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.camera_alt,
+                color: pointColor,
+              ),
+              Text(
+                '사진 첨부하기',
+                style: TextStyle(
+                  color: pointColor,
+                ),
+              ),
+            ],
           ),
         ),
       ],
