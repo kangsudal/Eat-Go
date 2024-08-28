@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:eat_go/model/fake_recipe.dart';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/custom_widget/custom_widget.dart';
+import 'package:eat_go/screen/write_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -166,7 +167,13 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => WriteScreen(),
+            ),
+          );
+        },
         child: Icon(
           Icons.edit_outlined,
           color: EatGoPalette.backgroundColor1,
