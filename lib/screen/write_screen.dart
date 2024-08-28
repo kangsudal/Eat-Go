@@ -1,4 +1,5 @@
 import 'package:eat_go/palette.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class WriteScreen extends StatefulWidget {
@@ -126,21 +127,22 @@ class _WriteScreenState extends State<WriteScreen> {
               //설명과 사진
               ...buildManualAndImgSets(),
               const SizedBox(height: 10),
-              //설명과 사진 입력 세트 추가버튼
-              Align(
-                alignment: Alignment.center,
-                child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _addManualAndImgSet();
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.add_circle_outline,
-                    color: pointColor,
+              //설명과 사진 입력 세트 추가버튼(20개까지만 만들 수 있도록 막음)
+              if (_textEditingControllers.length <= 19)
+                Align(
+                  alignment: Alignment.center,
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _addManualAndImgSet();
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.add_circle_outline,
+                      color: pointColor,
+                    ),
                   ),
                 ),
-              ),
               const SizedBox(height: 30),
             ],
           ),
