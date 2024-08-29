@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:eat_go/palette.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class WriteScreen extends StatefulWidget {
   const WriteScreen({super.key});
@@ -390,8 +393,35 @@ class IngredientsTextField extends StatelessWidget {
   }
 }
 
-class UploadCompletedImg extends StatelessWidget {
+class UploadCompletedImg extends StatefulWidget {
   const UploadCompletedImg({super.key});
+
+  @override
+  State<UploadCompletedImg> createState() => _UploadCompletedImgState();
+}
+
+class _UploadCompletedImgState extends State<UploadCompletedImg> {
+  File? imageFile;
+
+  Future<void> chooseImage(ImageSource cameraOrGallery) async {
+    try {
+      final XFile? pickedImage =
+          await ImagePicker().pickImage(source: cameraOrGallery);
+
+      if (pickedImage != null) {
+        String imagePath = pickedImage.path;
+        setState(() {
+          imageFile = File(imagePath);
+        });
+      }
+    } catch (errorMsg) {
+      print(errorMsg.toString());
+      setState(() {
+        imageFile = null;
+      });
+    }
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -400,27 +430,74 @@ class UploadCompletedImg extends StatelessWidget {
       children: [
         const Text('완성된 요리 모습', style: TextStyle(fontSize: 15)),
         const SizedBox(height: 8),
-        Container(
-          height: 43,
-          decoration: BoxDecoration(
-            border: Border.all(color: pointColor),
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.camera_alt,
-                color: pointColor,
-              ),
-              Text(
-                '사진 첨부하기',
-                style: TextStyle(
-                  color: pointColor,
+        GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return SimpleDialog(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.photo),
+                      title: const Text('사진첩에서 가져오기'),
+                      onTap: () {
+                        chooseImage(ImageSource.gallery);
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.camera_alt),
+                      title: const Text('카메라로 촬영하기'),
+                      onTap: () {
+                        chooseImage(ImageSource.camera);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: imageFile == null
+              ? Container(
+                  height: 43,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: pointColor),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.camera_alt,
+                        color: pointColor,
+                      ),
+                      Text(
+                        '사진 첨부하기',
+                        style: TextStyle(
+                          color: pointColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : Stack(
+                  children: [
+                    ClipRRect(
+                      child: Image.file(imageFile!),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    const Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: CircleAvatar(
+                        backgroundColor: Color(0xFFE1E1E1),
+                        child: Icon(
+                          Icons.edit_outlined,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ),
       ],
     );
