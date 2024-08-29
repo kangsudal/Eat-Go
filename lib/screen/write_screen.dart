@@ -18,7 +18,9 @@ class _WriteScreenState extends State<WriteScreen> {
     TextEditingController()
   ];
   final ScrollController _scrollController = ScrollController();
-  final globalKeys = <GlobalKey>[GlobalKey()]; //스크롤을 위해 설명 widget들에게 할당해줌
+  final manualExplainGlobalKeys = <GlobalKey>[
+    GlobalKey()
+  ]; //스크롤을 위해 설명 widget들에게 할당해줌
 
   @override
   void dispose() {
@@ -33,13 +35,13 @@ class _WriteScreenState extends State<WriteScreen> {
   void _addManualAndImgSet() {
     // 새로운 컨트롤러와 TextField 추가
     _manualTextEditingControllers.add(TextEditingController());
-    globalKeys.add(GlobalKey());
+    manualExplainGlobalKeys.add(GlobalKey());
   }
 
   void _scrollToNextManualWidget() {
     // 추가 버튼 누르면 하단으로 스크롤 되도록
     WidgetsBinding.instance.addPostFrameCallback((Duration duration) {
-      final context = globalKeys.last.currentContext;
+      final context = manualExplainGlobalKeys.last.currentContext;
       // print(globalKeys);
       if (context != null) {
         Scrollable.ensureVisible(
@@ -53,10 +55,14 @@ class _WriteScreenState extends State<WriteScreen> {
     });
   }
 
+  void _scrollToBottom(){
+    //https://dawonny.tistory.com/180
+  }
+
   List<Widget> buildManualAndImgSets() {
     return List.generate(_manualTextEditingControllers.length, (index) {
       return Column(
-        key: globalKeys[index],
+        key: manualExplainGlobalKeys[index],
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('설명${index + 1}', style: const TextStyle(fontSize: 15)),
@@ -102,6 +108,28 @@ class _WriteScreenState extends State<WriteScreen> {
         ],
       );
     });
+  }
+
+  Widget addSetButton() {
+    if (_manualTextEditingControllers.length <= 19) {
+      return Align(
+        alignment: Alignment.center,
+        child: IconButton(
+          onPressed: () {
+            setState(() {
+              _addManualAndImgSet();
+              _scrollToNextManualWidget();
+            });
+          },
+          icon: const Icon(
+            Icons.add_circle_outline,
+            color: pointColor,
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 
   @override
@@ -152,23 +180,8 @@ class _WriteScreenState extends State<WriteScreen> {
               ...buildManualAndImgSets(),
               const SizedBox(height: 10),
               //설명과 사진 입력 세트 추가버튼(20개까지만 만들 수 있도록 막음)
-              if (_manualTextEditingControllers.length <= 19)
-                Align(
-                  alignment: Alignment.center,
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _addManualAndImgSet();
-                        _scrollToNextManualWidget();
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.add_circle_outline,
-                      color: pointColor,
-                    ),
-                  ),
-                ),
-              // const SizedBox(height: 30),
+              addSetButton(),
+              const SizedBox(height: 30),
               //완성된 모습 업로드
               UploadCompletedImg(),
               SizedBox(height: 30),
@@ -404,6 +417,7 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
   File? imageFile;
 
   Future<void> chooseImage(ImageSource cameraOrGallery) async {
+    Navigator.of(context).pop();
     try {
       final XFile? pickedImage =
           await ImagePicker().pickImage(source: cameraOrGallery);
@@ -420,7 +434,6 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
         imageFile = null;
       });
     }
-    Navigator.of(context).pop();
   }
 
   @override
