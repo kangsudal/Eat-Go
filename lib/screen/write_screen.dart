@@ -22,6 +22,16 @@ class _WriteScreenState extends State<WriteScreen> {
     GlobalKey()
   ]; //스크롤을 위해 설명 widget들에게 할당해줌
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //
+  //   // 스크롤 위치가 변경될 때마다 호출되는 리스너를 추가
+  //   _scrollController.addListener(() {
+  //     print('현재 스크롤 위치: ${_scrollController.position.pixels}');
+  //   });
+  // }
+
   @override
   void dispose() {
     // 모든 컨트롤러를 해제
@@ -39,7 +49,7 @@ class _WriteScreenState extends State<WriteScreen> {
   }
 
   void _scrollToNextManualWidget() {
-    // 추가 버튼 누르면 하단으로 스크롤 되도록
+    // 추가 버튼 누르면 다음 위젯 위치로 스크롤 되도록
     WidgetsBinding.instance.addPostFrameCallback((Duration duration) {
       final context = manualExplainGlobalKeys.last.currentContext;
       // print(globalKeys);
@@ -55,8 +65,16 @@ class _WriteScreenState extends State<WriteScreen> {
     });
   }
 
-  void _scrollToBottom(){
-    //https://dawonny.tistory.com/180
+  void _scrollToBottom() {
+    Future.delayed(Duration(milliseconds: 50), () {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+      );
+      print('페이지 끝 위치: ${_scrollController.position.maxScrollExtent},'
+          ' 현재 위치: ${_scrollController.position.pixels}');
+    });
   }
 
   List<Widget> buildManualAndImgSets() {
@@ -183,7 +201,7 @@ class _WriteScreenState extends State<WriteScreen> {
               addSetButton(),
               const SizedBox(height: 30),
               //완성된 모습 업로드
-              UploadCompletedImg(),
+              UploadCompletedImg(_scrollToBottom),
               SizedBox(height: 30),
             ],
           ),
@@ -407,7 +425,9 @@ class IngredientsTextField extends StatelessWidget {
 }
 
 class UploadCompletedImg extends StatefulWidget {
-  const UploadCompletedImg({super.key});
+  final VoidCallback scrollToBottom;
+
+  const UploadCompletedImg(this.scrollToBottom, {super.key});
 
   @override
   State<UploadCompletedImg> createState() => _UploadCompletedImgState();
@@ -433,6 +453,8 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
       setState(() {
         imageFile = null;
       });
+    } finally {
+      widget.scrollToBottom();
     }
   }
 
