@@ -66,15 +66,14 @@ class _WriteScreenState extends State<WriteScreen> {
   }
 
   void _scrollToBottom() {
-    Future.delayed(Duration(milliseconds: 50), () {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(seconds: 1),
-        curve: Curves.fastOutSlowIn,
-      );
-      print('페이지 끝 위치: ${_scrollController.position.maxScrollExtent},'
-          ' 현재 위치: ${_scrollController.position.pixels}');
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+    print('페이지 끝 위치: ${_scrollController.position.maxScrollExtent},'
+        ' 현재 위치: ${_scrollController.position.pixels}');
   }
 
   List<Widget> buildManualAndImgSets() {
@@ -454,7 +453,7 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
         imageFile = null;
       });
     } finally {
-      widget.scrollToBottom();
+      // widget.scrollToBottom();
     }
   }
 
@@ -475,15 +474,17 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
                     ListTile(
                       leading: const Icon(Icons.photo),
                       title: const Text('사진첩에서 가져오기'),
-                      onTap: () {
-                        chooseImage(ImageSource.gallery);
+                      onTap: () async {
+                        await chooseImage(ImageSource.gallery);
+                        widget.scrollToBottom();
                       },
                     ),
                     ListTile(
                       leading: const Icon(Icons.camera_alt),
                       title: const Text('카메라로 촬영하기'),
-                      onTap: () {
+                      onTap: () async {
                         chooseImage(ImageSource.camera);
+                        widget.scrollToBottom();
                       },
                     ),
                   ],
