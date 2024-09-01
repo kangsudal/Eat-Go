@@ -467,83 +467,117 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
         const SizedBox(height: 8),
         GestureDetector(
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return SimpleDialog(
-                  children: [
-                    ListTile(
-                      leading: const Icon(Icons.photo),
-                      title: const Text('사진첩에서 가져오기'),
-                      onTap: () async {
-                        await chooseImage(ImageSource.gallery);
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.camera_alt),
-                      title: const Text('카메라로 촬영하기'),
-                      onTap: () async {
-                        await chooseImage(ImageSource.camera);
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
+            buildShowDialog(context);
           },
-          child: imageFile == null
-              ? Container(
-                  height: 43,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: pointColor),
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+          child: Visibility(
+            visible: imageFile == null,
+            child: Container(
+              height: 43,
+              decoration: BoxDecoration(
+                border: Border.all(color: pointColor),
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.camera_alt,
+                    color: pointColor,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.camera_alt,
-                        color: pointColor,
-                      ),
-                      Text(
-                        '사진 첨부하기',
-                        style: TextStyle(
-                          color: pointColor,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    '사진 첨부하기',
+                    style: TextStyle(
+                      color: pointColor,
+                    ),
                   ),
-                )
-              : Stack(
-                  children: [
-                    ClipRRect(
-                      child: Image.file(
-                        imageFile!,
-                        frameBuilder: (BuildContext context, Widget child,
-                            int? frame, bool wasSynchronouslyLoaded) {
-                          if (frame != null || wasSynchronouslyLoaded) {
-                            widget.scrollToBottom();
-                          }
-                          return child;
-                        },
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    const Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: CircleAvatar(
-                        backgroundColor: Color(0xFFE1E1E1),
-                        child: Icon(
-                          Icons.edit_outlined,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                ],
+              ),
+            ),
+          ),
         ),
+        if (imageFile != null)
+          Stack(
+            children: [
+              ClipRRect(
+                child: Image.file(
+                  imageFile!,
+                  frameBuilder: (BuildContext context, Widget child, int? frame,
+                      bool wasSynchronouslyLoaded) {
+                    if (frame != null || wasSynchronouslyLoaded) {
+                      widget.scrollToBottom();
+                    }
+                    return child;
+                  },
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              Positioned(
+                bottom: 5,
+                right: 5,
+                child: GestureDetector(
+                  onTap: () {
+                    buildShowDialog(context);
+                  },
+                  child: CircleAvatar(
+                    radius: 15,
+                    backgroundColor: Color(0xFFE1E1E1),
+                    child: Icon(
+                      size: 18,
+                      Icons.edit_outlined,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 5,
+                right: 5,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      imageFile = null;
+                    });
+                  },
+                  child: CircleAvatar(
+                    radius: 15,
+                    backgroundColor: Color(0xFFE1E1E1),
+                    child: Icon(
+                      size: 18,
+                      Icons.close_rounded,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
       ],
+    );
+  }
+
+  Future<dynamic> buildShowDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo),
+              title: const Text('사진첩에서 가져오기'),
+              onTap: () async {
+                await chooseImage(ImageSource.gallery);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('카메라로 촬영하기'),
+              onTap: () async {
+                await chooseImage(ImageSource.camera);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
