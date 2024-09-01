@@ -66,14 +66,15 @@ class _WriteScreenState extends State<WriteScreen> {
   }
 
   void _scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {});
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(seconds: 1),
-      curve: Curves.fastOutSlowIn,
-    );
-    print('페이지 끝 위치: ${_scrollController.position.maxScrollExtent},'
-        ' 현재 위치: ${_scrollController.position.pixels}');
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+      );
+      print('페이지 끝 위치: ${_scrollController.position.maxScrollExtent},'
+          ' 현재 위치: ${_scrollController.position.pixels}');
+    });
   }
 
   List<Widget> buildManualAndImgSets() {
@@ -476,15 +477,13 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
                       title: const Text('사진첩에서 가져오기'),
                       onTap: () async {
                         await chooseImage(ImageSource.gallery);
-                        widget.scrollToBottom();
                       },
                     ),
                     ListTile(
                       leading: const Icon(Icons.camera_alt),
                       title: const Text('카메라로 촬영하기'),
                       onTap: () async {
-                        chooseImage(ImageSource.camera);
-                        widget.scrollToBottom();
+                        await chooseImage(ImageSource.camera);
                       },
                     ),
                   ],
@@ -518,7 +517,16 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
               : Stack(
                   children: [
                     ClipRRect(
-                      child: Image.file(imageFile!),
+                      child: Image.file(
+                        imageFile!,
+                        frameBuilder: (BuildContext context, Widget child,
+                            int? frame, bool wasSynchronouslyLoaded) {
+                          if (frame != null || wasSynchronouslyLoaded) {
+                            widget.scrollToBottom();
+                          }
+                          return child;
+                        },
+                      ),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     const Positioned(
