@@ -1,5 +1,4 @@
-import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/custom_widget/custom_widget.dart';
+import 'package:eat_go/screen/top3_more_screen/top3_more_screen_widget/top3_card.dart';
 import 'package:flutter/material.dart';
 
 class Top3MoreScreen extends StatelessWidget {
@@ -11,7 +10,7 @@ class Top3MoreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('가장 자주 먹는 음식 TOP3'),
+        title: Text('가장 자주 먹는 음식 리스트'),
       ),
       body: Padding(
         padding: const EdgeInsets.only(
