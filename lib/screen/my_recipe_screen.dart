@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:eat_go/model/fake_recipe.dart';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/custom_widget/custom_widget.dart';
-import 'package:eat_go/screen/write_screen.dart';
+import 'package:eat_go/screen/write_screen/write_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
