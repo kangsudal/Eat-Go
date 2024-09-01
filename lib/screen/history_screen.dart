@@ -23,6 +23,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     top: const Radius.circular(30),
   );
   bool _isPanelOpen = false;
+  PanelController _slidingController = PanelController();
 
   @override
   void initState() {
@@ -37,14 +38,25 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('기록'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        leading: _isPanelOpen == true
+            ? IconButton(
+                icon: const Icon(
+                  Icons.keyboard_arrow_down,
+                  size: 35,
+                ),
+                onPressed: () {
+                  _slidingController.close();
+                },
+              )
+            : IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
       ),
       body: SlidingUpPanel(
+        controller: _slidingController,
         minHeight: MediaQuery.of(context).size.height * 0.38,
         maxHeight: MediaQuery.of(context).size.height,
         onPanelOpened: () {
