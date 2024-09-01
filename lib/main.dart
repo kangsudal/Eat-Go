@@ -1,5 +1,5 @@
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/home_screen.dart';
+import 'package:eat_go/screen/home_screen/home_screen.dart';
 import 'package:eat_go/screen/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

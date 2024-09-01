@@ -1,5 +1,5 @@
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/home_screen.dart';
+import 'package:eat_go/screen/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatelessWidget {
