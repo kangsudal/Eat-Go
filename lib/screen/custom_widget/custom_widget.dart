@@ -19,11 +19,12 @@ class CustomListTile extends StatefulWidget {
 }
 
 class _CustomListTileState extends State<CustomListTile> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(15),
-      margin: const EdgeInsets.only(bottom: 20.0),
+      // margin: const EdgeInsets.only(bottom: 20.0),
       decoration: BoxDecoration(
         border: Border.all(color: EatGoPalette.lineColor),
         borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -39,6 +40,31 @@ class _CustomListTileState extends State<CustomListTile> {
           widget.trailing,
         ],
       ),
+    );
+  }
+}
+
+class CustomRadio<YummyTreat> extends StatelessWidget {
+  final YummyTreat value;
+  final YummyTreat groupValue;
+  final ValueChanged<YummyTreat?> onChanged;
+  final Widget child;
+
+  const CustomRadio({
+    super.key,
+    required this.value,
+    required this.groupValue,
+    required this.onChanged,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: child,
+      onTap: () {
+        return onChanged(value);
+      },
     );
   }
 }

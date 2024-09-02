@@ -60,46 +60,49 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
           itemCount: bookmarkedRecipeList.length,
           itemBuilder: (BuildContext context, int index) {
             FakeRecipe element = bookmarkedRecipeList[index];
-            return CustomListTile(
-              leading: Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
-                  color: Color(element.value),
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: CustomListTile(
+                leading: Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Color(element.value),
+                  ),
                 ),
-              ),
-              mid: Text('${element.value}'),
-              trailing: IconButton(
-                onPressed: () {
-                  showCupertinoDialog(
-                    context: context,
-                    builder: (context) {
-                      return CupertinoAlertDialog(
-                        content: Text('관심 항목에서 삭제하시겠습니까?'),
-                        actions: [
-                          CupertinoDialogAction(
-                            child: const Text('예'),
-                            onPressed: () {
-                              setState(() {
-                                element.bookmarked = !(element.bookmarked);
-                              });
-                              Navigator.pop(context);
-                            },
-                          ),
-                          CupertinoDialogAction(
-                            child: const Text('아니오'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                icon: const Icon(
-                  Icons.bookmark,
-                  color: pointColor,
+                mid: Text('${element.value}'),
+                trailing: IconButton(
+                  onPressed: () {
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (context) {
+                        return CupertinoAlertDialog(
+                          content: Text('관심 항목에서 삭제하시겠습니까?'),
+                          actions: [
+                            CupertinoDialogAction(
+                              child: const Text('예'),
+                              onPressed: () {
+                                setState(() {
+                                  element.bookmarked = !(element.bookmarked);
+                                });
+                                Navigator.pop(context);
+                              },
+                            ),
+                            CupertinoDialogAction(
+                              child: const Text('아니오'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.bookmark,
+                    color: pointColor,
+                  ),
                 ),
               ),
             );
