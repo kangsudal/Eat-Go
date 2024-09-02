@@ -60,7 +60,9 @@ class _WriteScreenState extends State<WriteScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              //writeData.upload();
+            },
             child: Text('Post'),
           ),
         ],
