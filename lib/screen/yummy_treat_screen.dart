@@ -68,152 +68,134 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
             Expanded(
               child: Column(
                 children: [
-                  Container(
-                    height: 120,
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: CustomRadio(
-                      value: YummyTreat.singleCoffee,
-                      groupValue: selectedValueGroup1,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedValueGroup1 = value!;
-                          print(selectedValueGroup1);
-                        });
-                      },
-                      child: CustomListTile(
-                        leading: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Icon(
-                            Icons.coffee,
-                            size: 35,
-                          ),
+                  CustomRadio(
+                    value: YummyTreat.singleCoffee,
+                    groupValue: selectedValueGroup1,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValueGroup1 = value!;
+                        print(selectedValueGroup1);
+                      });
+                    },
+                    child: CustomListTile(
+                      leading: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Icon(
+                          Icons.coffee,
+                          size: 35,
                         ),
-                        mid: Text('커피 한잔 쏘기'),
-                        trailing: Container(
-                          width: 50,
-                          height: 50,
-                          padding: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              left: BorderSide(
-                                color: EatGoPalette.lineColor,
-                              ),
+                      ),
+                      mid: Text('커피 한잔 쏘기'),
+                      trailing: Container(
+                        width: 50,
+                        height: 50,
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: EatGoPalette.lineColor,
                             ),
                           ),
-                          child: Center(
-                              child: Text(
-                            '\$3',
+                        ),
+                        child: Center(
+                            child: Text(
+                          '\$3',
+                          style: TextStyle(
+                            color: pointColor,
+                          ),
+                        )),
+                      ),
+                    ),
+                  ),
+                  CustomRadio(
+                    value: YummyTreat.fiveCupsOfCoffee,
+                    groupValue: selectedValueGroup1,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValueGroup1 = value!;
+                        print(selectedValueGroup1);
+                      });
+                    },
+                    child: CustomListTile(
+                      leading: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: 30,
+                              bottom: 0,
+                              left: 30,
+                              right: 0,
+                              child: Text('x5'),
+                            ),
+                            Positioned(
+                              top: 0,
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Icon(
+                                Icons.coffee,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      mid: Text('커피 다섯 잔의 기쁨'),
+                      trailing: Container(
+                        width: 50,
+                        height: 50,
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: EatGoPalette.lineColor,
+                            ),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '\$15',
                             style: TextStyle(
                               color: pointColor,
                             ),
-                          )),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 120,
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: CustomRadio(
-                      value: YummyTreat.fiveCupsOfCoffee,
-                      groupValue: selectedValueGroup1,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedValueGroup1 = value!;
-                          print(selectedValueGroup1);
-                        });
-                      },
-                      child: SizedBox(
-                        height: 120,
-                        child: CustomListTile(
-                          leading: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  top: 30,
-                                  bottom: 0,
-                                  left: 30,
-                                  right: 0,
-                                  child: Text('x5'),
-                                ),
-                                Positioned(
-                                  top: 0,
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: Icon(
-                                    Icons.coffee,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          mid: Text('커피 다섯 잔의 기쁨'),
-                          trailing: Container(
-                            width: 50,
-                            height: 50,
-                            padding: EdgeInsets.only(left: 10),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                left: BorderSide(
-                                  color: EatGoPalette.lineColor,
-                                ),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                '\$15',
-                                style: TextStyle(
-                                  color: pointColor,
-                                ),
-                              ),
-                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Container(
-                    height: 120,
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: CustomRadio(
-                      value: YummyTreat.pizza,
-                      groupValue: selectedValueGroup1,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedValueGroup1 = value!;
-                          print(selectedValueGroup1);
-                        });
-                      },
-                      child: SizedBox(
-                        height: 120,
-                        child: CustomListTile(
-                          leading: Image.asset(
-                            'assets/icons/icon-pizza.png',
-                            width: 50,
-                          ),
-                          mid: Text('피자 한 판 선물'),
-                          trailing: Container(
-                            width: 50,
-                            height: 50,
-                            padding: EdgeInsets.only(left: 10),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                left: BorderSide(
-                                  color: EatGoPalette.lineColor,
-                                ),
-                              ),
+                  CustomRadio(
+                    value: YummyTreat.pizza,
+                    groupValue: selectedValueGroup1,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedValueGroup1 = value!;
+                        print(selectedValueGroup1);
+                      });
+                    },
+                    child: CustomListTile(
+                      leading: Image.asset(
+                        'assets/icons/icon-pizza.png',
+                        width: 50,
+                      ),
+                      mid: Text('피자 한 판 선물'),
+                      trailing: Container(
+                        width: 50,
+                        height: 50,
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: EatGoPalette.lineColor,
                             ),
-                            child: Center(
-                              child: Text(
-                                '\$20',
-                                style: TextStyle(
-                                  color: pointColor,
-                                ),
-                              ),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '\$20',
+                            style: TextStyle(
+                              color: pointColor,
                             ),
                           ),
                         ),
@@ -229,31 +211,28 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                         print(selectedValueGroup1);
                       });
                     },
-                    child: SizedBox(
-                      height: 100,
-                      child: CustomListTile(
-                        leading: Image.asset(
-                          'assets/icons/icon-pizza-box.png',
-                          width: 50,
-                        ),
-                        mid: Text('일년 동안 피자 파티'),
-                        trailing: Container(
-                          height: 50,
-                          width: 50,
-                          padding: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              left: BorderSide(
-                                color: EatGoPalette.lineColor,
-                              ),
+                    child: CustomListTile(
+                      leading: Image.asset(
+                        'assets/icons/icon-pizza-box.png',
+                        width: 50,
+                      ),
+                      mid: Text('일년 동안 피자 파티'),
+                      trailing: Container(
+                        height: 50,
+                        width: 50,
+                        padding: EdgeInsets.only(left: 10),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: EatGoPalette.lineColor,
                             ),
                           ),
-                          child: Center(
-                            child: Text(
-                              '\$200',
-                              style: TextStyle(
-                                color: pointColor,
-                              ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '\$200',
+                            style: TextStyle(
+                              color: pointColor,
                             ),
                           ),
                         ),
