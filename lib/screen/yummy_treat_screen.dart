@@ -1,5 +1,5 @@
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/custom_widget/custom_widget.dart';
+import 'package:eat_go/screen/custom_widget/custom_list_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
