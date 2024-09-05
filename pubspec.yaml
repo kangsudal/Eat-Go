@@ -39,6 +39,7 @@ dependencies:
   uuid: ^4.4.2
   sliding_up_panel: ^2.0.0+1
   image_picker: ^1.1.2
+  collection: ^1.17.1
 
 dev_dependencies:
   flutter_test:
