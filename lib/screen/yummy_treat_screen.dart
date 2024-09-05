@@ -1,7 +1,6 @@
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/custom_widget/custom_list_tile.dart';
 
-// import 'package:eat_go/screen/custom_widget/custom_radio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -41,7 +40,112 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
             FittedBox(
               fit: BoxFit.scaleDown,
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          textTheme: TextTheme(
+                            // titleLarge: TextStyle(
+                            //   color: Colors.black,
+                            //   fontSize: 20,
+                            //   fontWeight: FontWeight.bold,
+                            // ),
+                            bodyMedium: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                        child: const SimpleDialog(
+                          title: Text(
+                            '후원이 왜 필요할까요?',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.fromLTRB(20, 12, 20, 20),
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('1.'),
+                                Expanded(
+                                  child: Text(
+                                    '지도 기능을 이용하려면 Google Maps라는 서비스를 이용해야해요. 여기에는 비용이듭니다.',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 6),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('2.'),
+                                Expanded(
+                                  child: Text(
+                                    '식당찾기 기능을 이용하려면 Google Places라는 서비스를 이용해야해요. 여기엔 비용이 듭니다.',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 6),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('3.'),
+                                Expanded(
+                                  child: Text(
+                                    'AppStore같은 경우는 개발자 계정을 위해 연간 \$200가 필요합니다.',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 6),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('4.'),
+                                Expanded(
+                                  child: Text(
+                                    '추천 검색어 기능을 이용하기 위해 ChatGPT 기능을 이용합니다. 여기엔 비용이 듭니다.',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 6),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('5.'),
+                                Expanded(
+                                  child: Text(
+                                    '여러 사용자의 레시피를 업로드하고 읽어오는데 Firebase라는 서비스를 이용해야해요. 여기엔 비용이 듭니다.',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 6),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('6.'),
+                                Expanded(
+                                  child: Text(
+                                    '이 앱을 개발한 사람은 사랑이 필요합니다!',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
                 icon: Icon(
                   Icons.info_outline,
                   color: pointColor,
@@ -430,14 +534,15 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
             ),
             SizedBox(
               width: double.infinity,
-              height: 60,
+              // height: 60,
               child: CupertinoButton(
                 color: pointColor,
                 child: Text(
                   'CONTINUE',
                   style: GoogleFonts.poppins(
-                    color: Colors.white,
+                    color: selectedValue != null ? Colors.white: Colors.grey,
                     fontWeight: FontWeight.bold,
+                    fontSize: 30,
                   ),
                 ),
                 onPressed: selectedValue != null ? () {} : null,
