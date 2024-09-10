@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
+import 'package:eat_go/screen/manual_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -159,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: Center(
                             child: Text(
-                              'RESTAURANT',
+                              '식당',
                               style: TextStyle(
                                 color: EatGoPalette.backgroundColor1,
                                 fontSize: 16,
@@ -171,28 +172,39 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         const SizedBox(width: 15),
-                        Container(
-                          width: 110,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: EatGoPalette.backgroundColor1,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                            border: Border.all(
-                              color: pointColor,
-                              width: 2.5,
-                            ),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'RECIPE',
-                              style: TextStyle(
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ManualScreen();
+                                },
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 110,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: EatGoPalette.backgroundColor1,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                              border: Border.all(
                                 color: pointColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: -0.7,
-                                fontFamily: 'poppins',
+                                width: 2.5,
+                              ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                '레시피',
+                                style: TextStyle(
+                                  color: pointColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: -0.7,
+                                  fontFamily: 'poppins',
+                                ),
                               ),
                             ),
                           ),
