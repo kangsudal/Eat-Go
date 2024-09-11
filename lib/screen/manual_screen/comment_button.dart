@@ -61,12 +61,21 @@ class CommentButton extends StatelessWidget {
                               ),
                               trailing: Container(
                                 // color: Colors.blue,
-                                child: IconButton(
-                                  onPressed: () {},
+                                child: PopupMenuButton(
                                   icon: Icon(
                                     Icons.more_vert,
                                     color: pointColor,
                                   ),
+                                  itemBuilder: (BuildContext context) {
+                                    return [
+                                      PopupMenuItem(
+                                        child: Text('차단하기'),
+                                      ),
+                                      PopupMenuItem(
+                                        child: Text('신고하기'),
+                                      ),
+                                    ];
+                                  },
                                 ),
                               ),
                             ),
@@ -151,6 +160,13 @@ class CommentButton extends StatelessWidget {
         Text(
           '4',
           style: TextStyle(color: pointColor),
+        ),
+        SizedBox(width: 10),
+        Text(
+          '1994.01.24',
+          style: TextStyle(
+            color: EatGoPalette.subTextColor,
+          ),
         ),
       ],
     );

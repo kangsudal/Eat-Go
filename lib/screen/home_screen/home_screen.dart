@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
-import 'package:eat_go/screen/manual_screen/manual_screen.dart';
+import 'package:eat_go/screen/manual_screen/recipe_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -177,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return ManualScreen();
+                                  return RecipeDetailScreen();
                                 },
                               ),
                             );
