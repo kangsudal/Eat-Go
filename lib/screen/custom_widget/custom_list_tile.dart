@@ -10,6 +10,7 @@ class CustomListTile extends StatelessWidget {
     border: Border.all(color: EatGoPalette.lineColor),
     borderRadius: const BorderRadius.all(Radius.circular(10)),
   );
+  final CrossAxisAlignment crossAxisAlignment;
 
   CustomListTile({
     super.key,
@@ -17,11 +18,13 @@ class CustomListTile extends StatelessWidget {
     required this.mid,
     required this.trailing,
     BoxDecoration? boxDecoration,
-  }) : boxDecoration = (boxDecoration ??
+    CrossAxisAlignment? crossAxisAlignment,
+  })  : boxDecoration = (boxDecoration ??
             BoxDecoration(
               border: Border.all(color: EatGoPalette.lineColor),
               borderRadius: const BorderRadius.all(Radius.circular(10)),
-            ));
+            )),
+        crossAxisAlignment = (crossAxisAlignment ?? CrossAxisAlignment.center);
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,7 @@ class CustomListTile extends StatelessWidget {
       // margin: const EdgeInsets.only(bottom: 20.0),
       decoration: boxDecoration,
       child: Row(
+        crossAxisAlignment: crossAxisAlignment,
         children: [
           //권장 height: 70
           leading,
