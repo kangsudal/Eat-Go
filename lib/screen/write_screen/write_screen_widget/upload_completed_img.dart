@@ -65,7 +65,7 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
                       bool wasSynchronouslyLoaded) {
                     if (frame != null || wasSynchronouslyLoaded) {
                       if(widget.scrollToBottom!=null) {
-                        print("바닥으로${widget.scrollToBottom}");
+                        print("바닥으로${widget.scrollToBottom}");//todo: 한번 완성된 레시피 사진을 올리면, scrollToBottom이 자꾸 호출되게 됨
                         widget.scrollToBottom!();
                       }
                     }
