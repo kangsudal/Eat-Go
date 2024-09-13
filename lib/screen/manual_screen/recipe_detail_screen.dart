@@ -12,18 +12,9 @@ class RecipeDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(context),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(left: 30.0, right: 30, top: 20),
-          child: Column(
-            children: [
-              Placeholder(),
-              Placeholder(),
-              Placeholder(),
-              Placeholder(),
-            ],
-          ),
-        ),
-      ),
+          child: Placeholder(
+        fallbackHeight: 1000,
+      )),
       bottomNavigationBar: buildBottomAppBar(),
     );
   }
@@ -59,25 +50,31 @@ class RecipeDetailScreen extends StatelessWidget {
                 CommentButton(),
               ],
             ),
-            CupertinoButton(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              onPressed: () {},
-              color: pointColor,
-              child: Row(
-                children: [
-                  Text(
-                    '선택',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
+            Tooltip(
+              message: '먹은 날짜와 횟수가 기록 됩니다.',
+              child: SizedBox(
+                height: 30,
+                child: CupertinoButton(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  onPressed: () {},
+                  color: pointColor,
+                  child: Row(
+                    children: [
+                      Text(
+                        '선택',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Icon(
+                        Icons.check_circle_outline,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ],
                   ),
-                  SizedBox(width: 5),
-                  Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ],
+                ),
               ),
             ),
           ],
@@ -90,7 +87,8 @@ class RecipeDetailScreen extends StatelessWidget {
     return AppBar(
       title: Wrap(
         children: [
-          Text('카레 크림 파스타aaaaaaaa'),
+          Tooltip(
+              message: '카레 크림 파스타aaaaaaaa', child: Text('카레 크림 파스타aaaaaaaa')),
           Tooltip(
             message: '전체 사용자가 확정한 수입니다.',
             child: Row(
@@ -127,6 +125,19 @@ class RecipeDetailScreen extends StatelessWidget {
             Icons.share,
             color: pointColor,
           ),
+        ),
+        PopupMenuButton(
+          iconColor: pointColor,
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem(
+                child: Text('신고하기'),
+              ),
+              PopupMenuItem(
+                child: Text('차단하기'),
+              ),
+            ];
+          },
         ),
       ],
     );
