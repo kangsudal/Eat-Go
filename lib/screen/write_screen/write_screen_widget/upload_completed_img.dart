@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 //완성된 요리 모습 업로드
 class UploadCompletedImg extends StatefulWidget {
-  final VoidCallback scrollToBottom;
+  final VoidCallback? scrollToBottom;
 
   const UploadCompletedImg(this.scrollToBottom, {super.key});
 
@@ -58,17 +58,20 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
           Stack(
             children: [
               ClipRRect(
+                borderRadius: BorderRadius.circular(8),
                 child: Image.file(
                   imageFile!,
                   frameBuilder: (BuildContext context, Widget child, int? frame,
                       bool wasSynchronouslyLoaded) {
                     if (frame != null || wasSynchronouslyLoaded) {
-                      widget.scrollToBottom();
+                      if(widget.scrollToBottom!=null) {
+                        print("바닥으로${widget.scrollToBottom}");
+                        widget.scrollToBottom!();
+                      }
                     }
                     return child;
                   },
                 ),
-                borderRadius: BorderRadius.circular(8),
               ),
               Positioned(
                 bottom: 5,
