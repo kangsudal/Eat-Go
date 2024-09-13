@@ -22,8 +22,6 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('완성된 요리 모습', style: TextStyle(fontSize: 15)),
-        const SizedBox(height: 8),
         GestureDetector(
           onTap: () {
             buildShowDialog(context);
@@ -64,8 +62,9 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
                   frameBuilder: (BuildContext context, Widget child, int? frame,
                       bool wasSynchronouslyLoaded) {
                     if (frame != null || wasSynchronouslyLoaded) {
-                      if(widget.scrollToBottom!=null) {
-                        print("바닥으로${widget.scrollToBottom}");//todo: 한번 완성된 레시피 사진을 올리면, scrollToBottom이 자꾸 호출되게 됨
+                      if (widget.scrollToBottom != null) {
+                        print(
+                            "바닥으로${widget.scrollToBottom}"); //todo: 한번 완성된 레시피 사진을 올리면, scrollToBottom이 자꾸 호출되게 됨
                         widget.scrollToBottom!();
                       }
                     }

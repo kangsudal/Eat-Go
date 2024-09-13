@@ -89,7 +89,14 @@ class _WriteScreenState extends State<WriteScreen> {
               _addRecipeExplainAndImgSetButton(),
               const SizedBox(height: 30),
               //완성된 요리 모습 업로드
-              UploadCompletedImg(_scrollToBottom),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('완성된 요리 모습', style: TextStyle(fontSize: 15)),
+                  const SizedBox(height: 8),
+                  UploadCompletedImg(_scrollToBottom),
+                ],
+              ),
               SizedBox(height: 30),
             ],
           ),
