@@ -1,19 +1,19 @@
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/screen/write_screen/write_screen.dart';
 import 'package:flutter/material.dart';
 
 //설명을 입력하는 텍스트필드&이미지 위젯 리스트 생성
-List<Widget> buildManualAndImgSets(
-    List<TextEditingController> manualTextEditingControllers,
-    List<GlobalKey> manualExplainGlobalKeys) {
-  return List.generate(manualTextEditingControllers.length, (index) {
+List<Widget> buildRecipeExplainAndImgSets(
+    List<RecipeExplainInput> recipeExplainInputs) {
+  return List.generate(recipeExplainInputs.length, (index) {
     return Column(
-      key: manualExplainGlobalKeys[index],
+      key: recipeExplainInputs[index].globalKeyForScroll,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('설명${index + 1}', style: const TextStyle(fontSize: 15)),
         const SizedBox(height: 8),
         TextField(
-          controller: manualTextEditingControllers[index],
+          controller: recipeExplainInputs[index].textEditingController,
           minLines: 4,
           maxLines: 4,
           maxLength: 150,
@@ -48,8 +48,7 @@ List<Widget> buildManualAndImgSets(
             ],
           ),
         ),
-        if (index != manualTextEditingControllers.length - 1)
-          const SizedBox(height: 30),
+        if (index != recipeExplainInputs.length - 1) const SizedBox(height: 30),
       ],
     );
   });

@@ -1,6 +1,6 @@
 import 'package:eat_go/model/fake_recipe.dart';
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/manual_screen/comment_button.dart';
+import 'package:eat_go/screen/recipe_detail_screen/comment_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

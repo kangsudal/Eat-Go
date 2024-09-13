@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/write_screen/write_screen_widget/build_manual_and_img_sets.dart';
+import 'package:eat_go/screen/write_screen/write_screen_widget/build_recipe_explain_and_img_sets.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/ingredients_text_field.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/recipe_category_panel.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/recipe_name_text_field.dart';
@@ -18,20 +18,19 @@ class WriteScreen extends StatefulWidget {
 }
 
 class _WriteScreenState extends State<WriteScreen> {
-  // TextEditingController 리스트
-  List<TextEditingController> _manualTextEditingControllers = [
-    TextEditingController()
-  ];
   final ScrollController _scrollController = ScrollController();
-  final manualExplainGlobalKeys = <GlobalKey>[
-    GlobalKey()
-  ]; //스크롤을 위해 설명 widget들에게 할당해줌
+  List<RecipeExplainInput> recipeExplainInputs = [
+    RecipeExplainInput(
+      textEditingController: TextEditingController(),
+      globalKeyForScroll: GlobalKey(), //스크롤을 위해 설명 widget들에게 할당해줌
+    ),
+  ];
 
   @override
   void dispose() {
     // 모든 컨트롤러를 해제
-    for (var controller in _manualTextEditingControllers) {
-      controller.dispose();
+    for (var input in recipeExplainInputs) {
+      input.textEditingController.dispose();
     }
     _scrollController.dispose();
     super.dispose();
@@ -84,11 +83,10 @@ class _WriteScreenState extends State<WriteScreen> {
               IngredientsTextField(),
               SizedBox(height: 30),
               //설명을 입력하는 텍스트필드&이미지 위젯 리스트
-              ...buildManualAndImgSets(
-                  _manualTextEditingControllers, manualExplainGlobalKeys),
+              ...buildRecipeExplainAndImgSets(recipeExplainInputs),
               const SizedBox(height: 10),
               //설명과 사진 입력 세트 추가버튼
-              _addManualAndImgSetButton(),
+              _addRecipeExplainAndImgSetButton(),
               const SizedBox(height: 30),
               //완성된 요리 모습 업로드
               UploadCompletedImg(_scrollToBottom),
@@ -102,14 +100,19 @@ class _WriteScreenState extends State<WriteScreen> {
 
   void _addManualAndImgSet() {
     // 새로운 컨트롤러와 TextField 추가
-    _manualTextEditingControllers.add(TextEditingController());
-    manualExplainGlobalKeys.add(GlobalKey());
+    recipeExplainInputs.add(
+      RecipeExplainInput(
+        textEditingController: TextEditingController(),
+        globalKeyForScroll: GlobalKey(),
+      ),
+    );
   }
 
   void _scrollToNextManualWidget() {
     // 추가 버튼 누르면 다음 위젯 위치로 스크롤 되도록
     WidgetsBinding.instance.addPostFrameCallback((Duration duration) {
-      final context = manualExplainGlobalKeys.last.currentContext;
+      final context =
+          recipeExplainInputs.last.globalKeyForScroll.currentContext;
       // print(globalKeys);
       if (context != null) {
         Scrollable.ensureVisible(
@@ -135,10 +138,10 @@ class _WriteScreenState extends State<WriteScreen> {
     });
   }
 
-  Widget _addManualAndImgSetButton() {
+  Widget _addRecipeExplainAndImgSetButton() {
     //설명과 이미지 세트 추가하는 버튼. 세트가 20개 이하일때까지만 보인다.
     return Visibility(
-      visible: _manualTextEditingControllers.length <= 19,
+      visible: recipeExplainInputs.length <= 19,
       child: Align(
         alignment: Alignment.center,
         child: IconButton(
@@ -156,4 +159,14 @@ class _WriteScreenState extends State<WriteScreen> {
       ),
     );
   }
+}
+
+class RecipeExplainInput {
+  TextEditingController textEditingController;
+  GlobalKey globalKeyForScroll;
+
+  RecipeExplainInput({
+    required this.textEditingController,
+    required this.globalKeyForScroll,
+  });
 }
