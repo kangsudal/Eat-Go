@@ -7,7 +7,7 @@ import 'package:eat_go/screen/write_screen/write_screen_widget/recipe_explain_in
 import 'package:flutter/material.dart';
 
 //설명을 입력하는 텍스트필드&이미지 위젯 리스트 생성
-List<Widget> buildRecipeExplainAndImgSets(
+List<Widget> buildRecipeExplainAndImgInputSets(
     List<RecipeExplainInput> recipeExplainInputs) {
   return List.generate(recipeExplainInputs.length, (index) {
     return RecipeExplainAndImg(

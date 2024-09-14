@@ -85,7 +85,7 @@ class _WriteScreenState extends State<WriteScreen> {
               IngredientsTextField(),
               SizedBox(height: 30),
               //설명을 입력하는 텍스트필드&이미지 위젯 리스트
-              ...buildRecipeExplainAndImgSets(recipeExplainInputs),
+              ...buildRecipeExplainAndImgInputSets(recipeExplainInputs),
               const SizedBox(height: 10),
               //설명과 사진 입력 세트 추가버튼
               _addRecipeExplainAndImgSetButton(),
