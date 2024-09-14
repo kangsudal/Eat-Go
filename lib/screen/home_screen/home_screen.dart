@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
 import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_screen.dart';
+import 'package:eat_go/screen/restaurant_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -149,24 +150,32 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          width: 110,
-                          height: 40,
-                          decoration: const BoxDecoration(
-                            color: pointColor,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
+                        GestureDetector(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  RestaurantScreen(),
                             ),
                           ),
-                          child: Center(
-                            child: Text(
-                              '식당',
-                              style: TextStyle(
-                                color: EatGoPalette.backgroundColor1,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: -0.7,
-                                fontFamily: 'poppins',
+                          child: Container(
+                            width: 110,
+                            height: 40,
+                            decoration: const BoxDecoration(
+                              color: pointColor,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '식당',
+                                style: TextStyle(
+                                  color: EatGoPalette.backgroundColor1,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: -0.7,
+                                  fontFamily: 'poppins',
+                                ),
                               ),
                             ),
                           ),
