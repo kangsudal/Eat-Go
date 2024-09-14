@@ -1,8 +1,8 @@
 import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
 
-class BackButton extends StatelessWidget {
-  const BackButton({
+class RestaurantBackButton extends StatelessWidget {
+  const RestaurantBackButton({
     super.key,
   });
 
@@ -13,6 +13,7 @@ class BackButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 20, top: 20),
         child: FloatingActionButton(
+          heroTag: null,
           onPressed: () {},
           child: Align(
             alignment: Alignment(0.4, 0),
