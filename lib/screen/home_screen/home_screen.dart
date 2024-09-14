@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
 import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_screen.dart';
-import 'package:eat_go/screen/restaurant_screen.dart';
+import 'package:eat_go/screen/restaurant_screen/restaurant_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
