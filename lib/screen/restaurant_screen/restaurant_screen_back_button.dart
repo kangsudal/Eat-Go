@@ -1,8 +1,8 @@
 import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
 
-class RestaurantBackButton extends StatelessWidget {
-  const RestaurantBackButton({
+class RestaurantScreenBackButton extends StatelessWidget {
+  const RestaurantScreenBackButton({
     super.key,
   });
 

@@ -1,4 +1,4 @@
-import 'package:eat_go/screen/restaurant_screen/back_button.dart';
+import 'package:eat_go/screen/restaurant_screen/restaurant_screen_back_button.dart';
 import 'package:eat_go/screen/restaurant_screen/keyword_suggestion_card.dart';
 import 'package:eat_go/screen/restaurant_screen/scrollable_cards.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ class RestaurantScreen extends StatelessWidget {
       body: Stack(
         children: [
           KeywordSuggestionCard(),
-          RestaurantBackButton(),
+          RestaurantScreenBackButton(),
           ScrollableCards(itemCount: itemCount),
         ],
       ),
