@@ -6,9 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 //완성된 요리 모습 업로드
 class UploadCompletedImg extends StatefulWidget {
-  final VoidCallback? scrollToBottom;
-
-  const UploadCompletedImg(this.scrollToBottom, {super.key});
+  const UploadCompletedImg({super.key});
 
   @override
   State<UploadCompletedImg> createState() => _UploadCompletedImgState();
@@ -59,17 +57,6 @@ class _UploadCompletedImgState extends State<UploadCompletedImg> {
                 borderRadius: BorderRadius.circular(8),
                 child: Image.file(
                   imageFile!,
-                  frameBuilder: (BuildContext context, Widget child, int? frame,
-                      bool wasSynchronouslyLoaded) {
-                    if (frame != null || wasSynchronouslyLoaded) {
-                      if (widget.scrollToBottom != null) {
-                        print(
-                            "바닥으로${widget.scrollToBottom}"); //todo: 한번 완성된 레시피 사진을 올리면, scrollToBottom이 자꾸 호출되게 됨
-                        widget.scrollToBottom!();
-                      }
-                    }
-                    return child;
-                  },
                 ),
               ),
               Positioned(

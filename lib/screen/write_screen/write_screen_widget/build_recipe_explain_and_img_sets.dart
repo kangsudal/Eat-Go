@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 List<Widget> buildRecipeExplainAndImgSets(
     List<RecipeExplainInput> recipeExplainInputs) {
   return List.generate(recipeExplainInputs.length, (index) {
-    return RecipeExplainAndImg(index: index, recipeExplainInputs: recipeExplainInputs);
+    return RecipeExplainAndImg(
+        index: index, recipeExplainInputs: recipeExplainInputs);
   });
 }
 
@@ -44,7 +45,7 @@ class RecipeExplainAndImg extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        const UploadCompletedImg(null),
+        const UploadCompletedImg(),
         if (index != recipeExplainInputs.length - 1) const SizedBox(height: 30),
       ],
     );

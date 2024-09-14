@@ -94,7 +94,7 @@ class _WriteScreenState extends State<WriteScreen> {
                 children: [
                   const Text('완성된 요리 모습', style: TextStyle(fontSize: 15)),
                   const SizedBox(height: 8),
-                  UploadCompletedImg(_scrollToBottom),
+                  UploadCompletedImg(),
                 ],
               ),
               SizedBox(height: 30),
