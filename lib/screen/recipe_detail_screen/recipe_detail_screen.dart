@@ -1,5 +1,5 @@
-import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_appbar.dart';
-import 'package:eat_go/screen/recipe_detail_screen/recipe_dtail_bottom_appbar.dart';
+import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_widget/appbar.dart';
+import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_widget/bottom_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
