@@ -33,8 +33,64 @@ class ScrollableCards extends StatelessWidget {
             height: 120, //card사이즈의 height값이 여기에 맞춰진다.
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext, index) => GestureDetector(
-                onTap: () {},
+              itemBuilder: (BuildContext context, index) => GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Column(
+                        children: [
+                          Dialog(
+                            child: LayoutBuilder(
+                              builder: (context,constraints) {
+                                final dialogWidth = constraints.maxWidth;
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                  height: 500,
+                                  // width: 100,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height:180,//사진 슬라이드 높이
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder:
+                                              (BuildContext context, index) {
+                                            return Container(
+                                              // height: 10,
+                                              width: dialogWidth,
+                                              decoration: BoxDecoration(
+                                                color: Colors.primaries[index],
+                                              ),
+                                            );
+                                          },
+                                          itemCount: Colors.primaries.length,
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                );
+                              }
+                            ),
+                          ),
+                          FloatingActionButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Icon(
+                              Icons.clear,
+                              color: pointColor,
+                            ),
+                            backgroundColor: Colors.white,
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
                 child: Container(
                   margin: index == itemCount - 1
                       ? EdgeInsets.only(left: 20, right: 20, bottom: 30)

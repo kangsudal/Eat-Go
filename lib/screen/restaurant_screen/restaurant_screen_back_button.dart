@@ -14,7 +14,9 @@ class RestaurantScreenBackButton extends StatelessWidget {
         padding: const EdgeInsets.only(left: 20, top: 20),
         child: FloatingActionButton(
           heroTag: null,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
           child: Align(
             alignment: Alignment(0.4, 0),
             child: Icon(
