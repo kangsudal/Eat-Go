@@ -4,15 +4,15 @@ import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-//완성된 요리 모습 업로드
-class UploadCompletedImg extends StatefulWidget {
-  const UploadCompletedImg({super.key});
+//사진 or 카메라로 이미지를 업로드하는 버튼
+class CameraButton extends StatefulWidget {
+  const CameraButton({super.key});
 
   @override
-  State<UploadCompletedImg> createState() => _UploadCompletedImgState();
+  State<CameraButton> createState() => _CameraButtonState();
 }
 
-class _UploadCompletedImgState extends State<UploadCompletedImg> {
+class _CameraButtonState extends State<CameraButton> {
   File? imageFile;
 
   @override

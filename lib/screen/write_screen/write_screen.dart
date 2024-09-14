@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/build_recipe_explain_and_img_sets.dart';
+import 'package:eat_go/screen/write_screen/write_screen_widget/completed_recipe.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/ingredients_text_field.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/recipe_category_panel.dart';
+import 'package:eat_go/screen/write_screen/write_screen_widget/recipe_explain_input.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/recipe_name_text_field.dart';
-import 'package:eat_go/screen/write_screen/write_screen_widget/upload_completed_img.dart';
+import 'package:eat_go/screen/write_screen/write_screen_widget/camera_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -89,14 +91,7 @@ class _WriteScreenState extends State<WriteScreen> {
               _addRecipeExplainAndImgSetButton(),
               const SizedBox(height: 30),
               //완성된 요리 모습 업로드
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('완성된 요리 모습', style: TextStyle(fontSize: 15)),
-                  const SizedBox(height: 8),
-                  UploadCompletedImg(),
-                ],
-              ),
+              CompletedRecipe(),
               SizedBox(height: 30),
             ],
           ),
@@ -166,14 +161,4 @@ class _WriteScreenState extends State<WriteScreen> {
       ),
     );
   }
-}
-
-class RecipeExplainInput {
-  TextEditingController textEditingController;
-  GlobalKey globalKeyForScroll;
-
-  RecipeExplainInput({
-    required this.textEditingController,
-    required this.globalKeyForScroll,
-  });
 }
