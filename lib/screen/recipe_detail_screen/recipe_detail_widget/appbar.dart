@@ -11,13 +11,36 @@ AppBar buildAppBar(BuildContext context) {
           child: Row(
             children: [
               Icon(
+                Icons.remove_red_eye,
+                color: pointColor,
+                size: 20,
+              ),
+              Text(
+                ' 32   ',
+                style: TextStyle(
+                  color: pointColor,
+                  fontSize: 15,
+                ),
+              ),
+              Icon(
+                Icons.bookmark,
+                color: pointColor,
+                size: 20,
+              ),
+              Text(
+                ' 32   ',
+                style: TextStyle(
+                  color: pointColor,
+                  fontSize: 15,
+                ),
+              ),
+              Icon(
                 Icons.check_circle_outline,
                 color: pointColor,
                 size: 20,
               ),
-              SizedBox(width: 3),
               Text(
-                '32',
+                ' 32   ',
                 style: TextStyle(
                   color: pointColor,
                   fontSize: 15,
@@ -36,17 +59,13 @@ AppBar buildAppBar(BuildContext context) {
           color: pointColor,
         ),
       ),
-      IconButton(
-        onPressed: () {},
-        icon: const Icon(
-          Icons.share,
-          color: pointColor,
-        ),
-      ),
       PopupMenuButton(
         iconColor: pointColor,
         itemBuilder: (BuildContext context) {
           return [
+            const PopupMenuItem(
+              child: Text('공유하기'),
+            ),
             const PopupMenuItem(
               child: Text('신고하기'),
             ),

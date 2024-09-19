@@ -44,128 +44,157 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('나의 레시피'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 30.0, right: 30),
         child: ListView.builder(
-          itemCount: recipeList.length,
+          itemCount: recipeList.length + 1,
           itemBuilder: (BuildContext context, int index) {
-            FakeRecipe element = recipeList[index];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: CustomListTile(
-                leading: Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    color: Color(element.value),
+            if (index == 0) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'kangsudal님께서 올려주신 소중한 레시피',
+                    style: TextStyle(
+                      color: EatGoPalette.subTextColor,
+                    ),
                   ),
-                ),
-                mid: Container(
-                  height: 70,
-                  // color: Colors.blue,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text('${element.value}')),
-                      ),
-                      Container(
-                        // color: Colors.pink,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.check_circle_outline,
-                                  color: pointColor,
-                                  size: 17,
-                                ),
-                                SizedBox(width: 4),
-                                Text(
-                                  '-99',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: pointColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 7),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.bookmark,
-                                  color: pointColor,
-                                  size: 17,
-                                ),
-                                SizedBox(width: 1),
-                                Text(
-                                  '-99',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: pointColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                  SortBar(),
+                  IncreaseGraphBox(),
+                  SizedBox(height: 30),
+                ],
+              );
+            } else {
+              FakeRecipe element = recipeList[index - 1];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: CustomListTile(
+                  leading: Container(
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      color: Color(element.value),
+                    ),
+                  ),
+                  mid: Container(
+                    height: 70,
+                    // color: Colors.blue,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text('${element.value}')),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                trailing: PopupMenuButton(
-                  icon: Icon(Icons.more_vert),
-                  iconColor: pointColor,
-                  itemBuilder: (BuildContext context) {
-                    return [
-                      PopupMenuItem(
-                        child: Text('수정'),
-                      ),
-                      PopupMenuItem(
-                        child: Text('삭제'),
-                        onTap: () {
-                          showCupertinoDialog(
-                            context: context,
-                            builder: (context) {
-                              return CupertinoAlertDialog(
-                                content: Text('나의 레시피에서 삭제하시겠습니까?'),
-                                actions: [
-                                  CupertinoDialogAction(
-                                    child: const Text('예'),
-                                    onPressed: () {
-                                      setState(() {});
-                                      Navigator.pop(context);
-                                    },
+                        Container(
+                          // color: Colors.pink,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.remove_red_eye,
+                                    color: pointColor,
+                                    size: 17,
                                   ),
-                                  CupertinoDialogAction(
-                                    child: const Text('아니오'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
+                                  SizedBox(width: 4),
+                                  Text(
+                                    '-99',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: pointColor,
+                                    ),
                                   ),
                                 ],
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ];
-                  },
+                              ),
+                              SizedBox(width: 7),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.bookmark,
+                                    color: pointColor,
+                                    size: 17,
+                                  ),
+                                  SizedBox(width: 4),
+                                  Text(
+                                    '-99',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: pointColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: 7),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.check_circle_outline,
+                                    color: pointColor,
+                                    size: 17,
+                                  ),
+                                  SizedBox(width: 1),
+                                  Text(
+                                    '-99',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: pointColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  trailing: PopupMenuButton(
+                    icon: Icon(Icons.more_vert),
+                    iconColor: pointColor,
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        PopupMenuItem(
+                          child: Text('수정'),
+                        ),
+                        PopupMenuItem(
+                          child: Text('삭제'),
+                          onTap: () {
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  content: Text('나의 레시피에서 삭제하시겠습니까?'),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      child: const Text('예'),
+                                      onPressed: () {
+                                        setState(() {});
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    CupertinoDialogAction(
+                                      child: const Text('아니오'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ];
+                    },
+                  ),
                 ),
-              ),
-            );
+              );
+            }
           },
         ),
       ),
@@ -183,6 +212,145 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
           size: 38,
         ),
       ),
+    );
+  }
+}
+
+class IncreaseGraphBox extends StatelessWidget {
+  const IncreaseGraphBox({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('전체기간 레시피 조회수'),
+                Text(
+                  '${-99}',
+                  style: TextStyle(fontSize: 35),
+                ),
+              ],
+            ),
+            Container(
+              padding: EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                color: Color(0xFFDCEADF),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(
+                '+ 신규 조회수 -99회',
+                style: TextStyle(
+                  color: Color(0xFF1B7338),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Placeholder(
+          fallbackWidth: MediaQuery.of(context).size.width,
+          fallbackHeight: 150,
+        ),
+      ],
+    );
+  }
+}
+
+class SortBar extends StatelessWidget {
+  const SortBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(
+          Icons.remove_red_eye,
+          color: pointColor,
+        ),
+        Text(
+          ' ${-99}   ',
+          style: TextStyle(
+            color: pointColor,
+          ),
+        ),
+        Icon(
+          Icons.bookmark,
+          color: pointColor,
+        ),
+        Text(
+          ' ${-99}   ',
+          style: TextStyle(
+            color: pointColor,
+          ),
+        ),
+        Icon(
+          Icons.check_circle_outline,
+          color: pointColor,
+        ),
+        Text(
+          ' ${-99}',
+          style: TextStyle(
+            color: pointColor,
+          ),
+        ),
+        Spacer(),
+        PopupMenuButton(
+          icon: Icon(
+            Icons.sort,
+            color: pointColor,
+          ),
+          itemBuilder: (BuildContext) {
+            return [
+              PopupMenuItem(
+                child: Row(
+                  children: [
+                    Icon(Icons.access_time_outlined),
+                    SizedBox(width: 10),
+                    Expanded(child: Text('날짜순 정렬')),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                child: Row(
+                  children: [
+                    Icon(Icons.remove_red_eye),
+                    SizedBox(width: 10),
+                    Text('조회수 순서로 정렬'),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                child: Row(
+                  children: [
+                    Icon(Icons.bookmark),
+                    SizedBox(width: 10),
+                    Text('북마크수 순서로 정렬'),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                child: Row(
+                  children: [
+                    Icon(Icons.check_circle_outline),
+                    SizedBox(width: 10),
+                    Text('전체 기록된 수 순서로 정렬'),
+                  ],
+                ),
+              ),
+            ];
+          },
+        ),
+      ],
     );
   }
 }
