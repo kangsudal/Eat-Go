@@ -1,5 +1,4 @@
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_widget/comment_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +30,6 @@ BottomAppBar buildBottomAppBar() {
                   ],
                 ),
               ),
-              CommentButton(),
             ],
           ),
           Tooltip(
