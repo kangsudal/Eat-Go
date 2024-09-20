@@ -1,5 +1,5 @@
-/*import 'package:eat_go/model/bookmarked_recipe.dart';
-import 'package:eat_go/model/confirmed_recipe.dart';
+/*import 'package:eat_go/model/bookmarked_recipe_model.dart';
+import 'package:eat_go/model/confirmed_recipe_model.dart';
 
 class User {
   final String id;
