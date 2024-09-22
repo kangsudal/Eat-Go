@@ -43,7 +43,7 @@ BottomAppBar buildBottomAppBar() {
                 child: Row(
                   children: [
                     Text(
-                      '기록',
+                      '채택',
                       style: TextStyle(
                         color: Colors.white,
                       ),

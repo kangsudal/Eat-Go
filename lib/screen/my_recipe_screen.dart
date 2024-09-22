@@ -343,7 +343,7 @@ class SortBar extends StatelessWidget {
                   children: [
                     Icon(Icons.check_circle_outline),
                     SizedBox(width: 10),
-                    Text('전체 기록된 수 순서로 정렬'),
+                    Text('전체 채택된 수 순서로 정렬'),
                   ],
                 ),
               ),
