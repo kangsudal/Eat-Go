@@ -4,6 +4,7 @@ import 'package:eat_go/screen/bookmark_screen.dart';
 import 'package:eat_go/screen/history_screen.dart';
 import 'package:eat_go/screen/my_recipe_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DrawerMainMenu extends StatelessWidget {
   const DrawerMainMenu({super.key});
@@ -23,11 +24,7 @@ class DrawerMainMenu extends StatelessWidget {
             style: style,
           ),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const AllRecipeListScreen(),
-              ),
-            );
+            context.go('/all_recipe_list');
           },
         ),
         ListTile(
@@ -35,12 +32,7 @@ class DrawerMainMenu extends StatelessWidget {
             '관심 항목',
             style: style,
           ),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const BookmarkScreen(),
-              ),
-            );
+          onTap: () {context.go('/bookmark');
           },
         ),
         ListTile(
@@ -49,11 +41,7 @@ class DrawerMainMenu extends StatelessWidget {
             style: style,
           ),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const HistoryScreen(),
-              ),
-            );
+            context.go('/history');
           },
         ),
         ListTile(
@@ -62,11 +50,7 @@ class DrawerMainMenu extends StatelessWidget {
             style: style,
           ),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const MyRecipeScreen(),
-              ),
-            );
+            context.go('/my_recipe');
           },
         ),
         const Divider(thickness: 1),
