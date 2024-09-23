@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
-import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_screen.dart';
 import 'package:eat_go/screen/restaurant_screen/restaurant_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Random random = Random();
   Color? randomColor;
+  int? recipeId;
   bool? bookmarked;
   bool isShakingLocked = false;
 
@@ -58,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             setState(() {
               randomColor = Color(random.nextInt(0xFFFFFFFF));
+              recipeId = random.nextInt(0xFFFFFFFF);
             });
           },
           child: Icon(
@@ -183,13 +185,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(width: 15),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return RecipeDetailScreen();
-                                },
-                              ),
-                            );
+                            debugPrint('recipeId:$recipeId');
+                            context.go('/recipe_detail/$recipeId');
                           },
                           child: Container(
                             width: 110,

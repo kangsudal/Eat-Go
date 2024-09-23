@@ -1,12 +1,13 @@
+import 'package:eat_go/my_routes.dart';
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/home_screen/home_screen.dart';
-import 'package:eat_go/screen/sign_in_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: pointColor,
@@ -45,10 +46,7 @@ class MyApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: EatGoPalette.backgroundColor1,
       ),
-      home: const SignInScreen(),
-      routes: {
-        "/home": (_) => HomeScreen(),
-      },
+      routerConfig: myRouter,
     );
   }
 }

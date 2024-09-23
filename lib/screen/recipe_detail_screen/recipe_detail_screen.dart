@@ -5,9 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RecipeDetailScreen extends StatelessWidget {
-  RecipeDetailScreen({super.key});
+  RecipeDetailScreen({
+    super.key,
+    required this.recipeId,
+  });
 
   final List recipeExplains = List.generate(20, (index) => Container());
+  final int recipeId;
 
   @override
   Widget build(BuildContext context) {
