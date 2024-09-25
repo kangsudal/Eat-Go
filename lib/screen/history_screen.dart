@@ -1,8 +1,3 @@
-import 'dart:math';
-
-import 'package:eat_go/model/bookmarked_recipe_model.dart';
-import 'package:eat_go/model/confirmed_recipe_model.dart';
-import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/top3_more_screen/top3_more_screen_widget/top3_card.dart';
 import 'package:eat_go/screen/top3_more_screen/top3_more_screen.dart';

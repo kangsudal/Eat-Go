@@ -1,48 +1,23 @@
-/*import 'package:eat_go/model/bookmarked_recipe_model.dart';
-import 'package:eat_go/model/confirmed_recipe_model.dart';
+import 'package:eat_go/model/adopted_recipe_model.dart';
+import 'package:eat_go/model/bookmark_model.dart';
+import 'package:eat_go/model/recipe_report_model.dart';
 
 class User {
-  final String id;
-  final String name;
-  final String email;
-  final double supportAmount;
-  final bool isPremium;
-  final DateTime premiumExpiration;
-  final List<BookmarkedRecipe> bookmarks;
-  final List<ConfirmedRecipe> confirmedRecipes;
+  String uid; //Apple것도 있으니 @앞에 id보다는 uui로 생성해주는게 나을듯
 
-  User({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.supportAmount,
-    required this.isPremium,
-    required this.premiumExpiration,
-    required this.bookmarks,
-    required this.confirmedRecipes,
-  });
-// JSON 데이터를 객체로 변환하는 팩토리 생성자
-// factory User.fromJson(Map<String, dynamic> json, String id) {
-//   return User(
-//     id: id,
-//     name: json['name'],
-//     email: json['email'],
-//     isPremium: json['isPremium'],
-//     premiumExpiration: json['premiumExpiration'] as DateTime,
-//     bookmarks: List<String>.from(json['bookmarks']),
-//     confirmedRecipes: (json['confirmedRecipes'] as List<dynamic>).map((recipe) => ConfirmedRecipe.fromJson(recipe)).toList(),
-//   );
-// }
-// 객체를 JSON으로 변환하는 메서드
-// Map<String, dynamic> toJson() {
-//   return {
-//     'name': name,
-//     'email': email,
-//     'isPremium': isPremium,
-//     'premiumExpiration': premiumExpiration,
-//     'bookmarks': bookmarks,
-//     'confirmedRecipes': confirmedRecipes.map((recipe) => recipe.toJson()).toList(),
-//   };
-// }
+  String displayName; // null일때 email id를 사용할 예정. 추후 프로필에서 수정가능하게 만들 예정
+
+  String email;
+
+  double supportAmount;//: 0 //후원 비용
+
+  bool isPremium;//: false //프리미엄 상태
+
+  DateTime premiumExpiration;
+
+  List<Bookmark> bookmarks; // 사용자가 북마크한 레시피 목록
+
+  List<AdoptedRecipe> adoptedRecipes; // 사용자가 채택한 레시피 목록
+
+  List<RecipeReport> reportedRecipes; // 사용자 신고한 레시피 목록, 목록에서 차단해주기
 }
-*/

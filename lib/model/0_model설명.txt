@@ -1,0 +1,20 @@
+users 컬렉션: 사용자의 정보를 저장합니다.
+
+recipes 컬렉션: 레시피의 정보를 저장하며, 북마크한 전체 사용자 수와 전체 사용자로부터 adopted된 횟수를 포함합니다.
+
+recipeReports 컬렉션: 레시피 게시물 신고
+
+----------------
+
+User
+-Bookmark : 사용자가 북마크한 레시피
+-AdoptedRecipe : 사용자가 그날 그날 채택한 레시피
+-(RecipeReport) : 사용자가 신고한 레시피
+
+RecipeReport
+
+Recipe
+-Description : 레시피 설명 1줄&이미지
+-AdoptRecord : 모든 사용자 대상으로 채택 기록(누가 언제 어떤 레시피를 채택했는지)
+-BookmarkRecord : 모든 사용자 대상으로 북마크 기록(누가 어떤 레시피를 채택했는지)
+-ViewRecord : 모든 사용자 대상으로 조회 기록(누가 언제 어떤 레시피를 조회했는지)
