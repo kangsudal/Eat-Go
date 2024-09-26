@@ -56,11 +56,126 @@
 
 <br>
 
+## Class Diagram
+```mermaid
+classDiagram
+    class AdoptRecord {
+        DateTime adoptedAt
+        String userUid
+    }
+
+    class AdoptedRecipe {
+        String recipeId
+        List~DateTime~ adoptedAt
+        int adoptedCount
+    }
+
+    class Bookmark {
+        String recipeId
+        DateTime bookmarkedAt
+    }
+
+    class BookmarkRecord {
+        String userUid
+    }
+
+    class Description {
+        String description
+        String descriptionImgUrl
+    }
+
+    class Recipe {
+        String recipeId
+        String title
+        String ingredients
+        String ingredientsImgUrl
+        List~Description~ descriptions
+        String category
+        String hashTag
+        String completedImgUrl
+        DateTime createdAt
+        String createBy
+        String createdByType
+        DateTime updatedAt
+        List~AdoptRecord~ adoptedBy
+        List~BookmarkRecord~ bookmarkedBy
+        List~ViewRecord~ viewedBy
+    }
+
+    class RecipeReport {
+        String reportId
+        String reportedBy
+        String recipeId
+        String reportReason
+        DateTime reportedAt
+        String status
+    }
+
+    class User {
+        String uid
+        String displayName
+        String email
+        double supportAmount
+        bool isPremium
+        DateTime premiumExpiration
+        List~Bookmark~ bookmarks
+        List~AdoptedRecipe~ adoptedRecipes
+        List~RecipeReport~ reportedRecipes
+    }
+
+    class ViewRecord {
+        String userUid
+        DateTime viewedAt
+    }
+
+    class ReportStatus {
+        <<enumeration>>
+        inProgress
+        complete
+        invalidation
+    }
+
+    Recipe "1" --> "*" AdoptRecord : adoptedBy
+    Recipe "1" --> "*" BookmarkRecord : bookmarkedBy
+    Recipe "1" --> "*" ViewRecord : viewedBy
+    Recipe "1" --> "*" Description : descriptions
+    RecipeReport --> Recipe : reports on
+    RecipeReport --> ReportStatus : has
+    User --> "*" Bookmark : bookmarks
+    User --> "*" AdoptedRecipe : adoptedRecipes
+    User --> "*" RecipeReport : reportedRecipes
+    AdoptedRecipe --> Recipe : adopts
+
+```
+**users 컬렉션** : 사용자의 정보를 저장합니다.
+
+**recipes 컬렉션** : 레시피의 정보를 저장하며, 누가 이 레시피를 조회하고 북마크하고 채택 했는지에 대한 정보(북마크한 전체 사용자 수, 조회수, 채택 횟수 계산을 위해)를 포함합니다.
+
+**recipeReports 컬렉션**: 레시피 게시물 신고
+
+----------------
+
+**User**
+ - Bookmark : 사용자가 북마크한 레시피
+ - AdoptedRecipe : 사용자가 그날 그날 채택한 레시피
+ - (RecipeReport) : 사용자가 신고한 레시피
+
+**Recipe**
+ - Description : 레시피 설명 1줄&이미지
+ - AdoptRecord : 모든 사용자 대상으로 채택 기록(누가 언제 어떤 레시피를 채택했는지)
+ - BookmarkRecord : 모든 사용자 대상으로 북마크 기록(누가 어떤 레시피를 채택했는지)
+ - ViewRecord : 모든 사용자 대상으로 조회 기록(누가 언제 어떤 레시피를 조회했는지)
+
+**RecipeReport**
+<br>
+
 ## 코드 실행 방법
 추가예정
 
 ## 기획서
 [Figma](https://www.figma.com/design/9dihzD5642Y9pduTTPtJ1R/Eat-Go!?node-id=17-250&t=H6rdwSURuCKQ0Gui-1)
+
+[Google Slide](https://medium.com/@kangsudal/eat-go-%EA%B8%B0%ED%9A%8D%EC%84%9C-%EB%B0%9C%ED%91%9C-e0aedb679e3d)
 
 ## 연락처
 kangsudal@gmail.com
