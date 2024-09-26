@@ -8,7 +8,6 @@ classDiagram
     class AdoptedRecipe {
         String recipeId
         List~DateTime~ adoptedAt
-        int adoptedCount
     }
 
     class Bookmark {
@@ -22,7 +21,7 @@ classDiagram
 
     class Description {
         String description
-        String descriptionImgUrl
+        String? descriptionImgUrl
     }
 
     class Recipe {

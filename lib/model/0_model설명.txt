@@ -18,3 +18,89 @@ Recipe
 -AdoptRecord : 모든 사용자 대상으로 채택 기록(누가 언제 어떤 레시피를 채택했는지)
 -BookmarkRecord : 모든 사용자 대상으로 북마크 기록(누가 어떤 레시피를 채택했는지)
 -ViewRecord : 모든 사용자 대상으로 조회 기록(누가 언제 어떤 레시피를 조회했는지)
+
+------------------
+
+class AdoptRecord {
+    DateTime adoptedAt; //채택된 시간
+    String userUid; //채택한 유저 ID
+}
+
+class AdoptedRecipe {
+    String recipeId;
+    List<DateTime> adoptedAt;
+    int adoptedCount;
+}
+
+class Bookmark{
+    String recipeId;
+    DateTime bookmarkedAt;
+}
+
+class BookmarkRecord{
+    String userUid; //북마크한 유저 ID
+}
+
+class Description {
+    String description; // Step.N 설명 문단
+    String? descriptionImgUrl; //Step.N 설명 이미지
+}
+
+
+class Recipe{
+    String recipeId;
+    String title;
+    String ingredients;
+    String ingredientsImgUrl;
+    List<Description> descriptions;
+    String category;
+    String hashTag;
+    String completedImgUrl;
+    DateTime createdAt;
+    String createBy; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
+    String createdByType; // 'user' or 'system' : 작성자 유형
+    DateTime updatedAt;
+    List<AdoptRecord> adoptedBy; //이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)
+    List<BookmarkRecord> bookmarkedBy; //이 레시피를 북마크한 유저 리스트
+    List<ViewRecord> viewedBy; //이 레시피 조회한 유저
+}
+
+class RecipeReport {
+    String reportId;
+    String reportedBy; //신고한 사용자 ID
+    String recipeId; //신고된 게시물(레시피) ID
+    String reportReason; //신고 사유
+    DateTime reportedAt; //신고일시
+    ReportStatus status; // '처리 중', '완료', '무효화'
+}
+
+enum ReportStatus {
+    inProgress, //처리중
+    complete, //완료
+    invalidation, //무효화
+}
+
+class User {
+    String uid; //Apple것도 있으니 @앞에 id보다는 uui로 생성해주는게 나을듯
+
+    String displayName; // null일때 email id를 사용할 예정. 추후 프로필에서 수정가능하게 만들 예정
+
+    String email;
+
+    double supportAmount;//: 0 //후원 비용
+
+    bool isPremium;//: false //프리미엄 상태
+
+    DateTime premiumExpiration;
+
+    List<Bookmark> bookmarks; // 사용자가 북마크한 레시피 목록
+
+    List<AdoptedRecipe> adoptedRecipes; // 사용자가 채택한 레시피 목록
+
+    List<RecipeReport> reportedRecipes; // 사용자 신고한 레시피 목록, 목록에서 차단해주기
+}
+
+class ViewRecord{
+    String userUid; //조회한 유저 ID
+    DateTime viewedAt; //조회한 날짜
+}
