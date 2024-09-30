@@ -1,10 +1,8 @@
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/about_this_app_screen.dart';
-import 'package:eat_go/screen/yummy_treat_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class DrawerFooter extends StatelessWidget {
   const DrawerFooter({super.key});
@@ -118,7 +116,6 @@ class DrawerFooter extends StatelessWidget {
         ),
         ListTile(
           title: Row(
-            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'BUY ME A YUMMY TREAT!',
@@ -130,7 +127,7 @@ class DrawerFooter extends StatelessWidget {
             ],
           ),
           onTap: () {
-            context.go('/yummy_treat');
+            context.go('/home/yummy_treat');
           },
         ),
         ListTile(

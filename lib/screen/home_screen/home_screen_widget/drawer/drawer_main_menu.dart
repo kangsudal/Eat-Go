@@ -1,8 +1,4 @@
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/all_recipe_list_screen.dart';
-import 'package:eat_go/screen/bookmark_screen.dart';
-import 'package:eat_go/screen/history_screen.dart';
-import 'package:eat_go/screen/my_recipe_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,7 +20,7 @@ class DrawerMainMenu extends StatelessWidget {
             style: style,
           ),
           onTap: () {
-            context.go('/all_recipe_list');
+            context.go('/home/all_recipe_list');
           },
         ),
         ListTile(
@@ -32,7 +28,8 @@ class DrawerMainMenu extends StatelessWidget {
             '관심 항목',
             style: style,
           ),
-          onTap: () {context.go('/bookmark');
+          onTap: () {
+            context.go('/home/bookmark');
           },
         ),
         ListTile(
@@ -41,7 +38,7 @@ class DrawerMainMenu extends StatelessWidget {
             style: style,
           ),
           onTap: () {
-            context.go('/history');
+            context.go('/home/history');
           },
         ),
         ListTile(
@@ -50,7 +47,7 @@ class DrawerMainMenu extends StatelessWidget {
             style: style,
           ),
           onTap: () {
-            context.go('/my_recipe');
+            context.go('/home/my_recipe');
           },
         ),
         const Divider(thickness: 1),

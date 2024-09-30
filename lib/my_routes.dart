@@ -12,9 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter myRouter = GoRouter(
+  initialLocation: '/home',
   routes: <RouteBase>[
     GoRoute(
-      path: '/',
+      path: '/home',
       builder: (BuildContext context, GoRouterState state) =>
           const HomeScreen(),
       routes: <RouteBase>[
@@ -87,7 +88,6 @@ GoRoute goRouteRecipeDetail() {
   return GoRoute(
     path: 'recipe_detail/:recipe_id',
     builder: (BuildContext context, GoRouterState state) {
-      print('b');
       String? recipeIdString = state.pathParameters['recipe_id'];
       if (recipeIdString == null) {
         // recipe_id가 없는 경우 에러 화면으로

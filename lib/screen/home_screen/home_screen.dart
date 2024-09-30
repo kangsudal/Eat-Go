@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         GestureDetector(
                           onTap: () {
                             debugPrint('recipeId:$recipeId');
-                            context.go('/recipe_detail/$recipeId');
+                            context.go('/home/recipe_detail/$recipeId');
                           },
                           child: Container(
                             width: 110,
