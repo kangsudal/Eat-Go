@@ -152,6 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        //todo: GoRouter로 바꾸기
                         GestureDetector(
                           onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(

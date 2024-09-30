@@ -85,22 +85,21 @@ final GoRouter myRouter = GoRouter(
 
 GoRoute goRouteRecipeDetail() {
   return GoRoute(
-            path: 'recipe_detail/:recipe_id',
-            builder: (BuildContext context, GoRouterState state) {
-              print('b');
-              String? recipeIdString = state.pathParameters['recipe_id'];
-              if (recipeIdString == null) {
-                // recipe_id가 없는 경우 에러 화면으로
-                return ErrorScreen(error: 'Invalid recipe ID: ID is missing');
-              }
-              try {
-                final recipeId = int.parse(recipeIdString); // 문자열을 숫자로 변환 시도
-                return RecipeDetailScreen(recipeId: recipeId);
-              } catch (e) {
-                // 숫자로 변환할 수 없으면 예외 처리
-                return ErrorScreen(
-                    error: 'Invalid recipe ID: ${e.toString()}');
-              }
-            },
-          );
+    path: 'recipe_detail/:recipe_id',
+    builder: (BuildContext context, GoRouterState state) {
+      print('b');
+      String? recipeIdString = state.pathParameters['recipe_id'];
+      if (recipeIdString == null) {
+        // recipe_id가 없는 경우 에러 화면으로
+        return ErrorScreen(error: 'Invalid recipe ID: ID is missing');
+      }
+      try {
+        final recipeId = int.parse(recipeIdString); // 문자열을 숫자로 변환 시도
+        return RecipeDetailScreen(recipeId: recipeId);
+      } catch (e) {
+        // 숫자로 변환할 수 없으면 예외 처리
+        return ErrorScreen(error: 'Invalid recipe ID: ${e.toString()}');
+      }
+    },
+  );
 }
