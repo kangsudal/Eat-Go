@@ -29,10 +29,8 @@ mixin _$Recipe {
   String get hashTag => throw _privateConstructorUsedError;
   String get completedImgUrl => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  String get createBy =>
+  String get createdBy =>
       throw _privateConstructorUsedError; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
-  String get createdByType =>
-      throw _privateConstructorUsedError; // 'user' or 'system' : 작성자 유형
   DateTime get updatedAt => throw _privateConstructorUsedError;
   List<AdoptRecord> get adoptedBy =>
       throw _privateConstructorUsedError; //이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)
@@ -64,8 +62,7 @@ abstract class $RecipeCopyWith<$Res> {
       String hashTag,
       String completedImgUrl,
       DateTime createdAt,
-      String createBy,
-      String createdByType,
+      String createdBy,
       DateTime updatedAt,
       List<AdoptRecord> adoptedBy,
       List<BookmarkRecord> bookmarkedBy,
@@ -96,8 +93,7 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
     Object? hashTag = null,
     Object? completedImgUrl = null,
     Object? createdAt = null,
-    Object? createBy = null,
-    Object? createdByType = null,
+    Object? createdBy = null,
     Object? updatedAt = null,
     Object? adoptedBy = null,
     Object? bookmarkedBy = null,
@@ -140,13 +136,9 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      createBy: null == createBy
-          ? _value.createBy
-          : createBy // ignore: cast_nullable_to_non_nullable
-              as String,
-      createdByType: null == createdByType
-          ? _value.createdByType
-          : createdByType // ignore: cast_nullable_to_non_nullable
+      createdBy: null == createdBy
+          ? _value.createdBy
+          : createdBy // ignore: cast_nullable_to_non_nullable
               as String,
       updatedAt: null == updatedAt
           ? _value.updatedAt
@@ -185,8 +177,7 @@ abstract class _$$RecipeImplCopyWith<$Res> implements $RecipeCopyWith<$Res> {
       String hashTag,
       String completedImgUrl,
       DateTime createdAt,
-      String createBy,
-      String createdByType,
+      String createdBy,
       DateTime updatedAt,
       List<AdoptRecord> adoptedBy,
       List<BookmarkRecord> bookmarkedBy,
@@ -215,8 +206,7 @@ class __$$RecipeImplCopyWithImpl<$Res>
     Object? hashTag = null,
     Object? completedImgUrl = null,
     Object? createdAt = null,
-    Object? createBy = null,
-    Object? createdByType = null,
+    Object? createdBy = null,
     Object? updatedAt = null,
     Object? adoptedBy = null,
     Object? bookmarkedBy = null,
@@ -259,13 +249,9 @@ class __$$RecipeImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      createBy: null == createBy
-          ? _value.createBy
-          : createBy // ignore: cast_nullable_to_non_nullable
-              as String,
-      createdByType: null == createdByType
-          ? _value.createdByType
-          : createdByType // ignore: cast_nullable_to_non_nullable
+      createdBy: null == createdBy
+          ? _value.createdBy
+          : createdBy // ignore: cast_nullable_to_non_nullable
               as String,
       updatedAt: null == updatedAt
           ? _value.updatedAt
@@ -300,8 +286,7 @@ class _$RecipeImpl implements _Recipe {
       required this.hashTag,
       required this.completedImgUrl,
       required this.createdAt,
-      required this.createBy,
-      required this.createdByType,
+      required this.createdBy,
       required this.updatedAt,
       required final List<AdoptRecord> adoptedBy,
       required final List<BookmarkRecord> bookmarkedBy,
@@ -339,11 +324,8 @@ class _$RecipeImpl implements _Recipe {
   @override
   final DateTime createdAt;
   @override
-  final String createBy;
+  final String createdBy;
 //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
-  @override
-  final String createdByType;
-// 'user' or 'system' : 작성자 유형
   @override
   final DateTime updatedAt;
   final List<AdoptRecord> _adoptedBy;
@@ -376,7 +358,7 @@ class _$RecipeImpl implements _Recipe {
 
   @override
   String toString() {
-    return 'Recipe(recipeId: $recipeId, title: $title, ingredients: $ingredients, ingredientsImgUrl: $ingredientsImgUrl, descriptions: $descriptions, category: $category, hashTag: $hashTag, completedImgUrl: $completedImgUrl, createdAt: $createdAt, createBy: $createBy, createdByType: $createdByType, updatedAt: $updatedAt, adoptedBy: $adoptedBy, bookmarkedBy: $bookmarkedBy, viewedBy: $viewedBy)';
+    return 'Recipe(recipeId: $recipeId, title: $title, ingredients: $ingredients, ingredientsImgUrl: $ingredientsImgUrl, descriptions: $descriptions, category: $category, hashTag: $hashTag, completedImgUrl: $completedImgUrl, createdAt: $createdAt, createdBy: $createdBy, updatedAt: $updatedAt, adoptedBy: $adoptedBy, bookmarkedBy: $bookmarkedBy, viewedBy: $viewedBy)';
   }
 
   @override
@@ -400,10 +382,8 @@ class _$RecipeImpl implements _Recipe {
                 other.completedImgUrl == completedImgUrl) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
-            (identical(other.createBy, createBy) ||
-                other.createBy == createBy) &&
-            (identical(other.createdByType, createdByType) ||
-                other.createdByType == createdByType) &&
+            (identical(other.createdBy, createdBy) ||
+                other.createdBy == createdBy) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             const DeepCollectionEquality()
@@ -426,8 +406,7 @@ class _$RecipeImpl implements _Recipe {
       hashTag,
       completedImgUrl,
       createdAt,
-      createBy,
-      createdByType,
+      createdBy,
       updatedAt,
       const DeepCollectionEquality().hash(_adoptedBy),
       const DeepCollectionEquality().hash(_bookmarkedBy),
@@ -460,8 +439,7 @@ abstract class _Recipe implements Recipe {
       required final String hashTag,
       required final String completedImgUrl,
       required final DateTime createdAt,
-      required final String createBy,
-      required final String createdByType,
+      required final String createdBy,
       required final DateTime updatedAt,
       required final List<AdoptRecord> adoptedBy,
       required final List<BookmarkRecord> bookmarkedBy,
@@ -488,9 +466,7 @@ abstract class _Recipe implements Recipe {
   @override
   DateTime get createdAt;
   @override
-  String get createBy; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
-  @override
-  String get createdByType; // 'user' or 'system' : 작성자 유형
+  String get createdBy; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
   @override
   DateTime get updatedAt;
   @override

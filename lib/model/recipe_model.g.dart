@@ -18,8 +18,7 @@ _$RecipeImpl _$$RecipeImplFromJson(Map<String, dynamic> json) => _$RecipeImpl(
       hashTag: json['hashTag'] as String,
       completedImgUrl: json['completedImgUrl'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      createBy: json['createBy'] as String,
-      createdByType: json['createdByType'] as String,
+      createdBy: json['createdBy'] as String,
       updatedAt: DateTime.parse(json['updatedAt'] as String),
       adoptedBy: (json['adoptedBy'] as List<dynamic>)
           .map((e) => AdoptRecord.fromJson(e as Map<String, dynamic>))
@@ -43,8 +42,7 @@ Map<String, dynamic> _$$RecipeImplToJson(_$RecipeImpl instance) =>
       'hashTag': instance.hashTag,
       'completedImgUrl': instance.completedImgUrl,
       'createdAt': instance.createdAt.toIso8601String(),
-      'createBy': instance.createBy,
-      'createdByType': instance.createdByType,
+      'createdBy': instance.createdBy,
       'updatedAt': instance.updatedAt.toIso8601String(),
       'adoptedBy': instance.adoptedBy,
       'bookmarkedBy': instance.bookmarkedBy,

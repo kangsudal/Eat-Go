@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
 import 'package:eat_go/screen/restaurant_screen/restaurant_screen.dart';
+import 'package:eat_go/services/recipe_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -24,11 +25,19 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? bookmarked;
   bool isShakingLocked = false;
 
+  FirestoreService firestoreService = FirestoreService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        leading: TextButton(
+          onPressed: () async {
+            await firestoreService.uploadJsonToFirestore(
+                'assets/source.json', "recipes");
+          },
+          child: Text('data'),
+        ),
         centerTitle: false,
         title: IconButton(
           onPressed: () {
