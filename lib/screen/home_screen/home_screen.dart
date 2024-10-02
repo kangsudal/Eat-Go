@@ -31,13 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        // leading: TextButton(
-        //   onPressed: () async {
-        //     await firestoreService.uploadJsonToFirestore(
-        //         'assets/source.json', "recipes");
-        //   },
-        //   child: Text('data'),
-        // ),
         centerTitle: false,
         title: IconButton(
           onPressed: () {

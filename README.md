@@ -94,7 +94,6 @@ classDiagram
         String completedImgUrl
         DateTime createdAt
         String createBy
-        String createdByType
         DateTime updatedAt
         List~AdoptRecord~ adoptedBy
         List~BookmarkRecord~ bookmarkedBy
