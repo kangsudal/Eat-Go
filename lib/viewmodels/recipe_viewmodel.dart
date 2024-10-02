@@ -1,3 +1,4 @@
+/*
 class WriteData {
   //final Firebase fbService;
 
@@ -17,21 +18,33 @@ class WriteData {
   }
   // +어떤 스크린이 어떤스크린이랑 데이터를 공유하는지 잘 분류해야한다.
 }
-
-/*
-chatgpt의 예시:
-recipe_viewmodel.dart
-
+*/
+import 'package:eat_go/model/recipe_model.dart';
+import 'package:eat_go/services/recipe_service.dart';
 import 'package:flutter/material.dart';
-import 'package:your_project/models/recipe_model.dart';
-import 'package:your_project/services/recipe_service.dart';
 
 class RecipeViewModel extends ChangeNotifier {
-  List<Recipe> recipes = []; //viewmodel은 오브젝트 단위로 묶은 데이터들을 Provider나 riverpod을 통해 관리해주는 상태변수같다.
+  final RecipeService _recipeService = RecipeService();
 
-  Future<void> fetchRecipes() async {
-    recipes = await RecipeService().getRecipes();
-    notifyListeners();  // View 업데이트
+  // JSON 파일 업로드 상태
+  bool _isUploading = false;
+  bool get isUploading => _isUploading;
+
+  // 레시피 목록 Stream
+  Stream<List<Recipe>> get recipesStream => _recipeService.getRecipesStream();
+
+  // JSON 파일을 Firestore에 업로드
+  Future<void> uploadJsonFile(String filePath, String collectionName) async {
+    _isUploading = true;
+    notifyListeners();
+
+    try {
+      await _recipeService.uploadJsonFile(filePath, collectionName);
+    } catch (e) {
+      print('파일 업로드 중 오류 발생: $e');
+    } finally {
+      _isUploading = false;
+      notifyListeners();
+    }
   }
 }
- */

@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/services/recipe_service.dart';
+import 'package:eat_go/viewmodels/recipe_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class AllRecipeListScreen extends StatefulWidget {
   const AllRecipeListScreen({super.key});
@@ -19,10 +24,10 @@ class _AllRecipeListScreenState extends State<AllRecipeListScreen> {
     '국&찌개': true,
     '기타': true,
   };
-  int totalRecipeCount = 40;
 
   @override
   Widget build(BuildContext context) {
+    final recipeViewModel = Provider.of<RecipeViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('전체'),
@@ -98,33 +103,54 @@ class _AllRecipeListScreenState extends State<AllRecipeListScreen> {
               }).toList(),
             ),
             const SizedBox(height: 20),
-            Text(
-              '검색 결과 $totalRecipeCount개',
-              style: const TextStyle(color: Colors.grey, fontSize: 16),
-            ),
             Expanded(
-              child: ListView.separated(
-                itemCount: totalRecipeCount,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    onTap: () {
-                      //todo: 옳바른 recipeId 넣어주기
-                      context.go('/home/all_recipe_list/recipe_detail/aaaaaaa');
-                    },
-                    title: Text('$index items[index].rcpnm!'),
-                    // onTap: () => Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => ManualScreen(
-                    //       // recipe: items[index],
-                    //     ),
-                    //   ),
-                    // ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return Divider(color: EatGoPalette.lineColor);
-                },
-              ),
+              child: StreamBuilder<List<Recipe>>(
+                  stream: recipeViewModel.recipesStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(child: Text('오류 발생: ${snapshot.error}'));
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('레시피가 없습니다.'));
+                    }
+
+                    final recipes = snapshot.data!;
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '검색 결과 ${recipes.length}개',
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 16),
+                        ),
+                        Expanded(
+                          child: ListView.separated(
+                            itemCount: recipes.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ListTile(
+                                onTap: () {
+                                  //todo: 옳바른 recipeId 넣어주기
+                                  context.go(
+                                      '/home/all_recipe_list/recipe_detail/aaaaaaa');
+                                },
+                                title: Text(recipes[index].title),
+                              );
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return Divider(color: EatGoPalette.lineColor);
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
             ),
           ],
         ),

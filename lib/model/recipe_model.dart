@@ -20,9 +20,9 @@ sealed class Recipe with _$Recipe {
     required String category,
     required String hashTag,
     required String completedImgUrl,
-    required DateTime createdAt,
+    required int createdAt,
     required String createdBy, //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
-    required DateTime updatedAt,
+    required int updatedAt,
     required List<AdoptRecord> adoptedBy, //이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)
     required List<BookmarkRecord> bookmarkedBy, //이 레시피를 북마크한 유저 리스트
     required List<ViewRecord> viewedBy, //이 레시피 조회한 유저

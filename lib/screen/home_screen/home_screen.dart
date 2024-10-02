@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? bookmarked;
   bool isShakingLocked = false;
 
-  FirestoreService firestoreService = FirestoreService();
+  RecipeService firestoreService = RecipeService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

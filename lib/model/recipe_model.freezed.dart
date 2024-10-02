@@ -28,10 +28,10 @@ mixin _$Recipe {
   String get category => throw _privateConstructorUsedError;
   String get hashTag => throw _privateConstructorUsedError;
   String get completedImgUrl => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  int get createdAt => throw _privateConstructorUsedError;
   String get createdBy =>
       throw _privateConstructorUsedError; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
-  DateTime get updatedAt => throw _privateConstructorUsedError;
+  int get updatedAt => throw _privateConstructorUsedError;
   List<AdoptRecord> get adoptedBy =>
       throw _privateConstructorUsedError; //이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)
   List<BookmarkRecord> get bookmarkedBy =>
@@ -61,9 +61,9 @@ abstract class $RecipeCopyWith<$Res> {
       String category,
       String hashTag,
       String completedImgUrl,
-      DateTime createdAt,
+      int createdAt,
       String createdBy,
-      DateTime updatedAt,
+      int updatedAt,
       List<AdoptRecord> adoptedBy,
       List<BookmarkRecord> bookmarkedBy,
       List<ViewRecord> viewedBy});
@@ -135,7 +135,7 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as int,
       createdBy: null == createdBy
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -143,7 +143,7 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as int,
       adoptedBy: null == adoptedBy
           ? _value.adoptedBy
           : adoptedBy // ignore: cast_nullable_to_non_nullable
@@ -176,9 +176,9 @@ abstract class _$$RecipeImplCopyWith<$Res> implements $RecipeCopyWith<$Res> {
       String category,
       String hashTag,
       String completedImgUrl,
-      DateTime createdAt,
+      int createdAt,
       String createdBy,
-      DateTime updatedAt,
+      int updatedAt,
       List<AdoptRecord> adoptedBy,
       List<BookmarkRecord> bookmarkedBy,
       List<ViewRecord> viewedBy});
@@ -248,7 +248,7 @@ class __$$RecipeImplCopyWithImpl<$Res>
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as int,
       createdBy: null == createdBy
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -256,7 +256,7 @@ class __$$RecipeImplCopyWithImpl<$Res>
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as int,
       adoptedBy: null == adoptedBy
           ? _value._adoptedBy
           : adoptedBy // ignore: cast_nullable_to_non_nullable
@@ -322,12 +322,12 @@ class _$RecipeImpl implements _Recipe {
   @override
   final String completedImgUrl;
   @override
-  final DateTime createdAt;
+  final int createdAt;
   @override
   final String createdBy;
 //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
   @override
-  final DateTime updatedAt;
+  final int updatedAt;
   final List<AdoptRecord> _adoptedBy;
   @override
   List<AdoptRecord> get adoptedBy {
@@ -438,9 +438,9 @@ abstract class _Recipe implements Recipe {
       required final String category,
       required final String hashTag,
       required final String completedImgUrl,
-      required final DateTime createdAt,
+      required final int createdAt,
       required final String createdBy,
-      required final DateTime updatedAt,
+      required final int updatedAt,
       required final List<AdoptRecord> adoptedBy,
       required final List<BookmarkRecord> bookmarkedBy,
       required final List<ViewRecord> viewedBy}) = _$RecipeImpl;
@@ -464,11 +464,11 @@ abstract class _Recipe implements Recipe {
   @override
   String get completedImgUrl;
   @override
-  DateTime get createdAt;
+  int get createdAt;
   @override
   String get createdBy; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
   @override
-  DateTime get updatedAt;
+  int get updatedAt;
   @override
   List<AdoptRecord> get adoptedBy; //이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)
   @override
