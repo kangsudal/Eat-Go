@@ -2,6 +2,7 @@ import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/top3_more_screen/top3_more_screen_widget/top3_card.dart';
 import 'package:eat_go/screen/top3_more_screen/top3_more_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:uuid/uuid.dart';
 
@@ -98,6 +99,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       : NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return ListTile(
+                      onTap: () {
+                        //todo: 옳바른 recipeId 넣어주기
+                        context.go('/home/history/recipe_detail/aaaaaaaaa');
+                      },
                       title: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: Text(
@@ -227,20 +232,40 @@ class Top3Cards extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          margin: EdgeInsets.only(bottom: 5),
-          // color: Colors.purple,
-          child: Top3Card(),
+        GestureDetector(
+          onTap: () {
+            //todo: 옳바른 recipeId 넣어주기
+            context.go('/home/history/recipe_detail/aaaaaaa');
+          },
+          child: Container(
+            color: Colors.red,
+            margin: EdgeInsets.only(bottom: 5),
+            child: Top3Card(),
+          ),
         ),
-        Container(
-          margin: EdgeInsets.only(bottom: 5),
-          // color: Colors.purple,
-          child: Top3Card(),
+        GestureDetector(
+          onTap: () {
+            //todo: 옳바른 recipeId 넣어주기
+            context.go('/home/history/recipe_detail/aaaaaaa');
+          },
+          child: Container(
+            color: Colors.greenAccent,
+            margin: EdgeInsets.only(bottom: 5),
+            // color: Colors.purple,
+            child: Top3Card(),
+          ),
         ),
-        Container(
-          margin: EdgeInsets.only(bottom: 5),
-          // color: Colors.purple,
-          child: Top3Card(),
+        GestureDetector(
+          onTap: () {
+            //todo: 옳바른 recipeId 넣어주기
+            context.go('/home/history/recipe_detail/aaaaaaa');
+          },
+          child: Container(
+            color: Colors.transparent,
+            margin: EdgeInsets.only(bottom: 5),
+            // color: Colors.purple,
+            child: Top3Card(),
+          ),
         ),
       ],
     );

@@ -6,6 +6,7 @@ import 'package:eat_go/screen/custom_widget/custom_list_tile.dart';
 import 'package:eat_go/screen/write_screen/write_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 class MyRecipeScreen extends StatefulWidget {
@@ -69,128 +70,134 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
               FakeRecipe element = recipeList[index - 1];
               return Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
-                child: CustomListTile(
-                  leading: Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: Color(element.value),
+                child: GestureDetector(
+                  onTap: () {
+                    //todo: 옳바른 recipeId 넣어주기
+                    context.go('/home/my_recipe/recipe_detail/bbbbbb');
+                  },
+                  child: CustomListTile(
+                    leading: Container(
+                      width: 70,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        color: Color(element.value),
+                      ),
                     ),
-                  ),
-                  mid: Container(
-                    height: 70,
-                    // color: Colors.blue,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      // mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text('${element.value}')),
-                        ),
-                        Container(
-                          // color: Colors.pink,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.remove_red_eye,
-                                    color: pointColor,
-                                    size: 17,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '-99',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: pointColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(width: 7),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.bookmark,
-                                    color: pointColor,
-                                    size: 17,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '-99',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: pointColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(width: 7),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.check_circle_outline,
-                                    color: pointColor,
-                                    size: 17,
-                                  ),
-                                  SizedBox(width: 1),
-                                  Text(
-                                    '-99',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: pointColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                    mid: Container(
+                      height: 70,
+                      // color: Colors.blue,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text('${element.value}')),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  trailing: PopupMenuButton(
-                    icon: Icon(Icons.more_vert),
-                    iconColor: pointColor,
-                    itemBuilder: (BuildContext context) {
-                      return [
-                        PopupMenuItem(
-                          child: Text('수정'),
-                        ),
-                        PopupMenuItem(
-                          child: Text('삭제'),
-                          onTap: () {
-                            showCupertinoDialog(
-                              context: context,
-                              builder: (context) {
-                                return CupertinoAlertDialog(
-                                  content: Text('나의 레시피에서 삭제하시겠습니까?'),
-                                  actions: [
-                                    CupertinoDialogAction(
-                                      child: const Text('예'),
-                                      onPressed: () {
-                                        setState(() {});
-                                        Navigator.pop(context);
-                                      },
+                          Container(
+                            // color: Colors.pink,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.remove_red_eye,
+                                      color: pointColor,
+                                      size: 17,
                                     ),
-                                    CupertinoDialogAction(
-                                      child: const Text('아니오'),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
+                                    SizedBox(width: 4),
+                                    Text(
+                                      '-99',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: pointColor,
+                                      ),
                                     ),
                                   ],
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ];
-                    },
+                                ),
+                                SizedBox(width: 7),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.bookmark,
+                                      color: pointColor,
+                                      size: 17,
+                                    ),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      '-99',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: pointColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(width: 7),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.check_circle_outline,
+                                      color: pointColor,
+                                      size: 17,
+                                    ),
+                                    SizedBox(width: 1),
+                                    Text(
+                                      '-99',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: pointColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    trailing: PopupMenuButton(
+                      icon: Icon(Icons.more_vert),
+                      iconColor: pointColor,
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          PopupMenuItem(
+                            child: Text('수정'),
+                          ),
+                          PopupMenuItem(
+                            child: Text('삭제'),
+                            onTap: () {
+                              showCupertinoDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CupertinoAlertDialog(
+                                    content: Text('나의 레시피에서 삭제하시겠습니까?'),
+                                    actions: [
+                                      CupertinoDialogAction(
+                                        child: const Text('예'),
+                                        onPressed: () {
+                                          setState(() {});
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      CupertinoDialogAction(
+                                        child: const Text('아니오'),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ];
+                      },
+                    ),
                   ),
                 ),
               );

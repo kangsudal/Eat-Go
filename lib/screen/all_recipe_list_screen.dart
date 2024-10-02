@@ -1,5 +1,6 @@
 import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AllRecipeListScreen extends StatefulWidget {
   const AllRecipeListScreen({super.key});
@@ -106,6 +107,10 @@ class _AllRecipeListScreenState extends State<AllRecipeListScreen> {
                 itemCount: totalRecipeCount,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
+                    onTap: () {
+                      //todo: 옳바른 recipeId 넣어주기
+                      context.go('/home/all_recipe_list/recipe_detail/aaaaaaa');
+                    },
                     title: Text('$index items[index].rcpnm!'),
                     // onTap: () => Navigator.of(context).push(
                     //   MaterialPageRoute(

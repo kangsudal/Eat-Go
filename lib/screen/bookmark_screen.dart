@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:eat_go/model/fake_recipe.dart';
+import 'package:eat_go/my_routes.dart';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/custom_widget/custom_list_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 class BookmarkScreen extends StatefulWidget {
@@ -62,46 +64,52 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
             FakeRecipe element = bookmarkedRecipeList[index];
             return Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
-              child: CustomListTile(
-                leading: Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    color: Color(element.value),
+              child: GestureDetector(
+                onTap: () {
+                  //todo: 옳바른 recipeId 넣어주기
+                  context.go('/home/bookmark/recipe_detail/aaaaaaaaaaa');
+                },
+                child: CustomListTile(
+                  leading: Container(
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      color: Color(element.value),
+                    ),
                   ),
-                ),
-                mid: Text('${element.value}'),
-                trailing: IconButton(
-                  onPressed: () {
-                    showCupertinoDialog(
-                      context: context,
-                      builder: (context) {
-                        return CupertinoAlertDialog(
-                          content: Text('관심 항목에서 삭제하시겠습니까?'),
-                          actions: [
-                            CupertinoDialogAction(
-                              child: const Text('예'),
-                              onPressed: () {
-                                setState(() {
-                                  element.bookmarked = !(element.bookmarked);
-                                });
-                                Navigator.pop(context);
-                              },
-                            ),
-                            CupertinoDialogAction(
-                              child: const Text('아니오'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.bookmark,
-                    color: pointColor,
+                  mid: Text('${element.value}'),
+                  trailing: IconButton(
+                    onPressed: () {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            content: Text('관심 항목에서 삭제하시겠습니까?'),
+                            actions: [
+                              CupertinoDialogAction(
+                                child: const Text('예'),
+                                onPressed: () {
+                                  setState(() {
+                                    element.bookmarked = !(element.bookmarked);
+                                  });
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              CupertinoDialogAction(
+                                child: const Text('아니오'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.bookmark,
+                      color: pointColor,
+                    ),
                   ),
                 ),
               ),
