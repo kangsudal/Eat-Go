@@ -1,5 +1,6 @@
 import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class RestaurantScreenBackButton extends StatelessWidget {
   const RestaurantScreenBackButton({
@@ -15,7 +16,7 @@ class RestaurantScreenBackButton extends StatelessWidget {
         child: FloatingActionButton(
           heroTag: null,
           onPressed: () {
-            Navigator.of(context).pop();
+            context.pop();
           },
           child: Align(
             alignment: Alignment(0.4, 0),

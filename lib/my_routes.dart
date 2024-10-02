@@ -6,6 +6,7 @@ import 'package:eat_go/screen/history_screen.dart';
 import 'package:eat_go/screen/home_screen/home_screen.dart';
 import 'package:eat_go/screen/my_recipe_screen.dart';
 import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_screen.dart';
+import 'package:eat_go/screen/restaurant_screen/restaurant_screen.dart';
 import 'package:eat_go/screen/sign_in_screen.dart';
 import 'package:eat_go/screen/yummy_treat_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,18 @@ final GoRouter myRouter = GoRouter(
       builder: (BuildContext context, GoRouterState state) =>
           const HomeScreen(),
       routes: <RouteBase>[
+        //홈화면에서 식당 버튼 눌렀을때
+        GoRoute(
+          path: 'restaurant/:recipe_id',
+          builder: (BuildContext context, GoRouterState state) {
+            String? recipeIdString = state.pathParameters['recipe_id'];
+            if (recipeIdString == null) {
+              // recipe_id가 없는 경우 에러 화면으로
+              return ErrorScreen(error: 'Invalid recipe ID: ID is missing');
+            }
+            return RestaurantScreen(recipeId: recipeIdString);
+          },
+        ),
         //홈화면에서 레시피 보기 버튼 눌렀을때
         goRouteRecipeDetail(),
         //Drawer - 전체
@@ -93,13 +106,22 @@ GoRoute goRouteRecipeDetail() {
         // recipe_id가 없는 경우 에러 화면으로
         return ErrorScreen(error: 'Invalid recipe ID: ID is missing');
       }
-      try {
-        final recipeId = int.parse(recipeIdString); // 문자열을 숫자로 변환 시도
-        return RecipeDetailScreen(recipeId: recipeId);
-      } catch (e) {
-        // 숫자로 변환할 수 없으면 예외 처리
-        return ErrorScreen(error: 'Invalid recipe ID: ${e.toString()}');
-      }
+      return RecipeDetailScreen(recipeId: recipeIdString);
     },
+    routes: <RouteBase>[
+      //레시피 상세보기화면에서 식당 버튼 눌렀을때
+      GoRoute(
+          path: 'restaurant',
+          builder: (BuildContext context, GoRouterState state) {
+            String? recipeIdString = state.pathParameters['recipe_id'];
+            if (recipeIdString == null) {
+              // recipe_id가 없는 경우 에러 화면으로
+              return ErrorScreen(error: 'Invalid recipe ID: ID is missing');
+            }
+            return RestaurantScreen(
+              recipeId: recipeIdString,
+            );
+          }),
+    ],
   );
 }

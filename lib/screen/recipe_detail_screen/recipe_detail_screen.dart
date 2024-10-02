@@ -11,7 +11,7 @@ class RecipeDetailScreen extends StatelessWidget {
   });
 
   final List recipeExplains = List.generate(20, (index) => Container());
-  final int recipeId;
+  final String recipeId;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class RecipeDetailScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: buildBottomAppBar(),
+      bottomNavigationBar: buildBottomAppBar(context, recipeId),
     );
   }
 

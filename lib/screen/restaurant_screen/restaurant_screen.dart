@@ -4,7 +4,11 @@ import 'package:eat_go/screen/restaurant_screen/scrollable_cards.dart';
 import 'package:flutter/material.dart';
 
 class RestaurantScreen extends StatelessWidget {
-  const RestaurantScreen({super.key});
+  final String recipeId;
+  const RestaurantScreen({
+    super.key,
+    required this.recipeId,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,9 @@
 import 'package:eat_go/palette.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-BottomAppBar buildBottomAppBar() {
+BottomAppBar buildBottomAppBar(BuildContext context, String recipeId) {
   return BottomAppBar(
     height: 60,
     color: Colors.white,
@@ -11,26 +12,27 @@ BottomAppBar buildBottomAppBar() {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                // color: Colors.amber,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.maps_home_work_sharp,
-                      color: pointColor,
-                    ),
-                    SizedBox(width: 3),
-                    Text(
-                      '식당',
-                      style: TextStyle(color: pointColor),
-                    ),
-                  ],
-                ),
+          GestureDetector(
+            onTap: () {
+              context.go('/home/restaurant/$recipeId');
+            },
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              // color: Colors.amber,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.maps_home_work_sharp,
+                    color: pointColor,
+                  ),
+                  SizedBox(width: 3),
+                  Text(
+                    '식당',
+                    style: TextStyle(color: pointColor),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
           Tooltip(
             message: '먹은 날짜와 횟수가 기록 됩니다.',

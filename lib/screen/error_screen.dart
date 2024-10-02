@@ -19,7 +19,7 @@ class ErrorScreen extends StatelessWidget {
             CupertinoButton(
               child: Text('홈으로 가기'),
               onPressed: () {
-                context.go('/');
+                context.go('/home');
               },
             ),
           ],

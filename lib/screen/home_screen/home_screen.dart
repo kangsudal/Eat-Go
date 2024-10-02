@@ -154,12 +154,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         //todo: GoRouter로 바꾸기
                         GestureDetector(
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  RestaurantScreen(),
-                            ),
-                          ),
+                          onTap: () {
+                            context.go('/home/restaurant/$recipeId');
+                          },
                           child: Container(
                             width: 110,
                             height: 40,
