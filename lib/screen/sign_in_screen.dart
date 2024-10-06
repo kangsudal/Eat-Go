@@ -1,6 +1,8 @@
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/home_screen/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -53,7 +55,8 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                Navigator.pushReplacementNamed(context, "/home");
+                signInWithGoogle();
+                context.go("/home");
               },
             ),
             const SizedBox(height: 10),
@@ -94,4 +97,25 @@ class SignInScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> signInWithGoogle() async {
+  // Trigger the authentication flow
+  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+  // Obtain the auth details from the request
+  final GoogleSignInAuthentication? googleAuth =
+      await googleUser?.authentication;
+
+  // Create a new credential
+  final credential = GoogleAuthProvider.credential(
+    accessToken: googleAuth?.accessToken,
+    idToken: googleAuth?.idToken,
+  );
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance
+      .signInWithCredential(credential)
+      .then((value) => debugPrint(value.user?.email))
+      .onError((error, stackTrace) => debugPrint(error.toString()));
 }
