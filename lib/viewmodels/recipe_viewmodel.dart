@@ -21,6 +21,7 @@ class WriteData {
 */
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/services/recipe_service.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RecipeViewModel extends StateNotifier<void> {
@@ -29,7 +30,9 @@ class RecipeViewModel extends StateNotifier<void> {
   RecipeViewModel(this._recipeService) : super(null);
 
   // 레시피 목록 Stream
-  Stream<List<Recipe>> get recipesStream => _recipeService.getRecipesStream();
+  Stream<List<Recipe>> recipesStream() {
+    return _recipeService.getRecipesStream();
+  }
 
   // JSON 파일을 Firestore에 업로드
   Future<void> uploadJsonFile(String filePath, String collectionName) async {
@@ -37,6 +40,16 @@ class RecipeViewModel extends StateNotifier<void> {
       await _recipeService.uploadJsonFile(filePath, collectionName);
     } catch (e) {
       print('파일 업로드 중 오류 발생: $e');
+    }
+  }
+
+  // 레시피 목록 Future
+  Future<List<Recipe>> recipesFuture() async {
+    try {
+      return await _recipeService.getRecipesFuture();
+    } catch (e) {
+      debugPrint('레시피 가져오는 중 오류 발생: $e');
+      return [];
     }
   }
 }

@@ -22,6 +22,7 @@ Repository는 데이터의 출처를 관리하는 책임이 있고, Services는 
 import 'dart:convert'; // For jsonDecode
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/recipe_model.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 
@@ -31,7 +32,9 @@ class RecipeRepository {
 
   // Firestore에서 실시간으로 레시피 목록을 가져오는 Stream
   Stream<List<Recipe>> fetchRecipesStream() {
-    return _firestore.collection('recipes').snapshots().map((snapshot) {
+    final Stream<QuerySnapshot<Map<String, dynamic>>> recipesStream =
+        _firestore.collection('recipes').snapshots();
+    return recipesStream.map((snapshot) {
       return snapshot.docs.map((doc) {
         return Recipe.fromJson(doc.data());
       }).toList();
@@ -154,6 +157,22 @@ class RecipeRepository {
       print('JSON 데이터가 Firestore에 성공적으로 업로드되었습니다.');
     } catch (e) {
       print('JSON 데이터 업로드 중 오류 발생: $e');
+    }
+  }
+
+  Future<List<Recipe>> fetchRecipesFuture() async {
+    try {
+      // Firestore의 모든 레시피 문서를 가져옴
+      QuerySnapshot<Map<String, dynamic>> snapshot =
+          await _firestore.collection('recipes').get();
+
+      // 각 문서를 Recipe 객체로 변환
+      return snapshot.docs.map((doc) {
+        return Recipe.fromJson(doc.data());
+      }).toList();
+    } catch (e) {
+      debugPrint('레시피를 가져오는 중 오류 발생: $e');
+      return []; // 오류 발생 시 빈 리스트 반환
     }
   }
 }

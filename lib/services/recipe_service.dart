@@ -3,6 +3,7 @@
 
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/repositories/recipe_repository.dart';
+import 'package:flutter/cupertino.dart';
 
 class RecipeService {
   final RecipeRepository _recipeRepository = RecipeRepository();
@@ -15,5 +16,14 @@ class RecipeService {
   // JSON 파일을 Firestore에 업로드
   Future<void> uploadJsonFile(String filePath, String collectionName) {
     return _recipeRepository.uploadJsonToFirestore(filePath, collectionName);
+  }
+
+  Future<List<Recipe>> getRecipesFuture() async {
+    try {
+      return _recipeRepository.fetchRecipesFuture();
+    } catch (e) {
+      debugPrint('레시피를 가져오는 중 오류 발생: $e');
+      return [];
+    }
   }
 }

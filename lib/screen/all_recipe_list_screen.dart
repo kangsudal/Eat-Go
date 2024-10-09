@@ -106,8 +106,8 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: StreamBuilder<List<Recipe>>(
-                stream: recipeViewModel.recipesStream,
+              child: FutureBuilder<List<Recipe>>(
+                future: recipeViewModel.recipesFuture(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
