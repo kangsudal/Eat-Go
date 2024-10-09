@@ -4,17 +4,18 @@ import 'package:eat_go/palette.dart';
 import 'package:eat_go/services/recipe_service.dart';
 import 'package:eat_go/viewmodels/recipe_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
-class AllRecipeListScreen extends StatefulWidget {
+class AllRecipeListScreen extends ConsumerStatefulWidget {
   const AllRecipeListScreen({super.key});
 
   @override
-  State<AllRecipeListScreen> createState() => _AllRecipeListScreenState();
+  ConsumerState<AllRecipeListScreen> createState() =>
+      _AllRecipeListScreenState();
 }
 
-class _AllRecipeListScreenState extends State<AllRecipeListScreen> {
+class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
   final TextEditingController searchTextController = TextEditingController();
   Map<String, bool> categories = {
     '밥': true,
@@ -27,7 +28,7 @@ class _AllRecipeListScreenState extends State<AllRecipeListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final recipeViewModel = Provider.of<RecipeViewModel>(context);
+    final recipeViewModel = ref.read(recipeViewModelProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text('전체'),
@@ -105,52 +106,52 @@ class _AllRecipeListScreenState extends State<AllRecipeListScreen> {
             const SizedBox(height: 20),
             Expanded(
               child: StreamBuilder<List<Recipe>>(
-                  stream: recipeViewModel.recipesStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
+                stream: recipeViewModel.recipesStream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                    if (snapshot.hasError) {
-                      return Center(child: Text('오류 발생: ${snapshot.error}'));
-                    }
+                  if (snapshot.hasError) {
+                    return Center(child: Text('오류 발생: ${snapshot.error}'));
+                  }
 
-                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('레시피가 없습니다.'));
-                    }
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('레시피가 없습니다.'));
+                  }
 
-                    final recipes = snapshot.data!;
+                  final recipes = snapshot.data!;
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '검색 결과 ${recipes.length}개',
-                          style:
-                              const TextStyle(color: Colors.grey, fontSize: 16),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '검색 결과 ${recipes.length}개',
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 16),
+                      ),
+                      Expanded(
+                        child: ListView.separated(
+                          itemCount: recipes.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ListTile(
+                              onTap: () {
+                                //todo: 옳바른 recipeId 넣어주기
+                                context.go(
+                                    '/home/all_recipe_list/recipe_detail/aaaaaaa');
+                              },
+                              title: Text(recipes[index].title),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return Divider(color: EatGoPalette.lineColor);
+                          },
                         ),
-                        Expanded(
-                          child: ListView.separated(
-                            itemCount: recipes.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return ListTile(
-                                onTap: () {
-                                  //todo: 옳바른 recipeId 넣어주기
-                                  context.go(
-                                      '/home/all_recipe_list/recipe_detail/aaaaaaa');
-                                },
-                                title: Text(recipes[index].title),
-                              );
-                            },
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return Divider(color: EatGoPalette.lineColor);
-                            },
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
           ],
         ),
