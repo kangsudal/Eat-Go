@@ -109,7 +109,7 @@ classDiagram
         String status
     }
 
-    class User {
+    class EatGoUser {
         String uid
         String displayName
         String email
@@ -139,9 +139,9 @@ classDiagram
     Recipe "1" --> "*" Description : descriptions
     RecipeReport --> Recipe : reports on
     RecipeReport --> ReportStatus : has
-    User --> "*" Bookmark : bookmarks
-    User --> "*" AdoptedRecipe : adoptedRecipes
-    User --> "*" RecipeReport : reportedRecipes
+    EatGoUser --> "*" Bookmark : bookmarks
+    EatGoUser --> "*" AdoptedRecipe : adoptedRecipes
+    EatGoUser --> "*" RecipeReport : reportedRecipes
     AdoptedRecipe --> Recipe : adopts
 
 ```
@@ -153,7 +153,7 @@ classDiagram
 
 ----------------
 
-**User**
+**EatGoUser**
  - Bookmark : 사용자가 북마크한 레시피
  - AdoptedRecipe : 사용자가 그날 그날 채택한 레시피
  - (RecipeReport) : 사용자가 신고한 레시피

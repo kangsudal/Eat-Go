@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  return _User.fromJson(json);
+EatGoUser _$EatGoUserFromJson(Map<String, dynamic> json) {
+  return _EatGoUser.fromJson(json);
 }
 
 /// @nodoc
-mixin _$User {
+mixin _$EatGoUser {
   String get uid =>
       throw _privateConstructorUsedError; //Apple것도 있으니 @앞에 id보다는 uui로 생성해주는게 나을듯
   String get displayName =>
@@ -34,19 +34,20 @@ mixin _$User {
       throw _privateConstructorUsedError; // 사용자가 채택한 레시피 목록
   List<RecipeReport> get reportedRecipes => throw _privateConstructorUsedError;
 
-  /// Serializes this User to a JSON map.
+  /// Serializes this EatGoUser to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of User
+  /// Create a copy of EatGoUser
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
+  $EatGoUserCopyWith<EatGoUser> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UserCopyWith<$Res> {
-  factory $UserCopyWith(User value, $Res Function(User) then) =
-      _$UserCopyWithImpl<$Res, User>;
+abstract class $EatGoUserCopyWith<$Res> {
+  factory $EatGoUserCopyWith(EatGoUser value, $Res Function(EatGoUser) then) =
+      _$EatGoUserCopyWithImpl<$Res, EatGoUser>;
   @useResult
   $Res call(
       {String uid,
@@ -61,16 +62,16 @@ abstract class $UserCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UserCopyWithImpl<$Res, $Val extends User>
-    implements $UserCopyWith<$Res> {
-  _$UserCopyWithImpl(this._value, this._then);
+class _$EatGoUserCopyWithImpl<$Res, $Val extends EatGoUser>
+    implements $EatGoUserCopyWith<$Res> {
+  _$EatGoUserCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of User
+  /// Create a copy of EatGoUser
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -127,10 +128,11 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
 }
 
 /// @nodoc
-abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
-  factory _$$UserImplCopyWith(
-          _$UserImpl value, $Res Function(_$UserImpl) then) =
-      __$$UserImplCopyWithImpl<$Res>;
+abstract class _$$EatGoUserImplCopyWith<$Res>
+    implements $EatGoUserCopyWith<$Res> {
+  factory _$$EatGoUserImplCopyWith(
+          _$EatGoUserImpl value, $Res Function(_$EatGoUserImpl) then) =
+      __$$EatGoUserImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -146,13 +148,14 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$UserImplCopyWithImpl<$Res>
-    extends _$UserCopyWithImpl<$Res, _$UserImpl>
-    implements _$$UserImplCopyWith<$Res> {
-  __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
+class __$$EatGoUserImplCopyWithImpl<$Res>
+    extends _$EatGoUserCopyWithImpl<$Res, _$EatGoUserImpl>
+    implements _$$EatGoUserImplCopyWith<$Res> {
+  __$$EatGoUserImplCopyWithImpl(
+      _$EatGoUserImpl _value, $Res Function(_$EatGoUserImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of User
+  /// Create a copy of EatGoUser
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -167,7 +170,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? adoptedRecipes = null,
     Object? reportedRecipes = null,
   }) {
-    return _then(_$UserImpl(
+    return _then(_$EatGoUserImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
@@ -210,8 +213,8 @@ class __$$UserImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$UserImpl implements _User {
-  const _$UserImpl(
+class _$EatGoUserImpl implements _EatGoUser {
+  const _$EatGoUserImpl(
       {required this.uid,
       required this.displayName,
       required this.email,
@@ -225,8 +228,8 @@ class _$UserImpl implements _User {
         _adoptedRecipes = adoptedRecipes,
         _reportedRecipes = reportedRecipes;
 
-  factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
-      _$$UserImplFromJson(json);
+  factory _$EatGoUserImpl.fromJson(Map<String, dynamic> json) =>
+      _$$EatGoUserImplFromJson(json);
 
   @override
   final String uid;
@@ -276,14 +279,14 @@ class _$UserImpl implements _User {
 
   @override
   String toString() {
-    return 'User(uid: $uid, displayName: $displayName, email: $email, supportAmount: $supportAmount, isPremium: $isPremium, premiumExpiration: $premiumExpiration, bookmarks: $bookmarks, adoptedRecipes: $adoptedRecipes, reportedRecipes: $reportedRecipes)';
+    return 'EatGoUser(uid: $uid, displayName: $displayName, email: $email, supportAmount: $supportAmount, isPremium: $isPremium, premiumExpiration: $premiumExpiration, bookmarks: $bookmarks, adoptedRecipes: $adoptedRecipes, reportedRecipes: $reportedRecipes)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UserImpl &&
+            other is _$EatGoUserImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.displayName, displayName) ||
                 other.displayName == displayName) &&
@@ -316,24 +319,24 @@ class _$UserImpl implements _User {
       const DeepCollectionEquality().hash(_adoptedRecipes),
       const DeepCollectionEquality().hash(_reportedRecipes));
 
-  /// Create a copy of User
+  /// Create a copy of EatGoUser
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
-      __$$UserImplCopyWithImpl<_$UserImpl>(this, _$identity);
+  _$$EatGoUserImplCopyWith<_$EatGoUserImpl> get copyWith =>
+      __$$EatGoUserImplCopyWithImpl<_$EatGoUserImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UserImplToJson(
+    return _$$EatGoUserImplToJson(
       this,
     );
   }
 }
 
-abstract class _User implements User {
-  const factory _User(
+abstract class _EatGoUser implements EatGoUser {
+  const factory _EatGoUser(
       {required final String uid,
       required final String displayName,
       required final String email,
@@ -342,9 +345,10 @@ abstract class _User implements User {
       required final DateTime premiumExpiration,
       required final List<Bookmark> bookmarks,
       required final List<AdoptedRecipe> adoptedRecipes,
-      required final List<RecipeReport> reportedRecipes}) = _$UserImpl;
+      required final List<RecipeReport> reportedRecipes}) = _$EatGoUserImpl;
 
-  factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
+  factory _EatGoUser.fromJson(Map<String, dynamic> json) =
+      _$EatGoUserImpl.fromJson;
 
   @override
   String get uid; //Apple것도 있으니 @앞에 id보다는 uui로 생성해주는게 나을듯
@@ -366,10 +370,10 @@ abstract class _User implements User {
   @override
   List<RecipeReport> get reportedRecipes;
 
-  /// Create a copy of User
+  /// Create a copy of EatGoUser
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
+  _$$EatGoUserImplCopyWith<_$EatGoUserImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

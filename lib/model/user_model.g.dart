@@ -6,7 +6,8 @@ part of 'user_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
+_$EatGoUserImpl _$$EatGoUserImplFromJson(Map<String, dynamic> json) =>
+    _$EatGoUserImpl(
       uid: json['uid'] as String,
       displayName: json['displayName'] as String,
       email: json['email'] as String,
@@ -24,7 +25,7 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
           .toList(),
     );
 
-Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
+Map<String, dynamic> _$$EatGoUserImplToJson(_$EatGoUserImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'displayName': instance.displayName,
