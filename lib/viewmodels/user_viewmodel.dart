@@ -23,6 +23,11 @@ class UserViewModel extends StateNotifier<AsyncValue<Result<bool>>> {
       debugPrint('회원 탈퇴 처리 중 오류 발생: $e');
     }
   }
+
+  // 상태 초기화 메서드
+  void resetState() {
+    state = AsyncValue.data(Result.success(false)); // 초기 상태로 복원
+  }
 }
 
 //성공, 실패, 에러 메시지, 추가 데이터 등을 담음
