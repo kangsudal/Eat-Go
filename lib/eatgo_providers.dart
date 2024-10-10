@@ -46,10 +46,12 @@ final userServiceProvider = Provider((ref) => UserService(
 // UserService: 이 두 가지를 사용해서, 사용자와 관련된 작업을 모두 처리하는 서비스.
 
 // SignInViewModel Provider
-final signInViewModelProvider = Provider((ref) => SignInViewModel(
-      authService: ref.read(authServiceProvider),
-      userService: ref.read(userServiceProvider),
-    ));
+final signInViewModelProvider =
+    StateNotifierProvider<SignInViewModel, AsyncValue<void>>(
+        (ref) => SignInViewModel(
+              authService: ref.read(authServiceProvider),
+              userService: ref.read(userServiceProvider),
+            ));
 
 //<탈퇴>
 // UserViewModel Provider (UserService 주입)

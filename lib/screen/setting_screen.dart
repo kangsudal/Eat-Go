@@ -46,14 +46,13 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         },
       );
     });
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('SETTING'),
-      ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: const Text('SETTING'),
+          ),
+          body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(
                 30,
@@ -103,15 +102,15 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
             ),
           ),
           // 로딩 상태 처리 (Stack을 사용해 전체 화면에 CircularProgressIndicator 추가)
-          if (userState is AsyncLoading)
-            Container(
-              color: Colors.black.withOpacity(0.5), // 반투명 배경
-              child: const Center(
-                child: CircularProgressIndicator(), // 중앙에 로딩 인디케이터
-              ),
+        ),
+        if (userState is AsyncLoading)
+          Container(
+            color: Colors.black.withOpacity(0.5), // 반투명 배경
+            child: const Center(
+              child: CircularProgressIndicator(), // 중앙에 로딩 인디케이터
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }
