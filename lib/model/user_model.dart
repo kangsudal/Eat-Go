@@ -16,7 +16,7 @@ sealed class EatGoUser with _$EatGoUser {
     required String email,
     @Default(0) double supportAmount, //: 0 //후원 비용
     @Default(false) bool isPremium, //: false //프리미엄 상태
-    required DateTime premiumExpiration,
+    required int premiumExpiration,
     required List<Bookmark> bookmarks, // 사용자가 북마크한 레시피 목록
     required List<AdoptedRecipe> adoptedRecipes, // 사용자가 채택한 레시피 목록
     required List<RecipeReport> reportedRecipes, // 사용자 신고한 레시피 목록, 목록에서 차단해주기

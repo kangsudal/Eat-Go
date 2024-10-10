@@ -27,7 +27,7 @@ mixin _$EatGoUser {
   String get email => throw _privateConstructorUsedError;
   double get supportAmount => throw _privateConstructorUsedError; //: 0 //후원 비용
   bool get isPremium => throw _privateConstructorUsedError; //: false //프리미엄 상태
-  DateTime get premiumExpiration => throw _privateConstructorUsedError;
+  int get premiumExpiration => throw _privateConstructorUsedError;
   List<Bookmark> get bookmarks =>
       throw _privateConstructorUsedError; // 사용자가 북마크한 레시피 목록
   List<AdoptedRecipe> get adoptedRecipes =>
@@ -55,7 +55,7 @@ abstract class $EatGoUserCopyWith<$Res> {
       String email,
       double supportAmount,
       bool isPremium,
-      DateTime premiumExpiration,
+      int premiumExpiration,
       List<Bookmark> bookmarks,
       List<AdoptedRecipe> adoptedRecipes,
       List<RecipeReport> reportedRecipes});
@@ -110,7 +110,7 @@ class _$EatGoUserCopyWithImpl<$Res, $Val extends EatGoUser>
       premiumExpiration: null == premiumExpiration
           ? _value.premiumExpiration
           : premiumExpiration // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as int,
       bookmarks: null == bookmarks
           ? _value.bookmarks
           : bookmarks // ignore: cast_nullable_to_non_nullable
@@ -141,7 +141,7 @@ abstract class _$$EatGoUserImplCopyWith<$Res>
       String email,
       double supportAmount,
       bool isPremium,
-      DateTime premiumExpiration,
+      int premiumExpiration,
       List<Bookmark> bookmarks,
       List<AdoptedRecipe> adoptedRecipes,
       List<RecipeReport> reportedRecipes});
@@ -194,7 +194,7 @@ class __$$EatGoUserImplCopyWithImpl<$Res>
       premiumExpiration: null == premiumExpiration
           ? _value.premiumExpiration
           : premiumExpiration // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as int,
       bookmarks: null == bookmarks
           ? _value._bookmarks
           : bookmarks // ignore: cast_nullable_to_non_nullable
@@ -248,7 +248,7 @@ class _$EatGoUserImpl implements _EatGoUser {
   final bool isPremium;
 //: false //프리미엄 상태
   @override
-  final DateTime premiumExpiration;
+  final int premiumExpiration;
   final List<Bookmark> _bookmarks;
   @override
   List<Bookmark> get bookmarks {
@@ -342,7 +342,7 @@ abstract class _EatGoUser implements EatGoUser {
       required final String email,
       final double supportAmount,
       final bool isPremium,
-      required final DateTime premiumExpiration,
+      required final int premiumExpiration,
       required final List<Bookmark> bookmarks,
       required final List<AdoptedRecipe> adoptedRecipes,
       required final List<RecipeReport> reportedRecipes}) = _$EatGoUserImpl;
@@ -362,7 +362,7 @@ abstract class _EatGoUser implements EatGoUser {
   @override
   bool get isPremium; //: false //프리미엄 상태
   @override
-  DateTime get premiumExpiration;
+  int get premiumExpiration;
   @override
   List<Bookmark> get bookmarks; // 사용자가 북마크한 레시피 목록
   @override

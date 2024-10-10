@@ -1,14 +1,17 @@
+import 'package:eat_go/eatgo_providers.dart';
 import 'package:eat_go/palette.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends ConsumerWidget {
   const SignInScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+    final signInViewModel = ref.read(signInViewModelProvider);
+
     return Scaffold(
       body: Align(
         alignment: Alignment.center,
@@ -54,9 +57,33 @@ class SignInScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              onTap: () {
-                signInWithGoogle();
-                context.go("/home");
+              onTap: () async {
+                try {
+                  bool success = await signInViewModel.signInWithGoogle();
+                  if (success) {
+                    if (context.mounted) {
+                      context.go("/home");}
+                    return;
+                  }
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('인증 실패하였습니다.')));
+                  }
+                } on FirebaseAuthException catch (error) {
+                  debugPrint(
+                      'Google 로그인 실패(FirebaseAuthException): ${error.toString()}');
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('인증 실패하였습니다.')));
+                  }
+                } catch (error) {
+                  debugPrint(
+                      'Google 로그인 실패(FirebaseAuthException 제외): ${error.toString()}');
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('인증 실패하였습니다.')));
+                  }
+                }
               },
             ),
             const SizedBox(height: 10),
@@ -89,7 +116,6 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
               onTap: () {
-                Navigator.pushReplacementNamed(context, "/home");
               },
             ),
           ],
@@ -97,25 +123,4 @@ class SignInScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<void> signInWithGoogle() async {
-  // Trigger the authentication flow
-  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-  // Obtain the auth details from the request
-  final GoogleSignInAuthentication? googleAuth =
-      await googleUser?.authentication;
-
-  // Create a new credential
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth?.accessToken,
-    idToken: googleAuth?.idToken,
-  );
-
-  // Once signed in, return the UserCredential
-  return await FirebaseAuth.instance
-      .signInWithCredential(credential)
-      .then((value) => debugPrint(value.user?.email))
-      .onError((error, stackTrace) => debugPrint(error.toString()));
 }

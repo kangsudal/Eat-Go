@@ -115,7 +115,7 @@ classDiagram
         String email
         double supportAmount
         bool isPremium
-        DateTime premiumExpiration
+        int premiumExpiration
         List~Bookmark~ bookmarks
         List~AdoptedRecipe~ adoptedRecipes
         List~RecipeReport~ reportedRecipes
