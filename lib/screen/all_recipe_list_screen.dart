@@ -29,7 +29,8 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final recipeViewModel = ref.read(recipeViewModelProvider.notifier);
+    final AsyncValue<List<Recipe>> recipeState = ref.watch(
+        recipeViewModelProvider); // ViewModel의 상태를 구독, 레시피 데이터를 가져오는데 로딩중, 성공, 실패 나타냄
     return Scaffold(
       appBar: AppBar(
         title: const Text('전체'),
@@ -106,22 +107,19 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: FutureBuilder<List<Recipe>>(
-                future: recipeViewModel.recipesFuture(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+              child: recipeState.when(
+                // 로딩 상태 처리
+                loading: () => const Center(child: CircularProgressIndicator()),
 
-                  if (snapshot.hasError) {
-                    return Center(child: Text('오류 발생: ${snapshot.error}'));
-                  }
+                // 에러 상태 처리
+                error: (error, stackTrace) =>
+                    Center(child: Text('오류 발생: $error')),
 
-                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                // 데이터 상태 처리
+                data: (recipes) {
+                  if (recipes.isEmpty) {
                     return const Center(child: Text('레시피가 없습니다.'));
                   }
-
-                  final recipes = snapshot.data!;
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
