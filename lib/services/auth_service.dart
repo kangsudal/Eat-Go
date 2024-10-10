@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth auth;
+
+  AuthService({required this.auth});
 
   // Google 로그인 처리
   Future<UserCredential?> authenticateWithGoogle() async {
@@ -25,7 +27,7 @@ class AuthService {
       );
 
       // Firebase에 로그인
-      return await _auth.signInWithCredential(credential);
+      return await auth.signInWithCredential(credential);
     } catch (e) {
       print('Google 로그인 실패: $e');
       return null;
@@ -34,7 +36,7 @@ class AuthService {
 
   // Firebase 로그아웃
   Future<void> signOut() async {
-    await _auth.signOut();
+    await auth.signOut();
     await GoogleSignIn().signOut();
   }
 }

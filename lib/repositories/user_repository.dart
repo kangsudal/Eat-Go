@@ -40,4 +40,14 @@ class UserRepository {
       throw Exception('사용자 정보 불러오기 중 오류 발생: $e');
     }
   }
+
+  // Firestore에서 사용자 데이터 삭제
+  Future<void> deleteUserInfo(String uid) async {
+    try {
+      // Firestore에서 uid로 저장된 사용자 문서 삭제
+      await firestore.collection('users').doc(uid).delete();
+    } catch (e) {
+      throw Exception('사용자 데이터 삭제 중 오류 발생: $e');
+    }
+  }
 }
