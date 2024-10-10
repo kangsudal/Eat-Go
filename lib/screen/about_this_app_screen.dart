@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/custom_widget/custom_list_tile.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class _AboutThisAppScreenState extends State<AboutThisAppScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'BUY ME A YUMMY TREAT!',
+          'ABOUT THIS APP',
           style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
         ),
       ),

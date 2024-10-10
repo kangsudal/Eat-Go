@@ -1,5 +1,4 @@
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/about_this_app_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -133,11 +132,13 @@ class DrawerFooter extends StatelessWidget {
         ListTile(
           title: Text('ABOUT THIS APP'),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AboutThisAppScreen(),
-              ),
-            );
+            context.go('/home/about_this_app');
+          },
+        ),
+        ListTile(
+          title: Text('SETTING'),
+          onTap: () {
+            context.go('/home/setting');
           },
         ),
       ],

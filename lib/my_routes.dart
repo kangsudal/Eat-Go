@@ -1,12 +1,14 @@
 import 'package:eat_go/screen/about_this_app_screen.dart';
 import 'package:eat_go/screen/all_recipe_list_screen.dart';
+import 'package:eat_go/screen/success_withdrawal_screen.dart';
 import 'package:eat_go/screen/bookmark_screen.dart';
-import 'package:eat_go/screen/error_screen.dart';
+import 'package:eat_go/screen/path_error_screen.dart';
 import 'package:eat_go/screen/history_screen.dart';
 import 'package:eat_go/screen/home_screen/home_screen.dart';
 import 'package:eat_go/screen/my_recipe_screen.dart';
 import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_screen.dart';
 import 'package:eat_go/screen/restaurant_screen/restaurant_screen.dart';
+import 'package:eat_go/screen/setting_screen.dart';
 import 'package:eat_go/screen/sign_in_screen.dart';
 import 'package:eat_go/screen/yummy_treat_screen.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,7 @@ final GoRouter myRouter = GoRouter(
             String? recipeIdString = state.pathParameters['recipe_id'];
             if (recipeIdString == null) {
               // recipe_id가 없는 경우 에러 화면으로
-              return ErrorScreen(error: 'Invalid recipe ID: ID is missing');
+              return PathErrorScreen(error: 'Invalid recipe ID: ID is missing');
             }
             return RestaurantScreen(recipeId: recipeIdString);
           },
@@ -80,11 +82,17 @@ final GoRouter myRouter = GoRouter(
           builder: (BuildContext context, GoRouterState state) =>
               const YummyTreatScreen(),
         ),
-        //Drawer - BUY ME A YUMMY TREAT!(후원)
+        //Drawer - ABOUT THIS APP
         GoRoute(
           path: 'about_this_app',
           builder: (BuildContext context, GoRouterState state) =>
               const AboutThisAppScreen(),
+        ),
+        //Drawer - SETTING
+        GoRoute(
+          path: 'setting',
+          builder: (BuildContext context, GoRouterState state) =>
+              const SettingScreen(),
         ),
       ],
     ),
@@ -93,8 +101,13 @@ final GoRouter myRouter = GoRouter(
       builder: (BuildContext context, GoRouterState state) =>
           const SignInScreen(),
     ),
+    GoRoute(
+      path: '/success_withdrawal',
+      builder: (BuildContext context, GoRouterState state) =>
+          SuccessWithdrawalScreen(),
+    ),
   ],
-  errorBuilder: (context, state) => ErrorScreen(error: state.error.toString()),
+  errorBuilder: (context, state) => PathErrorScreen(error: state.error.toString()),
 );
 
 GoRoute goRouteRecipeDetail() {
@@ -104,7 +117,7 @@ GoRoute goRouteRecipeDetail() {
       String? recipeIdString = state.pathParameters['recipe_id'];
       if (recipeIdString == null) {
         // recipe_id가 없는 경우 에러 화면으로
-        return ErrorScreen(error: 'Invalid recipe ID: ID is missing');
+        return PathErrorScreen(error: 'Invalid recipe ID: ID is missing');
       }
       return RecipeDetailScreen(recipeId: recipeIdString);
     },
@@ -116,7 +129,7 @@ GoRoute goRouteRecipeDetail() {
             String? recipeIdString = state.pathParameters['recipe_id'];
             if (recipeIdString == null) {
               // recipe_id가 없는 경우 에러 화면으로
-              return ErrorScreen(error: 'Invalid recipe ID: ID is missing');
+              return PathErrorScreen(error: 'Invalid recipe ID: ID is missing');
             }
             return RestaurantScreen(
               recipeId: recipeIdString,

@@ -7,6 +7,7 @@ import 'package:eat_go/services/recipe_service.dart';
 import 'package:eat_go/services/user_service.dart';
 import 'package:eat_go/viewmodels/recipe_viewmodel.dart';
 import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
+import 'package:eat_go/viewmodels/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,7 +24,7 @@ final recipeViewModelProvider =
 //RecipeViewModel: 레시피 목록을 서버에서 가져오거나, 로딩 중, 에러 상태를 처리함.
 //StateNotifierProvider: View 화면에 전달하는 도구
 
-//<회원가입/탈퇴>
+//<회원가입/로그인>
 final authProvider = Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
 // AuthService Provider(인증 관련 서비스 제공) : 로그인/로그아웃과 같은 인증 관련 로직
@@ -49,3 +50,11 @@ final signInViewModelProvider = Provider((ref) => SignInViewModel(
       authService: ref.read(authServiceProvider),
       userService: ref.read(userServiceProvider),
     ));
+
+//<탈퇴>
+// UserViewModel Provider (UserService 주입)
+final userViewModelProvider =
+    StateNotifierProvider<UserViewModel, AsyncValue<Result<bool>>>((ref) {
+  final userService = ref.watch(userServiceProvider);
+  return UserViewModel(userService);
+});
