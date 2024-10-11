@@ -59,18 +59,9 @@ final userServiceProvider = Provider((ref) => UserService(
 
 // SignInViewModel Provider
 final signInViewModelProvider =
-    StateNotifierProvider<SignInViewModel, AsyncValue<void>>((ref) {
-  final signInViewModel = SignInViewModel(
-    authService: ref.read(authServiceProvider),
-    userService: ref.read(userServiceProvider),
-  );
-  return signInViewModel;
-});
+    AsyncNotifierProvider<SignInViewModel, void>(SignInViewModel.new);
 
 //<탈퇴>
 // UserViewModel Provider (UserService 주입)
 final userViewModelProvider =
-    StateNotifierProvider<UserViewModel, AsyncValue<Result<bool>>>((ref) {
-  final userService = ref.watch(userServiceProvider);
-  return UserViewModel(userService);
-});
+    AsyncNotifierProvider<UserViewModel, Result<bool>>(UserViewModel.new);

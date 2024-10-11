@@ -1,12 +1,18 @@
+import 'dart:async';
+
+import 'package:eat_go/eatgo_providers.dart';
 import 'package:eat_go/services/user_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserViewModel extends StateNotifier<AsyncValue<Result<bool>>> {
-  final UserService _userService;
+class UserViewModel extends AsyncNotifier<Result<bool>> {
+  late final UserService _userService;
 
-  UserViewModel(this._userService)
-      : super(AsyncValue.data(Result.success(false)));
+  @override
+  FutureOr<Result<bool>> build() async {
+    _userService = ref.watch(userServiceProvider);
+    return Result.success(false);
+  }
 
   // 사용자 계정 삭제 및 데이터 삭제
   Future<void> deleteUserAccountAndData() async {

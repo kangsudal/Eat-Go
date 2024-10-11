@@ -1,16 +1,22 @@
 // auth_view_model.dart
+import 'dart:async';
+
+import 'package:eat_go/eatgo_providers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:eat_go/services/auth_service.dart';
 import 'package:eat_go/services/user_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SignInViewModel extends StateNotifier<AsyncValue<void>> {
-  final AuthService authService;
-  final UserService userService;
+class SignInViewModel extends AsyncNotifier<void> {
+  late final AuthService authService;
+  late final UserService userService;
 
-  SignInViewModel({required this.authService, required this.userService})
-      : super(const AsyncValue.data(null));
+  @override
+  FutureOr<void> build() async {
+    authService = ref.read(authServiceProvider);
+    userService = ref.read(userServiceProvider);
+  }
 
   // Google 로그인 및 사용자 정보 저장
   Future<bool> signInWithGoogle() async {
