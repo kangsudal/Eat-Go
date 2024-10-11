@@ -30,6 +30,10 @@ final authStateProvider = StreamProvider<User?>((ref) {
   return auth.authStateChanges(); // 로그인 상태 변경 스트림 반환
 });
 
+// AuthService Provider(인증 관련 서비스 제공) : 로그인/로그아웃과 같은 인증 관련 로직
+final authServiceProvider =
+    Provider((ref) => AuthService(auth: ref.watch(authProvider)));
+
 final authRepositoryProvider =
     Provider((ref) => AuthRepository(auth: ref.watch(authProvider)));
 // UserRepository Provider(데이터베이스와 상호작용) : Firebase Firestore와 상호작용
