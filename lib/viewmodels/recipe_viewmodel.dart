@@ -19,25 +19,33 @@ class WriteData {
   // +어떤 스크린이 어떤스크린이랑 데이터를 공유하는지 잘 분류해야한다.
 }
 */
+import 'dart:async';
+
+import 'package:eat_go/eatgo_providers.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/services/recipe_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RecipeViewModel extends StateNotifier<AsyncValue<List<Recipe>>> {
-  final RecipeService _recipeService;
+class RecipeViewModel extends AsyncNotifier<List<Recipe>> {
+  late final RecipeService _recipeService;
 
-  // 생성자에서 초기 상태를 '로딩 중'으로 설정
-  RecipeViewModel(this._recipeService) : super(const AsyncValue.loading());
+  @override
+  Future<List<Recipe>> build() async{
+    _recipeService = ref.read(recipeServiceProvider); // 의존성 주입
+    return await fetchRecipes();
+  }
 
   // 레시피 목록을 서버에서 가져와 상태를 업데이트하는 메서드
-  Future<void> fetchRecipes() async {
+  Future<List<Recipe>> fetchRecipes() async {
     try {
       final recipes = await _recipeService.getRecipesFuture();
       state = AsyncValue.data(recipes); // 성공 시 데이터 상태로 업데이트
+      return recipes;
     } catch (e, stackTrace) {
       state = AsyncValue.error(
           '데이터 로드 중 오류 발생: $e', stackTrace); // 실패 시 에러 상태로 업데이트
+      return [];
     }
   }
 

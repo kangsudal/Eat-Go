@@ -19,9 +19,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 final recipeServiceProvider = Provider((ref) => RecipeService());
 
 final recipeViewModelProvider =
-    StateNotifierProvider<RecipeViewModel, AsyncValue<List<Recipe>>>(
-  (ref) => RecipeViewModel(ref.watch(recipeServiceProvider)),
-);
+    AsyncNotifierProvider<RecipeViewModel, List<Recipe>>(RecipeViewModel.new);
 //RecipeViewModel: 레시피 목록을 서버에서 가져오거나, 로딩 중, 에러 상태를 처리함.
 //StateNotifierProvider: View 화면에 전달하는 도구
 
