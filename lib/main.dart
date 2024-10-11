@@ -20,12 +20,13 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final myRouter = ref.read(myRouterProvider);
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
