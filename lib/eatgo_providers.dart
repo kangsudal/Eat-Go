@@ -10,7 +10,6 @@ import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
 import 'package:eat_go/viewmodels/user_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 //Provider: 간단한 의존성 주입 도구로, 특정 클래스를 전역적으로 쉽게 사용할 수 있도록 만들어줍니다.
 
@@ -30,18 +29,6 @@ final authStateProvider = StreamProvider<User?>((ref) {
   final auth = ref.watch(authProvider); // FirebaseAuth 인스턴스
   return auth.authStateChanges(); // 로그인 상태 변경 스트림 반환
 });
-final secureStorageProvider = Provider<FlutterSecureStorage>(
-  (ref) => const FlutterSecureStorage(
-    aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
-    ),
-  ),
-); //자동로그인을위해 로컬에 토큰저장
-
-// AuthService Provider(인증 관련 서비스 제공) : 로그인/로그아웃과 같은 인증 관련 로직
-final authServiceProvider = Provider((ref) => AuthService(
-    auth: ref.watch(authProvider),
-    secureStorage: ref.watch(secureStorageProvider)));
 
 final authRepositoryProvider =
     Provider((ref) => AuthRepository(auth: ref.watch(authProvider)));

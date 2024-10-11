@@ -14,7 +14,6 @@ class SignInViewModel extends AsyncNotifier<void> {
 
   @override
   FutureOr<void> build() async {
-    authService = ref.read(authServiceProvider);
     userService = ref.read(userServiceProvider);
   }
 

@@ -1,13 +1,12 @@
 // auth_service.dart
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth auth;
-  final FlutterSecureStorage secureStorage;
 
-  AuthService({required this.auth, required this.secureStorage});
+  AuthService({required this.auth});
 
   // Google 로그인 처리
   Future<UserCredential?> authenticateWithGoogle() async {
@@ -31,17 +30,10 @@ class AuthService {
       // Firebase에 로그인
       final UserCredential authResult =
           await auth.signInWithCredential(credential);
-      final User? user = authResult.user;
-
-      if (user != null) {
-        // 자동로그인을 위해 토큰 저장
-        String? token = await user.getIdToken();
-        await secureStorage.write(key: 'authToken', value: token);
-      }
 
       return authResult;
     } catch (e) {
-      print('Google 로그인 실패: $e');
+      debugPrint('Google 로그인 실패: $e');
       return null;
     }
   }
@@ -50,17 +42,5 @@ class AuthService {
   Future<void> signOut() async {
     await auth.signOut();
     await GoogleSignIn().signOut();
-    await secureStorage.delete(key: 'authToken'); // 토큰 삭제
-  }
-
-  // 저장된 토큰 불러오기
-  Future<String?> getToken() async {
-    return await secureStorage.read(key: 'authToken');
-  }
-
-  // 자동 로그인 체크
-  Future<bool> isLoggedIn() async {
-    String? token = await getToken();
-    return token != null; // 토큰이 있으면 로그인된 상태
   }
 }
