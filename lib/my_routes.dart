@@ -12,6 +12,7 @@ import 'package:eat_go/screen/restaurant_screen/restaurant_screen.dart';
 import 'package:eat_go/screen/setting_screen.dart';
 import 'package:eat_go/screen/sign_in_screen.dart';
 import 'package:eat_go/screen/yummy_treat_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -21,19 +22,26 @@ final myRouterProvider = Provider<GoRouter>((ref) {
   // debugPrint('authState: $authState');
 
   // 로그를 통해 상태 추적
-  authState.when(
+  final user = authState.when(
     data: (user) {
       if (user != null) {
         debugPrint("User logged in: ${user.email}");
       } else {
         debugPrint("No user logged in");
       }
+      return user;
     },
-    loading: () => debugPrint("Checking user authentication..."),
-    error: (error, stackTrace) => debugPrint("Error in authState: $error"),
+    loading: () {
+      debugPrint("Checking user authentication...");
+      return null; // 로딩 중에는 사용자 데이터가 없으므로 null 반환
+    },
+    error: (error, stackTrace) {
+      debugPrint("Error in authState: $error");
+      return null; // 에러 발생 시도 null로 처리
+    },
   );
 
-  return GoRouter(
+  final router = GoRouter(
     initialLocation: '/loading',
     redirect: (context, state) {
       // debugPrint('GoRouter redirect called, location: ${state.matchedLocation}');
@@ -44,8 +52,10 @@ final myRouterProvider = Provider<GoRouter>((ref) {
         return '/loading';
       }
 
-      // 인증 상태가 확인된 후 사용자 정보를 바탕으로 리디렉션
-      final user = authState.asData?.value; // 로그인 상태 확인
+      // 에러가 발생했을 때도 로딩 화면이나 에러 페이지로 리디렉션
+      if (authState.hasError) {
+        return '/sign_in'; // 예시로 로그인 화면으로 보내도록 처리
+      }
 
       if ((user == null) && (state.matchedLocation != '/sign_in')) {
         // debugPrint("로그인페이지로 가!");
@@ -58,7 +68,7 @@ final myRouterProvider = Provider<GoRouter>((ref) {
 
       if (user != null && state.matchedLocation == '/loading') {
         // debugPrint('사용자가 로그인된 상태인데 현재 경로가 /loading이면 홈으로 이동');
-        return '/home';  // 홈 페이지로 리디렉션
+        return '/home'; // 홈 페이지로 리디렉션
       }
 
       return null; // 리디렉션이 필요 없으면 null 반환
@@ -158,12 +168,23 @@ final myRouterProvider = Provider<GoRouter>((ref) {
         path: '/loading',
         builder: (BuildContext context, GoRouterState state) => Scaffold(
           backgroundColor: Colors.red,
+          body: Center(child: CircularProgressIndicator()),
         ),
       ),
     ],
     errorBuilder: (context, state) =>
         PathErrorScreen(error: state.error.toString()),
   );
+
+  // authStateProvider의 상태 변화를 감지하여 GoRouter를 갱신
+  ref.listen<AsyncValue<User?>>(
+    authStateProvider,
+    (previous, next) {
+      router.refresh(); // 상태 변경 시 라우터 새로고침
+    },
+  );
+
+  return router;
 });
 
 GoRoute goRouteRecipeDetail() {
