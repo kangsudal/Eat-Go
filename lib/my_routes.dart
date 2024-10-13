@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-final myRouterProvider = Provider((ref) {
+final myRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider); // 로그인 상태(AsyncValue<User?>)
   // debugPrint('authState: $authState');
 

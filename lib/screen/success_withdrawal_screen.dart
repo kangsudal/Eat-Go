@@ -21,8 +21,8 @@ class _SuccessWithdrawalScreenState
     // 페이지가 로드된 후 상태 초기화
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        final userViewModel = ref.read(userViewModelProvider.notifier);
-        userViewModel.resetState(); // 상태 초기화
+        final withdrawalViewModel = ref.read(withdrawalViewModelProvider.notifier);
+        withdrawalViewModel.resetState(); // 상태 초기화
       }
     });
   }

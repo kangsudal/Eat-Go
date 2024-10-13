@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eat_go/model/operation_result.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/repositories/auth_repository.dart';
 import 'package:eat_go/repositories/user_repository.dart';
@@ -7,7 +8,8 @@ import 'package:eat_go/services/recipe_service.dart';
 import 'package:eat_go/services/user_service.dart';
 import 'package:eat_go/viewmodels/recipe_viewmodel.dart';
 import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
-import 'package:eat_go/viewmodels/user_viewmodel.dart';
+import 'package:eat_go/viewmodels/setting_viewmodel.dart';
+import 'package:eat_go/viewmodels/success_withdrawal_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,6 +58,8 @@ final signInViewModelProvider =
     AsyncNotifierProvider<SignInViewModel, void>(SignInViewModel.new);
 
 //<탈퇴>
-// UserViewModel Provider (UserService 주입)
-final userViewModelProvider =
-    AsyncNotifierProvider<UserViewModel, Result<bool>>(UserViewModel.new);
+// SettingViewModel Provider (UserService 주입)
+final settingViewModelProvider =
+    AsyncNotifierProvider<SettingViewModel, OperationResult<bool>>(SettingViewModel.new);
+final withdrawalViewModelProvider =
+    AsyncNotifierProvider<SuccessWithdrawalViewModel, OperationResult<bool>>(SuccessWithdrawalViewModel.new);

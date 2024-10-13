@@ -17,8 +17,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userState = ref.watch(userViewModelProvider);
-    final userViewModel = ref.read(userViewModelProvider.notifier);
+    final userState = ref.watch(settingViewModelProvider);
+    final userViewModel = ref.read(settingViewModelProvider.notifier);
     // 상태 변화에 따른 처리
     WidgetsBinding.instance.addPostFrameCallback((_) {
       userState.when(

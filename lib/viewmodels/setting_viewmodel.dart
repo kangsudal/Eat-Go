@@ -1,17 +1,18 @@
 import 'dart:async';
 
 import 'package:eat_go/eatgo_providers.dart';
+import 'package:eat_go/model/operation_result.dart';
 import 'package:eat_go/services/user_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserViewModel extends AsyncNotifier<Result<bool>> {
+class SettingViewModel extends AsyncNotifier<OperationResult<bool>> {
   late final UserService _userService;
 
   @override
-  FutureOr<Result<bool>> build() async {
+  FutureOr<OperationResult<bool>> build() async {
     _userService = ref.watch(userServiceProvider);
-    return Result.success(false);
+    return OperationResult.success(false);
   }
 
   // 사용자 계정 삭제 및 데이터 삭제
@@ -22,25 +23,12 @@ class UserViewModel extends AsyncNotifier<Result<bool>> {
       // Service를 통해 계정 삭제 및 데이터 삭제 처리
       await _userService.deleteUserAccountAndInfo();
 
-      state = AsyncValue.data(Result.success(true)); // 성공 시 상태 업데이트
+      state = AsyncValue.data(OperationResult.success(true)); // 성공 시 상태 업데이트
     } catch (e, stackTrace) {
       state = AsyncValue.error(
-          Result.failure('회원 탈퇴 처리 중 오류 발생'), stackTrace); // 에러 발생 시 상태 업데이트
+          OperationResult.failure('회원 탈퇴 처리 중 오류 발생'), stackTrace); // 에러 발생 시 상태 업데이트
       debugPrint('회원 탈퇴 처리 중 오류 발생: $e');
     }
   }
-
-  // 상태 초기화 메서드
-  void resetState() {
-    state = AsyncValue.data(Result.success(false)); // 초기 상태로 복원
-  }
 }
 
-//성공, 실패, 에러 메시지, 추가 데이터 등을 담음
-class Result<T> {
-  final T? data;
-  final String? error;
-
-  Result.success(this.data) : error = null;
-  Result.failure(this.error) : data = null;
-}
