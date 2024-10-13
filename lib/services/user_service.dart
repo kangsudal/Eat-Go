@@ -55,7 +55,8 @@ class UserService {
       // 3. Firebase Authentication에서 사용자 계정 삭제
       await authRepository.deleteUserAccount();
     } catch (e) {
-      throw Exception('회원탈퇴 중 오류 발생: $e');
+      debugPrint('UserService 오류 발생 - 회원 탈퇴 로직: $e');
+      throw Exception(e);
     }
   }
 }

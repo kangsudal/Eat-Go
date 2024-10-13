@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 class AuthRepository {
   final FirebaseAuth auth;
@@ -21,7 +22,8 @@ class AuthRepository {
         throw Exception("사용자가 로그인되어 있지 않습니다.");
       }
     } catch (e) {
-      throw Exception('계정 삭제 중 오류 발생: $e');
+      debugPrint('AuthRepository 오류 발생 - 회원 데이터 삭제 실패: $e');
+      throw Exception(e);
     }
   }
 }

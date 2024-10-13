@@ -26,9 +26,10 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           // 로딩 중에는 별도의 처리 없이 CircularProgressIndicator를 표시함
         },
         error: (error, stackTrace) {
+          debugPrint('SettingScreen 오류 발생 - 회원 탈퇴 화면-1: $error');
           // 에러 발생 시 SnackBar 표시
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('오류 발생: $error')),
+            SnackBar(content: Text('오류가 발생했습니다.')),
           );
         },
         data: (result) {
@@ -38,8 +39,9 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           } else if (result.data == false) {
             // 작업 실패 시 SnackBar 표시
             if (result.error != null && result.error!.isNotEmpty) {
+              debugPrint('Screen 오류 발생 - 회원 탈퇴 화면-2: ${result.error}');
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('작업 실패. ${result.error}')),
+                SnackBar(content: Text('오류가 발생했습니다.')),
               );
             }
           }

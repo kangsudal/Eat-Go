@@ -23,11 +23,11 @@ class SettingViewModel extends AsyncNotifier<OperationResult<bool>> {
       // Service를 통해 계정 삭제 및 데이터 삭제 처리
       await _userService.deleteUserAccountAndInfo();
 
-      state = AsyncValue.data(OperationResult.success(true)); // 성공 시 상태 업데이트
+      state = AsyncValue.data(OperationResult<bool>.success(true)); // 성공 시 상태 업데이트
     } catch (e, stackTrace) {
+      debugPrint('SettingViewModel 오류 발생 - 회원 탈퇴 중 오류: $e');
       state = AsyncValue.error(
-          OperationResult.failure('회원 탈퇴 처리 중 오류 발생'), stackTrace); // 에러 발생 시 상태 업데이트
-      debugPrint('회원 탈퇴 처리 중 오류 발생: $e');
+          OperationResult<bool>.failure(e.toString()), stackTrace); // 에러 발생 시 상태 업데이트
     }
   }
 }

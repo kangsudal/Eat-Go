@@ -14,4 +14,13 @@ class OperationResult<T> {
   /// 실패한 작업의 결과를 위한 생성자.
   /// [error]에 에러 메시지가 저장되며, [data]는 `null`로 설정됩니다.
   OperationResult.failure(this.error) : data = null;
+
+  @override
+  String toString() {
+    if (data != null) {
+      return 'Success: $data';
+    } else {
+      return 'Failure: $error';
+    }
+  }
 }

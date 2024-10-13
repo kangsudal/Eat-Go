@@ -36,9 +36,9 @@ final myRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: '/loading',
     redirect: (context, state) {
-      debugPrint('GoRouter redirect called, location: ${state.matchedLocation}');
-      debugPrint('authState isLoading: ${authState.isLoading}');
-      debugPrint('authState data: ${authState.asData?.value?.email}');
+      // debugPrint('GoRouter redirect called, location: ${state.matchedLocation}');
+      // debugPrint('authState isLoading: ${authState.isLoading}');
+      // debugPrint('authState data: ${authState.asData?.value?.email}');
       // 인증 상태가 로딩 중일 때 로딩 화면으로 리디렉션
       if (authState.isLoading) {
         return '/loading';
@@ -48,16 +48,16 @@ final myRouterProvider = Provider<GoRouter>((ref) {
       final user = authState.asData?.value; // 로그인 상태 확인
 
       if ((user == null) && (state.matchedLocation != '/sign_in')) {
-        debugPrint("로그인페이지로 가!");
+        // debugPrint("로그인페이지로 가!");
         return '/sign_in'; // 로그인이 안 되어있으면 로그인 페이지로 이동
       }
       if ((user != null) && (state.matchedLocation == '/sign_in')) {
-        debugPrint("로그인 했잖아. 홈페이지로 가!");
+        // debugPrint("로그인 했잖아. 홈페이지로 가!");
         return '/home'; // 로그인되어 있으면 홈 화면으로 이동
       }
 
       if (user != null && state.matchedLocation == '/loading') {
-        debugPrint('사용자가 로그인된 상태인데 현재 경로가 /loading이면 홈으로 이동');
+        // debugPrint('사용자가 로그인된 상태인데 현재 경로가 /loading이면 홈으로 이동');
         return '/home';  // 홈 페이지로 리디렉션
       }
 
