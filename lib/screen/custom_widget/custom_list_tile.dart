@@ -6,10 +6,7 @@ class CustomListTile extends StatelessWidget {
   final Widget leading;
   final Widget mid;
   final Widget trailing;
-  BoxDecoration? boxDecoration = BoxDecoration(
-    border: Border.all(color: EatGoPalette.lineColor),
-    borderRadius: const BorderRadius.all(Radius.circular(10)),
-  );
+  final BoxDecoration? boxDecoration;
   final CrossAxisAlignment crossAxisAlignment;
 
   CustomListTile({
