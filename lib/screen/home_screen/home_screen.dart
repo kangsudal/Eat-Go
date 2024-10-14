@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/screen/home_screen/home_screen_widget/animated_text_widget.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
 import 'package:eat_go/screen/restaurant_screen/restaurant_screen.dart';
 import 'package:eat_go/services/recipe_service.dart';
@@ -25,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? bookmarked;
   bool isShakingLocked = false;
 
-  RecipeService firestoreService = RecipeService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,13 +80,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Column(
                       children: [
-                        Text(
-                          'SHAKE!',
-                          style: GoogleFonts.poppins(
-                            //HomeScreen에서 'SHAKE' 글씨
-                            fontSize: 70,
-                            fontWeight: FontWeight.w700,
-                            color: pointColor,
+                        AnimatedTextWidget(
+                          text: Text(
+                            'SHAKE!',
+                            style: GoogleFonts.poppins(
+                              //HomeScreen에서 'SHAKE' 글씨
+                              fontSize: 70,
+                              fontWeight: FontWeight.w700,
+                              color: pointColor,
+                            ),
                           ),
                         ),
                       ],
