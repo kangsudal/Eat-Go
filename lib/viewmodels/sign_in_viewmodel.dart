@@ -3,14 +3,14 @@ import 'dart:async';
 
 import 'package:eat_go/eatgo_providers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:eat_go/services/auth_service.dart';
-import 'package:eat_go/services/user_service.dart';
+import 'package:eat_go/repository//auth_repository.dart';
+import 'package:eat_go/repository//user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SignInViewModel extends AsyncNotifier<void> {
-  late final AuthService authService;
-  late final UserService userService;
+  late final AuthRepository authService;
+  late final UserRepository userService;
 
   @override
   FutureOr<void> build() async {

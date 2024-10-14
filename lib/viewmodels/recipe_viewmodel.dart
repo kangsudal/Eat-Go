@@ -23,12 +23,12 @@ import 'dart:async';
 
 import 'package:eat_go/eatgo_providers.dart';
 import 'package:eat_go/model/recipe_model.dart';
-import 'package:eat_go/services/recipe_service.dart';
+import 'package:eat_go/repository//recipe_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RecipeViewModel extends AsyncNotifier<List<Recipe>> {
-  late final RecipeService _recipeService;
+  late final RecipeRepository _recipeService;
 
   @override
   Future<List<Recipe>> build() async{

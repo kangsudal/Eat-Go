@@ -1,6 +1,6 @@
 import 'package:eat_go/model/user_model.dart';
-import 'package:eat_go/repositories/auth_repository.dart';
-import 'package:eat_go/repositories/user_repository.dart';
+import 'package:eat_go/datasources//auth_data_source.dart';
+import 'package:eat_go/datasources//user_data_source.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -15,11 +15,11 @@ import 'package:flutter/cupertino.dart';
   사용자 정보 가져오기
   사용자 프로필 관리
  */
-class UserService {
-  final UserRepository userRepository;
-  final AuthRepository authRepository;
+class UserRepository {
+  final UserDataSource userRepository;
+  final AuthDataSource authRepository;
 
-  UserService({required this.userRepository, required this.authRepository});
+  UserRepository({required this.userRepository, required this.authRepository});
 
   // 사용자 정보 저장
   Future<void> saveUser(User user) async {

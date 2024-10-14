@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
-class AuthRepository {
+class AuthDataSource {
   final FirebaseAuth auth;
 
-  AuthRepository({required this.auth});
+  AuthDataSource({required this.auth});
 
   // 현재 로그인된 사용자의 UID 가져오기
   String? getCurrentUserUid() {

@@ -1,12 +1,12 @@
-// auth_service.dart
+// auth_repository.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class AuthService {
+class AuthRepository {
   final FirebaseAuth auth;
 
-  AuthService({required this.auth});
+  AuthRepository({required this.auth});
 
   // Google 로그인 처리
   Future<UserCredential?> authenticateWithGoogle() async {

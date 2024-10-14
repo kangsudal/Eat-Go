@@ -2,11 +2,11 @@
 //결과를 viewmodel를 통해 view에게 전달
 
 import 'package:eat_go/model/recipe_model.dart';
-import 'package:eat_go/repositories/recipe_repository.dart';
+import 'package:eat_go/datasources//recipe_data_source.dart';
 import 'package:flutter/cupertino.dart';
 
-class RecipeService {
-  final RecipeRepository _recipeRepository = RecipeRepository();
+class RecipeRepository {
+  final RecipeDataSource _recipeRepository = RecipeDataSource();
 
   // 레시피 목록을 실시간으로 가져오는 Stream
   Stream<List<Recipe>> getRecipesStream() {

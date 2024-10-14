@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:eat_go/eatgo_providers.dart';
 import 'package:eat_go/model/operation_result.dart';
-import 'package:eat_go/services/user_service.dart';
+import 'package:eat_go/repository//user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingViewModel extends AsyncNotifier<OperationResult<bool>> {
-  late final UserService _userService;
+  late final UserRepository _userService;
 
   @override
   FutureOr<OperationResult<bool>> build() async {

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/operation_result.dart';
 import 'package:eat_go/model/recipe_model.dart';
-import 'package:eat_go/repositories/auth_repository.dart';
-import 'package:eat_go/repositories/user_repository.dart';
-import 'package:eat_go/services/auth_service.dart';
-import 'package:eat_go/services/recipe_service.dart';
-import 'package:eat_go/services/user_service.dart';
+import 'package:eat_go/datasources//auth_data_source.dart';
+import 'package:eat_go/datasources//user_data_source.dart';
+import 'package:eat_go/repository//auth_repository.dart';
+import 'package:eat_go/repository//recipe_repository.dart';
+import 'package:eat_go/repository//user_repository.dart';
 import 'package:eat_go/viewmodels/recipe_viewmodel.dart';
 import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
 import 'package:eat_go/viewmodels/setting_viewmodel.dart';
@@ -18,7 +18,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //<모든 레시피 목록 가져오기>
 //RecipeService: 서버나 데이터베이스에서 데이터를 가져오는 역할
-final recipeServiceProvider = Provider((ref) => RecipeService());
+final recipeServiceProvider = Provider((ref) => RecipeRepository());
 
 final recipeViewModelProvider =
     AsyncNotifierProvider<RecipeViewModel, List<Recipe>>(RecipeViewModel.new);
@@ -37,15 +37,15 @@ final authStateProvider = StreamProvider<User?>((ref) {
 
 // AuthService Provider(인증 관련 서비스 제공) : 로그인/로그아웃과 같은 인증 관련 로직
 final authServiceProvider =
-    Provider((ref) => AuthService(auth: ref.watch(authProvider)));
+    Provider((ref) => AuthRepository(auth: ref.watch(authProvider)));
 
 final authRepositoryProvider =
-    Provider((ref) => AuthRepository(auth: ref.watch(authProvider)));
+    Provider((ref) => AuthDataSource(auth: ref.watch(authProvider)));
 // UserRepository Provider(데이터베이스와 상호작용) : Firebase Firestore와 상호작용
 final userRepositoryProvider =
-    Provider((ref) => UserRepository(firestore: FirebaseFirestore.instance));
+    Provider((ref) => UserDataSource(firestore: FirebaseFirestore.instance));
 
-final userServiceProvider = Provider((ref) => UserService(
+final userServiceProvider = Provider((ref) => UserRepository(
       userRepository: ref.read(userRepositoryProvider), // 상태가 변경되어도 다시 읽을 필요 없음
       authRepository: ref.watch(authRepositoryProvider), // 상태가 변경되면 자동으로 반응
     ));
