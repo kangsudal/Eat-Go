@@ -48,12 +48,10 @@ class UserService {
       if (uid == null) {
         throw Exception('사용자가 로그인되어 있지 않습니다.');
       }
-
-      // 2. Firestore에서 사용자 데이터 삭제
-      await userRepository.deleteUserInfo(uid);
-
-      // 3. Firebase Authentication에서 사용자 계정 삭제
+      // 2. Firebase Authentication에서 사용자 계정 삭제
       await authRepository.deleteUserAccount();
+      // 3. Firestore에서 사용자 데이터 삭제
+      await userRepository.deleteUserInfo(uid);
     } catch (e) {
       debugPrint('UserService 오류 발생 - 회원 탈퇴 로직: $e');
       throw Exception(e);
