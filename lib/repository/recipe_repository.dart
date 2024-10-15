@@ -6,7 +6,10 @@ import 'package:eat_go/services/recipe_service.dart';
 import 'package:flutter/cupertino.dart';
 
 class RecipeRepository {
-  final RecipeService _recipeService = RecipeService();
+  final RecipeService _recipeService;
+
+  RecipeRepository({required RecipeService recipeService})
+      : _recipeService = recipeService;
 
   // 레시피 목록을 실시간으로 가져오는 Stream
   Stream<List<Recipe>> getRecipesStream() {

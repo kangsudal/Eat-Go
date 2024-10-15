@@ -27,8 +27,10 @@ import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 
 class RecipeService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore;
   final Uuid uuid = const Uuid();
+
+  RecipeService({required FirebaseFirestore firestore}) : _firestore = firestore;
 
   // Firestore에서 실시간으로 레시피 목록을 가져오는 Stream
   Stream<List<Recipe>> fetchRecipesStream() {
