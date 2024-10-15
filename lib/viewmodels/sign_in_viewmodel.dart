@@ -9,13 +9,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SignInViewModel extends AsyncNotifier<void> {
-  late final AuthRepository authService;
-  late final UserRepository userService;
+  late final AuthRepository authRepository;
+  late final UserRepository userRepository;
 
   @override
   FutureOr<void> build() async {
-    authService = ref.read(authServiceProvider);
-    userService = ref.read(userServiceProvider);
+    authRepository = ref.read(authRepositoryProvider);
+    userRepository = ref.read(userRepositoryProvider);
   }
 
   // Google 로그인 및 사용자 정보 저장
@@ -25,13 +25,13 @@ class SignInViewModel extends AsyncNotifier<void> {
 
       // Google 로그인 처리
       UserCredential? userCredential =
-          await authService.authenticateWithGoogle();
+          await authRepository.authenticateWithGoogle();
 
       // 로그인 성공 시 Firestore에 사용자 정보 저장
       if (userCredential != null) {
         User? user = userCredential.user;
         if (user != null) {
-          await userService.saveUser(user);
+          await userRepository.saveUser(user);
           state = const AsyncValue.data(null); // 로그인 성공 상태
           return true; // 로그인 성공
         }
@@ -50,7 +50,7 @@ class SignInViewModel extends AsyncNotifier<void> {
   Future<void> signOut() async {
     state = const AsyncValue.loading();
     try {
-      await authService.signOut();
+      await authRepository.signOut();
       state = const AsyncValue.data(null); // 로그아웃 성공 시 상태 업데이트
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);

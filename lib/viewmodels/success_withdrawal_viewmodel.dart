@@ -6,11 +6,11 @@ import 'package:eat_go/repository/user_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SuccessWithdrawalViewModel extends AsyncNotifier<OperationResult<bool>> {
-  late final UserRepository _userService;
+  late final UserRepository _userRepository;
 
   @override
   FutureOr<OperationResult<bool>> build() async {
-    _userService = ref.watch(userServiceProvider);
+    _userRepository = ref.watch(userRepositoryProvider);
     return OperationResult.success(false);
   }
   // 상태 초기화 메서드

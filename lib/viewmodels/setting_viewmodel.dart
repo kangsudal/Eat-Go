@@ -7,11 +7,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingViewModel extends AsyncNotifier<OperationResult<bool>> {
-  late final UserRepository _userService;
+  late final UserRepository _userRepository;
 
   @override
   FutureOr<OperationResult<bool>> build() async {
-    _userService = ref.watch(userServiceProvider);
+    _userRepository = ref.watch(userRepositoryProvider);
     return OperationResult.success(false);
   }
 
@@ -21,7 +21,7 @@ class SettingViewModel extends AsyncNotifier<OperationResult<bool>> {
       state = const AsyncValue.loading(); // 로딩 상태로 전환
 
       // Service를 통해 계정 삭제 및 데이터 삭제 처리
-      await _userService.deleteUserAccountAndInfo();
+      await _userRepository.deleteUserAccountAndInfo();
 
       state = AsyncValue.data(OperationResult<bool>.success(true)); // 성공 시 상태 업데이트
     } catch (e, stackTrace) {

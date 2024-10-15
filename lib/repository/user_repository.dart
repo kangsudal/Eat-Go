@@ -16,15 +16,15 @@ import 'package:flutter/cupertino.dart';
   사용자 프로필 관리
  */
 class UserRepository {
-  final UserService userRepository;
-  final AuthService authRepository;
+  final UserService userService;
+  final AuthService authService;
 
-  UserRepository({required this.userRepository, required this.authRepository});
+  UserRepository({required this.userService, required this.authService});
 
   // 사용자 정보 저장
   Future<void> saveUser(User user) async {
     try {
-      await userRepository.saveUserInfo(user);
+      await userService.saveUserInfo(user);
     } catch (e) {
       debugPrint('UserService에서 사용자 정보 저장 오류: $e');
     }
@@ -33,7 +33,7 @@ class UserRepository {
   // 사용자 정보 가져오기
   Future<Map<String, dynamic>?> getUser(String uid) async {
     try {
-      return await userRepository.getUserInfo(uid);
+      return await userService.getUserInfo(uid);
     } catch (e) {
       debugPrint('UserService에서 사용자 정보 로드 오류: $e');
     }
@@ -44,14 +44,14 @@ class UserRepository {
   Future<void> deleteUserAccountAndInfo() async {
     try {
       // 1. 현재 로그인된 사용자의 UID 가져오기
-      String? uid = authRepository.getCurrentUserUid();
+      String? uid = authService.getCurrentUserUid();
       if (uid == null) {
         throw Exception('사용자가 로그인되어 있지 않습니다.');
       }
       // 2. Firebase Authentication에서 사용자 계정 삭제
-      await authRepository.deleteUserAccount();
+      await authService.deleteUserAccount();
       // 3. Firestore에서 사용자 데이터 삭제
-      await userRepository.deleteUserInfo(uid);
+      await userService.deleteUserInfo(uid);
     } catch (e) {
       debugPrint('UserService 오류 발생 - 회원 탈퇴 로직: $e');
       throw Exception(e);

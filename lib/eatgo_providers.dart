@@ -18,7 +18,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //<모든 레시피 목록 가져오기>
 //RecipeService: 서버나 데이터베이스에서 데이터를 가져오는 역할
-final recipeServiceProvider = Provider((ref) => RecipeRepository());
+final recipeRepositoryProvider = Provider((ref) => RecipeRepository());
 
 final recipeViewModelProvider =
     AsyncNotifierProvider<RecipeViewModel, List<Recipe>>(RecipeViewModel.new);
@@ -36,18 +36,18 @@ final authStateProvider = StreamProvider<User?>((ref) {
 });
 
 // AuthService Provider(인증 관련 서비스 제공) : 로그인/로그아웃과 같은 인증 관련 로직
-final authServiceProvider =
+final authRepositoryProvider =
     Provider((ref) => AuthRepository(auth: ref.watch(authProvider)));
 
-final authRepositoryProvider =
+final authServiceProvider =
     Provider((ref) => AuthService(auth: ref.watch(authProvider)));
 // UserRepository Provider(데이터베이스와 상호작용) : Firebase Firestore와 상호작용
-final userRepositoryProvider =
+final userServiceProvider =
     Provider((ref) => UserService(firestore: FirebaseFirestore.instance));
 
-final userServiceProvider = Provider((ref) => UserRepository(
-      userRepository: ref.read(userRepositoryProvider), // 상태가 변경되어도 다시 읽을 필요 없음
-      authRepository: ref.watch(authRepositoryProvider), // 상태가 변경되면 자동으로 반응
+final userRepositoryProvider = Provider((ref) => UserRepository(
+      userService: ref.read(userServiceProvider), // 상태가 변경되어도 다시 읽을 필요 없음
+      authService: ref.watch(authServiceProvider), // 상태가 변경되면 자동으로 반응
     ));
 // UserRepository: 사용자 데이터를 다루는 역할 (예: 사용자 정보 불러오기, 업데이트).
 // AuthRepository: 인증을 처리하는 역할 (예: 로그인, 로그아웃).
