@@ -3,8 +3,6 @@ import 'dart:math';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/animated_text_widget.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
-import 'package:eat_go/screen/restaurant_screen/restaurant_screen.dart';
-import 'package:eat_go/repository//recipe_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

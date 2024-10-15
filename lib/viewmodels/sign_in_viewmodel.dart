@@ -3,8 +3,8 @@ import 'dart:async';
 
 import 'package:eat_go/eatgo_providers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:eat_go/repository//auth_repository.dart';
-import 'package:eat_go/repository//user_repository.dart';
+import 'package:eat_go/repository/auth_repository.dart';
+import 'package:eat_go/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

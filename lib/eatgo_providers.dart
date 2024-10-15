@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/operation_result.dart';
 import 'package:eat_go/model/recipe_model.dart';
-import 'package:eat_go/datasources//auth_data_source.dart';
-import 'package:eat_go/datasources//user_data_source.dart';
-import 'package:eat_go/repository//auth_repository.dart';
-import 'package:eat_go/repository//recipe_repository.dart';
-import 'package:eat_go/repository//user_repository.dart';
+import 'package:eat_go/services/auth_service.dart';
+import 'package:eat_go/services/user_service.dart';
+import 'package:eat_go/repository/auth_repository.dart';
+import 'package:eat_go/repository/recipe_repository.dart';
+import 'package:eat_go/repository/user_repository.dart';
 import 'package:eat_go/viewmodels/recipe_viewmodel.dart';
 import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
 import 'package:eat_go/viewmodels/setting_viewmodel.dart';
@@ -40,10 +40,10 @@ final authServiceProvider =
     Provider((ref) => AuthRepository(auth: ref.watch(authProvider)));
 
 final authRepositoryProvider =
-    Provider((ref) => AuthDataSource(auth: ref.watch(authProvider)));
+    Provider((ref) => AuthService(auth: ref.watch(authProvider)));
 // UserRepository Provider(데이터베이스와 상호작용) : Firebase Firestore와 상호작용
 final userRepositoryProvider =
-    Provider((ref) => UserDataSource(firestore: FirebaseFirestore.instance));
+    Provider((ref) => UserService(firestore: FirebaseFirestore.instance));
 
 final userServiceProvider = Provider((ref) => UserRepository(
       userRepository: ref.read(userRepositoryProvider), // 상태가 변경되어도 다시 읽을 필요 없음

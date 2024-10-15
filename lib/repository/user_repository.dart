@@ -1,6 +1,6 @@
 import 'package:eat_go/model/user_model.dart';
-import 'package:eat_go/datasources//auth_data_source.dart';
-import 'package:eat_go/datasources//user_data_source.dart';
+import 'package:eat_go/services/auth_service.dart';
+import 'package:eat_go/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -16,8 +16,8 @@ import 'package:flutter/cupertino.dart';
   사용자 프로필 관리
  */
 class UserRepository {
-  final UserDataSource userRepository;
-  final AuthDataSource authRepository;
+  final UserService userRepository;
+  final AuthService authRepository;
 
   UserRepository({required this.userRepository, required this.authRepository});
 

@@ -26,7 +26,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 
-class RecipeDataSource {
+class RecipeService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Uuid uuid = const Uuid();
 

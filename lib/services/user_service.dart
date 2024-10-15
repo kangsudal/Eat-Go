@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class UserDataSource {
+class UserService {
   final FirebaseFirestore firestore;
 
-  UserDataSource({required this.firestore});
+  UserService({required this.firestore});
 
   // Firebase에 사용자 정보를 저장하는 메서드
   Future<void> saveUserInfo(User user) async {
