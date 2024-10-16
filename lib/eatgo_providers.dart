@@ -33,9 +33,17 @@ final recipeViewModelProvider =
 //<회원가입/로그인>
 final authProvider = Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 // Firebase Auth의 로그인 상태를 추적하는 Provider
-final authStateProvider = StreamProvider<User?>((ref) {
+final authStateProvider = StreamProvider<User?>((ref) async* {
   final auth = ref.read(authProvider); // FirebaseAuth 인스턴스
-  return auth.authStateChanges().handleError((error) {
+  try {
+    //User 정보 강제로 새로고침(콘솔에서 강제삭제한경우 남아있기때문)
+    if (auth.currentUser != null) {
+      await auth.currentUser?.reload();
+    }
+  } catch (e) {
+    debugPrint('User 정보 reload 하는데 에러 발생: $e');
+  }
+  yield* auth.authStateChanges().handleError((error) {
     debugPrint("Error in authStateChanges: $error");
   }); // 로그인 상태 변경 스트림 반환
 });
