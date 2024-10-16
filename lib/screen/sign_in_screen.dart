@@ -12,7 +12,6 @@ class SignInScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final signInState = ref.watch(signInViewModelProvider);
     final signInViewModel = ref.read(signInViewModelProvider.notifier);
 
     return Stack(
@@ -156,13 +155,6 @@ class SignInScreen extends ConsumerWidget {
             ),
           ),
         ),
-        if (signInState is AsyncLoading)
-          Container(
-            color: Colors.black.withOpacity(0.5), // 반투명 배경
-            child: const Center(
-              child: CircularProgressIndicator(), // 중앙에 로딩 인디케이터
-            ),
-          ),
       ],
     );
   }

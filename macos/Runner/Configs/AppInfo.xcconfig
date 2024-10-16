@@ -8,7 +8,7 @@
 PRODUCT_NAME = eat_go
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.kangsudal.eatGo
+PRODUCT_BUNDLE_IDENTIFIER = com.kangsudal.eat-go
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2024 com.kangsudal. All rights reserved.
