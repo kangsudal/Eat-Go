@@ -40,7 +40,35 @@ class SignInViewModel extends AsyncNotifier<void> {
           'Google 로그인 실패: 사용자 정보 없음', StackTrace.current); // 실패 상태 설정
       return false;
     } catch (e, stackTrace) {
-      debugPrint('Google 로그인 중 오류 발생: $e');
+      debugPrint('SignInViewModel 오류 발생 - Google 로그인 중 오류 발생: $e');
+      state = AsyncValue.error(e, stackTrace); // 에러 상태로 전환
+      return false;
+    }
+  }
+
+  // Google 로그인 및 사용자 정보 저장
+  Future<bool> signInWithApple() async {
+    try {
+      state = const AsyncValue.loading();
+
+      // Apple 로그인 처리
+      UserCredential? userCredentila =
+          await authRepository.authenticateWithApple();
+
+      //로그인 성공 시 Firestore에 사용자 정보 저장
+      if (userCredentila != null) {
+        User? user = userCredentila.user;
+        if (user != null) {
+          await userRepository.saveUser(user);
+          state = const AsyncValue.data(null); // 로그인 성공 상태
+          return true;
+        }
+      }
+      state = AsyncValue.error(
+          'Apple 로그인 실패: 사용자 정보 없음', StackTrace.current);
+      return false;
+    } catch (e, stackTrace) {
+      debugPrint('SignInViewModel 오류 발생 - Apple 로그인 중 오류 발생: $e');
       state = AsyncValue.error(e, stackTrace); // 에러 상태로 전환
       return false;
     }

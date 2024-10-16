@@ -123,7 +123,7 @@ class SignInScreen extends ConsumerWidget {
                       ),
                     ),
                     onTap: () async {
-/*                    try {
+                    try {
                       bool success = await signInViewModel.signInWithApple();
                       if (success) {
                         if (context.mounted) {
@@ -137,19 +137,19 @@ class SignInScreen extends ConsumerWidget {
                       }
                     } on FirebaseAuthException catch (error) {
                       debugPrint(
-                          'Google 로그인 실패(FirebaseAuthException): ${error.toString()}');
+                          'Apple 로그인 실패(FirebaseAuthException): ${error.toString()}');
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('인증 실패하였습니다.')));
                       }
                     } catch (error) {
                       debugPrint(
-                          'Google 로그인 실패(FirebaseAuthException 제외): ${error.toString()}');
+                          'Apple 로그인 실패(FirebaseAuthException 제외): ${error.toString()}');
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('인증 실패하였습니다.')));
                       }
-                    }*/
+                    }
                     },
                   ),
               ],

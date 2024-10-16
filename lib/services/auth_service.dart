@@ -60,26 +60,25 @@ class AuthService {
   }
 
   // Apple 로그인 처리
-/*  Future<UserCredential?> authenticateWithApple() async {
+  Future<UserCredential?> authenticateWithApple() async {
     try {
       final appleProvider = AppleAuthProvider();
       final UserCredential authResult;
       if (kIsWeb) {
-        authResult = await FirebaseAuth.instance.signInWithPopup(appleProvider);
+        authResult = await auth.signInWithPopup(appleProvider);
       } else {
         authResult =
-            await FirebaseAuth.instance.signInWithProvider(appleProvider);
+            await auth.signInWithProvider(appleProvider);
       }
       return authResult;
     } catch (e) {
       debugPrint('AuthRepository 오류 발생 - Apple 로그인 실패: $e');
       return null;
     }
-  }*/
+  }
 
-  // Firebase 로그아웃 및 토큰 삭제
+  // Firebase 로그아웃
   Future<void> signOut() async {
     await auth.signOut();
-    await GoogleSignIn().signOut();
   }
 }

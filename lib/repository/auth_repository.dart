@@ -11,6 +11,10 @@ class AuthRepository {
     return await _authService.authenticateWithGoogle();
   }
 
+  Future<UserCredential?> authenticateWithApple() async {
+    return await _authService.authenticateWithApple();
+  }
+
   Future<void> signOut() async {
     await _authService.signOut();
   }
