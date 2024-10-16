@@ -15,12 +15,17 @@ class RestaurantScreen extends StatelessWidget {
     int itemCount = 10;
     return Scaffold(
       backgroundColor: Colors.greenAccent,
-      body: Stack(
-        children: [
-          KeywordSuggestionCard(),
-          RestaurantScreenBackButton(),
-          ScrollableCards(itemCount: itemCount),
-        ],
+
+      extendBodyBehindAppBar: true,
+      body: SafeArea(
+        bottom: false,
+        child: Stack(
+          children: [
+            KeywordSuggestionCard(),
+            RestaurantScreenBackButton(),
+            ScrollableCards(itemCount: itemCount),
+          ],
+        ),
       ),
     );
   }

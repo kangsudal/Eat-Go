@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -57,6 +58,24 @@ class AuthService {
       return null;
     }
   }
+
+  // Apple 로그인 처리
+/*  Future<UserCredential?> authenticateWithApple() async {
+    try {
+      final appleProvider = AppleAuthProvider();
+      final UserCredential authResult;
+      if (kIsWeb) {
+        authResult = await FirebaseAuth.instance.signInWithPopup(appleProvider);
+      } else {
+        authResult =
+            await FirebaseAuth.instance.signInWithProvider(appleProvider);
+      }
+      return authResult;
+    } catch (e) {
+      debugPrint('AuthRepository 오류 발생 - Apple 로그인 실패: $e');
+      return null;
+    }
+  }*/
 
   // Firebase 로그아웃 및 토큰 삭제
   Future<void> signOut() async {

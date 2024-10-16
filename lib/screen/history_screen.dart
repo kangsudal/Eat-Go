@@ -238,7 +238,7 @@ class Top3Cards extends StatelessWidget {
             context.go('/home/history/recipe_detail/aaaaaaa');
           },
           child: Container(
-            color: Colors.red,
+            color: Colors.transparent,
             margin: EdgeInsets.only(bottom: 5),
             child: Top3Card(),
           ),
@@ -249,7 +249,7 @@ class Top3Cards extends StatelessWidget {
             context.go('/home/history/recipe_detail/aaaaaaa');
           },
           child: Container(
-            color: Colors.greenAccent,
+            color: Colors.transparent,
             margin: EdgeInsets.only(bottom: 5),
             // color: Colors.purple,
             child: Top3Card(),
