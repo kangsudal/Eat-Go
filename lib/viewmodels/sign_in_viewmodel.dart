@@ -73,16 +73,4 @@ class SignInViewModel extends AsyncNotifier<void> {
       return false;
     }
   }
-
-  // 로그아웃 처리
-  Future<void> signOut() async {
-    state = const AsyncValue.loading();
-    try {
-      await authRepository.signOut();
-      state = const AsyncValue.data(null); // 로그아웃 성공 시 상태 업데이트
-    } catch (e, stackTrace) {
-      state = AsyncValue.error(e, stackTrace);
-      debugPrint('로그아웃 중 오류 발생: $e');
-    }
-  }
 }

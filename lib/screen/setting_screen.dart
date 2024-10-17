@@ -17,11 +17,11 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userState = ref.watch(settingViewModelProvider);
-    final userViewModel = ref.read(settingViewModelProvider.notifier);
+    final settingViewState = ref.watch(settingViewModelProvider);
+    final settingViewModel = ref.read(settingViewModelProvider.notifier);
     // 상태 변화에 따른 처리
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      userState.when(
+      settingViewState.when(
         loading: () {
           // 로딩 중에는 별도의 처리 없이 CircularProgressIndicator를 표시함
         },
@@ -87,13 +87,15 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                       children: [
                         TextButton(
                           child: const Text('로그아웃'),
-                          onPressed: () {},
+                          onPressed: () async {
+                            await settingViewModel.signOut();
+                          },
                         ),
                         TextButton(
                           child: const Text('탈퇴하기'),
                           onPressed: () async {
                             // 계정 및 데이터 삭제
-                            await userViewModel.deleteUserAccountAndData();
+                            await settingViewModel.deleteUserAccountAndData();
                           },
                         ),
                       ],
@@ -105,7 +107,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           ),
           // 로딩 상태 처리 (Stack을 사용해 전체 화면에 CircularProgressIndicator 추가)
         ),
-        if (userState is AsyncLoading)
+        if (settingViewState is AsyncLoading)
           Container(
             color: Colors.black.withOpacity(0.5), // 반투명 배경
             child: const Center(

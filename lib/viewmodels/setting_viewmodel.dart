@@ -2,15 +2,18 @@ import 'dart:async';
 
 import 'package:eat_go/eatgo_providers.dart';
 import 'package:eat_go/model/operation_result.dart';
+import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingViewModel extends AsyncNotifier<OperationResult<bool>> {
+  late final AuthRepository _authRepository;
   late final UserRepository _userRepository;
 
   @override
   FutureOr<OperationResult<bool>> build() async {
+    _authRepository = ref.read(authRepositoryProvider);
     _userRepository = ref.watch(userRepositoryProvider);
     return OperationResult.success(false);
   }
@@ -28,6 +31,18 @@ class SettingViewModel extends AsyncNotifier<OperationResult<bool>> {
       debugPrint('SettingViewModel 오류 발생 - 회원 탈퇴 중 오류: $e');
       state = AsyncValue.error(
           OperationResult<bool>.failure(e.toString()), stackTrace); // 에러 발생 시 상태 업데이트
+    }
+  }
+
+  // 로그아웃 처리
+  Future<void> signOut() async {
+    state = const AsyncValue.loading();
+    try {
+      await _authRepository.signOut();
+      state = AsyncValue.data(OperationResult<bool>.success(true)); // 로그아웃 성공 시 상태 업데이트
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+      debugPrint('로그아웃 중 오류 발생: $e');
     }
   }
 }
