@@ -1,4 +1,3 @@
-import 'package:eat_go/eatgo_providers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,19 +13,6 @@ class SuccessWithdrawalScreen extends ConsumerStatefulWidget {
 
 class _SuccessWithdrawalScreenState
     extends ConsumerState<SuccessWithdrawalScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    // 페이지가 로드된 후 상태 초기화
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        final withdrawalViewModel = ref.read(withdrawalViewModelProvider.notifier);
-        withdrawalViewModel.resetState(); // 상태 초기화
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

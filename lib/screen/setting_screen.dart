@@ -1,4 +1,5 @@
 import 'package:eat_go/eatgo_providers.dart';
+import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,35 +20,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
   Widget build(BuildContext context) {
     final settingViewState = ref.watch(settingViewModelProvider);
     final settingViewModel = ref.read(settingViewModelProvider.notifier);
-    // 상태 변화에 따른 처리
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      settingViewState.when(
-        loading: () {
-          // 로딩 중에는 별도의 처리 없이 CircularProgressIndicator를 표시함
-        },
-        error: (error, stackTrace) {
-          debugPrint('SettingScreen 오류 발생 - 회원 탈퇴 화면-1: $error');
-          // 에러 발생 시 SnackBar 표시
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('오류가 발생했습니다.')),
-          );
-        },
-        data: (result) {
-          if (result.data == true) {
-            // 성공 시 화면 이동
-            context.go('/success_withdrawal');
-          } else if (result.data == false) {
-            // 작업 실패 시 SnackBar 표시
-            if (result.error != null && result.error!.isNotEmpty) {
-              debugPrint('Screen 오류 발생 - 회원 탈퇴 화면-2: ${result.error}');
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('오류가 발생했습니다.')),
-              );
-            }
-          }
-        },
-      );
-    });
+
     return Stack(
       children: [
         Scaffold(
@@ -56,27 +29,51 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                30,
-                30,
-                30,
-                30,
-              ),
+              padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ListTile(
-                    title: Text('푸쉬 알림설정'),
-                    trailing: CupertinoSwitch(
-                      value: value,
-                      onChanged: (isTrue) {
-                        setState(() {
-                          value = isTrue;
-                        });
-                      },
-                      activeColor: pointColor,
-                      trackColor: Colors.black,
-                    ),
+                  settingViewState.when(
+                    loading: () => const CircularProgressIndicator(),
+                    error: (error, stackTrace) {
+                      debugPrint('SettingScreen 오류 발생 - 회원 설정 화면: $error');
+                      // 에러 발생 시 SnackBar 표시
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('오류가 발생했습니다.')),
+                      );
+                      return const Text('오류 발생');
+                    },
+                    data: (EatGoUser? user) {
+                      if (user == null) {
+                        debugPrint(
+                            'SettingScreen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
+                        return const Text('로그인된 사용자가 없습니다.');
+                      }
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text('안녕하세요! ${user.displayName}님.'),
+                          ),
+                          ListTile(
+                            leading: Text('Email:'),
+                            title: FittedBox(fit: BoxFit.scaleDown,child: Text(user.email),),
+                          ),
+                          ListTile(
+                            title: const Text('푸쉬 알림설정'),
+                            trailing: CupertinoSwitch(
+                              value: value,
+                              onChanged: (isTrue) {
+                                setState(() {
+                                  value = isTrue;
+                                });
+                              },
+                              activeColor: pointColor,
+                              trackColor: Colors.black,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   const Divider(
                     thickness: 1,
@@ -94,8 +91,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                         TextButton(
                           child: const Text('탈퇴하기'),
                           onPressed: () async {
-                            // 계정 및 데이터 삭제
-                            await settingViewModel.deleteUserAccountAndData();
+                            handleWithdrawal(context);
                           },
                         ),
                       ],
@@ -116,5 +112,26 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           ),
       ],
     );
+  }
+
+  void handleWithdrawal(BuildContext context) async {
+    final settingViewModel = ref.read(settingViewModelProvider.notifier);
+
+    // 계정 및 데이터 삭제
+    final result = await settingViewModel.deleteUserAccountAndData();
+
+    if (result) {
+      // 사용자 로드 성공 시 화면 이동
+      if (context.mounted) {
+        context.go('/success_withdrawal');
+      }
+    } else if (result == false) {
+      debugPrint('Screen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('오류가 발생했습니다.')),
+        );
+      }
+    }
   }
 }

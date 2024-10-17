@@ -7,6 +7,10 @@ class AuthRepository {
 
   AuthRepository({required authService}) : _authService = authService;
 
+  String? getCurrentUserUid() {
+    return _authService.getCurrentUserUid();
+  }
+
   Future<UserCredential?> authenticateWithGoogle() async {
     return await _authService.authenticateWithGoogle();
   }

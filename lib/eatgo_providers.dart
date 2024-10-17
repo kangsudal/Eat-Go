@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/operation_result.dart';
 import 'package:eat_go/model/recipe_model.dart';
+import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/services/auth_service.dart';
 import 'package:eat_go/services/recipe_service.dart';
 import 'package:eat_go/services/user_service.dart';
@@ -73,8 +74,4 @@ final signInViewModelProvider =
 //<탈퇴>
 // SettingViewModel Provider (UserService 주입)
 final settingViewModelProvider =
-    AsyncNotifierProvider<SettingViewModel, OperationResult<bool>>(
-        SettingViewModel.new);
-final withdrawalViewModelProvider =
-    AsyncNotifierProvider<SuccessWithdrawalViewModel, OperationResult<bool>>(
-        SuccessWithdrawalViewModel.new);
+    AsyncNotifierProvider<SettingViewModel, EatGoUser?>(SettingViewModel.new);
