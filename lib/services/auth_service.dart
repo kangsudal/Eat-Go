@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthService {
   final FirebaseAuth auth;
@@ -62,15 +63,28 @@ class AuthService {
   // Apple 로그인 처리
   Future<UserCredential?> authenticateWithApple() async {
     try {
-      final appleProvider = AppleAuthProvider();
-      final UserCredential authResult;
-      if (kIsWeb) {
-        authResult = await auth.signInWithPopup(appleProvider);
-      } else {
-        authResult =
-            await auth.signInWithProvider(appleProvider);
-      }
-      return authResult;
+      final AuthorizationCredentialAppleID appleCredential =
+          await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          // AppleIDAuthorizationScopes.fullName,
+        ], //scopes의 내용으로 user의 email, fullName을 선택 동의로 받아올수 있음
+      );
+
+      // Apple의 인증 자격(credential)을 기반으로 OAuth 인증 자격을 생성
+      // 'apple.com'은 OAuth 공급자로, Apple OAuth 인증을 나타냄
+      // OAuth 인증 자격(OAuth Credential)은 OAuth 프로세스에서 사용자의 신원과 권한을 증명하는 데 사용되는 토큰을 포함하는 객체.
+      // 이를 통해 사용자는 비밀번호를 제공하지 않고도 서비스에 로그인하거나 권한을 부여할 수 있음
+      final OAuthCredential credential = OAuthProvider('apple.com').credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      // Firebase Authentication에 위에서 생성한 OAuthCredential을 전달하여 로그인 처리
+      final UserCredential authResult =
+          await auth.signInWithCredential(credential);
+
+      return authResult; // 로그인 처리 후, 로그인된 사용자의 UserCredential 객체를 반환
     } catch (e) {
       debugPrint('AuthRepository 오류 발생 - Apple 로그인 실패: $e');
       return null;

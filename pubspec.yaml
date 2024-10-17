@@ -44,6 +44,7 @@ dependencies:
   url_strategy: ^0.3.0 # web의 url에서 #(hash tag)를 없애기 위해 사용
   flutter_native_splash: ^2.4.1
 
+  sign_in_with_apple: ^6.1.3
   google_sign_in: ^6.2.1
   flutter_image_compress: ^2.3.0 # 이미지 압축
 

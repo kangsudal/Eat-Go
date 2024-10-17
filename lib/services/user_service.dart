@@ -16,7 +16,7 @@ class UserService {
         // 최초 로그인일 때만 Firestore에 사용자 정보 저장
         await userDoc.set({
           'uid': user.uid,
-          'displayName': user.displayName,
+          'displayName': user.email!.split("@")[0], // user.displayName
           'email': user.email,
           'supportAmount': 0, //후원 비용
           'isPremium': false, //프리미엄 상태 FieldValue.serverTimestamp()
