@@ -1,4 +1,4 @@
-import 'package:eat_go/model/user_model.dart';
+//UserRepository: 사용자 정보(Firebase DB에서 사용자 데이터 가져오기, 업데이트 등)를 관리.
 import 'package:eat_go/services/auth_service.dart';
 import 'package:eat_go/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,16 +17,15 @@ import 'package:flutter/cupertino.dart';
  */
 class UserRepository {
   final UserService userService;
-  final AuthService authService;
 
-  UserRepository({required this.userService, required this.authService});
+  UserRepository({required this.userService});
 
   // 사용자 정보 저장
   Future<void> saveUser(User user) async {
     try {
       await userService.saveUserInfo(user);
     } catch (e) {
-      debugPrint('UserService에서 사용자 정보 저장 오류: $e');
+      debugPrint('UserRepository에서 사용자 정보 저장 오류: $e');
     }
   }
 
@@ -35,25 +34,18 @@ class UserRepository {
     try {
       return await userService.getUserInfo(uid);
     } catch (e) {
-      debugPrint('UserService에서 사용자 정보 로드 오류: $e');
+      debugPrint('UserRepository에서 사용자 정보 로드 오류: $e');
     }
     return null;
   }
 
-  // 사용자 계정 삭제와 Firestore 데이터 삭제
-  Future<void> deleteUserAccountAndInfo() async {
+  // 사용자 Firestore 데이터 삭제
+  Future<void> deleteUserData(String uid) async {
     try {
-      // 1. 현재 로그인된 사용자의 UID 가져오기
-      String? uid = authService.getCurrentUserUid();
-      if (uid == null) {
-        throw Exception('사용자가 로그인되어 있지 않습니다.');
-      }
-      // 2. Firebase Authentication에서 사용자 계정 삭제
-      await authService.deleteUserAccount();
-      // 3. Firestore에서 사용자 데이터 삭제
+      // Firestore에서 사용자 데이터 삭제
       await userService.deleteUserInfo(uid);
     } catch (e) {
-      debugPrint('UserService 오류 발생 - 회원 탈퇴 로직: $e');
+      debugPrint('UserRepository 오류 발생 - 회원 탈퇴 로직: $e');
       throw Exception(e);
     }
   }

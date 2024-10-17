@@ -22,10 +22,15 @@ class SettingViewModel extends AsyncNotifier<EatGoUser?> {
   // 사용자 계정 삭제 및 데이터 삭제
   Future<bool> deleteUserAccountAndData() async {
     try {
-      // Service를 통해 계정 삭제 및 데이터 삭제 처리
-      await _userRepository.deleteUserAccountAndInfo();
+      // 1. 현재 로그인된 사용자 UID 가져오기
+      String? uid = _authRepository.getCurrentUserUid();
+      if (uid == null) return false;
+      // 2. 계정 삭제
+      await _authRepository.deleteUserAccount();
+      // 3. Firestore에서 사용자 데이터 삭제
+      await _userRepository.deleteUserData(uid);
       return true;
-    } catch (e, stackTrace) {
+    } catch (e) {
       debugPrint('SettingViewModel 오류 발생 - 회원 탈퇴 중 오류: $e');
       return false;
     }
@@ -49,7 +54,9 @@ class SettingViewModel extends AsyncNotifier<EatGoUser?> {
       Map<String, dynamic>? userMap =
           await _userRepository.getUser(currentUserUid);
       return EatGoUser.fromJson(userMap!);
+    } else {
+      debugPrint('SettingViewModel 오류 발생 - getUser()값이 null로 반환');
+      return null;
     }
-    return null;
   }
 }
