@@ -122,33 +122,33 @@ class SignInScreen extends ConsumerWidget {
                       ),
                     ),
                     onTap: () async {
-                    try {
-                      bool success = await signInViewModel.signInWithApple();
-                      if (success) {
-                        if (context.mounted) {
-                          context.go("/home");
+                      try {
+                        bool success = await signInViewModel.signInWithApple();
+                        if (success) {
+                          if (context.mounted) {
+                            context.go("/home");
+                          }
+                          return;
                         }
-                        return;
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('인증 실패하였습니다.')));
+                        }
+                      } on FirebaseAuthException catch (error) {
+                        debugPrint(
+                            'Apple 로그인 실패(FirebaseAuthException): ${error.toString()}');
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('인증 실패하였습니다.')));
+                        }
+                      } catch (error) {
+                        debugPrint(
+                            'Apple 로그인 실패(FirebaseAuthException 제외): ${error.toString()}');
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('인증 실패하였습니다.')));
+                        }
                       }
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('인증 실패하였습니다.')));
-                      }
-                    } on FirebaseAuthException catch (error) {
-                      debugPrint(
-                          'Apple 로그인 실패(FirebaseAuthException): ${error.toString()}');
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('인증 실패하였습니다.')));
-                      }
-                    } catch (error) {
-                      debugPrint(
-                          'Apple 로그인 실패(FirebaseAuthException 제외): ${error.toString()}');
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('인증 실패하였습니다.')));
-                      }
-                    }
                     },
                   ),
               ],

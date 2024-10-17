@@ -32,7 +32,9 @@ mixin _$EatGoUser {
       throw _privateConstructorUsedError; // 사용자가 북마크한 레시피 목록
   List<AdoptedRecipe> get adoptedRecipes =>
       throw _privateConstructorUsedError; // 사용자가 채택한 레시피 목록
-  List<RecipeReport> get reportedRecipes => throw _privateConstructorUsedError;
+  List<RecipeReport> get reportedRecipes =>
+      throw _privateConstructorUsedError; // 사용자 신고한 레시피 목록, 목록에서 차단해주기
+  bool get pushNotificationEnabled => throw _privateConstructorUsedError;
 
   /// Serializes this EatGoUser to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -58,7 +60,8 @@ abstract class $EatGoUserCopyWith<$Res> {
       int premiumExpiration,
       List<Bookmark> bookmarks,
       List<AdoptedRecipe> adoptedRecipes,
-      List<RecipeReport> reportedRecipes});
+      List<RecipeReport> reportedRecipes,
+      bool pushNotificationEnabled});
 }
 
 /// @nodoc
@@ -85,6 +88,7 @@ class _$EatGoUserCopyWithImpl<$Res, $Val extends EatGoUser>
     Object? bookmarks = null,
     Object? adoptedRecipes = null,
     Object? reportedRecipes = null,
+    Object? pushNotificationEnabled = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -123,6 +127,10 @@ class _$EatGoUserCopyWithImpl<$Res, $Val extends EatGoUser>
           ? _value.reportedRecipes
           : reportedRecipes // ignore: cast_nullable_to_non_nullable
               as List<RecipeReport>,
+      pushNotificationEnabled: null == pushNotificationEnabled
+          ? _value.pushNotificationEnabled
+          : pushNotificationEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -144,7 +152,8 @@ abstract class _$$EatGoUserImplCopyWith<$Res>
       int premiumExpiration,
       List<Bookmark> bookmarks,
       List<AdoptedRecipe> adoptedRecipes,
-      List<RecipeReport> reportedRecipes});
+      List<RecipeReport> reportedRecipes,
+      bool pushNotificationEnabled});
 }
 
 /// @nodoc
@@ -169,6 +178,7 @@ class __$$EatGoUserImplCopyWithImpl<$Res>
     Object? bookmarks = null,
     Object? adoptedRecipes = null,
     Object? reportedRecipes = null,
+    Object? pushNotificationEnabled = null,
   }) {
     return _then(_$EatGoUserImpl(
       uid: null == uid
@@ -207,6 +217,10 @@ class __$$EatGoUserImplCopyWithImpl<$Res>
           ? _value._reportedRecipes
           : reportedRecipes // ignore: cast_nullable_to_non_nullable
               as List<RecipeReport>,
+      pushNotificationEnabled: null == pushNotificationEnabled
+          ? _value.pushNotificationEnabled
+          : pushNotificationEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -223,7 +237,8 @@ class _$EatGoUserImpl implements _EatGoUser {
       required this.premiumExpiration,
       required final List<Bookmark> bookmarks,
       required final List<AdoptedRecipe> adoptedRecipes,
-      required final List<RecipeReport> reportedRecipes})
+      required final List<RecipeReport> reportedRecipes,
+      this.pushNotificationEnabled = true})
       : _bookmarks = bookmarks,
         _adoptedRecipes = adoptedRecipes,
         _reportedRecipes = reportedRecipes;
@@ -277,9 +292,14 @@ class _$EatGoUserImpl implements _EatGoUser {
     return EqualUnmodifiableListView(_reportedRecipes);
   }
 
+// 사용자 신고한 레시피 목록, 목록에서 차단해주기
+  @override
+  @JsonKey()
+  final bool pushNotificationEnabled;
+
   @override
   String toString() {
-    return 'EatGoUser(uid: $uid, displayName: $displayName, email: $email, supportAmount: $supportAmount, isPremium: $isPremium, premiumExpiration: $premiumExpiration, bookmarks: $bookmarks, adoptedRecipes: $adoptedRecipes, reportedRecipes: $reportedRecipes)';
+    return 'EatGoUser(uid: $uid, displayName: $displayName, email: $email, supportAmount: $supportAmount, isPremium: $isPremium, premiumExpiration: $premiumExpiration, bookmarks: $bookmarks, adoptedRecipes: $adoptedRecipes, reportedRecipes: $reportedRecipes, pushNotificationEnabled: $pushNotificationEnabled)';
   }
 
   @override
@@ -302,7 +322,10 @@ class _$EatGoUserImpl implements _EatGoUser {
             const DeepCollectionEquality()
                 .equals(other._adoptedRecipes, _adoptedRecipes) &&
             const DeepCollectionEquality()
-                .equals(other._reportedRecipes, _reportedRecipes));
+                .equals(other._reportedRecipes, _reportedRecipes) &&
+            (identical(
+                    other.pushNotificationEnabled, pushNotificationEnabled) ||
+                other.pushNotificationEnabled == pushNotificationEnabled));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -317,7 +340,8 @@ class _$EatGoUserImpl implements _EatGoUser {
       premiumExpiration,
       const DeepCollectionEquality().hash(_bookmarks),
       const DeepCollectionEquality().hash(_adoptedRecipes),
-      const DeepCollectionEquality().hash(_reportedRecipes));
+      const DeepCollectionEquality().hash(_reportedRecipes),
+      pushNotificationEnabled);
 
   /// Create a copy of EatGoUser
   /// with the given fields replaced by the non-null parameter values.
@@ -345,7 +369,8 @@ abstract class _EatGoUser implements EatGoUser {
       required final int premiumExpiration,
       required final List<Bookmark> bookmarks,
       required final List<AdoptedRecipe> adoptedRecipes,
-      required final List<RecipeReport> reportedRecipes}) = _$EatGoUserImpl;
+      required final List<RecipeReport> reportedRecipes,
+      final bool pushNotificationEnabled}) = _$EatGoUserImpl;
 
   factory _EatGoUser.fromJson(Map<String, dynamic> json) =
       _$EatGoUserImpl.fromJson;
@@ -368,7 +393,9 @@ abstract class _EatGoUser implements EatGoUser {
   @override
   List<AdoptedRecipe> get adoptedRecipes; // 사용자가 채택한 레시피 목록
   @override
-  List<RecipeReport> get reportedRecipes;
+  List<RecipeReport> get reportedRecipes; // 사용자 신고한 레시피 목록, 목록에서 차단해주기
+  @override
+  bool get pushNotificationEnabled;
 
   /// Create a copy of EatGoUser
   /// with the given fields replaced by the non-null parameter values.

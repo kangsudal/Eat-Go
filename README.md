@@ -119,6 +119,7 @@ classDiagram
         List~Bookmark~ bookmarks
         List~AdoptedRecipe~ adoptedRecipes
         List~RecipeReport~ reportedRecipes
+        bool pushNotificationEnabled
     }
 
     class ViewRecord {

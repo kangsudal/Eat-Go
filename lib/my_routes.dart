@@ -1,5 +1,6 @@
 import 'package:eat_go/eatgo_providers.dart';
 import 'package:eat_go/screen/about_this_app_screen.dart';
+import 'package:eat_go/screen/admin_screen.dart';
 import 'package:eat_go/screen/all_recipe_list_screen.dart';
 import 'package:eat_go/screen/success_withdrawal_screen.dart';
 import 'package:eat_go/screen/bookmark_screen.dart';
@@ -13,6 +14,7 @@ import 'package:eat_go/screen/setting_screen.dart';
 import 'package:eat_go/screen/sign_in_screen.dart';
 import 'package:eat_go/screen/yummy_treat_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -42,8 +44,12 @@ final myRouterProvider = Provider<GoRouter>((ref) {
   );
 
   final router = GoRouter(
-    initialLocation: '/loading',
+    initialLocation: '/loading',//'/admin',//
     redirect: (context, state) {
+      // if (kDebugMode) {
+      //   // 디버깅 모드에서는 항상 /admin으로 접근 가능하게 설정
+      //   return null;
+      // }
       // debugPrint('GoRouter redirect called, location: ${state.matchedLocation}');
       // debugPrint('authState isLoading: ${authState.isLoading}');
       // debugPrint('authState data: ${authState.asData?.value?.email}');
@@ -170,6 +176,10 @@ final myRouterProvider = Provider<GoRouter>((ref) {
           backgroundColor: Colors.red,
           body: Center(child: CircularProgressIndicator()),
         ),
+      ),
+      GoRoute(
+        path: '/admin',
+        builder: (BuildContext context, GoRouterState state) => AdminScreen(),
       ),
     ],
     errorBuilder: (context, state) =>
