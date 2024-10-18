@@ -61,7 +61,13 @@ class SettingViewModel extends AsyncNotifier<EatGoUser?> {
       if (currentUserUid != null) {
         Map<String, dynamic>? userMap =
             await _userRepository.getUser(currentUserUid);
-        EatGoUser user = EatGoUser.fromJson(userMap!);
+        // Firestore에서 사용자 데이터를 가져오지 못한 경우
+        if (userMap == null) {
+          state = AsyncValue.error('사용자 데이터를 가져올 수 없습니다.', StackTrace.current);
+          debugPrint('SettingViewModel 오류 발생 - userMap이 null로 반환되었습니다.');
+          return null;
+        }
+        EatGoUser user = EatGoUser.fromJson(userMap);
         state = AsyncValue.data(user);
         return user;
       } else {

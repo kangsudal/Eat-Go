@@ -81,8 +81,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                       },
                       data: (EatGoUser? user) {
                         if (user == null) {
-                          debugPrint(
-                              'SettingScreen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
+                          // debugPrint(
+                          //     'SettingScreen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
                           return const Text('로그인된 사용자가 없습니다.');
                         }
                         return Column(
@@ -167,12 +167,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                           ),
                           TextButton(
                             child: const Text('탈퇴하기'),
-                            onPressed: () async {
-                              try{
-                                handleWithdrawal(context);
-                              }catch(e){
-                                debugPrint('SettingScreen - $e');
-                              }
+                            onPressed: () {
+                              handleWithdrawal();
                             },
                           ),
                         ],
@@ -186,7 +182,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
           ),
           if (settingViewState is AsyncLoading)
             Container(
-              color: Colors.black.withOpacity(0.5), // 반투명 배경
+              color: Colors.white.withOpacity(1), // 반투명 배경
               child: const Center(
                 child: CircularProgressIndicator(), // 중앙에 로딩 인디케이터
               ),
@@ -196,7 +192,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
     );
   }
 
-  void handleWithdrawal(BuildContext context) async {
+  void handleWithdrawal() async {
     final settingViewModel = ref.read(settingViewModelProvider.notifier);
     // 페이지가 닫히기 전에 상태를 복원(저장안하고 떠났을때)
     final currentUser = ref.read(settingViewModelProvider).asData?.value;
@@ -204,23 +200,25 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
     if (originalUser != null &&
         currentUser != null &&
         currentUser != originalUser) {
+      debugPrint('aaa');
       // 만약 저장되지 않은 변경사항이 있다면, 수정 전 원래 상태로 되돌림
       settingViewModel.resetToOriginal(originalUser);
-      try {
-        // 계정 및 데이터 삭제
-        final result = await settingViewModel.deleteUserAccountAndData();
+    }
+    try {
+      // 계정 및 데이터 삭제
+      final result = await settingViewModel.deleteUserAccountAndData();
 
-        if (result == false) {
-          debugPrint('Screen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
-          if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('오류가 발생했습니다.')),
-            );
-          }
+      if (result == false) {
+        debugPrint('Screen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('오류가 발생했습니다.')),
+          );
         }
-      } catch (e) {
-        settingViewModel.resetToOriginal(originalUser);
       }
+    } catch (e) {
+      settingViewModel.resetToOriginal(originalUser);
+      debugPrint('SettingScreen 오류 발 생 - 계정 삭제 실패 : $e');
     }
   }
 }
