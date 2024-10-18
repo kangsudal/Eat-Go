@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eat_go/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 class UserService {
   final FirebaseFirestore firestore;
@@ -48,6 +50,20 @@ class UserService {
       await firestore.collection('users').doc(uid).delete();
     } catch (e) {
       throw Exception('사용자 데이터 삭제 중 오류 발생: $e');
+    }
+  }
+
+  Future<bool> updateUserInfo({required EatGoUser updatedUser}) async {
+    try {
+      // Firestore에서 uid로 저장된 사용자 문서 삭제
+      await firestore
+          .collection('users')
+          .doc(updatedUser.uid)
+          .update(updatedUser.toJson());
+      return true;
+    } catch (e) {
+      debugPrint('UserService - 사용자 데이터 업데이트 중 오류 발생: $e');
+      return false;
     }
   }
 }

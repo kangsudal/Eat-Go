@@ -1,4 +1,5 @@
 //UserRepository: 사용자 정보(Firebase DB에서 사용자 데이터 가져오기, 업데이트 등)를 관리.
+import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/services/auth_service.dart';
 import 'package:eat_go/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -47,6 +48,19 @@ class UserRepository {
     } catch (e) {
       debugPrint('UserRepository 오류 발생 - 회원 탈퇴 로직: $e');
       throw Exception(e);
+    }
+  }
+
+  Future<bool> updateUserData({
+    required EatGoUser updatedUser,
+  }) async {
+    try {
+      // Firestore에서 사용자 데이터 삭제
+      await userService.updateUserInfo(updatedUser: updatedUser);
+      return true;
+    } catch (e) {
+      debugPrint('UserRepository 오류 발생 - 회원 탈퇴 로직: $e');
+      return false;
     }
   }
 }
