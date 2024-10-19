@@ -182,7 +182,7 @@ class RecipeService {
   String generateRandomDocId() {
     try {
       // 랜덤한 ID 생성(새로운 컬렉션을 만드는 게 아니라, 단순히 랜덤한 ID를 생성하는 것)
-      String randomId = _firestore.collection('dummy').doc().id;
+      String randomId = uuid.v4();
       return randomId;
     } catch (e) {
       debugPrint('RecipeRepository - 랜덤 doc ID 생성중 오류 발생 : $e');

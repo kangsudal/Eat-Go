@@ -1,31 +1,37 @@
 import 'dart:math';
 
+import 'package:eat_go/eatgo_providers.dart';
+import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/animated_text_widget.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
+import 'package:eat_go/viewmodels/home_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   Random random = Random();
-  Color? randomColor;
-  int? recipeId;
-  bool? bookmarked;
+
+  // Color? randomColor;
+  // int? recipeId;
+
   bool isShakingLocked = false;
 
   @override
   Widget build(BuildContext context) {
+    final homeViewModel = ref.read(homeViewModelProvider.notifier);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -57,10 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
         visible: !isShakingLocked,
         child: FloatingActionButton(
           onPressed: () {
-            setState(() {
-              randomColor = Color(random.nextInt(0xFFFFFFFF));
-              recipeId = random.nextInt(0xFFFFFFFF);
-            });
+            homeViewModel.fetchRandomRecipeWithRetry();
           },
           child: Icon(
             Icons.refresh,
@@ -69,158 +72,218 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: Align(
-        alignment: const Alignment(0, -0.25),
-        child: randomColor == null
-            ? Container(
-                // color: Colors.yellow,
-                child: Wrap(
+      body: ContentWidget(),
+    );
+  }
+}
+
+class ContentWidget extends ConsumerWidget {
+  const ContentWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final homeViewState = ref.watch(homeViewModelProvider);
+    return Align(
+      alignment: const Alignment(0, -0.25),
+      child: homeViewState.when(
+        data: (randomRecipe) {
+          bool beforeShaked = randomRecipe == null;
+          if (beforeShaked) {
+            return Wrap(
+              children: [
+                Column(
                   children: [
-                    Column(
-                      children: [
-                        AnimatedTextWidget(
-                          text: Text(
-                            'SHAKE!',
-                            style: GoogleFonts.poppins(
-                              //HomeScreen에서 'SHAKE' 글씨
-                              fontSize: 70,
-                              fontWeight: FontWeight.w700,
-                              color: pointColor,
-                            ),
-                          ),
+                    AnimatedTextWidget(
+                      text: Text(
+                        'SHAKE!',
+                        style: GoogleFonts.poppins(
+                          //HomeScreen에서 'SHAKE' 글씨
+                          fontSize: 70,
+                          fontWeight: FontWeight.w700,
+                          color: pointColor,
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            : Container(
-                // color: Colors.yellow,
-                height: randomColor!.value * 0.00000008 + 170,
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          width: randomColor!.value * 0.00000008,
-                          height: randomColor!.value * 0.00000008,
-                          decoration: BoxDecoration(
-                            color: randomColor,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(35),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 15,
-                          right: 15,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                if (bookmarked == null) {
-                                  bookmarked = true;
-                                } else {
-                                  bookmarked = !bookmarked!;
-                                }
-                                debugPrint('$bookmarked');
-                              });
-                            },
-                            child: CircleAvatar(
-                              radius: 22,
-                              backgroundColor: EatGoPalette.backgroundColor1,
-                              child: Icon(
-                                bookmarked == null || bookmarked == false
-                                    ? Icons.bookmark_border_sharp
-                                    : Icons.bookmark,
-                                color: pointColor,
-                                size: 30,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 30),
-                    Text(
-                      '${randomColor!.value}', //포니언 스프
-                      style: TextStyle(
-                        fontSize: 40,
-                        color: pointColor,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 40),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  ],
+                ),
+              ],
+            );
+          } else {
+            return RecipeWidget(
+              randomRecipe: randomRecipe,
+            );
+          }
+        },
+        error: (error, stackTrace) => const Text('오류가 발생했습니다.'),
+        loading: () => const CircularProgressIndicator(),
+      ),
+    );
+  }
+}
+
+class RecipeWidget extends ConsumerStatefulWidget {
+  const RecipeWidget({super.key, required this.randomRecipe});
+
+  final Recipe randomRecipe;
+
+  @override
+  ConsumerState<RecipeWidget> createState() => _RecipeWidgetState();
+}
+
+class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
+  bool? bookmarked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Stack(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(35),
+              ),
+              child: Image.network(
+                widget.randomRecipe.completedImgUrl,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) {
+                    // 이미지가 정상적으로 로드되었을 때
+                    return child;
+                  } else {
+                    // 로딩 중일 때, 진행률을 계산하고 표시
+                    final progress = loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null;
+
+                    return Stack(
+                      alignment: Alignment.center,
                       children: [
-                        //todo: GoRouter로 바꾸기
-                        GestureDetector(
-                          onTap: () {
-                            context.go('/home/restaurant/$recipeId');
-                          },
-                          child: Container(
-                            width: 110,
-                            height: 40,
-                            decoration: const BoxDecoration(
-                              color: pointColor,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                '식당',
-                                style: TextStyle(
-                                  color: EatGoPalette.backgroundColor1,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: -0.7,
-                                  fontFamily: 'poppins',
-                                ),
-                              ),
-                            ),
-                          ),
+                        // 이미지 로드 중에도 기본적인 이미지 공간을 차지하도록 설정
+                        SizedBox(
+                          width: 200,
+                          height: 200,
+                          child: CircularProgressIndicator(value: progress),
                         ),
-                        const SizedBox(width: 15),
-                        GestureDetector(
-                          onTap: () {
-                            debugPrint('recipeId:$recipeId');
-                            context.go('/home/recipe_detail/$recipeId');
-                          },
-                          child: Container(
-                            width: 110,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: EatGoPalette.backgroundColor1,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              border: Border.all(
-                                color: pointColor,
-                                width: 2.5,
-                              ),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                '레시피',
-                                style: TextStyle(
-                                  color: pointColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: -0.7,
-                                  fontFamily: 'poppins',
-                                ),
-                              ),
-                            ),
+                        Positioned.fill(
+                          child: Opacity(
+                            opacity: 0.3, // 로딩 중일 때 약간 투명하게 이미지 표시
+                            child: child,
                           ),
                         ),
                       ],
-                    ),
-                  ],
+                    );
+                  }
+                },
+                errorBuilder: (_, __, ___) => Text('이미지가 없습니다.'),
+              ),
+            ),
+            Positioned(
+              top: 15,
+              right: 15,
+              child: GestureDetector(
+                onTap: () {
+                  if (bookmarked == null) {
+                    bookmarked = true;
+                  } else {
+                    bookmarked = !bookmarked!;
+                  }
+                  debugPrint('$bookmarked');
+                },
+                child: CircleAvatar(
+                  radius: 22,
+                  backgroundColor: EatGoPalette.backgroundColor1,
+                  child: Icon(
+                    bookmarked == null || bookmarked == false
+                        ? Icons.bookmark_border_sharp
+                        : Icons.bookmark,
+                    color: pointColor,
+                    size: 30,
+                  ),
                 ),
               ),
-      ),
+            ),
+          ],
+        ),
+        SizedBox(height: 30),
+        Text(
+          widget.randomRecipe.title, //포니언 스프
+          style: const TextStyle(
+            fontSize: 40,
+            color: pointColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 40),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //todo: GoRouter로 바꾸기
+            GestureDetector(
+              onTap: () {
+                context.go('/home/restaurant/${widget.randomRecipe.recipeId}');
+              },
+              child: Container(
+                width: 110,
+                height: 40,
+                decoration: const BoxDecoration(
+                  color: pointColor,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    '식당',
+                    style: TextStyle(
+                      color: EatGoPalette.backgroundColor1,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -0.7,
+                      fontFamily: 'poppins',
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 15),
+            GestureDetector(
+              onTap: () {
+                debugPrint('recipeId:${widget.randomRecipe.recipeId}');
+                context
+                    .go('/home/recipe_detail/${widget.randomRecipe.recipeId}');
+              },
+              child: Container(
+                width: 110,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: EatGoPalette.backgroundColor1,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  border: Border.all(
+                    color: pointColor,
+                    width: 2.5,
+                  ),
+                ),
+                child: const Center(
+                  child: Text(
+                    '레시피',
+                    style: TextStyle(
+                      color: pointColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -0.7,
+                      fontFamily: 'poppins',
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
