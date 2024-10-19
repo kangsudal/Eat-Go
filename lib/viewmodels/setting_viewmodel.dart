@@ -8,7 +8,7 @@ import 'package:eat_go/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SettingViewModel extends AsyncNotifier<EatGoUser?> {
+class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
   late final AuthRepository _authRepository;
   late final UserRepository _userRepository;
 

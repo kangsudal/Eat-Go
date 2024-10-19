@@ -71,4 +71,4 @@ final signInViewModelProvider =
 //<탈퇴>
 // SettingViewModel Provider (UserService 주입)
 final settingViewModelProvider =
-    AsyncNotifierProvider<SettingViewModel, EatGoUser?>(SettingViewModel.new);
+    AsyncNotifierProvider.autoDispose<SettingViewModel, EatGoUser?>(SettingViewModel.new);
