@@ -29,4 +29,12 @@ class RecipeRepository {
       return [];
     }
   }
+
+  Future<Recipe?> getRandomRecipeByAutoId() async {
+    try{
+      return _recipeService.getRandomRecipeByAutoId();
+    }catch(e){
+      debugPrint('RecipeRepository - 랜덤 doc ID 생성중 오류 발생 : $e');
+    }
+  }
 }

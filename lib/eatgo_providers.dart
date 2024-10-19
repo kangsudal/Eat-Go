@@ -8,6 +8,7 @@ import 'package:eat_go/services/user_service.dart';
 import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
+import 'package:eat_go/viewmodels/home_viewmodel.dart';
 import 'package:eat_go/viewmodels/recipe_viewmodel.dart';
 import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
 import 'package:eat_go/viewmodels/setting_viewmodel.dart';
@@ -72,3 +73,6 @@ final signInViewModelProvider =
 // SettingViewModel Provider (UserService 주입)
 final settingViewModelProvider =
     AsyncNotifierProvider.autoDispose<SettingViewModel, EatGoUser?>(SettingViewModel.new);
+
+//<홈화면 랜덤레시피>
+final homeViewModelProvider = AsyncNotifierProvider<HomeViewModel, Recipe?>(HomeViewModel.new);

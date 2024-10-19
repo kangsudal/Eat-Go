@@ -30,7 +30,8 @@ class RecipeService {
   final FirebaseFirestore _firestore;
   final Uuid uuid = const Uuid();
 
-  RecipeService({required FirebaseFirestore firestore}) : _firestore = firestore;
+  RecipeService({required FirebaseFirestore firestore})
+      : _firestore = firestore;
 
   // Firestore에서 실시간으로 레시피 목록을 가져오는 Stream
   Stream<List<Recipe>> fetchRecipesStream() {
@@ -175,6 +176,45 @@ class RecipeService {
     } catch (e) {
       debugPrint('레시피를 가져오는 중 오류 발생: $e');
       return []; // 오류 발생 시 빈 리스트 반환
+    }
+  }
+
+  String generateRandomDocId() {
+    try {
+      // 랜덤한 ID 생성(새로운 컬렉션을 만드는 게 아니라, 단순히 랜덤한 ID를 생성하는 것)
+      String randomId = _firestore.collection('dummy').doc().id;
+      return randomId;
+    } catch (e) {
+      debugPrint('RecipeRepository - 랜덤 doc ID 생성중 오류 발생 : $e');
+      return '';
+    }
+  }
+
+  Future<Recipe?> getRandomRecipeByAutoId() async {
+    try {
+      String randomId = generateRandomDocId();
+      if (randomId == '') {
+        debugPrint("RecipeService - Random Doc Id가 ''입니다.");
+        return null;
+      }
+      // 랜덤 ID보다 큰 문서 중 첫 번째 문서를 가져옴
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('recipes')
+          .where(FieldPath.documentId, isGreaterThanOrEqualTo: randomId)
+          .limit(1)
+          .get();
+
+      // 쿼리 결과가 없으면(랜덤하게 생성된 ID보다 큰 문서가 없다면) null 반환
+      if (querySnapshot.docs.isEmpty) {
+        debugPrint("RecipeService - 랜덤하게 생성된 ID보다 큰 문서가 없습니다.");
+        return null;
+      }
+      Map<String, Object?> dataMap =
+          querySnapshot.docs.first.data() as Map<String, Object?>;
+      return Recipe.fromJson(dataMap);
+    } catch (e) {
+      debugPrint('RecipeService - 랜덤 레시피 생성중 오류발생');
+      return null;
     }
   }
 }
