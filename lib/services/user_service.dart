@@ -22,7 +22,7 @@ class UserService {
           'email': user.email,
           'supportAmount': 0, //후원 비용
           'isPremium': false, //프리미엄 상태 FieldValue.serverTimestamp()
-          'premiumExpiration': DateTime.now().millisecondsSinceEpoch,
+          'premiumExpiration': DateTime.now(),
           'bookmarks': [], // 사용자가 북마크한 레시피 목록
           'adoptedRecipes': [], // 사용자가 채택한 레시피 목록
           'reportedRecipes': [], // 사용자 신고한 레시피 목록, 목록에서 차단해주기

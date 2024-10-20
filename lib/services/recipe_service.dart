@@ -147,9 +147,9 @@ class RecipeService {
           'category': item['RCP_PAT2'],
           'hashTag': item['HASH_TAG'],
           'completedImgUrl': item['ATT_FILE_NO_MAIN'],
-          'createdAt': DateTime.now().millisecondsSinceEpoch,
+          'createdAt': DateTime.now(),
           'createdBy': 'MFDS',
-          'updatedAt': DateTime.now().millisecondsSinceEpoch,
+          'updatedAt': DateTime.now(),
           'adoptedBy': [],
           'bookmarkedBy': [],
           'viewedBy': [],
@@ -212,7 +212,7 @@ class RecipeService {
           querySnapshot.docs.first.data() as Map<String, Object?>;
       return Recipe.fromJson(dataMap);
     } catch (e) {
-      debugPrint('RecipeService - 랜덤 레시피 생성중 오류발생');
+      debugPrint('RecipeService - 랜덤 레시피 생성중 오류발생: $e');
       return null;
     }
   }

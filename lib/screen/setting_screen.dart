@@ -27,7 +27,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
 
   Future<void> _loadUserData() async {
     final settingViewModel = ref.read(settingViewModelProvider.notifier);
-    originalUser = await settingViewModel.getUser(); // 원래 사용자 데이터 불러오기
+    originalUser = await settingViewModel.getCurrentUser(); // 원래 사용자 데이터 불러오기
   }
 
   @override

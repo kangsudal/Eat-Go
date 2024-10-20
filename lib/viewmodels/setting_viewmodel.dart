@@ -16,10 +16,10 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
   FutureOr<EatGoUser?> build() async {
     _authRepository = ref.watch(authRepositoryProvider);
     _userRepository = ref.watch(userRepositoryProvider);
-    return await getUser();
+    return await getCurrentUser();
   }
 
-  Future<EatGoUser?> getUser() async {
+  Future<EatGoUser?> getCurrentUser() async {
     state = const AsyncValue.loading();
     try {
       String? currentUserUid = _authRepository.getCurrentUserUid();

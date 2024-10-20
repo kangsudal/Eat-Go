@@ -13,7 +13,7 @@ _$EatGoUserImpl _$$EatGoUserImplFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String,
       supportAmount: (json['supportAmount'] as num?)?.toDouble() ?? 0,
       isPremium: json['isPremium'] as bool? ?? false,
-      premiumExpiration: (json['premiumExpiration'] as num).toInt(),
+      premiumExpiration: DateTime.parse(json['premiumExpiration'] as String),
       bookmarks: (json['bookmarks'] as List<dynamic>)
           .map((e) => Bookmark.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -33,7 +33,7 @@ Map<String, dynamic> _$$EatGoUserImplToJson(_$EatGoUserImpl instance) =>
       'email': instance.email,
       'supportAmount': instance.supportAmount,
       'isPremium': instance.isPremium,
-      'premiumExpiration': instance.premiumExpiration,
+      'premiumExpiration': instance.premiumExpiration.toIso8601String(),
       'bookmarks': instance.bookmarks,
       'adoptedRecipes': instance.adoptedRecipes,
       'reportedRecipes': instance.reportedRecipes,
