@@ -89,25 +89,7 @@ class ContentWidget extends ConsumerWidget {
         data: (randomRecipe) {
           bool beforeShaked = randomRecipe == null;
           if (beforeShaked) {
-            return Wrap(
-              children: [
-                Column(
-                  children: [
-                    AnimatedTextWidget(
-                      text: Text(
-                        'SHAKE!',
-                        style: GoogleFonts.poppins(
-                          //HomeScreen에서 'SHAKE' 글씨
-                          fontSize: 70,
-                          fontWeight: FontWeight.w700,
-                          color: pointColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            );
+            return AnimatedTextWidget();
           } else {
             return RecipeWidget(
               randomRecipe: randomRecipe,
@@ -136,6 +118,7 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Stack(
           children: [
@@ -143,40 +126,48 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
               borderRadius: const BorderRadius.all(
                 Radius.circular(35),
               ),
-              child: Image.network(
-                widget.randomRecipe.completedImgUrl,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) {
-                    // 이미지가 정상적으로 로드되었을 때
-                    return child;
-                  } else {
-                    // 로딩 중일 때, 진행률을 계산하고 표시
-                    final progress = loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                        : null;
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 500,
+                  maxWidth: 500,
+                ),
+                child: Image.network(
+                  widget.randomRecipe.completedImgUrl,
+                  fit: BoxFit.contain,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) {
+                      // 이미지가 정상적으로 로드되었을 때
+                      return child;
+                    } else {
+                      // 로딩 중일 때, 진행률을 계산하고 표시
+                      final progress =
+                          loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null;
 
-                    return Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        // 이미지 로드 중에도 기본적인 이미지 공간을 차지하도록 설정
-                        SizedBox(
-                          width: 200,
-                          height: 200,
-                          child: CircularProgressIndicator(value: progress),
-                        ),
-                        Positioned.fill(
-                          child: Opacity(
-                            opacity: 0.3, // 로딩 중일 때 약간 투명하게 이미지 표시
-                            child: child,
+                      return Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // 이미지 로드 중에도 기본적인 이미지 공간을 차지하도록 설정
+                          SizedBox(
+                            width: 200,
+                            height: 200,
+                            child: CircularProgressIndicator(value: progress),
                           ),
-                        ),
-                      ],
-                    );
-                  }
-                },
-                errorBuilder: (_, __, ___) => Text('이미지가 없습니다.'),
+                          Positioned.fill(
+                            child: Opacity(
+                              opacity: 0.3, // 로딩 중일 때 약간 투명하게 이미지 표시
+                              child: child,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                  errorBuilder: (_, __, ___) => Text('이미지가 없습니다.'),
+                ),
               ),
             ),
             Positioned(

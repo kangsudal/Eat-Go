@@ -1,11 +1,10 @@
+import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AnimatedTextWidget extends StatefulWidget {
-  final Text text;
-
   const AnimatedTextWidget({
     super.key,
-    required this.text,
   });
 
   @override
@@ -70,7 +69,15 @@ class _AnimatedIconWidgetState extends State<AnimatedTextWidget>
       builder: (context, _) {
         return Transform.rotate(
           angle: _animation.value * 0.0174533, //double값을 radian 값으로 바꿔주는 수식
-          child: widget.text,
+          child: Text(
+            'SHAKE!',
+            style: GoogleFonts.poppins(
+              //HomeScreen에서 'SHAKE' 글씨
+              fontSize: 70,
+              fontWeight: FontWeight.w700,
+              color: pointColor,
+            ),
+          ),
         );
       },
       animation: _animatedController,
