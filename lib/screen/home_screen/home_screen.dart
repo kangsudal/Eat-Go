@@ -21,12 +21,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-
-  Random random = Random();
-
-  // Color? randomColor;
-  // int? recipeId;
-
   bool isShakingLocked = false;
 
   @override
@@ -175,12 +169,14 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
               right: 15,
               child: GestureDetector(
                 onTap: () {
-                  if (bookmarked == null) {
-                    bookmarked = true;
-                  } else {
-                    bookmarked = !bookmarked!;
-                  }
-                  debugPrint('$bookmarked');
+                  setState(() {
+                    if (bookmarked == null) {
+                      bookmarked = true;
+                    } else {
+                      bookmarked = !bookmarked!;
+                    }
+                    debugPrint('$bookmarked');
+                  });
                 },
                 child: CircleAvatar(
                   radius: 22,

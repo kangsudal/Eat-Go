@@ -22,17 +22,16 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
   }
 
   Future<Recipe?> getRandomRecipeByAutoId() async {
-    state = const AsyncValue.loading();
     try {
       Recipe? randomRecipe = await _recipeRepository.getRandomRecipeByAutoId();
       if (randomRecipe != null) {
-        state = AsyncValue.data(randomRecipe);
+        return randomRecipe;
       }
-      return randomRecipe;
     } catch (e) {
       debugPrint('RecipeViewModel - 랜덤 doc ID 생성중 오류 발생 : $e');
       return null;
     }
+    return null;
   }
 
   // 랜덤 레시피 가져오기 (결과가 없을 경우 재시도)
@@ -48,7 +47,9 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
           state = AsyncValue.data(recipe); // 성공적으로 레시피를 가져오면 상태 업데이트
           return;
         }
+        // recipe == null 이면 계속진행하여 retries++;로 간다.
       } catch (e, stackTrace) {
+        debugPrint('HomeViewModel - $e');
         state = AsyncValue.error(e, stackTrace); // 에러가 발생하면 에러 상태로 업데이트
         return;
       }
@@ -56,6 +57,7 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
     }
 
     // 최대 재시도 횟수를 초과하면 실패
-    state = AsyncValue.error("레시피를 가져오지 못했습니다.", StackTrace.current);
+    debugPrint('HomeViewModel - 최대 재시도 횟수를 초과');
+    state = AsyncValue.error("레시피를 가져오지 못했습니다. 다시 시도해주세요.", StackTrace.current);
   }
 }
