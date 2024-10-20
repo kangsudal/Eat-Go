@@ -14,7 +14,7 @@ class AdminScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 // 버튼 클릭 시 일회성 작업 실행
-                await updateAllUsersRecipeId();
+                await updateAllUsersRecipeCreatedUpdatedTimeType();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                       content: Text('All users updated successfully!')),
@@ -72,6 +72,31 @@ class AdminScreen extends StatelessWidget {
         if (doc.exists) {
           await firestore.collection('recipes').doc(doc.id).update({
             'recipeId': doc.id,
+          });
+          debugPrint('User ${doc.id} is updated');
+        } else {
+          debugPrint('User document ${doc.id} does not exist.');
+        }
+      } catch (e) {
+        debugPrint('Error updating user ${doc.id}: $e');
+      }
+    }
+    debugPrint("Update Done.");
+  }
+
+  Future<void> updateAllUsersRecipeCreatedUpdatedTimeType() async {
+    final firestore = FirebaseFirestore.instance;
+
+    // 1. 'users' 컬렉션의 모든 사용자 문서 가져오기
+    QuerySnapshot usersSnapshot = await firestore.collection('recipes').get();
+
+    // 2. 각 문서에 대해 pushNotificationEnabled 필드 업데이트
+    for (var doc in usersSnapshot.docs) {
+      try {
+        if (doc.exists) {
+          await firestore.collection('recipes').doc(doc.id).update({
+            'createdAt': DateTime.now(),
+            'updatedAt': DateTime.now(),
           });
           debugPrint('User ${doc.id} is updated');
         } else {
