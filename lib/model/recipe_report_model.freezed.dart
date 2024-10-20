@@ -24,6 +24,7 @@ mixin _$RecipeReport {
   String get reportedBy => throw _privateConstructorUsedError; //신고한 사용자 ID
   String get recipeId => throw _privateConstructorUsedError; //신고된 게시물(레시피) ID
   String get reportReason => throw _privateConstructorUsedError; //신고 사유
+  @TimestampConverter()
   DateTime get reportedAt => throw _privateConstructorUsedError; //신고일시
   ReportStatus get status => throw _privateConstructorUsedError;
 
@@ -48,7 +49,7 @@ abstract class $RecipeReportCopyWith<$Res> {
       String reportedBy,
       String recipeId,
       String reportReason,
-      DateTime reportedAt,
+      @TimestampConverter() DateTime reportedAt,
       ReportStatus status});
 }
 
@@ -116,7 +117,7 @@ abstract class _$$RecipeReportImplCopyWith<$Res>
       String reportedBy,
       String recipeId,
       String reportReason,
-      DateTime reportedAt,
+      @TimestampConverter() DateTime reportedAt,
       ReportStatus status});
 }
 
@@ -177,7 +178,7 @@ class _$RecipeReportImpl implements _RecipeReport {
       required this.reportedBy,
       required this.recipeId,
       required this.reportReason,
-      required this.reportedAt,
+      @TimestampConverter() required this.reportedAt,
       required this.status});
 
   factory _$RecipeReportImpl.fromJson(Map<String, dynamic> json) =>
@@ -195,6 +196,7 @@ class _$RecipeReportImpl implements _RecipeReport {
   final String reportReason;
 //신고 사유
   @override
+  @TimestampConverter()
   final DateTime reportedAt;
 //신고일시
   @override
@@ -250,7 +252,7 @@ abstract class _RecipeReport implements RecipeReport {
       required final String reportedBy,
       required final String recipeId,
       required final String reportReason,
-      required final DateTime reportedAt,
+      @TimestampConverter() required final DateTime reportedAt,
       required final ReportStatus status}) = _$RecipeReportImpl;
 
   factory _RecipeReport.fromJson(Map<String, dynamic> json) =
@@ -265,6 +267,7 @@ abstract class _RecipeReport implements RecipeReport {
   @override
   String get reportReason; //신고 사유
   @override
+  @TimestampConverter()
   DateTime get reportedAt; //신고일시
   @override
   ReportStatus get status;

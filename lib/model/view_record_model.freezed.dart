@@ -21,6 +21,7 @@ ViewRecord _$ViewRecordFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ViewRecord {
   String get userUid => throw _privateConstructorUsedError; //조회한 유저 ID
+  @TimestampConverter()
   DateTime get viewedAt => throw _privateConstructorUsedError;
 
   /// Serializes this ViewRecord to a JSON map.
@@ -39,7 +40,7 @@ abstract class $ViewRecordCopyWith<$Res> {
           ViewRecord value, $Res Function(ViewRecord) then) =
       _$ViewRecordCopyWithImpl<$Res, ViewRecord>;
   @useResult
-  $Res call({String userUid, DateTime viewedAt});
+  $Res call({String userUid, @TimestampConverter() DateTime viewedAt});
 }
 
 /// @nodoc
@@ -81,7 +82,7 @@ abstract class _$$ViewRecordImplCopyWith<$Res>
       __$$ViewRecordImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String userUid, DateTime viewedAt});
+  $Res call({String userUid, @TimestampConverter() DateTime viewedAt});
 }
 
 /// @nodoc
@@ -116,7 +117,8 @@ class __$$ViewRecordImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ViewRecordImpl implements _ViewRecord {
-  const _$ViewRecordImpl({required this.userUid, required this.viewedAt});
+  const _$ViewRecordImpl(
+      {required this.userUid, @TimestampConverter() required this.viewedAt});
 
   factory _$ViewRecordImpl.fromJson(Map<String, dynamic> json) =>
       _$$ViewRecordImplFromJson(json);
@@ -125,6 +127,7 @@ class _$ViewRecordImpl implements _ViewRecord {
   final String userUid;
 //조회한 유저 ID
   @override
+  @TimestampConverter()
   final DateTime viewedAt;
 
   @override
@@ -164,8 +167,9 @@ class _$ViewRecordImpl implements _ViewRecord {
 
 abstract class _ViewRecord implements ViewRecord {
   const factory _ViewRecord(
-      {required final String userUid,
-      required final DateTime viewedAt}) = _$ViewRecordImpl;
+          {required final String userUid,
+          @TimestampConverter() required final DateTime viewedAt}) =
+      _$ViewRecordImpl;
 
   factory _ViewRecord.fromJson(Map<String, dynamic> json) =
       _$ViewRecordImpl.fromJson;
@@ -173,6 +177,7 @@ abstract class _ViewRecord implements ViewRecord {
   @override
   String get userUid; //조회한 유저 ID
   @override
+  @TimestampConverter()
   DateTime get viewedAt;
 
   /// Create a copy of ViewRecord

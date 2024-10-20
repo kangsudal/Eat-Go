@@ -12,7 +12,8 @@ _$RecipeReportImpl _$$RecipeReportImplFromJson(Map<String, dynamic> json) =>
       reportedBy: json['reportedBy'] as String,
       recipeId: json['recipeId'] as String,
       reportReason: json['reportReason'] as String,
-      reportedAt: DateTime.parse(json['reportedAt'] as String),
+      reportedAt:
+          const TimestampConverter().fromJson(json['reportedAt'] as Timestamp),
       status: $enumDecode(_$ReportStatusEnumMap, json['status']),
     );
 
@@ -22,7 +23,7 @@ Map<String, dynamic> _$$RecipeReportImplToJson(_$RecipeReportImpl instance) =>
       'reportedBy': instance.reportedBy,
       'recipeId': instance.recipeId,
       'reportReason': instance.reportReason,
-      'reportedAt': instance.reportedAt.toIso8601String(),
+      'reportedAt': const TimestampConverter().toJson(instance.reportedAt),
       'status': _$ReportStatusEnumMap[instance.status]!,
     };
 

@@ -9,11 +9,12 @@ part of 'bookmark_model.dart';
 _$BookmarkImpl _$$BookmarkImplFromJson(Map<String, dynamic> json) =>
     _$BookmarkImpl(
       recipeId: json['recipeId'] as String,
-      bookmarkedAt: DateTime.parse(json['bookmarkedAt'] as String),
+      bookmarkedAt: const TimestampConverter()
+          .fromJson(json['bookmarkedAt'] as Timestamp),
     );
 
 Map<String, dynamic> _$$BookmarkImplToJson(_$BookmarkImpl instance) =>
     <String, dynamic>{
       'recipeId': instance.recipeId,
-      'bookmarkedAt': instance.bookmarkedAt.toIso8601String(),
+      'bookmarkedAt': const TimestampConverter().toJson(instance.bookmarkedAt),
     };

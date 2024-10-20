@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eat_go/model/timestamp_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'recipe_report_model.freezed.dart';
@@ -10,7 +12,7 @@ sealed class RecipeReport with _$RecipeReport {
     required String reportedBy, //신고한 사용자 ID
     required String recipeId, //신고된 게시물(레시피) ID
     required String reportReason, //신고 사유
-    required DateTime reportedAt, //신고일시
+    @TimestampConverter() required DateTime reportedAt, //신고일시
     required ReportStatus status, // '처리 중', '완료', '무효화'
   }) = _RecipeReport;
 

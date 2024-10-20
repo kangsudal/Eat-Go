@@ -21,6 +21,7 @@ AdoptedRecipe _$AdoptedRecipeFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AdoptedRecipe {
   String get recipeId => throw _privateConstructorUsedError;
+  @TimestampConverter()
   List<DateTime> get adoptedAt => throw _privateConstructorUsedError;
 
   /// Serializes this AdoptedRecipe to a JSON map.
@@ -39,7 +40,7 @@ abstract class $AdoptedRecipeCopyWith<$Res> {
           AdoptedRecipe value, $Res Function(AdoptedRecipe) then) =
       _$AdoptedRecipeCopyWithImpl<$Res, AdoptedRecipe>;
   @useResult
-  $Res call({String recipeId, List<DateTime> adoptedAt});
+  $Res call({String recipeId, @TimestampConverter() List<DateTime> adoptedAt});
 }
 
 /// @nodoc
@@ -81,7 +82,7 @@ abstract class _$$AdoptedRecipeImplCopyWith<$Res>
       __$$AdoptedRecipeImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String recipeId, List<DateTime> adoptedAt});
+  $Res call({String recipeId, @TimestampConverter() List<DateTime> adoptedAt});
 }
 
 /// @nodoc
@@ -117,7 +118,8 @@ class __$$AdoptedRecipeImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AdoptedRecipeImpl implements _AdoptedRecipe {
   const _$AdoptedRecipeImpl(
-      {required this.recipeId, required final List<DateTime> adoptedAt})
+      {required this.recipeId,
+      @TimestampConverter() required final List<DateTime> adoptedAt})
       : _adoptedAt = adoptedAt;
 
   factory _$AdoptedRecipeImpl.fromJson(Map<String, dynamic> json) =>
@@ -127,6 +129,7 @@ class _$AdoptedRecipeImpl implements _AdoptedRecipe {
   final String recipeId;
   final List<DateTime> _adoptedAt;
   @override
+  @TimestampConverter()
   List<DateTime> get adoptedAt {
     if (_adoptedAt is EqualUnmodifiableListView) return _adoptedAt;
     // ignore: implicit_dynamic_type
@@ -172,8 +175,9 @@ class _$AdoptedRecipeImpl implements _AdoptedRecipe {
 
 abstract class _AdoptedRecipe implements AdoptedRecipe {
   const factory _AdoptedRecipe(
-      {required final String recipeId,
-      required final List<DateTime> adoptedAt}) = _$AdoptedRecipeImpl;
+          {required final String recipeId,
+          @TimestampConverter() required final List<DateTime> adoptedAt}) =
+      _$AdoptedRecipeImpl;
 
   factory _AdoptedRecipe.fromJson(Map<String, dynamic> json) =
       _$AdoptedRecipeImpl.fromJson;
@@ -181,6 +185,7 @@ abstract class _AdoptedRecipe implements AdoptedRecipe {
   @override
   String get recipeId;
   @override
+  @TimestampConverter()
   List<DateTime> get adoptedAt;
 
   /// Create a copy of AdoptedRecipe

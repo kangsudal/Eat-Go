@@ -28,9 +28,11 @@ mixin _$Recipe {
   String get category => throw _privateConstructorUsedError;
   String get hashTag => throw _privateConstructorUsedError;
   String get completedImgUrl => throw _privateConstructorUsedError;
+  @TimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
   String get createdBy =>
       throw _privateConstructorUsedError; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
+  @TimestampConverter()
   DateTime get updatedAt => throw _privateConstructorUsedError;
   List<AdoptRecord> get adoptedBy =>
       throw _privateConstructorUsedError; //이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)
@@ -61,9 +63,9 @@ abstract class $RecipeCopyWith<$Res> {
       String category,
       String hashTag,
       String completedImgUrl,
-      DateTime createdAt,
+      @TimestampConverter() DateTime createdAt,
       String createdBy,
-      DateTime updatedAt,
+      @TimestampConverter() DateTime updatedAt,
       List<AdoptRecord> adoptedBy,
       List<BookmarkRecord> bookmarkedBy,
       List<ViewRecord> viewedBy});
@@ -176,9 +178,9 @@ abstract class _$$RecipeImplCopyWith<$Res> implements $RecipeCopyWith<$Res> {
       String category,
       String hashTag,
       String completedImgUrl,
-      DateTime createdAt,
+      @TimestampConverter() DateTime createdAt,
       String createdBy,
-      DateTime updatedAt,
+      @TimestampConverter() DateTime updatedAt,
       List<AdoptRecord> adoptedBy,
       List<BookmarkRecord> bookmarkedBy,
       List<ViewRecord> viewedBy});
@@ -285,9 +287,9 @@ class _$RecipeImpl implements _Recipe {
       required this.category,
       required this.hashTag,
       required this.completedImgUrl,
-      required this.createdAt,
+      @TimestampConverter() required this.createdAt,
       required this.createdBy,
-      required this.updatedAt,
+      @TimestampConverter() required this.updatedAt,
       required final List<AdoptRecord> adoptedBy,
       required final List<BookmarkRecord> bookmarkedBy,
       required final List<ViewRecord> viewedBy})
@@ -322,11 +324,13 @@ class _$RecipeImpl implements _Recipe {
   @override
   final String completedImgUrl;
   @override
+  @TimestampConverter()
   final DateTime createdAt;
   @override
   final String createdBy;
 //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
   @override
+  @TimestampConverter()
   final DateTime updatedAt;
   final List<AdoptRecord> _adoptedBy;
   @override
@@ -438,9 +442,9 @@ abstract class _Recipe implements Recipe {
       required final String category,
       required final String hashTag,
       required final String completedImgUrl,
-      required final DateTime createdAt,
+      @TimestampConverter() required final DateTime createdAt,
       required final String createdBy,
-      required final DateTime updatedAt,
+      @TimestampConverter() required final DateTime updatedAt,
       required final List<AdoptRecord> adoptedBy,
       required final List<BookmarkRecord> bookmarkedBy,
       required final List<ViewRecord> viewedBy}) = _$RecipeImpl;
@@ -464,10 +468,12 @@ abstract class _Recipe implements Recipe {
   @override
   String get completedImgUrl;
   @override
+  @TimestampConverter()
   DateTime get createdAt;
   @override
   String get createdBy; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
   @override
+  @TimestampConverter()
   DateTime get updatedAt;
   @override
   List<AdoptRecord> get adoptedBy; //이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)

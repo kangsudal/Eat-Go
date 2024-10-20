@@ -21,6 +21,7 @@ Bookmark _$BookmarkFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Bookmark {
   String get recipeId => throw _privateConstructorUsedError;
+  @TimestampConverter()
   DateTime get bookmarkedAt => throw _privateConstructorUsedError;
 
   /// Serializes this Bookmark to a JSON map.
@@ -38,7 +39,7 @@ abstract class $BookmarkCopyWith<$Res> {
   factory $BookmarkCopyWith(Bookmark value, $Res Function(Bookmark) then) =
       _$BookmarkCopyWithImpl<$Res, Bookmark>;
   @useResult
-  $Res call({String recipeId, DateTime bookmarkedAt});
+  $Res call({String recipeId, @TimestampConverter() DateTime bookmarkedAt});
 }
 
 /// @nodoc
@@ -80,7 +81,7 @@ abstract class _$$BookmarkImplCopyWith<$Res>
       __$$BookmarkImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String recipeId, DateTime bookmarkedAt});
+  $Res call({String recipeId, @TimestampConverter() DateTime bookmarkedAt});
 }
 
 /// @nodoc
@@ -115,7 +116,9 @@ class __$$BookmarkImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$BookmarkImpl implements _Bookmark {
-  const _$BookmarkImpl({required this.recipeId, required this.bookmarkedAt});
+  const _$BookmarkImpl(
+      {required this.recipeId,
+      @TimestampConverter() required this.bookmarkedAt});
 
   factory _$BookmarkImpl.fromJson(Map<String, dynamic> json) =>
       _$$BookmarkImplFromJson(json);
@@ -123,6 +126,7 @@ class _$BookmarkImpl implements _Bookmark {
   @override
   final String recipeId;
   @override
+  @TimestampConverter()
   final DateTime bookmarkedAt;
 
   @override
@@ -163,8 +167,9 @@ class _$BookmarkImpl implements _Bookmark {
 
 abstract class _Bookmark implements Bookmark {
   const factory _Bookmark(
-      {required final String recipeId,
-      required final DateTime bookmarkedAt}) = _$BookmarkImpl;
+          {required final String recipeId,
+          @TimestampConverter() required final DateTime bookmarkedAt}) =
+      _$BookmarkImpl;
 
   factory _Bookmark.fromJson(Map<String, dynamic> json) =
       _$BookmarkImpl.fromJson;
@@ -172,6 +177,7 @@ abstract class _Bookmark implements Bookmark {
   @override
   String get recipeId;
   @override
+  @TimestampConverter()
   DateTime get bookmarkedAt;
 
   /// Create a copy of Bookmark

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eat_go/model/timestamp_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bookmark_model.freezed.dart';
@@ -8,7 +10,7 @@ part 'bookmark_model.g.dart';
 sealed class Bookmark with _$Bookmark {
   const factory Bookmark({
     required String recipeId,
-    required DateTime bookmarkedAt,
+    @TimestampConverter() required DateTime bookmarkedAt,
   }) = _Bookmark;
 
   factory Bookmark.fromJson(Map<String, Object?> json) =>

@@ -8,12 +8,13 @@ part of 'adopt_record_model.dart';
 
 _$AdoptRecordImpl _$$AdoptRecordImplFromJson(Map<String, dynamic> json) =>
     _$AdoptRecordImpl(
-      adoptedAt: DateTime.parse(json['adoptedAt'] as String),
+      adoptedAt:
+          const TimestampConverter().fromJson(json['adoptedAt'] as Timestamp),
       userUid: json['userUid'] as String,
     );
 
 Map<String, dynamic> _$$AdoptRecordImplToJson(_$AdoptRecordImpl instance) =>
     <String, dynamic>{
-      'adoptedAt': instance.adoptedAt.toIso8601String(),
+      'adoptedAt': const TimestampConverter().toJson(instance.adoptedAt),
       'userUid': instance.userUid,
     };

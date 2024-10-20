@@ -20,6 +20,7 @@ AdoptRecord _$AdoptRecordFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AdoptRecord {
+  @TimestampConverter()
   DateTime get adoptedAt => throw _privateConstructorUsedError; //채택된 시간
   String get userUid => throw _privateConstructorUsedError;
 
@@ -39,7 +40,7 @@ abstract class $AdoptRecordCopyWith<$Res> {
           AdoptRecord value, $Res Function(AdoptRecord) then) =
       _$AdoptRecordCopyWithImpl<$Res, AdoptRecord>;
   @useResult
-  $Res call({DateTime adoptedAt, String userUid});
+  $Res call({@TimestampConverter() DateTime adoptedAt, String userUid});
 }
 
 /// @nodoc
@@ -81,7 +82,7 @@ abstract class _$$AdoptRecordImplCopyWith<$Res>
       __$$AdoptRecordImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({DateTime adoptedAt, String userUid});
+  $Res call({@TimestampConverter() DateTime adoptedAt, String userUid});
 }
 
 /// @nodoc
@@ -116,12 +117,14 @@ class __$$AdoptRecordImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AdoptRecordImpl implements _AdoptRecord {
-  const _$AdoptRecordImpl({required this.adoptedAt, required this.userUid});
+  const _$AdoptRecordImpl(
+      {@TimestampConverter() required this.adoptedAt, required this.userUid});
 
   factory _$AdoptRecordImpl.fromJson(Map<String, dynamic> json) =>
       _$$AdoptRecordImplFromJson(json);
 
   @override
+  @TimestampConverter()
   final DateTime adoptedAt;
 //채택된 시간
   @override
@@ -164,13 +167,14 @@ class _$AdoptRecordImpl implements _AdoptRecord {
 
 abstract class _AdoptRecord implements AdoptRecord {
   const factory _AdoptRecord(
-      {required final DateTime adoptedAt,
+      {@TimestampConverter() required final DateTime adoptedAt,
       required final String userUid}) = _$AdoptRecordImpl;
 
   factory _AdoptRecord.fromJson(Map<String, dynamic> json) =
       _$AdoptRecordImpl.fromJson;
 
   @override
+  @TimestampConverter()
   DateTime get adoptedAt; //채택된 시간
   @override
   String get userUid;

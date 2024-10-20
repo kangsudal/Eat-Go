@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eat_go/model/timestamp_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'adopted_recipe_model.freezed.dart';
@@ -10,7 +12,7 @@ part 'adopted_recipe_model.g.dart';
 sealed class AdoptedRecipe with _$AdoptedRecipe {
   const factory AdoptedRecipe({
     required String recipeId,
-    required List<DateTime> adoptedAt,
+    @TimestampConverter() required List<DateTime> adoptedAt,
     // required int adoptedCount,
   }) = _AdoptedRecipe;
 
