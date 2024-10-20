@@ -107,10 +107,12 @@ class RecipeWidget extends ConsumerStatefulWidget {
 }
 
 class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
-  bool? bookmarked = false;
-
   @override
   Widget build(BuildContext context) {
+    final homeViewState = ref.watch(homeViewModelProvider);
+    final homeViewModel = ref.read(homeViewModelProvider.notifier);
+    final profileViewState = ref.watch(profileViewModelProvider);
+    final profileViewModel = ref.read(profileViewModelProvider.notifier);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -164,32 +166,38 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                 ),
               ),
             ),
-            Positioned(
-              top: 15,
-              right: 15,
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    if (bookmarked == null) {
-                      bookmarked = true;
-                    } else {
-                      bookmarked = !bookmarked!;
-                    }
-                    debugPrint('$bookmarked');
-                  });
-                },
-                child: CircleAvatar(
-                  radius: 22,
-                  backgroundColor: EatGoPalette.backgroundColor1,
-                  child: Icon(
-                    bookmarked == null || bookmarked == false
-                        ? Icons.bookmark_border_sharp
-                        : Icons.bookmark,
-                    color: pointColor,
-                    size: 30,
+            profileViewState.when(
+              data: (user) {
+                if (user == null) {
+                  debugPrint('HomeScreen - 사용자를 불러오지 못했습니다.');
+                  return const Icon(Icons.report_problem_outlined);
+                }
+                final isBookmarked = user.bookmarks.any((bookmark) =>
+                    bookmark.recipeId == widget.randomRecipe.recipeId);
+                return Positioned(
+                  top: 15,
+                  right: 15,
+                  child: GestureDetector(
+                    onTap: () {
+                      ref.read(homeViewModelProvider.notifier).toggleBookmark();
+                    },
+                    child: CircleAvatar(
+                      radius: 22,
+                      backgroundColor: EatGoPalette.backgroundColor1,
+                      child: Icon(
+                        isBookmarked == false
+                            ? Icons.bookmark_border_sharp
+                            : Icons.bookmark,
+                        color: pointColor,
+                        size: 30,
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
+              error: (error, stackTrace) =>
+                  const Icon(Icons.report_problem_outlined),
+              loading: () => const SizedBox(width: 0, height: 0),
             ),
           ],
         ),

@@ -7,6 +7,7 @@ import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
+import 'package:eat_go/viewmodels/profile_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,6 +21,7 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
     _recipeRepository = ref.read(recipeRepositoryProvider);
     _authRepository = ref.read(authRepositoryProvider);
     _userRepository = ref.read(userRepositoryProvider);
+
     return null;
   }
 
@@ -63,39 +65,19 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
     state = AsyncValue.error("레시피를 가져오지 못했습니다. 다시 시도해주세요.", StackTrace.current);
   }
 
-  Future<EatGoUser?> getCurrentUser() async {
-    try {
-      String? currentUserUid = _authRepository.getCurrentUserUid();
-      if (currentUserUid != null) {
-        Map<String, dynamic>? userMap =
-            await _userRepository.getUser(currentUserUid);
-        // Firestore에서 사용자 데이터를 가져오지 못한 경우
-        if (userMap == null) {
-          debugPrint('HomeViewModel 오류 발생 - userMap이 null로 반환되었습니다.');
-          return null;
-        }
-        EatGoUser user = EatGoUser.fromJson(userMap);
-        return user;
-      } else {
-        debugPrint('HomeViewModel 오류 발생 - getUser()값이 null로 반환');
-        return null;
-      }
-    } catch (e, stackTrace) {
-      debugPrint('HomeViewModel 오류 발생 - $e');
-    }
-    return null;
-  }
-
   //북마크 상태를 토글하는 메서드
   void toggleBookmark() async {
-    try{
-      EatGoUser? user = await getCurrentUser();
+    final profileViewModel = ref.read(profileViewModelProvider.notifier);
+    final profileState = ref.read(profileViewModelProvider);
+    try {
+      EatGoUser? user = profileState.asData?.value;
       Recipe? recipe = state.value;
-      if(user == null) {
-        debugPrint('HomeViewModel - getCurrentUser가 null입니다. 현재 로그인된 사용자가 없는것 같습니다.');
+      if (user == null) {
+        debugPrint(
+            'HomeViewModel - getCurrentUser가 null입니다. 현재 로그인된 사용자가 없는것 같습니다.');
         return;
       }
-      if(recipe == null ){
+      if (recipe == null) {
         debugPrint('HomeViewModel - recipe 값이 null입니다.');
         return;
       }
@@ -105,7 +87,9 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
       if (isBookmarked) {
         user = user.copyWith(
           bookmarks: user.bookmarks
-              .where((b) => b.recipeId != recipe.recipeId)//현재 레시피와 ID가 다른 레시피들만 남긴다는 의미입니다.
+              .where((b) =>
+                  b.recipeId !=
+                  recipe.recipeId) //현재 레시피와 ID가 다른 레시피들만 남긴다는 의미입니다.
               .toList(),
         );
       } else {
@@ -116,9 +100,12 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
           ],
         );
       }
+      // profileViewModel의 상태를 업데이트
+      profileViewModel.updateUser(user);
+
       // 상태가 변경되면 UI에 반영
       state = AsyncData(recipe);
-    }catch(e,stackTrace){
+    } catch (e, stackTrace) {
       debugPrint('HomeViewModel - 북마크 토글하는데 실패하였습니다.');
       state = AsyncError(e, stackTrace);
     }
