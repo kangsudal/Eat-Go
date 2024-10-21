@@ -1,4 +1,4 @@
-import 'package:eat_go/eatgo_providers.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:flutter/cupertino.dart';

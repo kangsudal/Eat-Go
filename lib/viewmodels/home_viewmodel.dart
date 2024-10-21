@@ -1,25 +1,24 @@
 import 'dart:async';
 
-import 'package:eat_go/eatgo_providers.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/bookmark_model.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
-import 'package:eat_go/viewmodels/profile_viewmodel.dart';
+import 'package:eat_go/provider/current_eatgo_user_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeViewModel extends AsyncNotifier<Recipe?> {
   late final RecipeRepository _recipeRepository;
-  late final AuthRepository _authRepository;
   late final UserRepository _userRepository;
+  EatGoUser? currentEatGoUser;
 
   @override
   FutureOr<Recipe?> build() {
     _recipeRepository = ref.read(recipeRepositoryProvider);
-    _authRepository = ref.read(authRepositoryProvider);
     _userRepository = ref.read(userRepositoryProvider);
 
     return null;
@@ -66,13 +65,11 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
   }
 
   //북마크 상태를 토글하는 메서드
-  void toggleBookmark() async {
-    final profileViewModel = ref.read(profileViewModelProvider.notifier);
-    final profileState = ref.read(profileViewModelProvider);
+  void toggleBookmark(EatGoUser? currentEatGoUser) async {
     try {
-      EatGoUser? user = profileState.asData?.value;
+      EatGoUser? updatedEatGoUser;
       Recipe? recipe = state.value;
-      if (user == null) {
+      if (currentEatGoUser == null) {
         debugPrint(
             'HomeViewModel - getCurrentUser가 null입니다. 현재 로그인된 사용자가 없는것 같습니다.');
         return;
@@ -82,32 +79,27 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
         return;
       }
       final isBookmarked =
-          user.bookmarks.any((b) => b.recipeId == recipe.recipeId);
+          currentEatGoUser.bookmarks.any((b) => b.recipeId == recipe.recipeId);
 
       if (isBookmarked) {
-        user = user.copyWith(
-          bookmarks: user.bookmarks
+        updatedEatGoUser = currentEatGoUser.copyWith(
+          bookmarks: currentEatGoUser.bookmarks
               .where((b) =>
                   b.recipeId !=
                   recipe.recipeId) //현재 레시피와 ID가 다른 레시피들만 남긴다는 의미입니다.
               .toList(),
         );
       } else {
-        user = user.copyWith(
+        updatedEatGoUser = currentEatGoUser.copyWith(
           bookmarks: [
-            ...user.bookmarks,
+            ...currentEatGoUser.bookmarks,
             Bookmark(recipeId: recipe.recipeId, bookmarkedAt: DateTime.now()),
           ],
         );
       }
-      // profileViewModel의 상태를 업데이트
-      profileViewModel.updateUser(user);
-
-      // 상태가 변경되면 UI에 반영
-      state = AsyncData(recipe);
+      await _userRepository.updateUserData(updatedUser: updatedEatGoUser);
     } catch (e, stackTrace) {
-      debugPrint('HomeViewModel - 북마크 토글하는데 실패하였습니다.');
-      state = AsyncError(e, stackTrace);
+      debugPrint('HomeViewModel - 북마크 토글하는데 실패하였습니다.$e');
     }
   }
 }

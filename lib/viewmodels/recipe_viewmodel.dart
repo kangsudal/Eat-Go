@@ -21,7 +21,7 @@ class WriteData {
 */
 import 'dart:async';
 
-import 'package:eat_go/eatgo_providers.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:flutter/material.dart';

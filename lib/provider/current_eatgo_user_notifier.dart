@@ -1,14 +1,15 @@
 import 'dart:async';
 
-import 'package:eat_go/eatgo_providers.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/operation_result.dart';
 import 'package:eat_go/model/user_model.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfileViewModel extends AsyncNotifier<EatGoUser?> {
+class CurrentEatGoUserNotifier extends AsyncNotifier<EatGoUser?> {
   late final AuthRepository _authRepository;
   late final UserRepository _userRepository;
 
@@ -45,10 +46,5 @@ class ProfileViewModel extends AsyncNotifier<EatGoUser?> {
       debugPrint('ProfileViewModel 오류 발생 - $e');
     }
     return null;
-  }
-
-  // 사용자 정보를 업데이트하는 메서드
-  void updateUser(EatGoUser user) {
-    state = AsyncValue.data(user); // 상태 변경
   }
 }

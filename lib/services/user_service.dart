@@ -55,11 +55,13 @@ class UserService {
 
   Future<bool> updateUserInfo({required EatGoUser updatedUser}) async {
     try {
+      Map<String,dynamic> userMap =updatedUser.toJson();
+      // debugPrint(userMap.toString());
       // Firestore에서 uid로 저장된 사용자 문서 삭제
       await firestore
           .collection('users')
           .doc(updatedUser.uid)
-          .update(updatedUser.toJson());
+          .update(userMap);
       return true;
     } catch (e) {
       debugPrint('UserService - 사용자 데이터 업데이트 중 오류 발생: $e');

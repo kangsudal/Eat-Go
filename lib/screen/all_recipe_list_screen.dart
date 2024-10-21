@@ -1,4 +1,4 @@
-import 'package:eat_go/eatgo_providers.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';

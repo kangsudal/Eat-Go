@@ -1,4 +1,5 @@
-import 'package:eat_go/eatgo_providers.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/about_this_app_screen.dart';
 import 'package:eat_go/screen/admin_screen.dart';
 import 'package:eat_go/screen/all_recipe_list_screen.dart';

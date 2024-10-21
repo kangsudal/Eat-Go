@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:eat_go/eatgo_providers.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/operation_result.dart';
 import 'package:eat_go/repository/user_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

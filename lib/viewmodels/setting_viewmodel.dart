@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:eat_go/eatgo_providers.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/operation_result.dart';
 import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/repository/auth_repository.dart';

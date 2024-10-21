@@ -36,8 +36,9 @@ Map<String, dynamic> _$$EatGoUserImplToJson(_$EatGoUserImpl instance) =>
       'isPremium': instance.isPremium,
       'premiumExpiration':
           const TimestampConverter().toJson(instance.premiumExpiration),
-      'bookmarks': instance.bookmarks,
-      'adoptedRecipes': instance.adoptedRecipes,
-      'reportedRecipes': instance.reportedRecipes,
+      'bookmarks': instance.bookmarks.map((e) => e.toJson()).toList(),
+      'adoptedRecipes': instance.adoptedRecipes.map((e) => e.toJson()).toList(),
+      'reportedRecipes':
+          instance.reportedRecipes.map((e) => e.toJson()).toList(),
       'pushNotificationEnabled': instance.pushNotificationEnabled,
     };

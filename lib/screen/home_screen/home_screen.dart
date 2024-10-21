@@ -1,8 +1,10 @@
 import 'dart:math';
 
-import 'package:eat_go/eatgo_providers.dart';
+import 'package:eat_go/model/user_model.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/animated_text_widget.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
 import 'package:eat_go/viewmodels/home_viewmodel.dart';
@@ -107,12 +109,10 @@ class RecipeWidget extends ConsumerStatefulWidget {
 }
 
 class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
+
   @override
   Widget build(BuildContext context) {
-    final homeViewState = ref.watch(homeViewModelProvider);
-    final homeViewModel = ref.read(homeViewModelProvider.notifier);
-    final profileViewState = ref.watch(profileViewModelProvider);
-    final profileViewModel = ref.read(profileViewModelProvider.notifier);
+    final currentEatGoUser = ref.watch(currentEatGoUserProvider);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -166,7 +166,7 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                 ),
               ),
             ),
-            profileViewState.when(
+            currentEatGoUser.when(
               data: (user) {
                 if (user == null) {
                   debugPrint('HomeScreen - 사용자를 불러오지 못했습니다.');
@@ -178,8 +178,13 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                   top: 15,
                   right: 15,
                   child: GestureDetector(
-                    onTap: () {
-                      ref.read(homeViewModelProvider.notifier).toggleBookmark();
+                    onTap: () async {
+                      ref
+                          .read(homeViewModelProvider.notifier)
+                          .toggleBookmark(user); // 북마크 토글 후 사용자 정보 다시 불러오기
+                      await ref
+                          .read(currentEatGoUserProvider.notifier)
+                          .getCurrentUser();
                     },
                     child: CircleAvatar(
                       radius: 22,
