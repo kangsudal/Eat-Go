@@ -95,13 +95,6 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
     }
   }
 
-  // 원래 상태로 복원하는 메서드 추가
-  void resetToOriginal(EatGoUser? originalUser) {
-    if (originalUser != null) {
-      state = AsyncValue.data(originalUser);
-    }
-  }
-
   // 저장 버튼을 눌렀을 때만 Firestore에 저장
   Future<bool> saveSettings() async {
     state = const AsyncValue.loading();

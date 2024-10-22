@@ -49,12 +49,6 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('관심 항목'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 30.0, right: 30),
