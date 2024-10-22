@@ -3,7 +3,6 @@ import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/about_this_app_screen.dart';
 import 'package:eat_go/screen/admin_screen.dart';
 import 'package:eat_go/screen/all_recipe_list_screen.dart';
-import 'package:eat_go/screen/success_withdrawal_screen.dart';
 import 'package:eat_go/screen/bookmark_screen.dart';
 import 'package:eat_go/screen/path_error_screen.dart';
 import 'package:eat_go/screen/history_screen.dart';
@@ -165,11 +164,6 @@ final myRouterProvider = Provider<GoRouter>((ref) {
         path: '/sign_in',
         builder: (BuildContext context, GoRouterState state) =>
             const SignInScreen(),
-      ),
-      GoRoute(
-        path: '/success_withdrawal',
-        builder: (BuildContext context, GoRouterState state) =>
-            SuccessWithdrawalScreen(),
       ),
       GoRoute(
         path: '/loading',

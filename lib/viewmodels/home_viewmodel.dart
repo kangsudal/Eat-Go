@@ -4,10 +4,8 @@ import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/bookmark_model.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/model/user_model.dart';
-import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
-import 'package:eat_go/provider/current_eatgo_user_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

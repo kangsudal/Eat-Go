@@ -161,7 +161,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                               try {
                                 await settingViewModel.signOut();
                               } catch (e) {
-                                settingViewModel.resetToOriginal(originalUser);
+                                debugPrint('SettingScreen 오류 발생 - 로그아웃 처리에 오류가 발생하였습니다.$e');
                               }
                             },
                           ),
@@ -200,7 +200,6 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
     if (originalUser != null &&
         currentUser != null &&
         currentUser != originalUser) {
-      debugPrint('aaa');
       // 만약 저장되지 않은 변경사항이 있다면, 수정 전 원래 상태로 되돌림
       settingViewModel.resetToOriginal(originalUser);
     }
@@ -209,10 +208,16 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
       final result = await settingViewModel.deleteUserAccountAndData();
 
       if (result == false) {
-        debugPrint('Screen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
-        if (context.mounted) {
+        debugPrint('SettingScreen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
+        if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('오류가 발생했습니다.')),
+          );
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('성공적으로 탈퇴 처리가 되었습니다.')),
           );
         }
       }

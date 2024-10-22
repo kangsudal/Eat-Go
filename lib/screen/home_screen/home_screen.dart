@@ -109,7 +109,6 @@ class RecipeWidget extends ConsumerStatefulWidget {
 }
 
 class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
-
   @override
   Widget build(BuildContext context) {
     final currentEatGoUser = ref.watch(currentEatGoUserProvider);
@@ -181,10 +180,10 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                     onTap: () async {
                       ref
                           .read(homeViewModelProvider.notifier)
-                          .toggleBookmark(user); // 북마크 토글 후 사용자 정보 다시 불러오기
+                          .toggleBookmark(user);
                       await ref
                           .read(currentEatGoUserProvider.notifier)
-                          .getCurrentUser();
+                          .getCurrentUser(); // 북마크 토글 후 사용자 정보 다시 불러오기
                     },
                     child: CircleAvatar(
                       radius: 22,

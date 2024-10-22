@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eat_go/model/operation_result.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/services/auth_service.dart';
@@ -13,7 +12,6 @@ import 'package:eat_go/provider/current_eatgo_user_notifier.dart';
 import 'package:eat_go/viewmodels/recipe_viewmodel.dart';
 import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
 import 'package:eat_go/viewmodels/setting_viewmodel.dart';
-import 'package:eat_go/viewmodels/success_withdrawal_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,9 +77,8 @@ final settingViewModelProvider =
 //<홈화면 랜덤레시피>
 final homeViewModelProvider =
     AsyncNotifierProvider<HomeViewModel, Recipe?>(HomeViewModel.new);
-// final profileViewModelProvider =
-//     AsyncNotifierProvider<ProfileViewModel, EatGoUser?>(ProfileViewModel.new);
 
+//<홈화면, 관심항목 페이지, 기록 페이지 등에 사용>
 final currentEatGoUserProvider =
     AsyncNotifierProvider<CurrentEatGoUserNotifier, EatGoUser?>(
         CurrentEatGoUserNotifier.new);

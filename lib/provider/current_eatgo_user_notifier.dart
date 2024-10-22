@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:eat_go/provider/eatgo_providers.dart';
-import 'package:eat_go/model/operation_result.dart';
 import 'package:eat_go/model/user_model.dart';
-import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,7 +28,7 @@ class CurrentEatGoUserNotifier extends AsyncNotifier<EatGoUser?> {
         // Firestore에서 사용자 데이터를 가져오지 못한 경우
         if (userMap == null) {
           state = AsyncValue.error('사용자 데이터를 가져올 수 없습니다.', StackTrace.current);
-          debugPrint('ProfileViewModel 오류 발생 - userMap이 null로 반환되었습니다.');
+          debugPrint('CurrentEatGoUserNotifier 오류 발생 - userMap이 null로 반환되었습니다.');
           return null;
         }
         EatGoUser user = EatGoUser.fromJson(userMap);
@@ -38,12 +36,12 @@ class CurrentEatGoUserNotifier extends AsyncNotifier<EatGoUser?> {
         return user;
       } else {
         state = AsyncValue.error('사용자 UID를 가져올 수 없습니다.', StackTrace.current);
-        debugPrint('ProfileViewModel 오류 발생 - getUser()값이 null로 반환');
+        debugPrint('CurrentEatGoUserNotifier 오류 발생 - getCurrentUserUid()값이 null로 반환');
         return null;
       }
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
-      debugPrint('ProfileViewModel 오류 발생 - $e');
+      debugPrint('CurrentEatGoUserNotifier 오류 발생 - $e');
     }
     return null;
   }
