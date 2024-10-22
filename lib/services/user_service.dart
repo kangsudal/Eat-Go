@@ -26,6 +26,7 @@ class UserService {
           'bookmarks': [], // 사용자가 북마크한 레시피 목록
           'adoptedRecipes': [], // 사용자가 채택한 레시피 목록
           'reportedRecipes': [], // 사용자 신고한 레시피 목록, 목록에서 차단해주기
+          'pushNotificationEnabled': true,
         });
       }
     } catch (e) {
@@ -55,13 +56,10 @@ class UserService {
 
   Future<bool> updateUserInfo({required EatGoUser updatedUser}) async {
     try {
-      Map<String,dynamic> userMap =updatedUser.toJson();
+      Map<String, dynamic> userMap = updatedUser.toJson();
       // debugPrint(userMap.toString());
       // Firestore에서 uid로 저장된 사용자 문서 삭제
-      await firestore
-          .collection('users')
-          .doc(updatedUser.uid)
-          .update(userMap);
+      await firestore.collection('users').doc(updatedUser.uid).update(userMap);
       return true;
     } catch (e) {
       debugPrint('UserService - 사용자 데이터 업데이트 중 오류 발생: $e');

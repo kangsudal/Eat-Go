@@ -24,7 +24,7 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
       String? currentUserUid = _authRepository.getCurrentUserUid();
       if (currentUserUid != null) {
         Map<String, dynamic>? userMap =
-        await _userRepository.getUser(currentUserUid);
+            await _userRepository.getUser(currentUserUid);
         // Firestore에서 사용자 데이터를 가져오지 못한 경우
         if (userMap == null) {
           state = AsyncValue.error('사용자 데이터를 가져올 수 없습니다.', StackTrace.current);
@@ -56,10 +56,15 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
         state = const AsyncValue.data(null);
         return false;
       }
-      // 2. 계정 삭제
-      await _authRepository.deleteUserAccount();
-      // 3. Firestore에서 사용자 데이터 삭제
-      await _userRepository.deleteUserData(uid);
+      Future.wait(
+        [
+          // 2. 계정 삭제
+          _authRepository.deleteUserAccount(),
+          // 3. Firestore에서 사용자 데이터 삭제
+          _userRepository.deleteUserData(uid)
+        ],
+        eagerError: true,
+      );
       state = const AsyncValue.data(null);
       return true;
     } catch (e, stackTrace) {
