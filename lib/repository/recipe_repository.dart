@@ -30,11 +30,22 @@ class RecipeRepository {
     }
   }
 
+  Future<List<Recipe>> getRecipesFutureByIds(
+      List<String> bookmarkedRecipeIds) async {
+    try {
+      return _recipeService.fetchRecipesFutureByIds(bookmarkedRecipeIds);
+    } catch (e) {
+      debugPrint('레시피를 가져오는 중 오류 발생: $e');
+      return [];
+    }
+  }
+
   Future<Recipe?> getRandomRecipeByAutoId() async {
-    try{
+    try {
       return _recipeService.getRandomRecipeByAutoId();
-    }catch(e){
+    } catch (e) {
       debugPrint('RecipeRepository - 랜덤 doc ID 생성중 오류 발생 : $e');
+      return null;
     }
   }
 }

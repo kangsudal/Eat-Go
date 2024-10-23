@@ -174,7 +174,39 @@ class RecipeService {
         return Recipe.fromJson(doc.data());
       }).toList();
     } catch (e) {
-      debugPrint('레시피를 가져오는 중 오류 발생: $e');
+      debugPrint('RecipeService - 레시피를 가져오는 중 오류 발생: $e');
+      return []; // 오류 발생 시 빈 리스트 반환
+    }
+  }
+
+  Future<List<Recipe>> fetchRecipesFutureByIds(
+      List<String> bookmarkedRecipeIds) async {
+    try {
+      if (bookmarkedRecipeIds.isEmpty) {
+        return []; // ID 리스트가 비어있으면 빈 리스트 반환
+      }
+
+      // Firestore에서 각 recipeId로 병렬로 get() 요청
+      List<Future<DocumentSnapshot<Map<String, dynamic>>>> futures =
+          bookmarkedRecipeIds.map((recipeId) {
+        return _firestore.collection('recipes').doc(recipeId).get();
+      }).toList();
+
+      // 모든 요청이 완료될 때까지 기다리고 결과를 가져옴
+      List<DocumentSnapshot<Map<String, dynamic>>> snapshots =
+          await Future.wait(futures);
+
+      snapshots = snapshots
+          .where((snapshot) => snapshot.exists)
+          .toList(); // 존재하는 문서만 필터링
+
+      List<Recipe> bookmarkedRecipeList = snapshots
+          .map((snapshot) => Recipe.fromJson(snapshot.data()!))
+          .toList(); //snapshot.exists 처리했으므로 snapshot.data()는 null이 아니다.
+
+      return bookmarkedRecipeList;
+    } catch (e) {
+      debugPrint('RecipeService - 레시피를 가져오는 중 오류 발생: $e');
       return []; // 오류 발생 시 빈 리스트 반환
     }
   }

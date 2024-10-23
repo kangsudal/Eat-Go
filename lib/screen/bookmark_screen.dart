@@ -1,174 +1,131 @@
 import 'dart:math';
 
 import 'package:eat_go/model/fake_recipe.dart';
+import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/my_routes.dart';
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/custom_widget/custom_list_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:uuid/uuid.dart';
 
-class BookmarkScreen extends StatefulWidget {
+class BookmarkScreen extends ConsumerWidget {
   const BookmarkScreen({super.key});
 
   @override
-  State<BookmarkScreen> createState() => _BookmarkScreenState();
-}
-
-class _BookmarkScreenState extends State<BookmarkScreen> {
-  Random random = Random();
-  late List<FakeRecipe> recipeList;
-  late List<FakeRecipe> bookmarkedRecipeList;
-  int recipeCount = 10;
-
-  @override
-  void initState() {
-    super.initState();
-    final uuid = Uuid();
-    //dummy data
-    recipeList = List.generate(recipeCount, (idx) {
-      return FakeRecipe(
-        random.nextInt(0xFFFFFFFF),
-        bookmarked: true,
-        id: uuid.v4(),
-        createdAt: DateTime.now(),
-      );
-    });
-    //dummy data end
-    //filter recipe list by bookmarked
-    bookmarkedRecipeList =
-        recipeList.where((recipe) => recipe.bookmarked == true).toList();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    bookmarkedRecipeList =
-        recipeList.where((recipe) => recipe.bookmarked == true).toList();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentEatGoUser = ref.watch(currentEatGoUserProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('관심 항목'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 30.0, right: 30),
-        child: ListView.builder(
-          itemCount: bookmarkedRecipeList.length,
-          itemBuilder: (BuildContext context, int index) {
-            FakeRecipe element = bookmarkedRecipeList[index];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  //todo: 옳바른 recipeId 넣어주기
-                  context.go('/home/bookmark/recipe_detail/aaaaaaaaaaa');
-                },
-                child: CustomListTile(
-                  leading: Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: Color(element.value),
-                    ),
-                  ),
-                  mid: Text('${element.value}'),
-                  trailing: IconButton(
-                    onPressed: () {
-                      showCupertinoDialog(
-                        context: context,
-                        builder: (context) {
-                          return CupertinoAlertDialog(
-                            content: Text('관심 항목에서 삭제하시겠습니까?'),
-                            actions: [
-                              CupertinoDialogAction(
-                                child: const Text('예'),
-                                onPressed: () {
-                                  setState(() {
-                                    element.bookmarked = !(element.bookmarked);
-                                  });
-                                  Navigator.pop(context);
-                                },
+      body: currentEatGoUser.when(
+        data: (user) {
+          if (user == null) {
+            return const Center(
+              child: Text('유저 정보를 불러오지 못했습니다.'),
+            );
+          }
+          final bookmarkViewState = ref.watch(bookmarkViewModelProvider(user));
+          final bookmarkViewModel = ref.read(bookmarkViewModelProvider(user).notifier);
+          return Padding(
+            padding: const EdgeInsets.only(left: 30.0, right: 30),
+            child: bookmarkViewState.when(
+                data: (bookmarkedRecipeList) {
+                  if (bookmarkedRecipeList == null) {
+                    return const Center(
+                      child: Text('리스트를 불러오는데 실패하였습니다.'),
+                    );
+                  }
+                  if (bookmarkedRecipeList.isEmpty) {
+                    return const Center(
+                      child: Text('북마크한 레시피가 없습니다.'),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: bookmarkedRecipeList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      Recipe recipe = bookmarkedRecipeList[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            //todo: 옳바른 recipeId 넣어주기
+                            context
+                                .go('/home/bookmark/recipe_detail/aaaaaaaaaaa');
+                          },
+                          child: CustomListTile(
+                            leading: Container(
+                              width: 70,
+                              height: 70,
+                              child: Image.network(recipe.completedImgUrl),
+                            ),
+                            mid: Text(recipe.title),
+                            trailing: IconButton(
+                              onPressed: () {
+                                showCupertinoDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return CupertinoAlertDialog(
+                                      content: Text('관심 항목에서 삭제하시겠습니까?'),
+                                      actions: [
+                                        CupertinoDialogAction(
+                                          child: const Text('예'),
+                                          onPressed: () async{
+                                            bookmarkViewModel
+                                                .toggleBookmark(recipe: recipe);
+                                            await ref
+                                                .read(currentEatGoUserProvider.notifier)
+                                                .getCurrentUser(); // 북마크 토글 후 사용자 정보 다시 불러오기
+                                            if(context.mounted) {
+                                              context.pop();
+                                            }
+                                          },
+                                        ),
+                                        CupertinoDialogAction(
+                                          child: const Text('아니오'),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.delete,
+                                color: pointColor,
                               ),
-                              CupertinoDialogAction(
-                                child: const Text('아니오'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        },
+                            ),
+                          ),
+                        ),
                       );
                     },
-                    icon: const Icon(
-                      Icons.bookmark,
-                      color: pointColor,
-                    ),
-                  ),
-                ),
-              ),
-            );
-            // return Padding(
-            //   padding: const EdgeInsets.only(bottom: 20.0),
-            //   child: Container(
-            //     padding: const EdgeInsets.all(15),
-            //     decoration: BoxDecoration(
-            //       border: Border.all(color: EatGoPalette.lineColor),
-            //       borderRadius: const BorderRadius.all(Radius.circular(10)),
-            //     ),
-            //     child: Row(
-            //       children: [
-            //         Container(
-            //           width: 70,
-            //           height: 70,
-            //           decoration: BoxDecoration(
-            //             color: Color(element.value),
-            //           ),
-            //         ),
-            //         const SizedBox(width: 20),
-            //         Expanded(child: Text('${element.value}')),
-            //         IconButton(
-            //           onPressed: () {
-            //             showCupertinoDialog(
-            //               context: context,
-            //               builder: (context) {
-            //                 return CupertinoAlertDialog(
-            //                   content: Text('관심 항목에서 삭제하시겠습니까?'),
-            //                   actions: [
-            //                     CupertinoDialogAction(
-            //                       child: const Text('예'),
-            //                       onPressed: () {
-            //                         setState(() {
-            //                           element.bookmarked =
-            //                               !(element.bookmarked);
-            //                         });
-            //                         Navigator.pop(context);
-            //                       },
-            //                     ),
-            //                     CupertinoDialogAction(
-            //                       child: const Text('아니오'),
-            //                       onPressed: () {
-            //                         Navigator.pop(context);
-            //                       },
-            //                     ),
-            //                   ],
-            //                 );
-            //               },
-            //             );
-            //           },
-            //           icon: const Icon(
-            //             Icons.bookmark,
-            //             color: pointColor,
-            //           ),
-            //         )
-            //       ],
-            //     ),
-            //   ),
-            // );
-          },
-          // children: bookmarkedRecipeList.map((FakeRecipe element) {
+                    // children: bookmarkedRecipeList.map((FakeRecipe element) {
 
-          // }).toList(),
+                    // }).toList(),
+                  );
+                },
+                error: (error, stackTrace) {
+                  debugPrint('BookmarkScreen - $error');
+                  return const Center(child: Text('리스트를 불러오는데 실패하였습니다.'));
+                },
+                loading: () => const Center(
+                      child: CircularProgressIndicator(),
+                    )),
+          );
+        },
+        error: (error, stackTrace) {
+          return const Center(
+            child: Text('오류가 발생했습니다.'),
+          );
+        },
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
         ),
       ),
     );
