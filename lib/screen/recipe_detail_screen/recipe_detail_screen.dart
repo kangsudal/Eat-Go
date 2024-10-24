@@ -1,53 +1,87 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eat_go/model/description_model.dart';
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_widget/appbar.dart';
 import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_widget/bottom_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RecipeDetailScreen extends StatelessWidget {
+class RecipeDetailScreen extends ConsumerWidget {
   RecipeDetailScreen({
     super.key,
     required this.recipeId,
   });
 
-  final List recipeExplains = List.generate(20, (index) => Container());
+  // final List recipeExplains = List.generate(20, (index) => Container());
   final String recipeId;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(context),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 30.0, right: 30, top: 20),
-          child: Column(
-            children: [
-              buildIngredients(),
-              SizedBox(height: 50),
-              ...buildRecipeExplainAndImgSets(),
-              SizedBox(height: 50),
-              buildCompletedRecipe(),
-              SizedBox(height: 30)
-            ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final recipeDetailViewState =
+        ref.watch(recipeDetailViewModelProvider(recipeId));
+    final recipeDetailViewModel =
+        ref.read(recipeDetailViewModelProvider(recipeId).notifier);
+
+    return recipeDetailViewState.when(
+      data: (recipe) {
+        String ingredientsImgUrl = recipe.ingredientsImgUrl;
+        String ingredients = recipe.ingredients;
+        List<Description> descriptions = recipe.descriptions;
+        String title = recipe.title;
+        String completedImgUrl = recipe.completedImgUrl;
+        return Scaffold(
+          appBar: buildAppBar(context),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30.0, right: 30, top: 20),
+              child: Column(
+                children: [
+                  buildIngredients(
+                    ingredients: ingredients,
+                    ingredientsImgUrl: ingredientsImgUrl,
+                  ),
+                  SizedBox(height: 50),
+                  ...buildRecipeExplainAndImgSets(descriptions),
+                  SizedBox(height: 50),
+                  buildCompletedRecipe(
+                      title: title, completedImgUrl: completedImgUrl),
+                  SizedBox(height: 30)
+                ],
+              ),
+            ),
           ),
-        ),
+          bottomNavigationBar: buildBottomAppBar(context, recipeId),
+        );
+      },
+      error: (error, stackTrace) => const Center(
+        child: Text('오류가 발생하였습니다.'),
       ),
-      bottomNavigationBar: buildBottomAppBar(context, recipeId),
+      loading: () => Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 
-  Column buildIngredients() {
+  Column buildIngredients(
+      {required String ingredients, required String ingredientsImgUrl}) {
     return Column(
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(15),
-          child: Placeholder(
-            fallbackHeight: 180,
+          child: CachedNetworkImage(
+            imageUrl: ingredientsImgUrl,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                CircularProgressIndicator(
+              value: downloadProgress.progress,
+            ),
+            errorWidget: (context, _, __) =>
+                Center(child: Icon(Icons.report_problem_outlined)),
           ),
         ),
         SizedBox(height: 20),
         Container(
-          height: 180,
           decoration: BoxDecoration(
             border: Border.all(
               width: 1,
@@ -55,13 +89,21 @@ class RecipeDetailScreen extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(15),
           ),
+          child: Text(ingredients),
         ),
       ],
     );
   }
 
-  List<Column> buildRecipeExplainAndImgSets() {
-    return List.generate(recipeExplains.length, (index) {
+  List<Column> buildRecipeExplainAndImgSets(List<Description> descriptions) {
+    final validDescriptions = descriptions
+        .where((desc) =>
+            desc.description.isNotEmpty ||
+            (desc.descriptionImgUrl != null &&
+                desc.descriptionImgUrl!.isNotEmpty))
+        .toList();
+
+    return List.generate(validDescriptions.length, (index) {
       return Column(
         children: [
           Container(
@@ -82,10 +124,7 @@ class RecipeDetailScreen extends StatelessWidget {
                   Text('$index.'),
                   SizedBox(width: 5),
                   Expanded(
-                    child: Text(
-                        'datadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadatadata'
-                        'datadatadatadatadatadatadata'
-                        'datadatadatadatadatadatadatadata'),
+                    child: Text(validDescriptions[index].description),
                   ),
                 ],
               ),
@@ -94,21 +133,28 @@ class RecipeDetailScreen extends StatelessWidget {
           SizedBox(height: 20),
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: Placeholder(
-              fallbackHeight: 180,
+            child: CachedNetworkImage(
+              imageUrl: validDescriptions[index].descriptionImgUrl!,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  CircularProgressIndicator(
+                value: downloadProgress.progress,
+              ),
+              errorWidget: (context, _, __) =>
+                  Center(child: Icon(Icons.report_problem_outlined)),
             ),
           ),
-          if (index != recipeExplains.length - 1) const SizedBox(height: 40),
+          if (index != validDescriptions.length - 1) const SizedBox(height: 40),
         ],
       );
     });
   }
 
-  Column buildCompletedRecipe() {
+  Column buildCompletedRecipe(
+      {required String title, required String completedImgUrl}) {
     return Column(
       children: [
         Text(
-          '{매실소스를 곁들인 돼지고기만두} 완성!',
+          '$title 완성!',
           style: TextStyle(
             fontSize: 30,
           ),
@@ -116,7 +162,15 @@ class RecipeDetailScreen extends StatelessWidget {
         SizedBox(height: 20),
         ClipRRect(
           borderRadius: BorderRadius.circular(15),
-          child: Placeholder(fallbackHeight: 300),
+          child: CachedNetworkImage(
+            imageUrl: completedImgUrl,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                CircularProgressIndicator(
+              value: downloadProgress.progress,
+            ),
+            errorWidget: (context, _, __) =>
+                Center(child: Icon(Icons.report_problem_outlined)),
+          ),
         ),
       ],
     );

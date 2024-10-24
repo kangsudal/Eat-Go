@@ -10,6 +10,7 @@ import 'package:eat_go/repository/user_repository.dart';
 import 'package:eat_go/viewmodels/bookmark_viewmodel.dart';
 import 'package:eat_go/viewmodels/home_viewmodel.dart';
 import 'package:eat_go/provider/current_eatgo_user_notifier.dart';
+import 'package:eat_go/viewmodels/recipe_detail_viewmodel.dart';
 import 'package:eat_go/viewmodels/recipe_viewmodel.dart';
 import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
 import 'package:eat_go/viewmodels/setting_viewmodel.dart';
@@ -84,7 +85,12 @@ final currentEatGoUserProvider =
     AsyncNotifierProvider<CurrentEatGoUserNotifier, EatGoUser?>(
         CurrentEatGoUserNotifier.new);
 
-//https://riverpod.dev/docs/migration/from_state_notifier#explicit-family-and-autodispose-modifications
+//<관심항목 페이지>
 final bookmarkViewModelProvider =
     AsyncNotifierProvider.family<BookmarkViewModel, List<Recipe>?, EatGoUser?>(
         BookmarkViewModel.new);
+
+//<상세 페이지>
+////https://riverpod.dev/docs/migration/from_state_notifier#explicit-family-and-autodispose-modifications
+final recipeDetailViewModelProvider = AsyncNotifierProvider.family.autoDispose
+    <RecipeDetailViewModel, Recipe, String>(RecipeDetailViewModel.new);

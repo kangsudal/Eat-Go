@@ -12,7 +12,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class HomeViewModel extends AsyncNotifier<Recipe?> {
   late final RecipeRepository _recipeRepository;
   late final UserRepository _userRepository;
-  EatGoUser? currentEatGoUser;
 
   @override
   FutureOr<Recipe?> build() {
@@ -63,6 +62,7 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
   }
 
   //북마크 상태를 토글하는 메서드
+  //HomeViewModel은 현재 보고 있는 레시피만을 다루기 때문에, recipe를 파라미터로 받지 않고 상태에서 바로 접근합니다.
   void toggleBookmark(EatGoUser? currentEatGoUser) async {
     try {
       EatGoUser? updatedEatGoUser;

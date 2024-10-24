@@ -9,65 +9,66 @@ import 'package:eat_go/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BookmarkViewModel extends FamilyAsyncNotifier<List<Recipe>?, EatGoUser> {
+class RecipeDetailViewModel extends AutoDisposeFamilyAsyncNotifier<Recipe, String> {
   late final RecipeRepository _recipeRepository;
   late final UserRepository _userRepository;
-  late final EatGoUser _currentEatGoUser;
+  late final String _recipeId;
 
   @override
-  FutureOr<List<Recipe>?> build(EatGoUser arg) async {
+  FutureOr<Recipe> build(String arg) async {
     _recipeRepository = ref.watch(recipeRepositoryProvider);
     _userRepository = ref.watch(userRepositoryProvider);
-    _currentEatGoUser = arg;
-    return await fetchBookmarkList();
+    _recipeId = arg;
+
+    return await fetchRecipe(recipeId: _recipeId);
   }
 
-  Future<List<Recipe>?> fetchBookmarkList() async {
-    final bookmarkList = _currentEatGoUser.bookmarks;
-    final bookmarkedRecipeIds = bookmarkList.map((bookmark) {
-      return bookmark.recipeId;
-    }).toList();
+  Future<Recipe> fetchRecipe({required String recipeId}) async {
     try {
-      final recipeList =
-          await _recipeRepository.getRecipesFutureByIds(bookmarkedRecipeIds);
-      return recipeList;
+      Recipe recipe = await _recipeRepository.getRecipeById(recipeId: recipeId);
+      return recipe;
     } catch (e) {
-      debugPrint('BookmarkViewModel - 북마크레시피들을 불러오는데 오류 발생 : $e');
-      return null;
+      rethrow;
     }
   }
 
   //북마크 상태를 토글하는 메서드
-  //BookmarkViewModel은 여러 레시피의 북마크 상태를 관리하므로, 어떤 레시피를 토글할지 명확히 하기 위해 recipe 파라미터가 필요합니다.
-  void toggleBookmark({Recipe? recipe}) async {
+  //RecipeDetailViewModel은 현재 보고 있는 레시피만을 다루기 때문에, recipe를 파라미터로 받지 않고 상태에서 바로 접근합니다.
+  void toggleBookmark(EatGoUser? currentEatGoUser) async {
     try {
       EatGoUser? updatedEatGoUser;
+      Recipe? recipe = state.value;
+      if (currentEatGoUser == null) {
+        debugPrint(
+            'RecipeDetailViewModel - getCurrentUser가 null입니다. 현재 로그인된 사용자가 없는것 같습니다.');
+        return;
+      }
       if (recipe == null) {
-        debugPrint('BookmarkViewModel - recipe 값이 null입니다.');
+        debugPrint('RecipeDetailViewModel - recipe 값이 null입니다.');
         return;
       }
       final isBookmarked =
-          _currentEatGoUser.bookmarks.any((b) => b.recipeId == recipe.recipeId);
+          currentEatGoUser.bookmarks.any((b) => b.recipeId == recipe.recipeId);
 
       if (isBookmarked) {
-        updatedEatGoUser = _currentEatGoUser.copyWith(
-          bookmarks: _currentEatGoUser.bookmarks
+        updatedEatGoUser = currentEatGoUser.copyWith(
+          bookmarks: currentEatGoUser.bookmarks
               .where((b) =>
                   b.recipeId !=
                   recipe.recipeId) //현재 레시피와 ID가 다른 레시피들만 남긴다는 의미입니다.
               .toList(),
         );
       } else {
-        updatedEatGoUser = _currentEatGoUser.copyWith(
+        updatedEatGoUser = currentEatGoUser.copyWith(
           bookmarks: [
-            ..._currentEatGoUser.bookmarks,
+            ...currentEatGoUser.bookmarks,
             Bookmark(recipeId: recipe.recipeId, bookmarkedAt: DateTime.now()),
           ],
         );
       }
       await _userRepository.updateUserData(updatedUser: updatedEatGoUser);
     } catch (e, stackTrace) {
-      debugPrint('BookmarkViewModel - 북마크 토글하는데 실패하였습니다.$e');
+      debugPrint('RecipeDetailViewModel - 북마크 토글하는데 실패하였습니다.$e');
     }
   }
 }

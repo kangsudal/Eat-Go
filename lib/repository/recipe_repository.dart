@@ -44,8 +44,17 @@ class RecipeRepository {
     try {
       return _recipeService.getRandomRecipeByAutoId();
     } catch (e) {
-      debugPrint('RecipeRepository - 랜덤 doc ID 생성중 오류 발생 : $e');
+      debugPrint('RecipeRepository - 랜덤 레시피 생성중 오류 발생 : $e');
       return null;
+    }
+  }
+
+  Future<Recipe> getRecipeById({required String recipeId}) async {
+    try {
+      return _recipeService.getRecipeById(recipeId: recipeId);
+    } catch (e) {
+      debugPrint('RecipeRepository - 레시피 생성중 오류 발생 : $e');
+      throw Exception(e);
     }
   }
 }

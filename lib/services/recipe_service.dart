@@ -248,4 +248,25 @@ class RecipeService {
       return null;
     }
   }
+
+  Future<Recipe> getRecipeById({required String recipeId}) async {
+    try {
+      DocumentReference docReference =
+          _firestore.collection('recipes').doc(recipeId);
+      final docSnapshot = await docReference.get();
+
+      //데이터가 존재하지않으면
+      if (!docSnapshot.exists) {
+        throw Exception('해당 recipeId의 레시피가 존재하지 않습니다.');
+      }
+      //Firestore 문서를 Recipe 객체로 변환
+      final Map<String, dynamic> recipeData =
+          docSnapshot.data() as Map<String, dynamic>;
+      //Recipe 객체로 변환
+      final recipe = Recipe.fromJson(recipeData);
+      return recipe;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

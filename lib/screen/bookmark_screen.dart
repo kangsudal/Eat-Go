@@ -55,9 +55,8 @@ class BookmarkScreen extends ConsumerWidget {
                         padding: const EdgeInsets.only(bottom: 20.0),
                         child: GestureDetector(
                           onTap: () {
-                            //todo: 옳바른 recipeId 넣어주기
                             context
-                                .go('/home/bookmark/recipe_detail/aaaaaaaaaaa');
+                                .go('/home/bookmark/recipe_detail/${recipe.recipeId}');
                           },
                           child: CustomListTile(
                             leading: Container(
