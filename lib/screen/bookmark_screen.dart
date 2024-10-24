@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eat_go/model/fake_recipe.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/my_routes.dart';
@@ -30,7 +31,8 @@ class BookmarkScreen extends ConsumerWidget {
             );
           }
           final bookmarkViewState = ref.watch(bookmarkViewModelProvider(user));
-          final bookmarkViewModel = ref.read(bookmarkViewModelProvider(user).notifier);
+          final bookmarkViewModel =
+              ref.read(bookmarkViewModelProvider(user).notifier);
           return Padding(
             padding: const EdgeInsets.only(left: 30.0, right: 30),
             child: bookmarkViewState.when(
@@ -61,7 +63,14 @@ class BookmarkScreen extends ConsumerWidget {
                             leading: Container(
                               width: 70,
                               height: 70,
-                              child: Image.network(recipe.completedImgUrl),
+                              child: CachedNetworkImage(
+                                imageUrl: recipe.completedImgUrl,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) =>
+                                        CircularProgressIndicator(
+                                  value: downloadProgress.progress,
+                                ),
+                              ),
                             ),
                             mid: Text(recipe.title),
                             trailing: IconButton(
@@ -74,13 +83,14 @@ class BookmarkScreen extends ConsumerWidget {
                                       actions: [
                                         CupertinoDialogAction(
                                           child: const Text('예'),
-                                          onPressed: () async{
-                                            bookmarkViewModel
-                                                .toggleBookmark(recipe: recipe);
+                                          onPressed: () async {
+                                            bookmarkViewModel.toggleBookmark(
+                                                recipe: recipe);
                                             await ref
-                                                .read(currentEatGoUserProvider.notifier)
+                                                .read(currentEatGoUserProvider
+                                                    .notifier)
                                                 .getCurrentUser(); // 북마크 토글 후 사용자 정보 다시 불러오기
-                                            if(context.mounted) {
+                                            if (context.mounted) {
                                               context.pop();
                                             }
                                           },
