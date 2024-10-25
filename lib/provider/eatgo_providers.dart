@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/model/user_model.dart';
-import 'package:eat_go/provider/my_router_notifier.dart';
+import 'package:eat_go/provider/my_router_provider.dart';
 import 'package:eat_go/provider/shake_notifier.dart';
 import 'package:eat_go/services/auth_service.dart';
 import 'package:eat_go/services/recipe_service.dart';
@@ -19,10 +19,6 @@ import 'package:eat_go/viewmodels/setting_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
-final myRouterProvider =
-    NotifierProvider<MyRouterNotifier, GoRouter>(MyRouterNotifier.new);
 
 //Provider: 간단한 의존성 주입 도구로, 특정 클래스를 전역적으로 쉽게 사용할 수 있도록 만들어줍니다.
 final firestoreProvider =
