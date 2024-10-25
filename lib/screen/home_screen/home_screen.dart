@@ -27,6 +27,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void dispose() {
     ref.read(shakeProvider.notifier).disableShake();
+    //작동안됨. inspector에서 보니까 다른 위젯으로 넘어갈때 이 위젯이 안사라짐. deactivate도 마찬가지
     super.dispose();
   }
 
@@ -34,7 +35,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final homeViewModel = ref.read(homeViewModelProvider.notifier);
     final isShaking = ref.watch(shakeProvider);
-    
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
