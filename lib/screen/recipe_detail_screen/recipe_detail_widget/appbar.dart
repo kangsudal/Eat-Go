@@ -20,7 +20,7 @@ AppBar buildAppBar(BuildContext context) {
                       size: 20,
                     ),
                     Text(
-                      '32',
+                      '0',
                       style: TextStyle(
                         color: pointColor,
                         fontSize: 15,
@@ -41,7 +41,7 @@ AppBar buildAppBar(BuildContext context) {
                       size: 20,
                     ),
                     Text(
-                      '32',
+                      '0',
                       style: TextStyle(
                         color: pointColor,
                         fontSize: 15,
@@ -62,7 +62,7 @@ AppBar buildAppBar(BuildContext context) {
                       size: 20,
                     ),
                     Text(
-                      '2',
+                      '0',
                       style: TextStyle(
                         color: pointColor,
                         fontSize: 15,
