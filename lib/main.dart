@@ -1,4 +1,4 @@
-import 'package:eat_go/my_routes.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

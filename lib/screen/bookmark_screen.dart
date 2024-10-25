@@ -1,9 +1,7 @@
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eat_go/model/fake_recipe.dart';
 import 'package:eat_go/model/recipe_model.dart';
-import 'package:eat_go/my_routes.dart';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/custom_widget/custom_list_tile.dart';
