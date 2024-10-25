@@ -23,11 +23,18 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  bool isShakingLocked = false;
+
+  @override
+  void dispose() {
+    ref.read(shakeProvider.notifier).disableShake();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final homeViewModel = ref.read(homeViewModelProvider.notifier);
+    final isShaking = ref.watch(shakeProvider);
+    
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -35,13 +42,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         title: IconButton(
           onPressed: () {
             setState(() {
-              isShakingLocked = !isShakingLocked;
-              print(isShakingLocked);
+              ref.read(shakeProvider.notifier).toggleShake();
+              print('isShaking:$isShaking');
             });
           },
-          icon: isShakingLocked
-              ? const Icon(Icons.lock, color: pointColor)
-              : const Icon(Icons.lock_open, color: pointColor),
+          icon: isShaking
+              ? const Icon(Icons.lock_open, color: pointColor)
+              : const Icon(Icons.lock, color: pointColor),
         ),
         actions: [
           IconButton(
@@ -56,7 +63,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       endDrawer: const HomeScreenDrawer(),
       floatingActionButton: Visibility(
-        visible: !isShakingLocked,
+        visible: isShaking,
         child: FloatingActionButton(
           onPressed: () {
             homeViewModel.fetchRandomRecipeWithRetry();

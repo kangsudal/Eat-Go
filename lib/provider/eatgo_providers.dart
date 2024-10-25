@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/model/user_model.dart';
+import 'package:eat_go/provider/shake_notifier.dart';
 import 'package:eat_go/services/auth_service.dart';
 import 'package:eat_go/services/recipe_service.dart';
 import 'package:eat_go/services/user_service.dart';
@@ -94,3 +95,6 @@ final bookmarkViewModelProvider =
 ////https://riverpod.dev/docs/migration/from_state_notifier#explicit-family-and-autodispose-modifications
 final recipeDetailViewModelProvider = AsyncNotifierProvider.family.autoDispose
     <RecipeDetailViewModel, Recipe, String>(RecipeDetailViewModel.new);
+
+//<흔들기 기능>
+final shakeProvider = NotifierProvider<ShakeNotifier, bool>(ShakeNotifier.new);

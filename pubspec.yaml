@@ -60,6 +60,8 @@ dependencies:
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
 
+  shake: ^2.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
