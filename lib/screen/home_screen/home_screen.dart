@@ -21,15 +21,8 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen>  {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-
-  @override
-  void dispose() {
-    ref.read(shakeProvider.notifier).disableShake();
-    //작동안됨. inspector에서 보니까 다른 위젯으로 넘어갈때 이 위젯이 안사라짐. deactivate도 마찬가지
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +35,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         centerTitle: false,
         title: IconButton(
           onPressed: () {
-            setState(() {
-              ref.read(shakeProvider.notifier).toggleShake();
-              print('isShaking:$isShaking');
-            });
+            ref.read(shakeProvider.notifier).toggleShake();
           },
           icon: isShaking
               ? const Icon(Icons.lock_open, color: pointColor)

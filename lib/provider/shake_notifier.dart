@@ -10,15 +10,24 @@ class ShakeNotifier extends Notifier<bool> {
 
   @override
   bool build() {
-    //처음에 흔들기 활성화 상태로 시작
-    initShakeListener(onShake: () {
-      ref.read(homeViewModelProvider.notifier).fetchRandomRecipeWithRetry();
-    });
+    enableShake();
     return true;
   }
 
-  void initShakeListener({required Function onShake}) {
-    const double shakeThreshold = 17.0; // 흔들림 감지 임계값( 숫자가 올라갈수록 더 세게 흔들어야한다. 15는너무낮고 20은 너무세다)
+  // 흔들림 활성화/비활성화 토글
+  void toggleShake() {
+    state = !state;
+    if (state) {
+      enableShake();
+    } else {
+      disableShake();
+    }
+  }
+
+  void enableShake() {
+    state = true;
+    const double shakeThreshold =
+        17.0; // 흔들림 감지 임계값( 숫자가 올라갈수록 더 세게 흔들어야한다. 15는너무낮고 20은 너무세다)
     _accelerometerSubscription = accelerometerEventStream().listen((event) {
       double gX = event.x;
       double gY = event.y;
@@ -29,30 +38,15 @@ class ShakeNotifier extends Notifier<bool> {
 
       if (acceleration > shakeThreshold && state) {
         // 흔들림 발생 시 레시피 불러오기 메서드 실행
-        onShake();
+        ref.read(homeViewModelProvider.notifier).fetchRandomRecipeWithRetry();
       }
     });
-  }
-  // 흔들림 활성화/비활성화 토글
-  void toggleShake() {
-    state = !state;
-    if (state) {
-      initShakeListener(onShake: () {
-        ref.read(homeViewModelProvider.notifier).fetchRandomRecipeWithRetry();
-      });
-    } else {
-      stopListening();
-    }
-  }
-
-  // 흔들림 감지 중지
-  void stopListening() {
-    _accelerometerSubscription?.cancel();
   }
 
   // 흔들림 기능 비활성화
   void disableShake() {
     state = false;
-    stopListening();
+    _accelerometerSubscription?.cancel(); // 구독을 완전히 종료
+    _accelerometerSubscription = null; // 구독 변수를 null로 초기화
   }
 }
