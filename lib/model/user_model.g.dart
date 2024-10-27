@@ -24,6 +24,9 @@ _$EatGoUserImpl _$$EatGoUserImplFromJson(Map<String, dynamic> json) =>
       recipeReportIds: (json['recipeReportIds'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
+      blockedRecipes: (json['blockedRecipes'] as List<dynamic>)
+          .map((e) => Recipe.fromJson(e as Map<String, dynamic>))
+          .toList(),
       pushNotificationEnabled: json['pushNotificationEnabled'] as bool? ?? true,
     );
 
@@ -39,5 +42,6 @@ Map<String, dynamic> _$$EatGoUserImplToJson(_$EatGoUserImpl instance) =>
       'bookmarks': instance.bookmarks.map((e) => e.toJson()).toList(),
       'adoptedRecipes': instance.adoptedRecipes.map((e) => e.toJson()).toList(),
       'recipeReportIds': instance.recipeReportIds,
+      'blockedRecipes': instance.blockedRecipes.map((e) => e.toJson()).toList(),
       'pushNotificationEnabled': instance.pushNotificationEnabled,
     };

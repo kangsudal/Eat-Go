@@ -14,8 +14,7 @@ class AdminScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 // 버튼 클릭 시 일회성 작업 실행
-                await deleteReportedRecipesFieldForAllUsers();
-                await updateAllUsersRecipeReportIdsField();
+                await updateAllUsersBlockedRecipesField();
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                       content: Text('All users updated successfully!')),
@@ -143,6 +142,37 @@ class AdminScreen extends StatelessWidget {
             debugPrint('User ${doc.id} updated with recipeReportIds: []');
           } else {
             debugPrint('User ${doc.id} already has recipeReportIds field.');
+          }
+        } else {
+          debugPrint('User document ${doc.id} does not exist.');
+        }
+      } catch (e) {
+        debugPrint('Error updating user ${doc.id}: $e');
+      }
+    }
+  }
+
+  //blockedRecipes 필드 추가
+  Future<void> updateAllUsersBlockedRecipesField() async {
+    final firestore = FirebaseFirestore.instance;
+
+    // 1. 'users' 컬렉션의 모든 사용자 문서 가져오기
+    QuerySnapshot usersSnapshot = await firestore.collection('users').get();
+
+    // 2. 각 문서에 대해 blockedRecipes 필드 업데이트
+    for (var doc in usersSnapshot.docs) {
+      try {
+        if (doc.exists) {
+          // 문서의 데이터가 null이 아닌지 먼저 확인
+          final Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+          // 만약 blockedRecipes 필드가 없다면 빈 리스트로 업데이트
+          if (data != null && !data.containsKey('blockedRecipes')) {
+            await firestore.collection('users').doc(doc.id).update({
+              'blockedRecipes': [],
+            });
+            debugPrint('User ${doc.id} updated with blockedRecipes: []');
+          } else {
+            debugPrint('User ${doc.id} already has blockedRecipes field.');
           }
         } else {
           debugPrint('User document ${doc.id} does not exist.');

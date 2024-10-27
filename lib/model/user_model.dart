@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/adopted_recipe_model.dart';
 import 'package:eat_go/model/bookmark_model.dart';
+import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/model/recipe_report_model.dart';
 import 'package:eat_go/model/timestamp_converter.dart';
 
@@ -22,8 +23,10 @@ sealed class EatGoUser with _$EatGoUser {
     required List<Bookmark> bookmarks, // 사용자가 북마크한 레시피 목록
     required List<AdoptedRecipe> adoptedRecipes, // 사용자가 채택한 레시피 목록
     required List<String> recipeReportIds, // 사용자 신고한 레시피 목록, 목록에서 차단해주기
+    required List<Recipe> blockedRecipes, // 레시피 포스트 차단 기능
     @Default(true) bool pushNotificationEnabled,
-}) = _EatGoUser;
+  }) = _EatGoUser;
 
-  factory EatGoUser.fromJson(Map<String, Object?> json) => _$EatGoUserFromJson(json);
+  factory EatGoUser.fromJson(Map<String, Object?> json) =>
+      _$EatGoUserFromJson(json);
 }

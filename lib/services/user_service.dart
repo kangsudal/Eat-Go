@@ -27,6 +27,7 @@ class UserService {
           'adoptedRecipes': [], // 사용자가 채택한 레시피 목록
           'recipeReportIds': [], // 사용자 신고한 레시피 목록, 목록에서 차단해주기
           'pushNotificationEnabled': true,
+          'blockedRecipes': [], // 레시피 포스트 차단
         });
       }
     } catch (e) {
