@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eat_go/model/adopted_recipe_model.dart';
 import 'package:eat_go/model/bookmark_model.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/model/recipe_report_model.dart';

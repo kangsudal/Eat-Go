@@ -14,7 +14,11 @@ class AdminScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 // 버튼 클릭 시 일회성 작업 실행
-                await updateAllUsersBlockedRecipesField();
+                await removeAdoptedRecipesFieldFromUsers();
+                await removeAdoptedByFieldFromRecipes();
+                await initializeClapsForAllRecipes();
+                await initializeClappedRecipesForAllUsers();
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                       content: Text('All users updated successfully!')),
@@ -180,6 +184,55 @@ class AdminScreen extends StatelessWidget {
       } catch (e) {
         debugPrint('Error updating user ${doc.id}: $e');
       }
+    }
+  }
+
+  //users 컬렉션에서 adoptedRecipes 필드 제거하기
+  Future<void> removeAdoptedRecipesFieldFromUsers() async {
+    final usersCollection = FirebaseFirestore.instance.collection('users');
+    final usersSnapshot = await usersCollection.get();
+
+    for (var userDoc in usersSnapshot.docs) {
+      await userDoc.reference.update({
+        'adoptedRecipes': FieldValue.delete(),
+      });
+    }
+  }
+
+  //recipes 컬렉션에서 adoptedBy 필드 제거하
+  Future<void> removeAdoptedByFieldFromRecipes() async {
+    final recipesCollection = FirebaseFirestore.instance.collection('recipes');
+    final recipesSnapshot = await recipesCollection.get();
+
+    for (var recipeDoc in recipesSnapshot.docs) {
+      await recipeDoc.reference.update({
+        'adoptedBy': FieldValue.delete(),
+      });
+    }
+  }
+
+  //recipes 컬렉션에서 claps, userClapCounts 초기화 함수
+  Future<void> initializeClapsForAllRecipes() async {
+    final recipesCollection = FirebaseFirestore.instance.collection('recipes');
+    final recipesSnapshot = await recipesCollection.get();
+
+    for (var recipeDoc in recipesSnapshot.docs) {
+      await recipeDoc.reference.update({
+        'claps': 0, // 기본 클랩 수를 0으로 설정
+        'userClapCounts': {}, // 사용자별 클랩 수를 기록할 빈 맵 추가
+      });
+    }
+  }
+
+  //users 컬렉션에서 clappedRecipes 필드 초기화 함수
+  Future<void> initializeClappedRecipesForAllUsers() async {
+    final usersCollection = FirebaseFirestore.instance.collection('users');
+    final usersSnapshot = await usersCollection.get();
+
+    for (var userDoc in usersSnapshot.docs) {
+      await userDoc.reference.update({
+        'clappedRecipes': [], // 사용자가 박수를 친 레시피 목록을 초기화
+      });
     }
   }
 }

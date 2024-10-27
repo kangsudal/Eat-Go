@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/description_model.dart';
-import 'package:eat_go/model/adopt_record_model.dart';
 import 'package:eat_go/model/bookmark_record_model.dart';
 import 'package:eat_go/model/timestamp_converter.dart';
 import 'package:eat_go/model/view_record_model.dart';
