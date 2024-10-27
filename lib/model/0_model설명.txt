@@ -97,7 +97,7 @@ class User {
 
     List<AdoptedRecipe> adoptedRecipes; // 사용자가 채택한 레시피 목록
 
-    List<RecipeReport> reportedRecipes; // 사용자 신고한 레시피 목록, 목록에서 차단해주기
+    List<String> recipeReportIds; // 사용자 신고한 레시피 목록, 목록에서 차단해주기
 
     bool pushNotificationEnabled; // 푸쉬 메세지
 }

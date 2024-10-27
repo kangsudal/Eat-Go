@@ -118,7 +118,7 @@ classDiagram
         int premiumExpiration
         List~Bookmark~ bookmarks
         List~AdoptedRecipe~ adoptedRecipes
-        List~RecipeReport~ reportedRecipes
+        List~String~ recipeReportIds
         bool pushNotificationEnabled
     }
 
