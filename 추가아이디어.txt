@@ -1,0 +1,2 @@
+1.제철음식 추천 기능
+http://api.nongsaro.go.kr/sample/rest/monthFd/monthFd_D1.jsp?cntntsNo=249155&thisYear=2023&thisMonth=10

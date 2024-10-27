@@ -8,29 +8,16 @@ recipeReports 컬렉션: 레시피 게시물 신고
 
 User
 -Bookmark : 사용자가 북마크한 레시피
--AdoptedRecipe : 사용자가 그날 그날 채택한 레시피
 -(RecipeReport) : 사용자가 신고한 레시피
 
 RecipeReport
 
 Recipe
 -Description : 레시피 설명 1줄&이미지
--AdoptRecord : 모든 사용자 대상으로 채택 기록(누가 언제 어떤 레시피를 채택했는지)
 -BookmarkRecord : 모든 사용자 대상으로 북마크 기록(누가 어떤 레시피를 채택했는지)
 -ViewRecord : 모든 사용자 대상으로 조회 기록(누가 언제 어떤 레시피를 조회했는지)
 
 ------------------
-
-class AdoptRecord {
-    DateTime adoptedAt; //채택된 시간
-    String userUid; //채택한 유저 ID
-}
-
-class AdoptedRecipe {
-    String recipeId;
-    List<DateTime> adoptedAt;
-    int adoptedCount;
-}
 
 class Bookmark{
     String recipeId;
@@ -60,7 +47,8 @@ class Recipe{
     String createBy; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
     String createdByType; // 'user' or 'system' : 작성자 유형
     DateTime updatedAt;
-    List<AdoptRecord> adoptedBy; //이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)
+    int claps; // 이 레시피가 받은 총 박수 수
+    Map<String, int> userClapCounts, //각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
     List<BookmarkRecord> bookmarkedBy; //이 레시피를 북마크한 유저 리스트
     List<ViewRecord> viewedBy; //이 레시피 조회한 유저
 }
@@ -95,9 +83,11 @@ class User {
 
     List<Bookmark> bookmarks; // 사용자가 북마크한 레시피 목록
 
-    List<AdoptedRecipe> adoptedRecipes; // 사용자가 채택한 레시피 목록
+    List<String> clappedRecipes; // 사용자가 박수를 친 레시피 ID 목록
 
     List<String> recipeReportIds; // 사용자 신고한 레시피 목록, 목록에서 차단해주기
+
+    List<Recipe> blockedRecipes; // 사용자 차단
 
     bool pushNotificationEnabled; // 푸쉬 메세지
 }

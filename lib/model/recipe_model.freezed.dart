@@ -34,8 +34,9 @@ mixin _$Recipe {
       throw _privateConstructorUsedError; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
   @TimestampConverter()
   DateTime get updatedAt => throw _privateConstructorUsedError;
-  List<AdoptRecord> get adoptedBy =>
-      throw _privateConstructorUsedError; //이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)
+  int get claps => throw _privateConstructorUsedError; // 이 레시피가 받은 총 박수 수
+  Map<String, int> get userClapCounts =>
+      throw _privateConstructorUsedError; //각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
   List<BookmarkRecord> get bookmarkedBy =>
       throw _privateConstructorUsedError; //이 레시피를 북마크한 유저 리스트
   List<ViewRecord> get viewedBy => throw _privateConstructorUsedError;
@@ -66,7 +67,8 @@ abstract class $RecipeCopyWith<$Res> {
       @TimestampConverter() DateTime createdAt,
       String createdBy,
       @TimestampConverter() DateTime updatedAt,
-      List<AdoptRecord> adoptedBy,
+      int claps,
+      Map<String, int> userClapCounts,
       List<BookmarkRecord> bookmarkedBy,
       List<ViewRecord> viewedBy});
 }
@@ -97,7 +99,8 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
     Object? createdAt = null,
     Object? createdBy = null,
     Object? updatedAt = null,
-    Object? adoptedBy = null,
+    Object? claps = null,
+    Object? userClapCounts = null,
     Object? bookmarkedBy = null,
     Object? viewedBy = null,
   }) {
@@ -146,10 +149,14 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      adoptedBy: null == adoptedBy
-          ? _value.adoptedBy
-          : adoptedBy // ignore: cast_nullable_to_non_nullable
-              as List<AdoptRecord>,
+      claps: null == claps
+          ? _value.claps
+          : claps // ignore: cast_nullable_to_non_nullable
+              as int,
+      userClapCounts: null == userClapCounts
+          ? _value.userClapCounts
+          : userClapCounts // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
       bookmarkedBy: null == bookmarkedBy
           ? _value.bookmarkedBy
           : bookmarkedBy // ignore: cast_nullable_to_non_nullable
@@ -181,7 +188,8 @@ abstract class _$$RecipeImplCopyWith<$Res> implements $RecipeCopyWith<$Res> {
       @TimestampConverter() DateTime createdAt,
       String createdBy,
       @TimestampConverter() DateTime updatedAt,
-      List<AdoptRecord> adoptedBy,
+      int claps,
+      Map<String, int> userClapCounts,
       List<BookmarkRecord> bookmarkedBy,
       List<ViewRecord> viewedBy});
 }
@@ -210,7 +218,8 @@ class __$$RecipeImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? createdBy = null,
     Object? updatedAt = null,
-    Object? adoptedBy = null,
+    Object? claps = null,
+    Object? userClapCounts = null,
     Object? bookmarkedBy = null,
     Object? viewedBy = null,
   }) {
@@ -259,10 +268,14 @@ class __$$RecipeImplCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      adoptedBy: null == adoptedBy
-          ? _value._adoptedBy
-          : adoptedBy // ignore: cast_nullable_to_non_nullable
-              as List<AdoptRecord>,
+      claps: null == claps
+          ? _value.claps
+          : claps // ignore: cast_nullable_to_non_nullable
+              as int,
+      userClapCounts: null == userClapCounts
+          ? _value._userClapCounts
+          : userClapCounts // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
       bookmarkedBy: null == bookmarkedBy
           ? _value._bookmarkedBy
           : bookmarkedBy // ignore: cast_nullable_to_non_nullable
@@ -290,11 +303,12 @@ class _$RecipeImpl implements _Recipe {
       @TimestampConverter() required this.createdAt,
       required this.createdBy,
       @TimestampConverter() required this.updatedAt,
-      required final List<AdoptRecord> adoptedBy,
+      required this.claps,
+      required final Map<String, int> userClapCounts,
       required final List<BookmarkRecord> bookmarkedBy,
       required final List<ViewRecord> viewedBy})
       : _descriptions = descriptions,
-        _adoptedBy = adoptedBy,
+        _userClapCounts = userClapCounts,
         _bookmarkedBy = bookmarkedBy,
         _viewedBy = viewedBy;
 
@@ -332,17 +346,21 @@ class _$RecipeImpl implements _Recipe {
   @override
   @TimestampConverter()
   final DateTime updatedAt;
-  final List<AdoptRecord> _adoptedBy;
   @override
-  List<AdoptRecord> get adoptedBy {
-    if (_adoptedBy is EqualUnmodifiableListView) return _adoptedBy;
+  final int claps;
+// 이 레시피가 받은 총 박수 수
+  final Map<String, int> _userClapCounts;
+// 이 레시피가 받은 총 박수 수
+  @override
+  Map<String, int> get userClapCounts {
+    if (_userClapCounts is EqualUnmodifiableMapView) return _userClapCounts;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_adoptedBy);
+    return EqualUnmodifiableMapView(_userClapCounts);
   }
 
-//이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)
+//각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
   final List<BookmarkRecord> _bookmarkedBy;
-//이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)
+//각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
   @override
   List<BookmarkRecord> get bookmarkedBy {
     if (_bookmarkedBy is EqualUnmodifiableListView) return _bookmarkedBy;
@@ -362,7 +380,7 @@ class _$RecipeImpl implements _Recipe {
 
   @override
   String toString() {
-    return 'Recipe(recipeId: $recipeId, title: $title, ingredients: $ingredients, ingredientsImgUrl: $ingredientsImgUrl, descriptions: $descriptions, category: $category, hashTag: $hashTag, completedImgUrl: $completedImgUrl, createdAt: $createdAt, createdBy: $createdBy, updatedAt: $updatedAt, adoptedBy: $adoptedBy, bookmarkedBy: $bookmarkedBy, viewedBy: $viewedBy)';
+    return 'Recipe(recipeId: $recipeId, title: $title, ingredients: $ingredients, ingredientsImgUrl: $ingredientsImgUrl, descriptions: $descriptions, category: $category, hashTag: $hashTag, completedImgUrl: $completedImgUrl, createdAt: $createdAt, createdBy: $createdBy, updatedAt: $updatedAt, claps: $claps, userClapCounts: $userClapCounts, bookmarkedBy: $bookmarkedBy, viewedBy: $viewedBy)';
   }
 
   @override
@@ -390,8 +408,9 @@ class _$RecipeImpl implements _Recipe {
                 other.createdBy == createdBy) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
+            (identical(other.claps, claps) || other.claps == claps) &&
             const DeepCollectionEquality()
-                .equals(other._adoptedBy, _adoptedBy) &&
+                .equals(other._userClapCounts, _userClapCounts) &&
             const DeepCollectionEquality()
                 .equals(other._bookmarkedBy, _bookmarkedBy) &&
             const DeepCollectionEquality().equals(other._viewedBy, _viewedBy));
@@ -412,7 +431,8 @@ class _$RecipeImpl implements _Recipe {
       createdAt,
       createdBy,
       updatedAt,
-      const DeepCollectionEquality().hash(_adoptedBy),
+      claps,
+      const DeepCollectionEquality().hash(_userClapCounts),
       const DeepCollectionEquality().hash(_bookmarkedBy),
       const DeepCollectionEquality().hash(_viewedBy));
 
@@ -445,7 +465,8 @@ abstract class _Recipe implements Recipe {
       @TimestampConverter() required final DateTime createdAt,
       required final String createdBy,
       @TimestampConverter() required final DateTime updatedAt,
-      required final List<AdoptRecord> adoptedBy,
+      required final int claps,
+      required final Map<String, int> userClapCounts,
       required final List<BookmarkRecord> bookmarkedBy,
       required final List<ViewRecord> viewedBy}) = _$RecipeImpl;
 
@@ -476,7 +497,9 @@ abstract class _Recipe implements Recipe {
   @TimestampConverter()
   DateTime get updatedAt;
   @override
-  List<AdoptRecord> get adoptedBy; //이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)
+  int get claps; // 이 레시피가 받은 총 박수 수
+  @override
+  Map<String, int> get userClapCounts; //각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
   @override
   List<BookmarkRecord> get bookmarkedBy; //이 레시피를 북마크한 유저 리스트
   @override

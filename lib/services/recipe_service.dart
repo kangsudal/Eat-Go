@@ -150,7 +150,8 @@ class RecipeService {
           'createdAt': DateTime.now(),
           'createdBy': 'MFDS',
           'updatedAt': DateTime.now(),
-          'adoptedBy': [],
+          'claps': 0,
+          'userClapCounts': {},
           'bookmarkedBy': [],
           'viewedBy': [],
         };

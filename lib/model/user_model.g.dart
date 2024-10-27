@@ -18,8 +18,8 @@ _$EatGoUserImpl _$$EatGoUserImplFromJson(Map<String, dynamic> json) =>
       bookmarks: (json['bookmarks'] as List<dynamic>)
           .map((e) => Bookmark.fromJson(e as Map<String, dynamic>))
           .toList(),
-      adoptedRecipes: (json['adoptedRecipes'] as List<dynamic>)
-          .map((e) => AdoptedRecipe.fromJson(e as Map<String, dynamic>))
+      clappedRecipes: (json['clappedRecipes'] as List<dynamic>)
+          .map((e) => e as String)
           .toList(),
       recipeReportIds: (json['recipeReportIds'] as List<dynamic>)
           .map((e) => e as String)
@@ -40,7 +40,7 @@ Map<String, dynamic> _$$EatGoUserImplToJson(_$EatGoUserImpl instance) =>
       'premiumExpiration':
           const TimestampConverter().toJson(instance.premiumExpiration),
       'bookmarks': instance.bookmarks.map((e) => e.toJson()).toList(),
-      'adoptedRecipes': instance.adoptedRecipes.map((e) => e.toJson()).toList(),
+      'clappedRecipes': instance.clappedRecipes,
       'recipeReportIds': instance.recipeReportIds,
       'blockedRecipes': instance.blockedRecipes.map((e) => e.toJson()).toList(),
       'pushNotificationEnabled': instance.pushNotificationEnabled,

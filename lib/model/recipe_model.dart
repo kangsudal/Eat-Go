@@ -25,7 +25,8 @@ sealed class Recipe with _$Recipe {
     @TimestampConverter() required DateTime createdAt,
     required String createdBy, //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
     @TimestampConverter() required DateTime updatedAt,
-    required List<AdoptRecord> adoptedBy, //이 레시피가 채택된 기록 (채택된 시간, 채택된 유저 id)
+    required int claps, // 이 레시피가 받은 총 박수 수
+    required Map<String, int> userClapCounts, //각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
     required List<BookmarkRecord> bookmarkedBy, //이 레시피를 북마크한 유저 리스트
     required List<ViewRecord> viewedBy, //이 레시피 조회한 유저
   }) = _Recipe;

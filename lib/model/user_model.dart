@@ -21,7 +21,7 @@ sealed class EatGoUser with _$EatGoUser {
     @Default(false) bool isPremium, //: false //프리미엄 상태
     @TimestampConverter() required DateTime premiumExpiration,
     required List<Bookmark> bookmarks, // 사용자가 북마크한 레시피 목록
-    required List<AdoptedRecipe> adoptedRecipes, // 사용자가 채택한 레시피 목록
+    required List<String> clappedRecipes, // 사용자가 박수를 친 레시피 ID 목록
     required List<String> recipeReportIds, // 사용자 신고한 레시피 목록, 목록에서 차단해주기
     required List<Recipe> blockedRecipes, // 레시피 포스트 차단 기능
     @Default(true) bool pushNotificationEnabled,

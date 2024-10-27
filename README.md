@@ -95,7 +95,8 @@ classDiagram
         DateTime createdAt
         String createBy
         DateTime updatedAt
-        List~AdoptRecord~ adoptedBy
+        int claps
+        Map~String, int~ userClapCounts
         List~BookmarkRecord~ bookmarkedBy
         List~ViewRecord~ viewedBy
     }
@@ -117,8 +118,9 @@ classDiagram
         bool isPremium
         int premiumExpiration
         List~Bookmark~ bookmarks
-        List~AdoptedRecipe~ adoptedRecipes
+        List~String~ clappedRecipes
         List~String~ recipeReportIds
+        List~Recipe~ blockedRecipes
         bool pushNotificationEnabled
     }
 

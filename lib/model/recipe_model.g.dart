@@ -22,9 +22,8 @@ _$RecipeImpl _$$RecipeImplFromJson(Map<String, dynamic> json) => _$RecipeImpl(
       createdBy: json['createdBy'] as String,
       updatedAt:
           const TimestampConverter().fromJson(json['updatedAt'] as Timestamp),
-      adoptedBy: (json['adoptedBy'] as List<dynamic>)
-          .map((e) => AdoptRecord.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      claps: (json['claps'] as num).toInt(),
+      userClapCounts: Map<String, int>.from(json['userClapCounts'] as Map),
       bookmarkedBy: (json['bookmarkedBy'] as List<dynamic>)
           .map((e) => BookmarkRecord.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -46,7 +45,8 @@ Map<String, dynamic> _$$RecipeImplToJson(_$RecipeImpl instance) =>
       'createdAt': const TimestampConverter().toJson(instance.createdAt),
       'createdBy': instance.createdBy,
       'updatedAt': const TimestampConverter().toJson(instance.updatedAt),
-      'adoptedBy': instance.adoptedBy.map((e) => e.toJson()).toList(),
+      'claps': instance.claps,
+      'userClapCounts': instance.userClapCounts,
       'bookmarkedBy': instance.bookmarkedBy.map((e) => e.toJson()).toList(),
       'viewedBy': instance.viewedBy.map((e) => e.toJson()).toList(),
     };
