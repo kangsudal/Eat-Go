@@ -25,7 +25,7 @@ class UserService {
           'premiumExpiration': DateTime.now(),
           'bookmarks': [], // 사용자가 북마크한 레시피 목록
           'adoptedRecipes': [], // 사용자가 채택한 레시피 목록
-          'reportedRecipes': [], // 사용자 신고한 레시피 목록, 목록에서 차단해주기
+          'recipeReportIds': [], // 사용자 신고한 레시피 목록, 목록에서 차단해주기
           'pushNotificationEnabled': true,
         });
       }

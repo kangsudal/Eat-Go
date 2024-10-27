@@ -21,7 +21,7 @@ sealed class EatGoUser with _$EatGoUser {
     @TimestampConverter() required DateTime premiumExpiration,
     required List<Bookmark> bookmarks, // 사용자가 북마크한 레시피 목록
     required List<AdoptedRecipe> adoptedRecipes, // 사용자가 채택한 레시피 목록
-    required List<RecipeReport> reportedRecipes, // 사용자 신고한 레시피 목록, 목록에서 차단해주기
+    required List<String> recipeReportIds, // 사용자 신고한 레시피 목록, 목록에서 차단해주기
     @Default(true) bool pushNotificationEnabled,
 }) = _EatGoUser;
 
