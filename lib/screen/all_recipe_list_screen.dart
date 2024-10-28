@@ -43,7 +43,7 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 10),
+            /*const SizedBox(height: 10),
             TextField(
               controller: searchTextController,
               decoration: InputDecoration(
@@ -101,7 +101,7 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
                   ),
                 );
               }).toList(),
-            ),
+            ),*/
             const SizedBox(height: 20),
             Expanded(
               child: recipeState.when(
