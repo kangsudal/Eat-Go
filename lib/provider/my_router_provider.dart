@@ -44,7 +44,7 @@ final myRouterProvider = Provider<GoRouter>((ref) {
   );
 
   final router = GoRouter(
-    initialLocation: '/admin',//'/loading', //
+    initialLocation: '/loading', //'/admin',//
     redirect: (context, state) {
       // if (kDebugMode) {
       //   // 디버깅 모드에서는 항상 /admin으로 접근 가능하게 설정

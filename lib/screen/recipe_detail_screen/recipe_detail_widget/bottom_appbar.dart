@@ -34,33 +34,17 @@ BottomAppBar buildBottomAppBar(BuildContext context, String recipeId) {
               ),
             ),
           ),
-          Tooltip(
-            message: '먹은 날짜와 횟수가 기록 됩니다.',
-            child: SizedBox(
-              height: 30,
-              child: CupertinoButton(
-                padding: EdgeInsets.symmetric(horizontal: 12),
+          /*Row(
+            children: [
+              IconButton(
                 onPressed: () {},
-                color: pointColor,
-                child: Row(
-                  children: [
-                    Text(
-                      '채택',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ],
+                icon: Image.asset(
+                  'assets/icons/icon-clap.png',
                 ),
               ),
-            ),
-          ),
+              Text('0'),
+            ],
+          ),*/
         ],
       ),
     ),
