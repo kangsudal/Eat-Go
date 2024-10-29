@@ -66,5 +66,7 @@
 	</array>
 	<key>GOOGLE_MAPS_API_KEY</key>
     <string>${GOOGLE_MAPS_API_KEY}</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>식당찾기 기능에서 현재 위치를 확인하기위해 권한이 필요합니다.</string>
 </dict>
 </plist>
