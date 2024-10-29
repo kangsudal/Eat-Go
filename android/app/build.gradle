@@ -67,8 +67,34 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        warning 'deprecation'
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn", "-Xlint:deprecation"]
+    }
+
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:deprecation"
+    }
 }
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // 기존 Flutter 및 Android 의존성
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'com.google.android.gms:play-services-base:18.0.1' // Google Play Services Base 추가
+    implementation 'com.google.android.play:core:1.10.3' // Play Core (선택 사항)
+
+    // 기타 필요한 라이브러리 추가
 }
