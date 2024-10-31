@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:eat_go/model/bookmark_model.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
@@ -9,7 +8,8 @@ import 'package:eat_go/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RecipeDetailViewModel extends AutoDisposeFamilyAsyncNotifier<Recipe, String> {
+class RecipeDetailViewModel
+    extends AutoDisposeFamilyAsyncNotifier<Recipe, String> {
   late final RecipeRepository _recipeRepository;
   late final UserRepository _userRepository;
   late final String _recipeId;
@@ -48,21 +48,20 @@ class RecipeDetailViewModel extends AutoDisposeFamilyAsyncNotifier<Recipe, Strin
         return;
       }
       final isBookmarked =
-          currentEatGoUser.bookmarks.any((b) => b.recipeId == recipe.recipeId);
+          currentEatGoUser.bookmarkRecipeIds.any((b) => b == recipe.recipeId);
 
       if (isBookmarked) {
         updatedEatGoUser = currentEatGoUser.copyWith(
-          bookmarks: currentEatGoUser.bookmarks
+          bookmarkRecipeIds: currentEatGoUser.bookmarkRecipeIds
               .where((b) =>
-                  b.recipeId !=
-                  recipe.recipeId) //현재 레시피와 ID가 다른 레시피들만 남긴다는 의미입니다.
+                  b != recipe.recipeId) //현재 레시피와 ID가 다른 레시피들만 남긴다는 의미입니다.
               .toList(),
         );
       } else {
         updatedEatGoUser = currentEatGoUser.copyWith(
-          bookmarks: [
-            ...currentEatGoUser.bookmarks,
-            Bookmark(recipeId: recipe.recipeId, bookmarkedAt: DateTime.now()),
+          bookmarkRecipeIds: [
+            ...currentEatGoUser.bookmarkRecipeIds,
+            recipe.recipeId,
           ],
         );
       }

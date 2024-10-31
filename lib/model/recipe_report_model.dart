@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eat_go/model/timestamp_converter.dart';
+import 'package:eat_go/model/converter/timestamp_converter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'recipe_report_model.freezed.dart';

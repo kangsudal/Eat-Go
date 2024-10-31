@@ -39,7 +39,11 @@ class RecipeService {
         _firestore.collection('recipes').snapshots();
     return recipesStream.map((snapshot) {
       return snapshot.docs.map((doc) {
-        return Recipe.fromJson(doc.data());
+        final recipeData = doc.data();
+        return Recipe.fromJson({
+          ...recipeData,
+          'recipeId': doc.id,
+        });
       }).toList();
     });
   }
@@ -57,7 +61,6 @@ class RecipeService {
 
       for (Map<String, dynamic> item in jsonData['COOKRCP01']["row"]) {
         Map<String, dynamic> insertMap = {
-          'recipeId': uuid.v4(),
           'title': item["RCP_NM"],
           'ingredients': item["RCP_PARTS_DTLS"],
           'ingredientsImgUrl': item["ATT_FILE_NO_MK"],
@@ -150,8 +153,7 @@ class RecipeService {
           'createdAt': DateTime.now(),
           'createdBy': 'MFDS',
           'updatedAt': DateTime.now(),
-          'claps': 0,
-          'userClapCounts': {},
+          'clapRecords': [], // List<ClapRecord> 필드 초기화
           'bookmarkedBy': [],
           'viewedBy': [],
         };
@@ -172,7 +174,16 @@ class RecipeService {
 
       // 각 문서를 Recipe 객체로 변환
       return snapshot.docs.map((doc) {
-        return Recipe.fromJson(doc.data());
+        final recipeData = doc.data();
+
+        // `recipeData`와 `doc.id`를 출력하여 확인
+        debugPrint('Recipe Data: $recipeData');
+        debugPrint('Document ID (recipeId): ${doc.id}');
+
+        return Recipe.fromJson({
+          ...recipeData,
+          'recipeId': doc.id, // Firestore 문서 ID를 recipeId로 할당
+        });
       }).toList();
     } catch (e) {
       debugPrint('RecipeService - 레시피를 가져오는 중 오류 발생: $e');
@@ -201,9 +212,13 @@ class RecipeService {
           .where((snapshot) => snapshot.exists)
           .toList(); // 존재하는 문서만 필터링
 
-      List<Recipe> bookmarkedRecipeList = snapshots
-          .map((snapshot) => Recipe.fromJson(snapshot.data()!))
-          .toList(); //snapshot.exists 처리했으므로 snapshot.data()는 null이 아니다.
+      List<Recipe> bookmarkedRecipeList = snapshots.map((snapshot) {
+        final recipeData = snapshot.data()??{};
+        return Recipe.fromJson({
+          ...recipeData,
+          'recipeId': snapshot.id, // Firestore 문서 ID를 recipeId로 추가
+        });
+      }).toList(); //snapshot.exists 처리했으므로 snapshot.data()는 null이 아니다.
 
       return bookmarkedRecipeList;
     } catch (e) {
@@ -243,7 +258,10 @@ class RecipeService {
       }
       Map<String, Object?> dataMap =
           querySnapshot.docs.first.data() as Map<String, Object?>;
-      return Recipe.fromJson(dataMap);
+      return Recipe.fromJson({
+        ...dataMap,
+        'recipeId': querySnapshot.docs.first.id,
+      });
     } catch (e) {
       debugPrint('RecipeService - 랜덤 레시피 생성중 오류발생: $e');
       return null;
@@ -264,7 +282,10 @@ class RecipeService {
       final Map<String, dynamic> recipeData =
           docSnapshot.data() as Map<String, dynamic>;
       //Recipe 객체로 변환
-      final recipe = Recipe.fromJson(recipeData);
+      final recipe = Recipe.fromJson({
+        ...recipeData,
+        'recipeId': docSnapshot.id,
+      });
       return recipe;
     } catch (e) {
       throw Exception(e);

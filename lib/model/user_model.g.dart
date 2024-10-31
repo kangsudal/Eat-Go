@@ -13,20 +13,20 @@ _$EatGoUserImpl _$$EatGoUserImplFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String,
       supportAmount: (json['supportAmount'] as num?)?.toDouble() ?? 0,
       isPremium: json['isPremium'] as bool? ?? false,
-      premiumExpiration: const TimestampConverter()
-          .fromJson(json['premiumExpiration'] as Timestamp),
-      bookmarks: (json['bookmarks'] as List<dynamic>)
-          .map((e) => Bookmark.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      clappedRecipes: (json['clappedRecipes'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      recipeReportIds: (json['recipeReportIds'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      blockedRecipes: (json['blockedRecipes'] as List<dynamic>)
-          .map((e) => Recipe.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      premiumExpiration: _$JsonConverterFromJson<Timestamp, DateTime>(
+          json['premiumExpiration'], const TimestampConverter().fromJson),
+      bookmarkRecipeIds: (json['bookmarkRecipeIds'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      clappedRecipeIds: (json['clappedRecipeIds'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      recipeReportIds: (json['recipeReportIds'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
       pushNotificationEnabled: json['pushNotificationEnabled'] as bool? ?? true,
     );
 
@@ -37,11 +37,22 @@ Map<String, dynamic> _$$EatGoUserImplToJson(_$EatGoUserImpl instance) =>
       'email': instance.email,
       'supportAmount': instance.supportAmount,
       'isPremium': instance.isPremium,
-      'premiumExpiration':
-          const TimestampConverter().toJson(instance.premiumExpiration),
-      'bookmarks': instance.bookmarks.map((e) => e.toJson()).toList(),
-      'clappedRecipes': instance.clappedRecipes,
+      'premiumExpiration': _$JsonConverterToJson<Timestamp, DateTime>(
+          instance.premiumExpiration, const TimestampConverter().toJson),
+      'bookmarkRecipeIds': instance.bookmarkRecipeIds,
+      'clappedRecipeIds': instance.clappedRecipeIds,
       'recipeReportIds': instance.recipeReportIds,
-      'blockedRecipes': instance.blockedRecipes.map((e) => e.toJson()).toList(),
       'pushNotificationEnabled': instance.pushNotificationEnabled,
     };
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);

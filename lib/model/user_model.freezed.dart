@@ -28,15 +28,13 @@ mixin _$EatGoUser {
   double get supportAmount => throw _privateConstructorUsedError; //: 0 //후원 비용
   bool get isPremium => throw _privateConstructorUsedError; //: false //프리미엄 상태
   @TimestampConverter()
-  DateTime get premiumExpiration => throw _privateConstructorUsedError;
-  List<Bookmark> get bookmarks =>
-      throw _privateConstructorUsedError; // 사용자가 북마크한 레시피 목록
-  List<String> get clappedRecipes =>
+  DateTime? get premiumExpiration => throw _privateConstructorUsedError;
+  List<String> get bookmarkRecipeIds =>
+      throw _privateConstructorUsedError; // 사용자가 북마크한 레시피 ID 목록
+  List<String> get clappedRecipeIds =>
       throw _privateConstructorUsedError; // 사용자가 박수를 친 레시피 ID 목록
   List<String> get recipeReportIds =>
       throw _privateConstructorUsedError; // 사용자 신고한 레시피 목록, 목록에서 차단해주기
-  List<Recipe> get blockedRecipes =>
-      throw _privateConstructorUsedError; // 레시피 포스트 차단 기능
   bool get pushNotificationEnabled => throw _privateConstructorUsedError;
 
   /// Serializes this EatGoUser to a JSON map.
@@ -60,11 +58,10 @@ abstract class $EatGoUserCopyWith<$Res> {
       String email,
       double supportAmount,
       bool isPremium,
-      @TimestampConverter() DateTime premiumExpiration,
-      List<Bookmark> bookmarks,
-      List<String> clappedRecipes,
+      @TimestampConverter() DateTime? premiumExpiration,
+      List<String> bookmarkRecipeIds,
+      List<String> clappedRecipeIds,
       List<String> recipeReportIds,
-      List<Recipe> blockedRecipes,
       bool pushNotificationEnabled});
 }
 
@@ -88,11 +85,10 @@ class _$EatGoUserCopyWithImpl<$Res, $Val extends EatGoUser>
     Object? email = null,
     Object? supportAmount = null,
     Object? isPremium = null,
-    Object? premiumExpiration = null,
-    Object? bookmarks = null,
-    Object? clappedRecipes = null,
+    Object? premiumExpiration = freezed,
+    Object? bookmarkRecipeIds = null,
+    Object? clappedRecipeIds = null,
     Object? recipeReportIds = null,
-    Object? blockedRecipes = null,
     Object? pushNotificationEnabled = null,
   }) {
     return _then(_value.copyWith(
@@ -116,26 +112,22 @@ class _$EatGoUserCopyWithImpl<$Res, $Val extends EatGoUser>
           ? _value.isPremium
           : isPremium // ignore: cast_nullable_to_non_nullable
               as bool,
-      premiumExpiration: null == premiumExpiration
+      premiumExpiration: freezed == premiumExpiration
           ? _value.premiumExpiration
           : premiumExpiration // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      bookmarks: null == bookmarks
-          ? _value.bookmarks
-          : bookmarks // ignore: cast_nullable_to_non_nullable
-              as List<Bookmark>,
-      clappedRecipes: null == clappedRecipes
-          ? _value.clappedRecipes
-          : clappedRecipes // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      bookmarkRecipeIds: null == bookmarkRecipeIds
+          ? _value.bookmarkRecipeIds
+          : bookmarkRecipeIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      clappedRecipeIds: null == clappedRecipeIds
+          ? _value.clappedRecipeIds
+          : clappedRecipeIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
       recipeReportIds: null == recipeReportIds
           ? _value.recipeReportIds
           : recipeReportIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      blockedRecipes: null == blockedRecipes
-          ? _value.blockedRecipes
-          : blockedRecipes // ignore: cast_nullable_to_non_nullable
-              as List<Recipe>,
       pushNotificationEnabled: null == pushNotificationEnabled
           ? _value.pushNotificationEnabled
           : pushNotificationEnabled // ignore: cast_nullable_to_non_nullable
@@ -158,11 +150,10 @@ abstract class _$$EatGoUserImplCopyWith<$Res>
       String email,
       double supportAmount,
       bool isPremium,
-      @TimestampConverter() DateTime premiumExpiration,
-      List<Bookmark> bookmarks,
-      List<String> clappedRecipes,
+      @TimestampConverter() DateTime? premiumExpiration,
+      List<String> bookmarkRecipeIds,
+      List<String> clappedRecipeIds,
       List<String> recipeReportIds,
-      List<Recipe> blockedRecipes,
       bool pushNotificationEnabled});
 }
 
@@ -184,11 +175,10 @@ class __$$EatGoUserImplCopyWithImpl<$Res>
     Object? email = null,
     Object? supportAmount = null,
     Object? isPremium = null,
-    Object? premiumExpiration = null,
-    Object? bookmarks = null,
-    Object? clappedRecipes = null,
+    Object? premiumExpiration = freezed,
+    Object? bookmarkRecipeIds = null,
+    Object? clappedRecipeIds = null,
     Object? recipeReportIds = null,
-    Object? blockedRecipes = null,
     Object? pushNotificationEnabled = null,
   }) {
     return _then(_$EatGoUserImpl(
@@ -212,26 +202,22 @@ class __$$EatGoUserImplCopyWithImpl<$Res>
           ? _value.isPremium
           : isPremium // ignore: cast_nullable_to_non_nullable
               as bool,
-      premiumExpiration: null == premiumExpiration
+      premiumExpiration: freezed == premiumExpiration
           ? _value.premiumExpiration
           : premiumExpiration // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      bookmarks: null == bookmarks
-          ? _value._bookmarks
-          : bookmarks // ignore: cast_nullable_to_non_nullable
-              as List<Bookmark>,
-      clappedRecipes: null == clappedRecipes
-          ? _value._clappedRecipes
-          : clappedRecipes // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      bookmarkRecipeIds: null == bookmarkRecipeIds
+          ? _value._bookmarkRecipeIds
+          : bookmarkRecipeIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      clappedRecipeIds: null == clappedRecipeIds
+          ? _value._clappedRecipeIds
+          : clappedRecipeIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
       recipeReportIds: null == recipeReportIds
           ? _value._recipeReportIds
           : recipeReportIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      blockedRecipes: null == blockedRecipes
-          ? _value._blockedRecipes
-          : blockedRecipes // ignore: cast_nullable_to_non_nullable
-              as List<Recipe>,
       pushNotificationEnabled: null == pushNotificationEnabled
           ? _value.pushNotificationEnabled
           : pushNotificationEnabled // ignore: cast_nullable_to_non_nullable
@@ -249,16 +235,14 @@ class _$EatGoUserImpl implements _EatGoUser {
       required this.email,
       this.supportAmount = 0,
       this.isPremium = false,
-      @TimestampConverter() required this.premiumExpiration,
-      required final List<Bookmark> bookmarks,
-      required final List<String> clappedRecipes,
-      required final List<String> recipeReportIds,
-      required final List<Recipe> blockedRecipes,
+      @TimestampConverter() this.premiumExpiration,
+      final List<String> bookmarkRecipeIds = const [],
+      final List<String> clappedRecipeIds = const [],
+      final List<String> recipeReportIds = const [],
       this.pushNotificationEnabled = true})
-      : _bookmarks = bookmarks,
-        _clappedRecipes = clappedRecipes,
-        _recipeReportIds = recipeReportIds,
-        _blockedRecipes = blockedRecipes;
+      : _bookmarkRecipeIds = bookmarkRecipeIds,
+        _clappedRecipeIds = clappedRecipeIds,
+        _recipeReportIds = recipeReportIds;
 
   factory _$EatGoUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$EatGoUserImplFromJson(json);
@@ -281,29 +265,34 @@ class _$EatGoUserImpl implements _EatGoUser {
 //: false //프리미엄 상태
   @override
   @TimestampConverter()
-  final DateTime premiumExpiration;
-  final List<Bookmark> _bookmarks;
+  final DateTime? premiumExpiration;
+  final List<String> _bookmarkRecipeIds;
   @override
-  List<Bookmark> get bookmarks {
-    if (_bookmarks is EqualUnmodifiableListView) return _bookmarks;
+  @JsonKey()
+  List<String> get bookmarkRecipeIds {
+    if (_bookmarkRecipeIds is EqualUnmodifiableListView)
+      return _bookmarkRecipeIds;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_bookmarks);
+    return EqualUnmodifiableListView(_bookmarkRecipeIds);
   }
 
-// 사용자가 북마크한 레시피 목록
-  final List<String> _clappedRecipes;
-// 사용자가 북마크한 레시피 목록
+// 사용자가 북마크한 레시피 ID 목록
+  final List<String> _clappedRecipeIds;
+// 사용자가 북마크한 레시피 ID 목록
   @override
-  List<String> get clappedRecipes {
-    if (_clappedRecipes is EqualUnmodifiableListView) return _clappedRecipes;
+  @JsonKey()
+  List<String> get clappedRecipeIds {
+    if (_clappedRecipeIds is EqualUnmodifiableListView)
+      return _clappedRecipeIds;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_clappedRecipes);
+    return EqualUnmodifiableListView(_clappedRecipeIds);
   }
 
 // 사용자가 박수를 친 레시피 ID 목록
   final List<String> _recipeReportIds;
 // 사용자가 박수를 친 레시피 ID 목록
   @override
+  @JsonKey()
   List<String> get recipeReportIds {
     if (_recipeReportIds is EqualUnmodifiableListView) return _recipeReportIds;
     // ignore: implicit_dynamic_type
@@ -311,23 +300,13 @@ class _$EatGoUserImpl implements _EatGoUser {
   }
 
 // 사용자 신고한 레시피 목록, 목록에서 차단해주기
-  final List<Recipe> _blockedRecipes;
-// 사용자 신고한 레시피 목록, 목록에서 차단해주기
-  @override
-  List<Recipe> get blockedRecipes {
-    if (_blockedRecipes is EqualUnmodifiableListView) return _blockedRecipes;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_blockedRecipes);
-  }
-
-// 레시피 포스트 차단 기능
   @override
   @JsonKey()
   final bool pushNotificationEnabled;
 
   @override
   String toString() {
-    return 'EatGoUser(uid: $uid, displayName: $displayName, email: $email, supportAmount: $supportAmount, isPremium: $isPremium, premiumExpiration: $premiumExpiration, bookmarks: $bookmarks, clappedRecipes: $clappedRecipes, recipeReportIds: $recipeReportIds, blockedRecipes: $blockedRecipes, pushNotificationEnabled: $pushNotificationEnabled)';
+    return 'EatGoUser(uid: $uid, displayName: $displayName, email: $email, supportAmount: $supportAmount, isPremium: $isPremium, premiumExpiration: $premiumExpiration, bookmarkRecipeIds: $bookmarkRecipeIds, clappedRecipeIds: $clappedRecipeIds, recipeReportIds: $recipeReportIds, pushNotificationEnabled: $pushNotificationEnabled)';
   }
 
   @override
@@ -346,13 +325,11 @@ class _$EatGoUserImpl implements _EatGoUser {
             (identical(other.premiumExpiration, premiumExpiration) ||
                 other.premiumExpiration == premiumExpiration) &&
             const DeepCollectionEquality()
-                .equals(other._bookmarks, _bookmarks) &&
+                .equals(other._bookmarkRecipeIds, _bookmarkRecipeIds) &&
             const DeepCollectionEquality()
-                .equals(other._clappedRecipes, _clappedRecipes) &&
+                .equals(other._clappedRecipeIds, _clappedRecipeIds) &&
             const DeepCollectionEquality()
                 .equals(other._recipeReportIds, _recipeReportIds) &&
-            const DeepCollectionEquality()
-                .equals(other._blockedRecipes, _blockedRecipes) &&
             (identical(
                     other.pushNotificationEnabled, pushNotificationEnabled) ||
                 other.pushNotificationEnabled == pushNotificationEnabled));
@@ -368,10 +345,9 @@ class _$EatGoUserImpl implements _EatGoUser {
       supportAmount,
       isPremium,
       premiumExpiration,
-      const DeepCollectionEquality().hash(_bookmarks),
-      const DeepCollectionEquality().hash(_clappedRecipes),
+      const DeepCollectionEquality().hash(_bookmarkRecipeIds),
+      const DeepCollectionEquality().hash(_clappedRecipeIds),
       const DeepCollectionEquality().hash(_recipeReportIds),
-      const DeepCollectionEquality().hash(_blockedRecipes),
       pushNotificationEnabled);
 
   /// Create a copy of EatGoUser
@@ -397,11 +373,10 @@ abstract class _EatGoUser implements EatGoUser {
       required final String email,
       final double supportAmount,
       final bool isPremium,
-      @TimestampConverter() required final DateTime premiumExpiration,
-      required final List<Bookmark> bookmarks,
-      required final List<String> clappedRecipes,
-      required final List<String> recipeReportIds,
-      required final List<Recipe> blockedRecipes,
+      @TimestampConverter() final DateTime? premiumExpiration,
+      final List<String> bookmarkRecipeIds,
+      final List<String> clappedRecipeIds,
+      final List<String> recipeReportIds,
       final bool pushNotificationEnabled}) = _$EatGoUserImpl;
 
   factory _EatGoUser.fromJson(Map<String, dynamic> json) =
@@ -420,15 +395,13 @@ abstract class _EatGoUser implements EatGoUser {
   bool get isPremium; //: false //프리미엄 상태
   @override
   @TimestampConverter()
-  DateTime get premiumExpiration;
+  DateTime? get premiumExpiration;
   @override
-  List<Bookmark> get bookmarks; // 사용자가 북마크한 레시피 목록
+  List<String> get bookmarkRecipeIds; // 사용자가 북마크한 레시피 ID 목록
   @override
-  List<String> get clappedRecipes; // 사용자가 박수를 친 레시피 ID 목록
+  List<String> get clappedRecipeIds; // 사용자가 박수를 친 레시피 ID 목록
   @override
   List<String> get recipeReportIds; // 사용자 신고한 레시피 목록, 목록에서 차단해주기
-  @override
-  List<Recipe> get blockedRecipes; // 레시피 포스트 차단 기능
   @override
   bool get pushNotificationEnabled;
 

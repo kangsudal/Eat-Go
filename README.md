@@ -59,116 +59,225 @@
 ## Class Diagram
 ```mermaid
 classDiagram
-    class AdoptRecord {
-        DateTime adoptedAt
-        String userUid
-    }
+   class EatGoUser {
+      String uid
+      String displayName
+      String email
+      double supportAmount
+      bool isPremium
+      DateTime premiumExpiration
+      List~String~ bookmarkRecipeIds
+      List~String~ clappedRecipeIds
+      List~String~ recipeReportIds
+      bool pushNotificationEnabled
+   }
 
-    class AdoptedRecipe {
-        String recipeId
-        List~DateTime~ adoptedAt
-    }
+   class Recipe {
+      String recipeId
+      String title
+      String ingredients
+      String ingredientsImgUrl
+      List~Description~ descriptions
+      String category
+      String hashTag
+      String completedImgUrl
+      DateTime createdAt
+      String createdBy
+      String createdByType
+      DateTime updatedAt
+      List~ClapRecord~ clapRecords
+      List~String~ bookmarkedBy
+      List~String~ viewedBy
+   }
 
-    class Bookmark {
-        String recipeId
-        DateTime bookmarkedAt
-    }
+   class Description {
+      String description
+      String descriptionImgUrl
+   }
 
-    class BookmarkRecord {
-        String userUid
-    }
+   class ClapRecord {
+      String userUid
+      int clapCount
+   }
 
-    class Description {
-        String description
-        String? descriptionImgUrl
-    }
+   class RecipeReport {
+      String reportId
+      String reportedBy
+      String recipeId
+      String reportReason
+      DateTime reportedAt
+      ReportStatus status
+   }
 
-    class Recipe {
-        String recipeId
-        String title
-        String ingredients
-        String ingredientsImgUrl
-        List~Description~ descriptions
-        String category
-        String hashTag
-        String completedImgUrl
-        DateTime createdAt
-        String createBy
-        DateTime updatedAt
-        int claps
-        Map~String, int~ userClapCounts
-        List~BookmarkRecord~ bookmarkedBy
-        List~ViewRecord~ viewedBy
-    }
+   class ReportStatus {
+      <<enumeration>>
+      inProgress
+      complete
+      invalidation
+   }
 
-    class RecipeReport {
-        String reportId
-        String reportedBy
-        String recipeId
-        String reportReason
-        DateTime reportedAt
-        String status
-    }
+   class Restaurant {
+      String name
+      List~String~ photoUrls
+      String businessStatus
+      double rating
+      int priceLevel
+      String website
+      String placeId
+      String address
+      String phoneNumber
+      Location location
+   }
 
-    class EatGoUser {
-        String uid
-        String displayName
-        String email
-        double supportAmount
-        bool isPremium
-        int premiumExpiration
-        List~Bookmark~ bookmarks
-        List~String~ clappedRecipes
-        List~String~ recipeReportIds
-        List~Recipe~ blockedRecipes
-        bool pushNotificationEnabled
-    }
-
-    class ViewRecord {
-        String userUid
-        DateTime viewedAt
-    }
-
-    class ReportStatus {
-        <<enumeration>>
-        inProgress
-        complete
-        invalidation
-    }
-
-    Recipe "1" --> "*" AdoptRecord : adoptedBy
-    Recipe "1" --> "*" BookmarkRecord : bookmarkedBy
-    Recipe "1" --> "*" ViewRecord : viewedBy
-    Recipe "1" --> "*" Description : descriptions
-    RecipeReport --> Recipe : reports on
-    RecipeReport --> ReportStatus : has
-    EatGoUser --> "*" Bookmark : bookmarks
-    EatGoUser --> "*" AdoptedRecipe : adoptedRecipes
-    EatGoUser --> "*" RecipeReport : reportedRecipes
-    AdoptedRecipe --> Recipe : adopts
-
+   EatGoUser "1" --> "*" RecipeReport : reports
+   Recipe "1" --> "*" Description : contains
+   Recipe "1" --> "*" ClapRecord : clap records
+   Recipe "1" --> "*" EatGoUser : bookmarkedBy
+   Recipe "1" --> "*" EatGoUser : viewedBy
+   RecipeReport "1" --> "1" ReportStatus : has status
+   Recipe ..> Restaurant : fetches info from API
 ```
-**users 컬렉션** : 사용자의 정보를 저장합니다.
+<h3>데이터 컬렉션</h3>
+`users` 컬렉션
+사용자 정보를 저장하는 컬렉션입니다. 각 사용자별 북마크, 박수, 신고 내역, 프리미엄 상태 등의 정보가 포함됩니다.
+<br/>
 
-**recipes 컬렉션** : 레시피의 정보를 저장하며, 누가 이 레시피를 조회하고 북마크하고 채택 했는지에 대한 정보(북마크한 전체 사용자 수, 조회수, 채택 횟수 계산을 위해)를 포함합니다.
+`recipes` 컬렉션
+레시피 정보를 저장하는 컬렉션입니다. 각 레시피에 대해 조회 및 북마크한 사용자 목록과 박수(클랩) 기록, 레시피 설명 등의 정보를 저장합니다.
+또한 Google Places API를 통해 **레시피 제목(`title`)과 해시태그(`hashTag`)**를 기반으로 연관된 음식점(`Restaurant`) 정보를 동적으로 가져올 수 있습니다.
+<br/>
 
-**recipeReports 컬렉션**: 레시피 게시물 신고
+`recipeReports` 컬렉션
+레시피 게시물에 대한 신고 기록을 저장하는 컬렉션입니다. 사용자가 신고한 레시피와 신고 이유, 상태 등을 포함합니다.
+<br/>
+<br/>
 
-----------------
+<h3>클래스 구조</h3>
+<h4>EatGoUser (User)</h4>
+사용자의 정보와 관련된 기능을 정의하는 클래스입니다.
 
-**EatGoUser**
- - Bookmark : 사용자가 북마크한 레시피
- - AdoptedRecipe : 사용자가 그날 그날 채택한 레시피
- - (RecipeReport) : 사용자가 신고한 레시피
+`uid`: 사용자 고유 ID
+<br/>
+`displayName`: 사용자 표시 이름 (null일 경우 이메일 ID 사용)
+<br/>
+`email`: 사용자 이메일 주소
+<br/>
+`supportAmount`: 후원 금액
+<br/>
+`isPremium`: 프리미엄 구독 상태
+<br/>
+`premiumExpiration`: 프리미엄 만료일
+<br/>
+`bookmarkRecipeIds`: 사용자가 북마크한 레시피 ID 목록
+<br/>
+`clappedRecipeIds`: 사용자가 박수를 친 레시피 ID 목록
+<br/>
+`recipeReportIds`: 사용자가 신고한 레시피 ID 목록
+<br/>
+`pushNotificationEnabled`: 푸시 알림 설정 상태
+<br/>
+<br/>
 
-**Recipe**
- - Description : 레시피 설명 1줄&이미지
- - AdoptRecord : 모든 사용자 대상으로 채택 기록(누가 언제 어떤 레시피를 채택했는지)
- - BookmarkRecord : 모든 사용자 대상으로 북마크 기록(누가 어떤 레시피를 채택했는지)
- - ViewRecord : 모든 사용자 대상으로 조회 기록(누가 언제 어떤 레시피를 조회했는지)
+<h4>Recipe</h4>
+레시피의 주요 정보와 사용자 상호작용 정보를 저장하는 클래스입니다.
 
-**RecipeReport**
+`recipeId`: 레시피 고유 ID
 <br>
+`title`: 레시피 제목
+<br>
+`ingredients`: 필요한 재료 목록
+<br>
+`ingredientsImgUrl`: 재료 이미지 URL
+<br>
+`descriptions`: 레시피 단계별 설명 (`Description` 클래스의 리스트로 구성)
+<br>
+`category`: 레시피 카테고리
+<br>
+`hashTag`: 레시피와 관련된 해시태그
+<br>
+`completedImgUrl`: 완성된 레시피 이미지 URL
+<br>
+`createdAt`: 레시피 생성 날짜
+<br>
+`createdBy`: 작성자 ID (사용자 ID 또는 시스템 ID)
+<br>
+`createdByType`: 작성자 유형 (`user` 또는 `system`)
+<br>
+`updatedAt`: 마지막 업데이트 날짜
+<br>
+`clapRecords`: 사용자별 박수 기록 (`ClapRecord` 클래스의 리스트로 구성)
+<br>
+`bookmarkedBy`: 레시피를 북마크한 사용자 UID 목록
+<br>
+`viewedBy`: 레시피를 조회한 사용자 UID 목록
+<br><br>
+*참고*: `Recipe` 클래스는 `title`과 `hashTag`를 Google Places API의 쿼리로 사용하여 관련 음식점(`Restaurant`) 정보를 동적으로 가져옵니다.
+<br/><br/>
+
+<h4>Description</h4>
+레시피 단계별 설명을 관리하는 클래스입니다.
+
+`description`: 단계별 설명 문단
+<br/>
+`descriptionImgUrl`: 단계별 설명에 대한 이미지 URL
+<br/><br/>
+
+<h4>ClapRecord</h4>
+특정 사용자가 레시피에 누른 박수 기록을 관리하는 클래스입니다.
+
+`userUid`: 박수를 누른 사용자 ID
+<br/>
+`clapCount`: 해당 사용자가 누른 총 박수 수
+<br/><br/>
+
+<h4>RecipeReport</h4>
+레시피 신고에 대한 정보를 관리하는 클래스입니다.
+
+`reportId`: 신고 기록 고유 ID
+<br/>
+`reportedBy`: 신고한 사용자 ID
+<br/>
+`recipeId`: 신고된 레시피 ID
+<br/>
+`reportReason`: 신고 사유
+<br/>
+`reportedAt`: 신고 일시
+<br/>
+`status`: 신고 처리 상태 (`inProgress`, `complete`, `invalidation`)
+<br/><br/>
+
+<h4>ReportStatus (enum)</h4>
+신고 처리 상태를 정의하는 열거형입니다.
+
+`inProgress`: 신고 처리 중
+<br/>
+`complete`: 신고 처리 완료
+<br/>
+`invalidation`: 신고 무효화
+<br/><br/>
+
+<h4>Restaurant</h4>
+Google Places API를 통해 가져온 음식점 정보를 저장하는 클래스입니다.
+
+`name`: 음식점 이름
+<br/>
+`photoUrls`: 음식점 이미지 URL 리스트
+<br/>
+`businessStatus`: 운영 상태 (예: `OPERATIONAL`)
+<br/>
+`rating`: 음식점 평점
+<br/>
+`priceLevel`: 가격대 (0 - 무료, 4 - 매우 비쌈)
+<br/>
+`website`: 음식점 웹사이트 URL
+<br/>
+`placeId`: 음식점 고유 ID
+<br>
+`address`: 위치 주소
+<br>
+`phoneNumber`:  전화번호
+<br>
+`location`: 위도와 경도를 포함한 위치
 
 ## 코드 실행 방법
 추가예정

@@ -1,39 +1,37 @@
 users 컬렉션: 사용자의 정보를 저장합니다.
 
-recipes 컬렉션: 레시피의 정보를 저장하며, 북마크한 전체 사용자 수와 전체 사용자로부터 adopted된 횟수를 포함합니다.
+recipes 컬렉션: 레시피의 정보를 저장하며, 북마크한 전체 사용자 수와 전체 사용자로부터 박수갈채 받은 수를 저장합니다.
 
-recipeReports 컬렉션: 레시피 게시물 신고
+recipeReports 컬렉션: 레시피 게시물 신고 기록 저장
+
+userReports 컬렉션: 작성자 신고 기록 저장
 
 ----------------
 
 User
--Bookmark : 사용자가 북마크한 레시피
 -(RecipeReport) : 사용자가 신고한 레시피
 
 RecipeReport
 
 Recipe
 -Description : 레시피 설명 1줄&이미지
--BookmarkRecord : 모든 사용자 대상으로 북마크 기록(누가 어떤 레시피를 채택했는지)
--ViewRecord : 모든 사용자 대상으로 조회 기록(누가 언제 어떤 레시피를 조회했는지)
 
+Restaurant
 ------------------
 
-class Bookmark{
-    String recipeId;
-    DateTime bookmarkedAt;
-}
-
-class BookmarkRecord{
-    String userUid; //북마크한 유저 ID
-}
-
+레시피 단계를 설명하는 내용을 저장하는 클래스입니다.
 class Description {
     String description; // Step.N 설명 문단
     String? descriptionImgUrl; //Step.N 설명 이미지
 }
 
+특정 사용자가 레시피에 누른 박수 횟수를 기록하는 클래스입니다.
+class ClapRecord {
+    String userUid;
+    int clapCount; // 해당 사용자가 누른 박수 수
+}
 
+레시피에 대한 주요 정보와 사용자 상호작용 데이터를 저장하는 클래스입니다.
 class Recipe{
     String recipeId;
     String title;
@@ -44,15 +42,15 @@ class Recipe{
     String hashTag;
     String completedImgUrl;
     DateTime createdAt;
-    String createBy; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
+    String createdBy; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
     String createdByType; // 'user' or 'system' : 작성자 유형
     DateTime updatedAt;
-    int claps; // 이 레시피가 받은 총 박수 수
-    Map<String, int> userClapCounts, //각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
-    List<BookmarkRecord> bookmarkedBy; //이 레시피를 북마크한 유저 리스트
-    List<ViewRecord> viewedBy; //이 레시피 조회한 유저
+    List<ClappedRecord> clapRecords, //각 사용자별 박수 기록 (채택된 유저 id,박수수)
+    List<String> bookmarkedBy; //이 레시피를 북마크한 유저 UID 리스트
+    List<String> viewedBy; //이 레시피 조회한 유저 UID 리스트
 }
 
+사용자가 신고한 레시피 게시물에 대한 정보를 저장하는 클래스입니다.
 class RecipeReport {
     String reportId;
     String reportedBy; //신고한 사용자 ID
@@ -62,12 +60,14 @@ class RecipeReport {
     ReportStatus status; // '처리 중', '완료', '무효화'
 }
 
+//RecipeReport와 userReports에서 사용되는 신고 상태를 정의하는 열거형입니다.
 enum ReportStatus {
     inProgress, //처리중
     complete, //완료
     invalidation, //무효화
 }
 
+사용자 정보와 설정을 관리하는 클래스입니다.
 class User {
     String uid; //Apple것도 있으니 @앞에 id보다는 uui로 생성해주는게 나을듯
 
@@ -81,18 +81,25 @@ class User {
 
     DateTime premiumExpiration;
 
-    List<Bookmark> bookmarks; // 사용자가 북마크한 레시피 목록
+    List<Bookmark> bookmarkIds; // 사용자가 북마크한 레시피 ID 목록
 
-    List<String> clappedRecipes; // 사용자가 박수를 친 레시피 ID 목록
+    List<String> bookmarkRecipeIds, // 사용자가 북마크한 레시피 ID 목록
 
-    List<String> recipeReportIds; // 사용자 신고한 레시피 목록, 목록에서 차단해주기
-
-    List<Recipe> blockedRecipes; // 사용자 차단
+    List<String> clappedRecipeIds, // 사용자가 박수를 친 레시피 ID 목록
 
     bool pushNotificationEnabled; // 푸쉬 메세지
 }
 
-class ViewRecord{
-    String userUid; //조회한 유저 ID
-    DateTime viewedAt; //조회한 날짜
+레시피와 관련된 음식점 정보를 저장하는 클래스입니다.
+class Restaurant {
+  final String name;                // 장소 이름
+  final List<String> photoUrls;      // 이미지 리스트 (URL)
+  final String businessStatus;       // 운영 상태 (예: OPERATIONAL)
+  final double rating;               // 평점
+  final int priceLevel;              // 가격대 (0 - 무료, 4 - 매우 비쌈)
+  final String website;              // 웹사이트 URL
+  final String placeId;              // 장소 고유 ID
+  String address;                    // 위치 주소
+  String phoneNumber;                // 전화번호
+  Location location;                 //(latitude와 longitude 포함): 위도와 경도를 포함한 위치
 }

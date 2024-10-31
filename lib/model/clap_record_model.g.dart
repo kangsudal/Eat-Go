@@ -1,18 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'bookmark_record_model.dart';
+part of 'clap_record_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$BookmarkRecordImpl _$$BookmarkRecordImplFromJson(Map<String, dynamic> json) =>
-    _$BookmarkRecordImpl(
+_$ClapRecordImpl _$$ClapRecordImplFromJson(Map<String, dynamic> json) =>
+    _$ClapRecordImpl(
       userUid: json['userUid'] as String,
+      clapCount: (json['clapCount'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$BookmarkRecordImplToJson(
-        _$BookmarkRecordImpl instance) =>
+Map<String, dynamic> _$$ClapRecordImplToJson(_$ClapRecordImpl instance) =>
     <String, dynamic>{
       'userUid': instance.userUid,
+      'clapCount': instance.clapCount,
     };

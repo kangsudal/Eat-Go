@@ -32,14 +32,15 @@ mixin _$Recipe {
   DateTime get createdAt => throw _privateConstructorUsedError;
   String get createdBy =>
       throw _privateConstructorUsedError; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
+  String get createdByType =>
+      throw _privateConstructorUsedError; // 'user' or 'system' : 작성자 유형
   @TimestampConverter()
   DateTime get updatedAt => throw _privateConstructorUsedError;
-  int get claps => throw _privateConstructorUsedError; // 이 레시피가 받은 총 박수 수
-  Map<String, int> get userClapCounts =>
+  List<ClapRecord> get clapRecords =>
       throw _privateConstructorUsedError; //각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
-  List<BookmarkRecord> get bookmarkedBy =>
-      throw _privateConstructorUsedError; //이 레시피를 북마크한 유저 리스트
-  List<ViewRecord> get viewedBy => throw _privateConstructorUsedError;
+  List<String> get bookmarkedBy =>
+      throw _privateConstructorUsedError; //이 레시피를 북마크한 유저 UID 리스트
+  List<String> get viewedBy => throw _privateConstructorUsedError;
 
   /// Serializes this Recipe to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -66,11 +67,11 @@ abstract class $RecipeCopyWith<$Res> {
       String completedImgUrl,
       @TimestampConverter() DateTime createdAt,
       String createdBy,
+      String createdByType,
       @TimestampConverter() DateTime updatedAt,
-      int claps,
-      Map<String, int> userClapCounts,
-      List<BookmarkRecord> bookmarkedBy,
-      List<ViewRecord> viewedBy});
+      List<ClapRecord> clapRecords,
+      List<String> bookmarkedBy,
+      List<String> viewedBy});
 }
 
 /// @nodoc
@@ -98,9 +99,9 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
     Object? completedImgUrl = null,
     Object? createdAt = null,
     Object? createdBy = null,
+    Object? createdByType = null,
     Object? updatedAt = null,
-    Object? claps = null,
-    Object? userClapCounts = null,
+    Object? clapRecords = null,
     Object? bookmarkedBy = null,
     Object? viewedBy = null,
   }) {
@@ -145,26 +146,26 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
               as String,
+      createdByType: null == createdByType
+          ? _value.createdByType
+          : createdByType // ignore: cast_nullable_to_non_nullable
+              as String,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      claps: null == claps
-          ? _value.claps
-          : claps // ignore: cast_nullable_to_non_nullable
-              as int,
-      userClapCounts: null == userClapCounts
-          ? _value.userClapCounts
-          : userClapCounts // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
+      clapRecords: null == clapRecords
+          ? _value.clapRecords
+          : clapRecords // ignore: cast_nullable_to_non_nullable
+              as List<ClapRecord>,
       bookmarkedBy: null == bookmarkedBy
           ? _value.bookmarkedBy
           : bookmarkedBy // ignore: cast_nullable_to_non_nullable
-              as List<BookmarkRecord>,
+              as List<String>,
       viewedBy: null == viewedBy
           ? _value.viewedBy
           : viewedBy // ignore: cast_nullable_to_non_nullable
-              as List<ViewRecord>,
+              as List<String>,
     ) as $Val);
   }
 }
@@ -187,11 +188,11 @@ abstract class _$$RecipeImplCopyWith<$Res> implements $RecipeCopyWith<$Res> {
       String completedImgUrl,
       @TimestampConverter() DateTime createdAt,
       String createdBy,
+      String createdByType,
       @TimestampConverter() DateTime updatedAt,
-      int claps,
-      Map<String, int> userClapCounts,
-      List<BookmarkRecord> bookmarkedBy,
-      List<ViewRecord> viewedBy});
+      List<ClapRecord> clapRecords,
+      List<String> bookmarkedBy,
+      List<String> viewedBy});
 }
 
 /// @nodoc
@@ -217,9 +218,9 @@ class __$$RecipeImplCopyWithImpl<$Res>
     Object? completedImgUrl = null,
     Object? createdAt = null,
     Object? createdBy = null,
+    Object? createdByType = null,
     Object? updatedAt = null,
-    Object? claps = null,
-    Object? userClapCounts = null,
+    Object? clapRecords = null,
     Object? bookmarkedBy = null,
     Object? viewedBy = null,
   }) {
@@ -264,26 +265,26 @@ class __$$RecipeImplCopyWithImpl<$Res>
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
               as String,
+      createdByType: null == createdByType
+          ? _value.createdByType
+          : createdByType // ignore: cast_nullable_to_non_nullable
+              as String,
       updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      claps: null == claps
-          ? _value.claps
-          : claps // ignore: cast_nullable_to_non_nullable
-              as int,
-      userClapCounts: null == userClapCounts
-          ? _value._userClapCounts
-          : userClapCounts // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
+      clapRecords: null == clapRecords
+          ? _value._clapRecords
+          : clapRecords // ignore: cast_nullable_to_non_nullable
+              as List<ClapRecord>,
       bookmarkedBy: null == bookmarkedBy
           ? _value._bookmarkedBy
           : bookmarkedBy // ignore: cast_nullable_to_non_nullable
-              as List<BookmarkRecord>,
+              as List<String>,
       viewedBy: null == viewedBy
           ? _value._viewedBy
           : viewedBy // ignore: cast_nullable_to_non_nullable
-              as List<ViewRecord>,
+              as List<String>,
     ));
   }
 }
@@ -302,13 +303,13 @@ class _$RecipeImpl implements _Recipe {
       required this.completedImgUrl,
       @TimestampConverter() required this.createdAt,
       required this.createdBy,
+      required this.createdByType,
       @TimestampConverter() required this.updatedAt,
-      required this.claps,
-      required final Map<String, int> userClapCounts,
-      required final List<BookmarkRecord> bookmarkedBy,
-      required final List<ViewRecord> viewedBy})
+      required final List<ClapRecord> clapRecords,
+      required final List<String> bookmarkedBy,
+      required final List<String> viewedBy})
       : _descriptions = descriptions,
-        _userClapCounts = userClapCounts,
+        _clapRecords = clapRecords,
         _bookmarkedBy = bookmarkedBy,
         _viewedBy = viewedBy;
 
@@ -344,35 +345,34 @@ class _$RecipeImpl implements _Recipe {
   final String createdBy;
 //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
   @override
+  final String createdByType;
+// 'user' or 'system' : 작성자 유형
+  @override
   @TimestampConverter()
   final DateTime updatedAt;
+  final List<ClapRecord> _clapRecords;
   @override
-  final int claps;
-// 이 레시피가 받은 총 박수 수
-  final Map<String, int> _userClapCounts;
-// 이 레시피가 받은 총 박수 수
-  @override
-  Map<String, int> get userClapCounts {
-    if (_userClapCounts is EqualUnmodifiableMapView) return _userClapCounts;
+  List<ClapRecord> get clapRecords {
+    if (_clapRecords is EqualUnmodifiableListView) return _clapRecords;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_userClapCounts);
+    return EqualUnmodifiableListView(_clapRecords);
   }
 
 //각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
-  final List<BookmarkRecord> _bookmarkedBy;
+  final List<String> _bookmarkedBy;
 //각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
   @override
-  List<BookmarkRecord> get bookmarkedBy {
+  List<String> get bookmarkedBy {
     if (_bookmarkedBy is EqualUnmodifiableListView) return _bookmarkedBy;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_bookmarkedBy);
   }
 
-//이 레시피를 북마크한 유저 리스트
-  final List<ViewRecord> _viewedBy;
-//이 레시피를 북마크한 유저 리스트
+//이 레시피를 북마크한 유저 UID 리스트
+  final List<String> _viewedBy;
+//이 레시피를 북마크한 유저 UID 리스트
   @override
-  List<ViewRecord> get viewedBy {
+  List<String> get viewedBy {
     if (_viewedBy is EqualUnmodifiableListView) return _viewedBy;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_viewedBy);
@@ -380,7 +380,7 @@ class _$RecipeImpl implements _Recipe {
 
   @override
   String toString() {
-    return 'Recipe(recipeId: $recipeId, title: $title, ingredients: $ingredients, ingredientsImgUrl: $ingredientsImgUrl, descriptions: $descriptions, category: $category, hashTag: $hashTag, completedImgUrl: $completedImgUrl, createdAt: $createdAt, createdBy: $createdBy, updatedAt: $updatedAt, claps: $claps, userClapCounts: $userClapCounts, bookmarkedBy: $bookmarkedBy, viewedBy: $viewedBy)';
+    return 'Recipe(recipeId: $recipeId, title: $title, ingredients: $ingredients, ingredientsImgUrl: $ingredientsImgUrl, descriptions: $descriptions, category: $category, hashTag: $hashTag, completedImgUrl: $completedImgUrl, createdAt: $createdAt, createdBy: $createdBy, createdByType: $createdByType, updatedAt: $updatedAt, clapRecords: $clapRecords, bookmarkedBy: $bookmarkedBy, viewedBy: $viewedBy)';
   }
 
   @override
@@ -406,11 +406,12 @@ class _$RecipeImpl implements _Recipe {
                 other.createdAt == createdAt) &&
             (identical(other.createdBy, createdBy) ||
                 other.createdBy == createdBy) &&
+            (identical(other.createdByType, createdByType) ||
+                other.createdByType == createdByType) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
-            (identical(other.claps, claps) || other.claps == claps) &&
             const DeepCollectionEquality()
-                .equals(other._userClapCounts, _userClapCounts) &&
+                .equals(other._clapRecords, _clapRecords) &&
             const DeepCollectionEquality()
                 .equals(other._bookmarkedBy, _bookmarkedBy) &&
             const DeepCollectionEquality().equals(other._viewedBy, _viewedBy));
@@ -430,9 +431,9 @@ class _$RecipeImpl implements _Recipe {
       completedImgUrl,
       createdAt,
       createdBy,
+      createdByType,
       updatedAt,
-      claps,
-      const DeepCollectionEquality().hash(_userClapCounts),
+      const DeepCollectionEquality().hash(_clapRecords),
       const DeepCollectionEquality().hash(_bookmarkedBy),
       const DeepCollectionEquality().hash(_viewedBy));
 
@@ -464,11 +465,11 @@ abstract class _Recipe implements Recipe {
       required final String completedImgUrl,
       @TimestampConverter() required final DateTime createdAt,
       required final String createdBy,
+      required final String createdByType,
       @TimestampConverter() required final DateTime updatedAt,
-      required final int claps,
-      required final Map<String, int> userClapCounts,
-      required final List<BookmarkRecord> bookmarkedBy,
-      required final List<ViewRecord> viewedBy}) = _$RecipeImpl;
+      required final List<ClapRecord> clapRecords,
+      required final List<String> bookmarkedBy,
+      required final List<String> viewedBy}) = _$RecipeImpl;
 
   factory _Recipe.fromJson(Map<String, dynamic> json) = _$RecipeImpl.fromJson;
 
@@ -494,16 +495,16 @@ abstract class _Recipe implements Recipe {
   @override
   String get createdBy; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
   @override
+  String get createdByType; // 'user' or 'system' : 작성자 유형
+  @override
   @TimestampConverter()
   DateTime get updatedAt;
   @override
-  int get claps; // 이 레시피가 받은 총 박수 수
+  List<ClapRecord> get clapRecords; //각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
   @override
-  Map<String, int> get userClapCounts; //각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
+  List<String> get bookmarkedBy; //이 레시피를 북마크한 유저 UID 리스트
   @override
-  List<BookmarkRecord> get bookmarkedBy; //이 레시피를 북마크한 유저 리스트
-  @override
-  List<ViewRecord> get viewedBy;
+  List<String> get viewedBy;
 
   /// Create a copy of Recipe
   /// with the given fields replaced by the non-null parameter values.

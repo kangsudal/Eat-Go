@@ -21,7 +21,7 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen>  {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
@@ -169,8 +169,9 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                   debugPrint('HomeScreen - 사용자를 불러오지 못했습니다.');
                   return const Icon(Icons.report_problem_outlined);
                 }
-                final isBookmarked = user.bookmarks.any((bookmark) =>
-                    bookmark.recipeId == widget.randomRecipe.recipeId);
+                final isBookmarked = user.bookmarkRecipeIds.any(
+                    (bookmarkRecipeId) =>
+                        bookmarkRecipeId == widget.randomRecipe.recipeId);
                 return Positioned(
                   top: 15,
                   right: 15,
