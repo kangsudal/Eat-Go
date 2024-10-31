@@ -23,7 +23,6 @@ sealed class Recipe with _$Recipe {
     @TimestampConverter() required DateTime createdAt,
     required String
         createdBy, //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
-    required String createdByType, // 'user' or 'system' : 작성자 유형
     @TimestampConverter() required DateTime updatedAt,
     required List<ClapRecord> clapRecords, //각 사용자별 누른 박수 수 <채택된 유저 id,박수수>
     required List<String> bookmarkedBy, //이 레시피를 북마크한 유저 UID 리스트

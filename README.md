@@ -83,7 +83,6 @@ classDiagram
       String completedImgUrl
       DateTime createdAt
       String createdBy
-      String createdByType
       DateTime updatedAt
       List~ClapRecord~ clapRecords
       List~String~ bookmarkedBy
@@ -200,8 +199,6 @@ classDiagram
 `createdAt`: 레시피 생성 날짜
 <br>
 `createdBy`: 작성자 ID (사용자 ID 또는 시스템 ID)
-<br>
-`createdByType`: 작성자 유형 (`user` 또는 `system`)
 <br>
 `updatedAt`: 마지막 업데이트 날짜
 <br>

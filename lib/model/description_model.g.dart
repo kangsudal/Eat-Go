@@ -9,7 +9,7 @@ part of 'description_model.dart';
 _$DescriptionImpl _$$DescriptionImplFromJson(Map<String, dynamic> json) =>
     _$DescriptionImpl(
       description: json['description'] as String,
-      descriptionImgUrl: json['descriptionImgUrl'] as String?,
+      descriptionImgUrl: json['descriptionImgUrl'] as String,
     );
 
 Map<String, dynamic> _$$DescriptionImplToJson(_$DescriptionImpl instance) =>

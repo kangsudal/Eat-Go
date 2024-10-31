@@ -20,7 +20,6 @@ _$RecipeImpl _$$RecipeImplFromJson(Map<String, dynamic> json) => _$RecipeImpl(
       createdAt:
           const TimestampConverter().fromJson(json['createdAt'] as Timestamp),
       createdBy: json['createdBy'] as String,
-      createdByType: json['createdByType'] as String,
       updatedAt:
           const TimestampConverter().fromJson(json['updatedAt'] as Timestamp),
       clapRecords: (json['clapRecords'] as List<dynamic>)
@@ -45,7 +44,6 @@ Map<String, dynamic> _$$RecipeImplToJson(_$RecipeImpl instance) =>
       'completedImgUrl': instance.completedImgUrl,
       'createdAt': const TimestampConverter().toJson(instance.createdAt),
       'createdBy': instance.createdBy,
-      'createdByType': instance.createdByType,
       'updatedAt': const TimestampConverter().toJson(instance.updatedAt),
       'clapRecords': instance.clapRecords.map((e) => e.toJson()).toList(),
       'bookmarkedBy': instance.bookmarkedBy,

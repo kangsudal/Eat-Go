@@ -21,7 +21,7 @@ Description _$DescriptionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Description {
   String get description => throw _privateConstructorUsedError; // Step.N 설명 문단
-  String? get descriptionImgUrl => throw _privateConstructorUsedError;
+  String get descriptionImgUrl => throw _privateConstructorUsedError;
 
   /// Serializes this Description to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ abstract class $DescriptionCopyWith<$Res> {
           Description value, $Res Function(Description) then) =
       _$DescriptionCopyWithImpl<$Res, Description>;
   @useResult
-  $Res call({String description, String? descriptionImgUrl});
+  $Res call({String description, String descriptionImgUrl});
 }
 
 /// @nodoc
@@ -58,17 +58,17 @@ class _$DescriptionCopyWithImpl<$Res, $Val extends Description>
   @override
   $Res call({
     Object? description = null,
-    Object? descriptionImgUrl = freezed,
+    Object? descriptionImgUrl = null,
   }) {
     return _then(_value.copyWith(
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      descriptionImgUrl: freezed == descriptionImgUrl
+      descriptionImgUrl: null == descriptionImgUrl
           ? _value.descriptionImgUrl
           : descriptionImgUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ) as $Val);
   }
 }
@@ -81,7 +81,7 @@ abstract class _$$DescriptionImplCopyWith<$Res>
       __$$DescriptionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String description, String? descriptionImgUrl});
+  $Res call({String description, String descriptionImgUrl});
 }
 
 /// @nodoc
@@ -98,17 +98,17 @@ class __$$DescriptionImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? description = null,
-    Object? descriptionImgUrl = freezed,
+    Object? descriptionImgUrl = null,
   }) {
     return _then(_$DescriptionImpl(
       description: null == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      descriptionImgUrl: freezed == descriptionImgUrl
+      descriptionImgUrl: null == descriptionImgUrl
           ? _value.descriptionImgUrl
           : descriptionImgUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ));
   }
 }
@@ -116,7 +116,8 @@ class __$$DescriptionImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$DescriptionImpl implements _Description {
-  const _$DescriptionImpl({required this.description, this.descriptionImgUrl});
+  const _$DescriptionImpl(
+      {required this.description, required this.descriptionImgUrl});
 
   factory _$DescriptionImpl.fromJson(Map<String, dynamic> json) =>
       _$$DescriptionImplFromJson(json);
@@ -125,7 +126,7 @@ class _$DescriptionImpl implements _Description {
   final String description;
 // Step.N 설명 문단
   @override
-  final String? descriptionImgUrl;
+  final String descriptionImgUrl;
 
   @override
   String toString() {
@@ -166,7 +167,7 @@ class _$DescriptionImpl implements _Description {
 abstract class _Description implements Description {
   const factory _Description(
       {required final String description,
-      final String? descriptionImgUrl}) = _$DescriptionImpl;
+      required final String descriptionImgUrl}) = _$DescriptionImpl;
 
   factory _Description.fromJson(Map<String, dynamic> json) =
       _$DescriptionImpl.fromJson;
@@ -174,7 +175,7 @@ abstract class _Description implements Description {
   @override
   String get description; // Step.N 설명 문단
   @override
-  String? get descriptionImgUrl;
+  String get descriptionImgUrl;
 
   /// Create a copy of Description
   /// with the given fields replaced by the non-null parameter values.

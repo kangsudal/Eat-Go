@@ -43,7 +43,6 @@ class Recipe{
     String completedImgUrl;
     DateTime createdAt;
     String createdBy; //currentUser.uid:'식품의약품안전처'.uid, //사용자 UID 또는 시스템
-    String createdByType; // 'user' or 'system' : 작성자 유형
     DateTime updatedAt;
     List<ClappedRecord> clapRecords, //각 사용자별 박수 기록 (채택된 유저 id,박수수)
     List<String> bookmarkedBy; //이 레시피를 북마크한 유저 UID 리스트
