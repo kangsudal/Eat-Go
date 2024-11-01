@@ -113,92 +113,76 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Stack(
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(35),
-              ),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxHeight: 500,
-                  maxWidth: 500,
-                ),
-                child: Image.network(
-                  widget.randomRecipe.completedImgUrl,
-                  fit: BoxFit.contain,
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent? loadingProgress) {
-                    if (loadingProgress == null) {
-                      // 이미지가 정상적으로 로드되었을 때
-                      return child;
-                    } else {
-                      // 로딩 중일 때, 진행률을 계산하고 표시
-                      final progress =
-                          loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null;
-
-                      return Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          // 이미지 로드 중에도 기본적인 이미지 공간을 차지하도록 설정
-                          SizedBox(
-                            width: 200,
-                            height: 200,
-                            child: CircularProgressIndicator(value: progress),
-                          ),
-                          Positioned.fill(
-                            child: Opacity(
-                              opacity: 0.3, // 로딩 중일 때 약간 투명하게 이미지 표시
-                              child: child,
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                  },
-                  errorBuilder: (_, __, ___) => Text('이미지가 없습니다.'),
-                ),
-              ),
+        ClipRRect(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(35),
+          ),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxHeight: 500,
+              maxWidth: 500,
             ),
-            currentEatGoUser.when(
-              data: (user) {
-                if (user == null) {
-                  debugPrint('HomeScreen - 사용자를 불러오지 못했습니다.');
-                  return const Icon(Icons.report_problem_outlined);
-                }
-                final isBookmarked = user.bookmarkRecipeIds
-                    .contains(widget.randomRecipe.recipeId);
-                return Positioned(
-                  top: 15,
-                  right: 15,
-                  child: GestureDetector(
-                    onTap: () async {
-                      ref
-                          .read(homeViewModelProvider.notifier)
-                          .toggleBookmark(user);
-                    },
-                    child: CircleAvatar(
-                      radius: 22,
-                      backgroundColor: EatGoPalette.backgroundColor1,
-                      child: Icon(
-                        isBookmarked == false
-                            ? Icons.bookmark_border_sharp
-                            : Icons.bookmark,
-                        color: pointColor,
-                        size: 30,
+            child: Image.network(
+              widget.randomRecipe.completedImgUrl,
+              fit: BoxFit.contain,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  // 이미지가 정상적으로 로드되었을 때
+                  return Stack(
+                    children: [
+                      child,
+                      Positioned(
+                        top: 15,
+                        right: 15,
+                        child: currentEatGoUser.when(
+                          data: (user) {
+                            if (user == null) {
+                              debugPrint('HomeScreen - 사용자를 불러오지 못했습니다.');
+                              return const Icon(Icons.report_problem_outlined);
+                            }
+                            final isBookmarked = user.bookmarkRecipeIds
+                                .contains(widget.randomRecipe.recipeId);
+                            return GestureDetector(
+                              onTap: () async {
+                                ref
+                                    .read(homeViewModelProvider.notifier)
+                                    .toggleBookmark(user);
+                              },
+                              child: CircleAvatar(
+                                radius: 22,
+                                backgroundColor: EatGoPalette.backgroundColor1,
+                                child: Icon(
+                                  isBookmarked == false
+                                      ? Icons.bookmark_border_sharp
+                                      : Icons.bookmark,
+                                  color: pointColor,
+                                  size: 30,
+                                ),
+                              ),
+                            );
+                          },
+                          error: (error, stackTrace) =>
+                              const Icon(Icons.report_problem_outlined),
+                          loading: () => const SizedBox(width: 0, height: 0),
+                        ),
                       ),
-                    ),
-                  ),
-                );
+                    ],
+                  );
+                } else {
+                  // 로딩 중일 때, 진행률을 계산하고 표시
+                  final progress = loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null;
+
+                  return Center(
+                      child: CircularProgressIndicator(value: progress));
+                }
               },
-              error: (error, stackTrace) =>
-                  const Icon(Icons.report_problem_outlined),
-              loading: () => const SizedBox(width: 0, height: 0),
+              errorBuilder: (_, __, ___) => Text('이미지가 없습니다.'),
             ),
-          ],
+          ),
         ),
         SizedBox(height: 30),
         Text(
