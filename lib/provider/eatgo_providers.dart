@@ -104,7 +104,7 @@ final shakeProvider = NotifierProvider<ShakeNotifier, bool>(ShakeNotifier.new);
 
 //<식당찾기 페이지>
 // 위치 권한 및 GPS 상태 모니터링
-final locationServiceStatusProvider = StreamProvider<bool>((ref) {
+final locationServiceStatusProvider = StreamProvider.autoDispose<bool>((ref) {
   return locationServiceStatusStream();
 });
 
