@@ -1,27 +1,6 @@
-/*import 'dart:async';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geolocator/geolocator.dart';
-
-class RestaurantViewModel extends AsyncNotifier<List<Restaurant>> {
-  @override
-  Future<List<Restaurant>> build() async {
-    // 앱이 시작될 때 자동으로 식당 데이터를 불러옴
-    return await fetchRestaurantData();
-  }
-
-  Future<List<Restaurant>> fetchRestaurantData() async {
-    state = const AsyncLoading(); // 로딩 상태 설정
-    await Future.delayed(Duration(seconds: 2)); // 네트워크 지연 시뮬레이션
-    return [
-      Restaurant(name: 'Restaurant A', location: 'Location A'),
-      Restaurant(name: 'Restaurant B', location: 'Location B'),
-    ];
-  }
-}
-*/
-
 import 'dart:async';
+import 'package:eat_go/model/restaurant_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 
 // 위치 권한 체크와 GPS 상태를 지속적으로 체크해주는 Stream
@@ -39,5 +18,17 @@ Stream<bool> locationServiceStatusStream({
 
     // 권한과 GPS 상태가 모두 true일 때만 true를 반환하며, 하나라도 false라면 false를 반환
     yield isLocationEnabled && isPermissionGranted;
+  }
+}
+
+class RestaurantViewModel extends AsyncNotifier<List<Restaurant>> {
+  @override
+  FutureOr<List<Restaurant>> build() {
+    return fetchRestaurants();
+  }
+
+  Future<List<Restaurant>> fetchRestaurants() async {
+    // API 호출 후 Restaurant 데이터 가져옴
+    return [];
   }
 }

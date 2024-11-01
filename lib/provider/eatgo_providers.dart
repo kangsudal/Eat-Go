@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/recipe_model.dart';
+import 'package:eat_go/model/restaurant_model.dart';
 import 'package:eat_go/model/user_model.dart';
-import 'package:eat_go/provider/my_router_provider.dart';
 import 'package:eat_go/provider/shake_notifier.dart';
 import 'package:eat_go/services/auth_service.dart';
 import 'package:eat_go/services/recipe_service.dart';
@@ -14,6 +14,7 @@ import 'package:eat_go/viewmodels/home_viewmodel.dart';
 import 'package:eat_go/provider/current_eatgo_user_notifier.dart';
 import 'package:eat_go/viewmodels/recipe_detail_viewmodel.dart';
 import 'package:eat_go/viewmodels/recipe_viewmodel.dart';
+import 'package:eat_go/viewmodels/restaurant_viewmodel.dart';
 import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
 import 'package:eat_go/viewmodels/setting_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -100,3 +101,13 @@ final recipeDetailViewModelProvider = AsyncNotifierProvider.family
 
 //<흔들기 기능>
 final shakeProvider = NotifierProvider<ShakeNotifier, bool>(ShakeNotifier.new);
+
+//<식당찾기 페이지>
+// 위치 권한 및 GPS 상태 모니터링
+final locationServiceStatusProvider = StreamProvider<bool>((ref) {
+  return locationServiceStatusStream();
+});
+
+final restaurantViewModelProvider = AsyncNotifierProvider<RestaurantViewModel, List<Restaurant>>(
+      () => RestaurantViewModel(),
+);
