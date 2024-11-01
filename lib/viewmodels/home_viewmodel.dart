@@ -76,7 +76,7 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
         return;
       }
       final isBookmarked =
-          currentEatGoUser.bookmarkRecipeIds.any((b) => b == recipe.recipeId);
+          currentEatGoUser.bookmarkRecipeIds.contains(recipe.recipeId);
 
       if (isBookmarked) {
         updatedEatGoUser = currentEatGoUser.copyWith(
@@ -94,6 +94,8 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
         );
       }
       await _userRepository.updateUserData(updatedUser: updatedEatGoUser);
+      ref.read(currentEatGoUserProvider.notifier).state = AsyncValue.data(
+          updatedEatGoUser); //getCurrentUser랑 다른점은 네트워크 호출을 안한다는 점이다.
     } catch (e) {
       debugPrint('HomeViewModel - 북마크 토글하는데 실패하였습니다.$e');
     }

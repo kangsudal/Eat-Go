@@ -179,14 +179,13 @@ final myRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/loading',
-        builder: (BuildContext context, GoRouterState state) => Scaffold(
-          backgroundColor: Colors.red,
+        builder: (BuildContext context, GoRouterState state) => const Scaffold(
           body: Center(child: CircularProgressIndicator()),
         ),
       ),
       GoRoute(
         path: '/admin',
-        builder: (BuildContext context, GoRouterState state) => AdminScreen(),
+        builder: (BuildContext context, GoRouterState state) => const AdminScreen(),
       ),
     ],
     errorBuilder: (context, state) =>

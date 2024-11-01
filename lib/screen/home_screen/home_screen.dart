@@ -169,9 +169,8 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                   debugPrint('HomeScreen - 사용자를 불러오지 못했습니다.');
                   return const Icon(Icons.report_problem_outlined);
                 }
-                final isBookmarked = user.bookmarkRecipeIds.any(
-                    (bookmarkRecipeId) =>
-                        bookmarkRecipeId == widget.randomRecipe.recipeId);
+                final isBookmarked = user.bookmarkRecipeIds
+                    .contains(widget.randomRecipe.recipeId);
                 return Positioned(
                   top: 15,
                   right: 15,
@@ -180,9 +179,6 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                       ref
                           .read(homeViewModelProvider.notifier)
                           .toggleBookmark(user);
-                      await ref
-                          .read(currentEatGoUserProvider.notifier)
-                          .getCurrentUser(); // 북마크 토글 후 사용자 정보 다시 불러오기
                     },
                     child: CircleAvatar(
                       radius: 22,
