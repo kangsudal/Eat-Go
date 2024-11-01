@@ -43,8 +43,9 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
               children: [
                 GoogleMap(
                   initialCameraPosition: initialPosition,
+                  myLocationButtonEnabled: false,
                 ),
-                KeywordSuggestionCard(),
+                // KeywordSuggestionCard(),
                 RestaurantScreenBackButton(),
                 ScrollableCards(itemCount: itemCount),
               ],

@@ -11,7 +11,8 @@ class KeywordSuggestionCard extends StatelessWidget {
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
-        margin: EdgeInsets.only(top: 23, left: 60),
+        margin:
+            EdgeInsets.only(left: 60, top: MediaQuery.of(context).padding.top),
         padding: const EdgeInsets.all(8),
         height: 55,
         width: 250,
