@@ -22,19 +22,15 @@ class RestaurantScreen extends ConsumerStatefulWidget {
 
 class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
   bool isDialogOpen = false; // 다이얼로그 열려져있는지 체크
-  final CameraPosition initialPosition = const CameraPosition(
-    target: LatLng(45.521563, -122.677433),
-    zoom: 11.0,
-  );
-  final Completer<GoogleMapController> googleMapControllerCompleter = Completer();
+  final Completer<GoogleMapController> googleMapControllerCompleter =
+      Completer();
 
   @override
   Widget build(BuildContext context) {
     int itemCount = 10;
     final locationServiceStatus = ref.watch(locationServiceStatusProvider);
+    final currentPositionState = ref.watch(currentPositionProvider);
     return Scaffold(
-      // backgroundColor: Colors.greenAccent,
-
       extendBodyBehindAppBar: true,
       body: locationServiceStatus.when(
         data: (isPermissionGrantedAndGPSEnabled) {
@@ -42,21 +38,50 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
             // 1. GPS 상태와 위치 권한이 모두 활성화된 경우
             // 1-1. 권한과 GPS가 활성화되었으므로 다이얼로그 닫기
             closeDialogIfOpen();
-            return Stack(
-              children: [
-                GoogleMap(
-                  initialCameraPosition: initialPosition,
-                  myLocationButtonEnabled: false,
-                  zoomControlsEnabled: false,
-                  myLocationEnabled: true,
-                  onMapCreated: (GoogleMapController controller){
-                    googleMapControllerCompleter.complete(controller); //Completer 완료
-                  },
-                ),
-                // KeywordSuggestionCard(),
-                RestaurantScreenBackButton(),
-                ScrollableCards(itemCount: itemCount, googleMapControllerFuture: googleMapControllerCompleter.future),
-              ],
+            return currentPositionState.when(
+              data: (currentPosition) {
+                if (currentPosition == null) {
+                  return const Center(
+                    child: Text('현재 위치를 가져오는데 실패했습니다.'),
+                  );
+                }
+                CameraPosition initialPosition = CameraPosition(
+                  target: LatLng(
+                    currentPosition.latitude,
+                    currentPosition.longitude,
+                  ),
+                  zoom: 14,
+                );
+                return Stack(
+                  children: [
+                    GoogleMap(
+                      initialCameraPosition: initialPosition,
+                      myLocationButtonEnabled: false,
+                      zoomControlsEnabled: false,
+                      myLocationEnabled: true,
+                      onMapCreated: (GoogleMapController controller) {
+                        googleMapControllerCompleter
+                            .complete(controller); //Completer 완료
+                      },
+                    ),
+                    // KeywordSuggestionCard(),
+                    RestaurantScreenBackButton(),
+                    ScrollableCards(
+                        itemCount: itemCount,
+                        googleMapControllerFuture:
+                            googleMapControllerCompleter.future),
+                  ],
+                );
+              },
+              error: (error, stackTrace) {
+                debugPrint('$error');
+                return const Center(
+                  child: Text('오류가 발생했습니다.'),
+                );
+              },
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           } else {
             // 2. GPS 상태 또는 위치 권한이 비활성화된 경우

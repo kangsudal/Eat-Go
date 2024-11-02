@@ -20,6 +20,7 @@ import 'package:eat_go/viewmodels/setting_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 
 //Provider: 간단한 의존성 주입 도구로, 특정 클래스를 전역적으로 쉽게 사용할 수 있도록 만들어줍니다.
 final firestoreProvider =
@@ -106,6 +107,16 @@ final shakeProvider = NotifierProvider<ShakeNotifier, bool>(ShakeNotifier.new);
 // 위치 권한 및 GPS 상태 모니터링
 final locationServiceStatusProvider = StreamProvider.autoDispose<bool>((ref) {
   return locationServiceStatusStream();
+});
+
+// 현재 위치
+final currentPositionProvider = FutureProvider<Position?>((ref) async {
+  try {
+    return await Geolocator.getCurrentPosition();
+  } catch (e) {
+    debugPrint("Failed to get location: $e");
+    return null;
+  }
 });
 
 final restaurantViewModelProvider = AsyncNotifierProvider<RestaurantViewModel, List<Restaurant>>(

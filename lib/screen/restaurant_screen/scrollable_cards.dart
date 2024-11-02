@@ -15,7 +15,7 @@ class ScrollableCards extends StatelessWidget {
 
   void animateToMyLocation() async {
     final location = await Geolocator.getCurrentPosition();
-    debugPrint('lat:${location.latitude}, long:${location.longitude}');
+    // debugPrint('lat:${location.latitude}, long:${location.longitude}');
     final GoogleMapController googleMapController = await googleMapControllerFuture;
     googleMapController.animateCamera(
       CameraUpdate.newLatLng(
