@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/restaurant_screen/restaurant_screen_back_button.dart';
 import 'package:eat_go/screen/restaurant_screen/keyword_suggestion_card.dart';
@@ -24,6 +26,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
     target: LatLng(45.521563, -122.677433),
     zoom: 11.0,
   );
+  final Completer<GoogleMapController> googleMapControllerCompleter = Completer();
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +47,15 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                 GoogleMap(
                   initialCameraPosition: initialPosition,
                   myLocationButtonEnabled: false,
+                  zoomControlsEnabled: false,
+                  myLocationEnabled: true,
+                  onMapCreated: (GoogleMapController controller){
+                    googleMapControllerCompleter.complete(controller); //Completer 완료
+                  },
                 ),
                 // KeywordSuggestionCard(),
                 RestaurantScreenBackButton(),
-                ScrollableCards(itemCount: itemCount),
+                ScrollableCards(itemCount: itemCount, googleMapControllerFuture: googleMapControllerCompleter.future),
               ],
             );
           } else {

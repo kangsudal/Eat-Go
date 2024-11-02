@@ -1,13 +1,31 @@
 import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ScrollableCards extends StatelessWidget {
   const ScrollableCards({
     super.key,
     required this.itemCount,
+    required this.googleMapControllerFuture,
   });
 
   final int itemCount;
+  final Future<GoogleMapController> googleMapControllerFuture;
+
+  void animateToMyLocation() async {
+    final location = await Geolocator.getCurrentPosition();
+    debugPrint('lat:${location.latitude}, long:${location.longitude}');
+    final GoogleMapController googleMapController = await googleMapControllerFuture;
+    googleMapController.animateCamera(
+      CameraUpdate.newLatLng(
+        LatLng(
+          location.latitude,
+          location.longitude,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +39,7 @@ class ScrollableCards extends StatelessWidget {
             padding: const EdgeInsets.only(right: 10, bottom: 10),
             child: FloatingActionButton(
               heroTag: null,
-              onPressed: () {},
+              onPressed: animateToMyLocation,
               child: Icon(
                 Icons.gps_fixed,
                 color: pointColor,
@@ -41,40 +59,38 @@ class ScrollableCards extends StatelessWidget {
                       return Column(
                         children: [
                           Dialog(
-                            child: LayoutBuilder(
-                              builder: (context,constraints) {
-                                final dialogWidth = constraints.maxWidth;
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                  ),
-                                  height: 500,
-                                  // width: 100,
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height:180,//사진 슬라이드 높이
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder:
-                                              (BuildContext context, index) {
-                                            return Container(
-                                              // height: 10,
-                                              width: dialogWidth,
-                                              decoration: BoxDecoration(
-                                                color: Colors.primaries[index],
-                                              ),
-                                            );
-                                          },
-                                          itemCount: Colors.primaries.length,
-                                        ),
+                            child:
+                                LayoutBuilder(builder: (context, constraints) {
+                              final dialogWidth = constraints.maxWidth;
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                                height: 500,
+                                // width: 100,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 180, //사진 슬라이드 높이
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder:
+                                            (BuildContext context, index) {
+                                          return Container(
+                                            // height: 10,
+                                            width: dialogWidth,
+                                            decoration: BoxDecoration(
+                                              color: Colors.primaries[index],
+                                            ),
+                                          );
+                                        },
+                                        itemCount: Colors.primaries.length,
                                       ),
-
-                                    ],
-                                  ),
-                                );
-                              }
-                            ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
                           ),
                           FloatingActionButton(
                             onPressed: () {
