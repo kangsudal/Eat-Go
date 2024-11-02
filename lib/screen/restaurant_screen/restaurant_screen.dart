@@ -60,8 +60,10 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                       zoomControlsEnabled: false,
                       myLocationEnabled: true,
                       onMapCreated: (GoogleMapController controller) {
-                        googleMapControllerCompleter
-                            .complete(controller); //Completer 완료
+                        if (!googleMapControllerCompleter.isCompleted) {
+                          googleMapControllerCompleter
+                              .complete(controller); //Completer 완료
+                        }
                       },
                     ),
                     // KeywordSuggestionCard(),
