@@ -65,6 +65,7 @@ dependencies:
   google_maps_flutter: ^2.9.0
   geolocator: ^13.0.1
   flutter_dotenv: ^5.2.1
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:

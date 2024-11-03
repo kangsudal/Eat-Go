@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RestaurantScreen extends ConsumerStatefulWidget {
   final String recipeTitle;
@@ -24,7 +25,7 @@ class RestaurantScreen extends ConsumerStatefulWidget {
 class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
   bool isDialogOpen = false; // 다이얼로그 열려져있는지 체크
   final Completer<GoogleMapController> googleMapControllerCompleter =
-      Completer();
+  Completer();
   Set<Marker> markers = {}; // 마커를 저장할 Set
 
   void fetchMarkers(List<Restaurant> restaurants) {
@@ -35,7 +36,9 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
         infoWindow: InfoWindow(
           title: restaurant.displayName,
           snippet: restaurant.formattedAddress,
-        ),
+          onTap: () {
+            openExternalBrowser(restaurant.googleMapsUri);
+          },),
       );
     }).toSet();
     debugPrint('${restaurants.length}개의 마커 패치 완료');
@@ -55,7 +58,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
             closeDialogIfOpen();
             return currentPositionState.when(data: (currentPosition) {
               final restaurantViewModelState =
-                  ref.watch(restaurantViewModelProvider(widget.recipeTitle));
+              ref.watch(restaurantViewModelProvider(widget.recipeTitle));
               if (currentPosition == null) {
                 return const Center(
                   child: Text('현재 위치를 가져오는데 실패했습니다.'),
@@ -126,10 +129,8 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
     );
   }
 
-  Widget buildGoogleMap(
-    List<Restaurant> restaurants,
-    Position currentPosition,
-  ) {
+  Widget buildGoogleMap(List<Restaurant> restaurants,
+      Position currentPosition,) {
     fetchMarkers(restaurants);
     CameraPosition initialPosition = CameraPosition(
       target: LatLng(
@@ -154,9 +155,9 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
         ),
         // KeywordSuggestionCard(),
         RestaurantScreenBackButton(),
-        ScrollableCards(
-            itemCount: restaurants.length,
-            googleMapControllerFuture: googleMapControllerCompleter.future),
+        // ScrollableCards(
+        //     itemCount: restaurants.length,
+        //     googleMapControllerFuture: googleMapControllerCompleter.future),
       ],
     );
   }
@@ -217,6 +218,13 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
     if (isDialogOpen) {
       context.pop();
       isDialogOpen = false;
+    }
+  }
+
+  void openExternalBrowser(String googleMapsUri) async {
+    final url = Uri.parse(googleMapsUri);
+    if (await canLaunchUrl(url)) {
+      launchUrl(url, mode: LaunchMode.externalApplication); //외부 브라우저로 열기
     }
   }
 }

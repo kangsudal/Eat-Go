@@ -70,5 +70,10 @@
     <string>식당찾기 기능에서 현재 위치를 확인하기위해 권한이 필요합니다.</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>식당찾기 기능에서 현재 위치를 확인하기위해 권한이 필요합니다.</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>sms</string>
+      <string>tel</string>
+    </array>
 </dict>
 </plist>
