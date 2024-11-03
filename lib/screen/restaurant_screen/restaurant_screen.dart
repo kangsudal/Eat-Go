@@ -43,7 +43,6 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int itemCount = 10;
     final locationServiceStatus = ref.watch(locationServiceStatusProvider);
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -62,44 +61,16 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                   child: Text('현재 위치를 가져오는데 실패했습니다.'),
                 );
               }
-              CameraPosition initialPosition = CameraPosition(
-                target: LatLng(
-                  currentPosition.latitude,
-                  currentPosition.longitude,
-                ),
-                zoom: 12,
-              );
+
               return restaurantViewModelState.when(data: (restaurants) {
                 if (restaurants.isEmpty) {
                   return Scaffold(
                     appBar: AppBar(),
                     body: const Center(child: Text('관련된 식당이 없습니다!')),
                   );
+                } else {
+                  return buildGoogleMap(restaurants, currentPosition);
                 }
-                fetchMarkers(restaurants);
-                return Stack(
-                  children: [
-                    GoogleMap(
-                      initialCameraPosition: initialPosition,
-                      myLocationButtonEnabled: false,
-                      zoomControlsEnabled: false,
-                      myLocationEnabled: true,
-                      onMapCreated: (GoogleMapController controller) {
-                        if (!googleMapControllerCompleter.isCompleted) {
-                          googleMapControllerCompleter
-                              .complete(controller); //Completer 완료
-                        }
-                      },
-                      markers: markers,
-                    ),
-                    // KeywordSuggestionCard(),
-                    RestaurantScreenBackButton(),
-                    ScrollableCards(
-                        itemCount: itemCount,
-                        googleMapControllerFuture:
-                            googleMapControllerCompleter.future),
-                  ],
-                );
               }, error: (error, stackTrace) {
                 debugPrint(
                     'RestaurantScreen - RestaurantViewModelState의 data를 불러오지 못했습니다.$error');
@@ -152,6 +123,41 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
           return const Center(child: CircularProgressIndicator());
         },
       ),
+    );
+  }
+
+  Widget buildGoogleMap(
+    List<Restaurant> restaurants,
+    Position currentPosition,
+  ) {
+    fetchMarkers(restaurants);
+    CameraPosition initialPosition = CameraPosition(
+      target: LatLng(
+        currentPosition.latitude,
+        currentPosition.longitude,
+      ),
+      zoom: 12,
+    );
+    return Stack(
+      children: [
+        GoogleMap(
+          initialCameraPosition: initialPosition,
+          myLocationButtonEnabled: false,
+          zoomControlsEnabled: false,
+          myLocationEnabled: true,
+          onMapCreated: (GoogleMapController controller) {
+            if (!googleMapControllerCompleter.isCompleted) {
+              googleMapControllerCompleter.complete(controller); //Completer 완료
+            }
+          },
+          markers: markers,
+        ),
+        // KeywordSuggestionCard(),
+        RestaurantScreenBackButton(),
+        ScrollableCards(
+            itemCount: restaurants.length,
+            googleMapControllerFuture: googleMapControllerCompleter.future),
+      ],
     );
   }
 
