@@ -20,18 +20,22 @@ Restaurant _$RestaurantFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Restaurant {
-  String get name => throw _privateConstructorUsedError; // 장소 이름
-  List<String> get photoUrls =>
+  String get id => throw _privateConstructorUsedError; // 장소 고유 ID
+  @JsonKey(fromJson: Restaurant._extractDisplayName)
+  String get displayName => throw _privateConstructorUsedError; // 장소 이름
+  List<Photo>? get photos =>
       throw _privateConstructorUsedError; // 이미지 리스트 (URL)
-  String get businessStatus => throw _privateConstructorUsedError; // 운영 상태
-  double get rating => throw _privateConstructorUsedError; // 평점
-  int get priceLevel =>
+  String? get businessStatus => throw _privateConstructorUsedError; // 운영 상태
+  @JsonKey(fromJson: Restaurant._parseRating)
+  double? get rating => throw _privateConstructorUsedError; // 평점
+  @JsonKey(fromJson: Restaurant._parsePriceLevel)
+  int? get priceLevel =>
       throw _privateConstructorUsedError; // 가격대 (0 - 무료, 4 - 매우 비쌈)
-  String get website => throw _privateConstructorUsedError; // 웹사이트 URL
-  String get placeId => throw _privateConstructorUsedError; // 장소 고유 ID
-  String get address => throw _privateConstructorUsedError; // 위치 주소
-  String get phoneNumber => throw _privateConstructorUsedError; // 전화번호
-  @GeoPointLatLngConverter()
+  String? get websiteUri => throw _privateConstructorUsedError; // 웹사이트 URL
+  String get googleMapsUri => throw _privateConstructorUsedError; // 구글 장소 URL
+  String get formattedAddress => throw _privateConstructorUsedError; // 위치 주소
+// required String nationalPhoneNumber, // 전화번호 location과 같이 request하면 Bad Reespose가 뜨므로 제거했음.
+  @MapToLatLngConverter()
   LatLng get location => throw _privateConstructorUsedError;
 
   /// Serializes this Restaurant to a JSON map.
@@ -51,16 +55,16 @@ abstract class $RestaurantCopyWith<$Res> {
       _$RestaurantCopyWithImpl<$Res, Restaurant>;
   @useResult
   $Res call(
-      {String name,
-      List<String> photoUrls,
-      String businessStatus,
-      double rating,
-      int priceLevel,
-      String website,
-      String placeId,
-      String address,
-      String phoneNumber,
-      @GeoPointLatLngConverter() LatLng location});
+      {String id,
+      @JsonKey(fromJson: Restaurant._extractDisplayName) String displayName,
+      List<Photo>? photos,
+      String? businessStatus,
+      @JsonKey(fromJson: Restaurant._parseRating) double? rating,
+      @JsonKey(fromJson: Restaurant._parsePriceLevel) int? priceLevel,
+      String? websiteUri,
+      String googleMapsUri,
+      String formattedAddress,
+      @MapToLatLngConverter() LatLng location});
 }
 
 /// @nodoc
@@ -78,53 +82,53 @@ class _$RestaurantCopyWithImpl<$Res, $Val extends Restaurant>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
-    Object? photoUrls = null,
-    Object? businessStatus = null,
-    Object? rating = null,
-    Object? priceLevel = null,
-    Object? website = null,
-    Object? placeId = null,
-    Object? address = null,
-    Object? phoneNumber = null,
+    Object? id = null,
+    Object? displayName = null,
+    Object? photos = freezed,
+    Object? businessStatus = freezed,
+    Object? rating = freezed,
+    Object? priceLevel = freezed,
+    Object? websiteUri = freezed,
+    Object? googleMapsUri = null,
+    Object? formattedAddress = null,
     Object? location = null,
   }) {
     return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
-      photoUrls: null == photoUrls
-          ? _value.photoUrls
-          : photoUrls // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      businessStatus: null == businessStatus
+      displayName: null == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String,
+      photos: freezed == photos
+          ? _value.photos
+          : photos // ignore: cast_nullable_to_non_nullable
+              as List<Photo>?,
+      businessStatus: freezed == businessStatus
           ? _value.businessStatus
           : businessStatus // ignore: cast_nullable_to_non_nullable
-              as String,
-      rating: null == rating
+              as String?,
+      rating: freezed == rating
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
-              as double,
-      priceLevel: null == priceLevel
+              as double?,
+      priceLevel: freezed == priceLevel
           ? _value.priceLevel
           : priceLevel // ignore: cast_nullable_to_non_nullable
-              as int,
-      website: null == website
-          ? _value.website
-          : website // ignore: cast_nullable_to_non_nullable
+              as int?,
+      websiteUri: freezed == websiteUri
+          ? _value.websiteUri
+          : websiteUri // ignore: cast_nullable_to_non_nullable
+              as String?,
+      googleMapsUri: null == googleMapsUri
+          ? _value.googleMapsUri
+          : googleMapsUri // ignore: cast_nullable_to_non_nullable
               as String,
-      placeId: null == placeId
-          ? _value.placeId
-          : placeId // ignore: cast_nullable_to_non_nullable
-              as String,
-      address: null == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as String,
-      phoneNumber: null == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
+      formattedAddress: null == formattedAddress
+          ? _value.formattedAddress
+          : formattedAddress // ignore: cast_nullable_to_non_nullable
               as String,
       location: null == location
           ? _value.location
@@ -143,16 +147,16 @@ abstract class _$$RestaurantImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String name,
-      List<String> photoUrls,
-      String businessStatus,
-      double rating,
-      int priceLevel,
-      String website,
-      String placeId,
-      String address,
-      String phoneNumber,
-      @GeoPointLatLngConverter() LatLng location});
+      {String id,
+      @JsonKey(fromJson: Restaurant._extractDisplayName) String displayName,
+      List<Photo>? photos,
+      String? businessStatus,
+      @JsonKey(fromJson: Restaurant._parseRating) double? rating,
+      @JsonKey(fromJson: Restaurant._parsePriceLevel) int? priceLevel,
+      String? websiteUri,
+      String googleMapsUri,
+      String formattedAddress,
+      @MapToLatLngConverter() LatLng location});
 }
 
 /// @nodoc
@@ -168,53 +172,53 @@ class __$$RestaurantImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
-    Object? photoUrls = null,
-    Object? businessStatus = null,
-    Object? rating = null,
-    Object? priceLevel = null,
-    Object? website = null,
-    Object? placeId = null,
-    Object? address = null,
-    Object? phoneNumber = null,
+    Object? id = null,
+    Object? displayName = null,
+    Object? photos = freezed,
+    Object? businessStatus = freezed,
+    Object? rating = freezed,
+    Object? priceLevel = freezed,
+    Object? websiteUri = freezed,
+    Object? googleMapsUri = null,
+    Object? formattedAddress = null,
     Object? location = null,
   }) {
     return _then(_$RestaurantImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
-      photoUrls: null == photoUrls
-          ? _value._photoUrls
-          : photoUrls // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      businessStatus: null == businessStatus
+      displayName: null == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String,
+      photos: freezed == photos
+          ? _value._photos
+          : photos // ignore: cast_nullable_to_non_nullable
+              as List<Photo>?,
+      businessStatus: freezed == businessStatus
           ? _value.businessStatus
           : businessStatus // ignore: cast_nullable_to_non_nullable
-              as String,
-      rating: null == rating
+              as String?,
+      rating: freezed == rating
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
-              as double,
-      priceLevel: null == priceLevel
+              as double?,
+      priceLevel: freezed == priceLevel
           ? _value.priceLevel
           : priceLevel // ignore: cast_nullable_to_non_nullable
-              as int,
-      website: null == website
-          ? _value.website
-          : website // ignore: cast_nullable_to_non_nullable
+              as int?,
+      websiteUri: freezed == websiteUri
+          ? _value.websiteUri
+          : websiteUri // ignore: cast_nullable_to_non_nullable
+              as String?,
+      googleMapsUri: null == googleMapsUri
+          ? _value.googleMapsUri
+          : googleMapsUri // ignore: cast_nullable_to_non_nullable
               as String,
-      placeId: null == placeId
-          ? _value.placeId
-          : placeId // ignore: cast_nullable_to_non_nullable
-              as String,
-      address: null == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as String,
-      phoneNumber: null == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
+      formattedAddress: null == formattedAddress
+          ? _value.formattedAddress
+          : formattedAddress // ignore: cast_nullable_to_non_nullable
               as String,
       location: null == location
           ? _value.location
@@ -228,62 +232,69 @@ class __$$RestaurantImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RestaurantImpl implements _Restaurant {
   const _$RestaurantImpl(
-      {required this.name,
-      required final List<String> photoUrls,
-      required this.businessStatus,
-      required this.rating,
-      required this.priceLevel,
-      required this.website,
-      required this.placeId,
-      required this.address,
-      required this.phoneNumber,
-      @GeoPointLatLngConverter() required this.location})
-      : _photoUrls = photoUrls;
+      {required this.id,
+      @JsonKey(fromJson: Restaurant._extractDisplayName)
+      required this.displayName,
+      final List<Photo>? photos,
+      this.businessStatus,
+      @JsonKey(fromJson: Restaurant._parseRating) this.rating,
+      @JsonKey(fromJson: Restaurant._parsePriceLevel) this.priceLevel,
+      this.websiteUri,
+      required this.googleMapsUri,
+      required this.formattedAddress,
+      @MapToLatLngConverter() required this.location})
+      : _photos = photos;
 
   factory _$RestaurantImpl.fromJson(Map<String, dynamic> json) =>
       _$$RestaurantImplFromJson(json);
 
   @override
-  final String name;
+  final String id;
+// 장소 고유 ID
+  @override
+  @JsonKey(fromJson: Restaurant._extractDisplayName)
+  final String displayName;
 // 장소 이름
-  final List<String> _photoUrls;
+  final List<Photo>? _photos;
 // 장소 이름
   @override
-  List<String> get photoUrls {
-    if (_photoUrls is EqualUnmodifiableListView) return _photoUrls;
+  List<Photo>? get photos {
+    final value = _photos;
+    if (value == null) return null;
+    if (_photos is EqualUnmodifiableListView) return _photos;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_photoUrls);
+    return EqualUnmodifiableListView(value);
   }
 
 // 이미지 리스트 (URL)
   @override
-  final String businessStatus;
+  final String? businessStatus;
 // 운영 상태
   @override
-  final double rating;
+  @JsonKey(fromJson: Restaurant._parseRating)
+  final double? rating;
 // 평점
   @override
-  final int priceLevel;
+  @JsonKey(fromJson: Restaurant._parsePriceLevel)
+  final int? priceLevel;
 // 가격대 (0 - 무료, 4 - 매우 비쌈)
   @override
-  final String website;
+  final String? websiteUri;
 // 웹사이트 URL
   @override
-  final String placeId;
-// 장소 고유 ID
+  final String googleMapsUri;
+// 구글 장소 URL
   @override
-  final String address;
+  final String formattedAddress;
 // 위치 주소
+// required String nationalPhoneNumber, // 전화번호 location과 같이 request하면 Bad Reespose가 뜨므로 제거했음.
   @override
-  final String phoneNumber;
-// 전화번호
-  @override
-  @GeoPointLatLngConverter()
+  @MapToLatLngConverter()
   final LatLng location;
 
   @override
   String toString() {
-    return 'Restaurant(name: $name, photoUrls: $photoUrls, businessStatus: $businessStatus, rating: $rating, priceLevel: $priceLevel, website: $website, placeId: $placeId, address: $address, phoneNumber: $phoneNumber, location: $location)';
+    return 'Restaurant(id: $id, displayName: $displayName, photos: $photos, businessStatus: $businessStatus, rating: $rating, priceLevel: $priceLevel, websiteUri: $websiteUri, googleMapsUri: $googleMapsUri, formattedAddress: $formattedAddress, location: $location)';
   }
 
   @override
@@ -291,19 +302,21 @@ class _$RestaurantImpl implements _Restaurant {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RestaurantImpl &&
-            (identical(other.name, name) || other.name == name) &&
-            const DeepCollectionEquality()
-                .equals(other._photoUrls, _photoUrls) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
+            const DeepCollectionEquality().equals(other._photos, _photos) &&
             (identical(other.businessStatus, businessStatus) ||
                 other.businessStatus == businessStatus) &&
             (identical(other.rating, rating) || other.rating == rating) &&
             (identical(other.priceLevel, priceLevel) ||
                 other.priceLevel == priceLevel) &&
-            (identical(other.website, website) || other.website == website) &&
-            (identical(other.placeId, placeId) || other.placeId == placeId) &&
-            (identical(other.address, address) || other.address == address) &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber) &&
+            (identical(other.websiteUri, websiteUri) ||
+                other.websiteUri == websiteUri) &&
+            (identical(other.googleMapsUri, googleMapsUri) ||
+                other.googleMapsUri == googleMapsUri) &&
+            (identical(other.formattedAddress, formattedAddress) ||
+                other.formattedAddress == formattedAddress) &&
             (identical(other.location, location) ||
                 other.location == location));
   }
@@ -312,15 +325,15 @@ class _$RestaurantImpl implements _Restaurant {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      name,
-      const DeepCollectionEquality().hash(_photoUrls),
+      id,
+      displayName,
+      const DeepCollectionEquality().hash(_photos),
       businessStatus,
       rating,
       priceLevel,
-      website,
-      placeId,
-      address,
-      phoneNumber,
+      websiteUri,
+      googleMapsUri,
+      formattedAddress,
       location);
 
   /// Create a copy of Restaurant
@@ -341,41 +354,46 @@ class _$RestaurantImpl implements _Restaurant {
 
 abstract class _Restaurant implements Restaurant {
   const factory _Restaurant(
-          {required final String name,
-          required final List<String> photoUrls,
-          required final String businessStatus,
-          required final double rating,
-          required final int priceLevel,
-          required final String website,
-          required final String placeId,
-          required final String address,
-          required final String phoneNumber,
-          @GeoPointLatLngConverter() required final LatLng location}) =
+          {required final String id,
+          @JsonKey(fromJson: Restaurant._extractDisplayName)
+          required final String displayName,
+          final List<Photo>? photos,
+          final String? businessStatus,
+          @JsonKey(fromJson: Restaurant._parseRating) final double? rating,
+          @JsonKey(fromJson: Restaurant._parsePriceLevel) final int? priceLevel,
+          final String? websiteUri,
+          required final String googleMapsUri,
+          required final String formattedAddress,
+          @MapToLatLngConverter() required final LatLng location}) =
       _$RestaurantImpl;
 
   factory _Restaurant.fromJson(Map<String, dynamic> json) =
       _$RestaurantImpl.fromJson;
 
   @override
-  String get name; // 장소 이름
+  String get id; // 장소 고유 ID
   @override
-  List<String> get photoUrls; // 이미지 리스트 (URL)
+  @JsonKey(fromJson: Restaurant._extractDisplayName)
+  String get displayName; // 장소 이름
   @override
-  String get businessStatus; // 운영 상태
+  List<Photo>? get photos; // 이미지 리스트 (URL)
   @override
-  double get rating; // 평점
+  String? get businessStatus; // 운영 상태
   @override
-  int get priceLevel; // 가격대 (0 - 무료, 4 - 매우 비쌈)
+  @JsonKey(fromJson: Restaurant._parseRating)
+  double? get rating; // 평점
   @override
-  String get website; // 웹사이트 URL
+  @JsonKey(fromJson: Restaurant._parsePriceLevel)
+  int? get priceLevel; // 가격대 (0 - 무료, 4 - 매우 비쌈)
   @override
-  String get placeId; // 장소 고유 ID
+  String? get websiteUri; // 웹사이트 URL
   @override
-  String get address; // 위치 주소
+  String get googleMapsUri; // 구글 장소 URL
   @override
-  String get phoneNumber; // 전화번호
+  String get formattedAddress; // 위치 주소
+// required String nationalPhoneNumber, // 전화번호 location과 같이 request하면 Bad Reespose가 뜨므로 제거했음.
   @override
-  @GeoPointLatLngConverter()
+  @MapToLatLngConverter()
   LatLng get location;
 
   /// Create a copy of Restaurant

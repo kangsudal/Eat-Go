@@ -3,8 +3,10 @@ import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/model/restaurant_model.dart';
 import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/provider/shake_notifier.dart';
+import 'package:eat_go/repository/restaurant_repository.dart';
 import 'package:eat_go/services/auth_service.dart';
 import 'package:eat_go/services/recipe_service.dart';
+import 'package:eat_go/services/restaurant_service.dart';
 import 'package:eat_go/services/user_service.dart';
 import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
@@ -111,14 +113,31 @@ final locationServiceStatusProvider = StreamProvider.autoDispose<bool>((ref) {
 
 // 현재 위치
 final currentPositionProvider = FutureProvider<Position?>((ref) async {
-  try {
-    return await Geolocator.getCurrentPosition();
-  } catch (e) {
-    debugPrint("Failed to get location: $e");
+  final isLocationEnabledAndPermissionGranted =
+  await ref.watch(locationServiceStatusProvider.future);
+
+  // 권한과 위치 서비스가 허용된 경우에만 위치 데이터 요청
+  if (isLocationEnabledAndPermissionGranted) {
+    try {
+      debugPrint('위치 데이터를 요청합니다.');
+      return await Geolocator.getCurrentPosition();
+    } catch (e) {
+      debugPrint("Error fetching current position: $e");
+      return null;
+    }
+  } else {
+    // 위치 권한이나 GPS가 비활성화된 경우 null 반환
+    debugPrint('currentPositionProvider - 위치 권한이나 GPS가 비활성화된 경우 null 반환');
     return null;
   }
 });
 
-final restaurantViewModelProvider = AsyncNotifierProvider<RestaurantViewModel, List<Restaurant>>(
-      () => RestaurantViewModel(),
+final restaurantViewModelProvider = AsyncNotifierProvider.family
+    .autoDispose<RestaurantViewModel, List<Restaurant>, String>(
+        RestaurantViewModel.new);
+
+final restaurantRepositoryProvider = Provider(
+  (ref) => RestaurantRepository(
+    restaurantService: RestaurantService(),
+  ),
 );

@@ -2,16 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-class GeoPointLatLngConverter implements JsonConverter<LatLng, GeoPoint> {
-  const GeoPointLatLngConverter();
+class MapToLatLngConverter
+    implements JsonConverter<LatLng, Map<String, dynamic>> {
+  const MapToLatLngConverter();
 
   @override
-  LatLng fromJson(GeoPoint geoPoint) {
-    return LatLng(geoPoint.latitude, geoPoint.longitude);
+  LatLng fromJson(Map<String, dynamic> location) {
+    return LatLng(location['latitude'], location['longitude']);
   }
 
   @override
-  GeoPoint toJson(LatLng latLng) {
-    return GeoPoint(latLng.latitude, latLng.longitude);
+  Map<String, dynamic> toJson(LatLng latLng) {
+    return {'latitude': latLng.latitude, 'longitudel': latLng.longitude};
   }
 }

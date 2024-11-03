@@ -44,7 +44,7 @@ final myRouterProvider = Provider<GoRouter>((ref) {
   );
 
   final router = GoRouter(
-    initialLocation: '/admin',//'/loading', //
+    initialLocation: '/loading', //'/admin',//
     redirect: (context, state) {
       // if (kDebugMode) {
       //   // 디버깅 모드에서는 항상 /admin으로 접근 가능하게 설정
@@ -99,15 +99,15 @@ final myRouterProvider = Provider<GoRouter>((ref) {
         routes: <RouteBase>[
           //홈화면에서 식당 버튼 눌렀을때
           GoRoute(
-            path: 'restaurant/:recipe_id',
+            path: 'restaurant/:recipe_title',
             builder: (BuildContext context, GoRouterState state) {
-              String? recipeIdString = state.pathParameters['recipe_id'];
-              if (recipeIdString == null) {
-                // recipe_id가 없는 경우 에러 화면으로
+              String? recipeTitle = state.pathParameters['recipe_title'];
+              if (recipeTitle == null) {
+                // recipe_title가 없는 경우 에러 화면으로
                 return PathErrorScreen(
-                    error: 'Invalid recipe ID: ID is missing');
+                    error: 'Invalid recipe Title: Title is missing');
               }
-              return RestaurantScreen(recipeId: recipeIdString);
+              return RestaurantScreen(recipeTitle: recipeTitle);
             },
           ),
           //홈화면에서 레시피 보기 버튼 눌렀을때
@@ -185,7 +185,8 @@ final myRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/admin',
-        builder: (BuildContext context, GoRouterState state) => const AdminScreen(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const AdminScreen(),
       ),
     ],
     errorBuilder: (context, state) =>
@@ -217,15 +218,16 @@ GoRoute goRouteRecipeDetail() {
     routes: <RouteBase>[
       //레시피 상세보기화면에서 식당 버튼 눌렀을때
       GoRoute(
-          path: 'restaurant',
+          path: 'restaurant/:recipe_title',
           builder: (BuildContext context, GoRouterState state) {
-            String? recipeIdString = state.pathParameters['recipe_id'];
-            if (recipeIdString == null) {
-              // recipe_id가 없는 경우 에러 화면으로
-              return PathErrorScreen(error: 'Invalid recipe ID: ID is missing');
+            String? recipeTitle = state.pathParameters['recipe_title'];
+            if (recipeTitle == null) {
+              // recipe_title가 없는 경우 에러 화면으로
+              return PathErrorScreen(
+                  error: 'Invalid recipe Title: Title is missing');
             }
             return RestaurantScreen(
-              recipeId: recipeIdString,
+              recipeTitle: recipeTitle,
             );
           }),
     ],

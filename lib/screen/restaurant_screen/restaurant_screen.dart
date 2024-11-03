@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:eat_go/model/restaurant_model.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/restaurant_screen/restaurant_screen_back_button.dart';
 import 'package:eat_go/screen/restaurant_screen/keyword_suggestion_card.dart';
@@ -12,9 +13,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class RestaurantScreen extends ConsumerStatefulWidget {
-  final String recipeId;
+  final String recipeTitle;
 
-  const RestaurantScreen({super.key, required this.recipeId});
+  const RestaurantScreen({super.key, required this.recipeTitle});
 
   @override
   ConsumerState<RestaurantScreen> createState() => _RestaurantScreenState();
@@ -24,34 +25,53 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
   bool isDialogOpen = false; // 다이얼로그 열려져있는지 체크
   final Completer<GoogleMapController> googleMapControllerCompleter =
       Completer();
+  Set<Marker> markers = {}; // 마커를 저장할 Set
+
+   void fetchMarkers(List<Restaurant> restaurants) {
+    markers = restaurants.map((restaurant) {
+      return Marker(
+        markerId: MarkerId(restaurant.id),
+        position:
+            restaurant.location,
+        infoWindow: InfoWindow(
+          title: restaurant.displayName,
+          snippet: restaurant.formattedAddress,
+        ),
+      );
+    }).toSet();
+    debugPrint('${restaurants.length}개의 마커 패치 완료');
+  }
 
   @override
   Widget build(BuildContext context) {
     int itemCount = 10;
     final locationServiceStatus = ref.watch(locationServiceStatusProvider);
-    final currentPositionState = ref.watch(currentPositionProvider);
+    final restaurantViewModelState =
+        ref.watch(restaurantViewModelProvider(widget.recipeTitle));
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: locationServiceStatus.when(
         data: (isPermissionGrantedAndGPSEnabled) {
           if (isPermissionGrantedAndGPSEnabled == true) {
+            final currentPositionState = ref.watch(currentPositionProvider);
             // 1. GPS 상태와 위치 권한이 모두 활성화된 경우
             // 1-1. 권한과 GPS가 활성화되었으므로 다이얼로그 닫기
             closeDialogIfOpen();
-            return currentPositionState.when(
-              data: (currentPosition) {
-                if (currentPosition == null) {
-                  return const Center(
-                    child: Text('현재 위치를 가져오는데 실패했습니다.'),
-                  );
-                }
-                CameraPosition initialPosition = CameraPosition(
-                  target: LatLng(
-                    currentPosition.latitude,
-                    currentPosition.longitude,
-                  ),
-                  zoom: 14,
+            return currentPositionState.when(data: (currentPosition) {
+              if (currentPosition == null) {
+                return const Center(
+                  child: Text('현재 위치를 가져오는데 실패했습니다.'),
                 );
+              }
+              CameraPosition initialPosition = CameraPosition(
+                target: LatLng(
+                  currentPosition.latitude,
+                  currentPosition.longitude,
+                ),
+                zoom: 0,
+              );
+              return restaurantViewModelState.when(data: (restaurants) {
+                fetchMarkers(restaurants);
                 return Stack(
                   children: [
                     GoogleMap(
@@ -65,6 +85,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                               .complete(controller); //Completer 완료
                         }
                       },
+                      markers: markers,
                     ),
                     // KeywordSuggestionCard(),
                     RestaurantScreenBackButton(),
@@ -74,17 +95,33 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                             googleMapControllerCompleter.future),
                   ],
                 );
-              },
-              error: (error, stackTrace) {
-                debugPrint('$error');
-                return const Center(
-                  child: Text('오류가 발생했습니다.'),
+              }, error: (error, stackTrace) {
+                debugPrint(
+                    'RestaurantScreen - RestaurantViewModelState의 data를 불러오지 못했습니다.$error');
+                return const Scaffold(
+                  body: Center(
+                    child: Text('레스토랑 리스트 정보을를 불러오지 못했습니다.'),
+                  ),
                 );
-              },
-              loading: () => const Center(
+              }, loading: () {
+                debugPrint('1');
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              });
+            }, error: (error, stackTrace) {
+              debugPrint('$error');
+              return const Scaffold(
+                body: Center(
+                  child: Text('오류가 발생했습니다.'),
+                ),
+              );
+            }, loading: () {
+              debugPrint('currentPositionState를 불러오고있습니다.');
+              return const Center(
                 child: CircularProgressIndicator(),
-              ),
-            );
+              );
+            });
           } else {
             // 2. GPS 상태 또는 위치 권한이 비활성화된 경우
             if (!isDialogOpen) {
@@ -96,9 +133,10 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
         },
         error: (error, stackTrace) {
           debugPrint('RestaurantScreen - $error');
-          return const Center(child: Text('오류가 발생했습니다.'));
+          return const Scaffold(body: Center(child: Text('오류가 발생했습니다.')));
         },
         loading: () {
+          debugPrint('locationServiceStatus를 불러오고있습니다.');
           return const Center(child: CircularProgressIndicator());
         },
       ),

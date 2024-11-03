@@ -84,6 +84,7 @@ class AdminScreen extends StatelessWidget {
   void textSearch(String queryValue) async {
     final location = await Geolocator.getCurrentPosition();
     var headers = {
+      'Accept':'*/*',
       'Content-Type': 'application/json',
       'X-Goog-Api-Key': dotenv.env['GOOGLE_MAPS_API_KEY']!,
       'X-Goog-FieldMask': 'places.id,'
@@ -95,7 +96,8 @@ class AdminScreen extends StatelessWidget {
           'places.websiteUri,'
           'places.googleMapsUri,'
           'places.formattedAddress,'
-          'places.nationalPhoneNumber'
+          // 'places.nationalPhoneNumber' places.location과 함께 사용하면 Bad Request가 뜬다.
+          'places.location'
     };
     var request = http.Request('POST',
         Uri.parse('https://places.googleapis.com/v1/places:searchText'));

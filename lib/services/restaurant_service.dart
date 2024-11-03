@@ -1,17 +1,15 @@
 import 'dart:convert';
 import 'package:eat_go/model/restaurant_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 class RestaurantService {
-  final String apiKey;
-
-  RestaurantService({required this.apiKey});
-
   // text(ex.레시피명)으로 장소 데이터들 가져오는 메서드
-  void textSearch(String queryValue) async {
+  Future<List<Restaurant>> fetchRestaurantByTextSearch(
+      {required String keyword}) async {
     final location = await Geolocator.getCurrentPosition();
     var headers = {
       'Content-Type': 'application/json',
@@ -25,12 +23,12 @@ class RestaurantService {
           'places.websiteUri,'
           'places.googleMapsUri,'
           'places.formattedAddress,'
-          'places.nationalPhoneNumber'
+          'places.location'
     };
     var request = http.Request('POST',
         Uri.parse('https://places.googleapis.com/v1/places:searchText'));
     request.body = json.encode({
-      "textQuery": queryValue,
+      "textQuery": keyword,
       "languageCode": "ko",
       "locationBias": {
         "circle": {
@@ -48,10 +46,26 @@ class RestaurantService {
 
     if (response.statusCode == 200) {
       String result = await response.stream.bytesToString();
-      print(result);
-      // do something with the result
+      final jsonData = json.decode(result);
+
+      // 결과를 Restaurant 모델 리스트로 변환하여 반환
+      List<Restaurant> restaurants = [];
+      if (jsonData['places'] != null) {
+        jsonData['places'].forEach((place) {
+          // debugPrint("place['rating'].runtimeType:${place['rating'].runtimeType}");
+          // debugPrint("place['priceLevel'].runtimeType:${place['priceLevel'].runtimeType}");
+          try{
+          restaurants.add(Restaurant.fromJson(place));
+          } catch (e) {
+            debugPrint('Error parsing place: $e'); // JSON 구조가 예상과 다를 경우 로그로 확인
+          }
+        });
+      }
+      return restaurants;
     } else {
-      print(response.reasonPhrase);
+      debugPrint('Request failed with status: ${response.statusCode}');
+      debugPrint('Error: ${response.reasonPhrase}');
+      return [];
     }
   }
 }

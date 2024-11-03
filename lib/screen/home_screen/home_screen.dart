@@ -200,7 +200,7 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
             //todo: GoRouter로 바꾸기
             GestureDetector(
               onTap: () {
-                context.go('/home/restaurant/${widget.randomRecipe.recipeId}');
+                context.go('/home/restaurant/${widget.randomRecipe.title}');
               },
               child: Container(
                 width: 110,
