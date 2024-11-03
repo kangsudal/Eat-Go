@@ -27,12 +27,11 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
       Completer();
   Set<Marker> markers = {}; // 마커를 저장할 Set
 
-   void fetchMarkers(List<Restaurant> restaurants) {
+  void fetchMarkers(List<Restaurant> restaurants) {
     markers = restaurants.map((restaurant) {
       return Marker(
         markerId: MarkerId(restaurant.id),
-        position:
-            restaurant.location,
+        position: restaurant.location,
         infoWindow: InfoWindow(
           title: restaurant.displayName,
           snippet: restaurant.formattedAddress,
@@ -46,8 +45,6 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
   Widget build(BuildContext context) {
     int itemCount = 10;
     final locationServiceStatus = ref.watch(locationServiceStatusProvider);
-    final restaurantViewModelState =
-        ref.watch(restaurantViewModelProvider(widget.recipeTitle));
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: locationServiceStatus.when(
@@ -58,6 +55,8 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
             // 1-1. 권한과 GPS가 활성화되었으므로 다이얼로그 닫기
             closeDialogIfOpen();
             return currentPositionState.when(data: (currentPosition) {
+              final restaurantViewModelState =
+                  ref.watch(restaurantViewModelProvider(widget.recipeTitle));
               if (currentPosition == null) {
                 return const Center(
                   child: Text('현재 위치를 가져오는데 실패했습니다.'),
@@ -68,9 +67,15 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                   currentPosition.latitude,
                   currentPosition.longitude,
                 ),
-                zoom: 0,
+                zoom: 12,
               );
               return restaurantViewModelState.when(data: (restaurants) {
+                if (restaurants.isEmpty) {
+                  return Scaffold(
+                    appBar: AppBar(),
+                    body: const Center(child: Text('관련된 식당이 없습니다!')),
+                  );
+                }
                 fetchMarkers(restaurants);
                 return Stack(
                   children: [
@@ -98,20 +103,22 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
               }, error: (error, stackTrace) {
                 debugPrint(
                     'RestaurantScreen - RestaurantViewModelState의 data를 불러오지 못했습니다.$error');
-                return const Scaffold(
+                return Scaffold(
+                  appBar: AppBar(),
                   body: Center(
                     child: Text('레스토랑 리스트 정보을를 불러오지 못했습니다.'),
                   ),
                 );
               }, loading: () {
-                debugPrint('1');
+                debugPrint('currentPositionState를 가지고오고있는 중입니다.');
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               });
             }, error: (error, stackTrace) {
               debugPrint('$error');
-              return const Scaffold(
+              return Scaffold(
+                appBar: AppBar(),
                 body: Center(
                   child: Text('오류가 발생했습니다.'),
                 ),
@@ -133,7 +140,12 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
         },
         error: (error, stackTrace) {
           debugPrint('RestaurantScreen - $error');
-          return const Scaffold(body: Center(child: Text('오류가 발생했습니다.')));
+          return Scaffold(
+            appBar: AppBar(),
+            body: Center(
+              child: Text('오류가 발생했습니다.'),
+            ),
+          );
         },
         loading: () {
           debugPrint('locationServiceStatus를 불러오고있습니다.');
