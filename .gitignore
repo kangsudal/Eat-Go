@@ -51,3 +51,4 @@ firebase.json
 
 # google map api key
 /ios/Flutter/EatGo.xcconfig
+*.env

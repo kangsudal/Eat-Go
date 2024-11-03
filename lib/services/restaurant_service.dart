@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:eat_go/model/restaurant_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +15,7 @@ class RestaurantService {
     final location = await Geolocator.getCurrentPosition();
     var headers = {
       'Content-Type': 'application/json',
-      'X-Goog-Api-Key': 'your_api_key',//todo: 내 api키로 바꾸기
+      'X-Goog-Api-Key': dotenv.env['GOOGLE_MAPS_API_KEY']!,
       'X-Goog-FieldMask': 'places.id,'
           'places.displayName,'
           'places.photos,'
