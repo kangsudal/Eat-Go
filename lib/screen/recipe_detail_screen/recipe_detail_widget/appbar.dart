@@ -1,13 +1,22 @@
+import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-AppBar buildAppBar(BuildContext context) {
-  return AppBar(
-    title: Column(
-      children: [
-        const Tooltip(
-            message: '카레 크림 파스타aaaaaaaa', child: Text('카레 크림 파스타aaaaaaaa')),
-        /*Row(
+class RecipeDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
+  final Recipe recipe;
+
+  const RecipeDetailAppBar({super.key, required this.recipe});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentEatGoUser = ref.watch(currentEatGoUserProvider);
+    return AppBar(
+      title: Column(
+        children: [
+          Tooltip(message: recipe.title, child: Text(recipe.title)),
+          /*Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Tooltip(
@@ -74,32 +83,51 @@ AppBar buildAppBar(BuildContext context) {
             ),
           ],
         ),*/
-      ],
-    ),
-    actions: [
-      IconButton(
-        onPressed: () {},
-        icon: Icon(
-          Icons.bookmark,
-          color: pointColor,
-        ),
+        ],
       ),
-      // PopupMenuButton(
-      //   iconColor: pointColor,
-      //   itemBuilder: (BuildContext context) {
-      //     return [
-      //       const PopupMenuItem(
-      //         child: Text('공유하기'),
-      //       ),
-      //       const PopupMenuItem(
-      //         child: Text('레시피 신고하기'),
-      //       ),
-      //       const PopupMenuItem(
-      //         child: Text('작성자 신고하기'),
-      //       ),
-      //     ];
-      //   },
-      // ),
-    ],
-  );
+      actions: [
+        currentEatGoUser.when(
+          data: (user) {
+            if (user == null) {
+              debugPrint('RecipeDetailAppBar - 사용자를 불러오지 못했습니다.');
+              return const Icon(Icons.report_problem_outlined);
+            }
+            final isBookmarked =
+                user.bookmarkRecipeIds.contains(recipe.recipeId);
+            return IconButton(
+              onPressed: () async {
+                ref.read(homeViewModelProvider.notifier).toggleBookmark(user);
+              },
+              icon: isBookmarked == false
+                  ? const Icon(Icons.bookmark_border_sharp)
+                  : const Icon(Icons.bookmark),
+              color: pointColor,
+            );
+          },
+          error: (error, stackTrace) =>
+              const Icon(Icons.report_problem_outlined),
+          loading: () => const SizedBox(width: 0, height: 0),
+        ),
+        // PopupMenuButton(
+        //   iconColor: pointColor,
+        //   itemBuilder: (BuildContext context) {
+        //     return [
+        //       const PopupMenuItem(
+        //         child: Text('공유하기'),
+        //       ),
+        //       const PopupMenuItem(
+        //         child: Text('레시피 신고하기'),
+        //       ),
+        //       const PopupMenuItem(
+        //         child: Text('작성자 신고하기'),
+        //       ),
+        //     ];
+        //   },
+        // ),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

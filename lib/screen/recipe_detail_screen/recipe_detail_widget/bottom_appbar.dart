@@ -1,40 +1,47 @@
+import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-BottomAppBar buildBottomAppBar(BuildContext context, String recipeId) {
-  return BottomAppBar(
-    height: 60,
-    color: Colors.white,
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () {
-              context.go('/home/restaurant/$recipeId');
-            },
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              // color: Colors.amber,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.maps_home_work_sharp,
-                    color: pointColor,
-                  ),
-                  SizedBox(width: 3),
-                  Text(
-                    '식당',
-                    style: TextStyle(color: pointColor),
-                  ),
-                ],
+class RecipeDetailBottomAppBar extends ConsumerWidget {
+  final Recipe recipe;
+  const RecipeDetailBottomAppBar({super.key, required this.recipe});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return BottomAppBar(
+      height: 60,
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () {
+                context.go('/home/restaurant/${recipe.title}');
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                // color: Colors.amber,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.maps_home_work_sharp,
+                      color: pointColor,
+                    ),
+                    SizedBox(width: 3),
+                    Text(
+                      '식당',
+                      style: TextStyle(color: pointColor),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          /*Row(
+            /*Row(
             children: [
               IconButton(
                 onPressed: () {},
@@ -45,8 +52,9 @@ BottomAppBar buildBottomAppBar(BuildContext context, String recipeId) {
               Text('0'),
             ],
           ),*/
-        ],
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

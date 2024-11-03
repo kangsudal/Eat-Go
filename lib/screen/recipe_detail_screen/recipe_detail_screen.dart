@@ -21,8 +21,6 @@ class RecipeDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recipeDetailViewState =
         ref.watch(recipeDetailViewModelProvider(recipeId));
-    final recipeDetailViewModel =
-        ref.read(recipeDetailViewModelProvider(recipeId).notifier);
 
     return recipeDetailViewState.when(
       data: (recipe) {
@@ -32,7 +30,7 @@ class RecipeDetailScreen extends ConsumerWidget {
         String title = recipe.title;
         String completedImgUrl = recipe.completedImgUrl;
         return Scaffold(
-          appBar: buildAppBar(context),
+          appBar: RecipeDetailAppBar(recipe: recipe),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(left: 30.0, right: 30, top: 20),
@@ -52,7 +50,7 @@ class RecipeDetailScreen extends ConsumerWidget {
               ),
             ),
           ),
-          bottomNavigationBar: buildBottomAppBar(context, recipeId),
+          bottomNavigationBar: RecipeDetailBottomAppBar(recipe: recipe),
         );
       },
       error: (error, stackTrace) => const Center(
@@ -98,9 +96,7 @@ class RecipeDetailScreen extends ConsumerWidget {
   List<Column> buildRecipeExplainAndImgSets(List<Description> descriptions) {
     final validDescriptions = descriptions
         .where((desc) =>
-            desc.description.isNotEmpty ||
-            (desc.descriptionImgUrl != null &&
-                desc.descriptionImgUrl!.isNotEmpty))
+            desc.description.isNotEmpty || desc.descriptionImgUrl.isNotEmpty)
         .toList();
 
     return List.generate(validDescriptions.length, (index) {
@@ -134,7 +130,7 @@ class RecipeDetailScreen extends ConsumerWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: CachedNetworkImage(
-              imageUrl: validDescriptions[index].descriptionImgUrl!,
+              imageUrl: validDescriptions[index].descriptionImgUrl,
               progressIndicatorBuilder: (context, url, downloadProgress) =>
                   CircularProgressIndicator(
                 value: downloadProgress.progress,

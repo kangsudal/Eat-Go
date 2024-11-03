@@ -1,2 +1,9 @@
 1.제철음식 추천 기능
 http://api.nongsaro.go.kr/sample/rest/monthFd/monthFd_D1.jsp?cntntsNo=249155&thisYear=2023&thisMonth=10
+
+2.식당 찾기
+context.go('/home/restaurant/${recipe.title}');
+에서 현재 keyword를 받아서 검색중인데, '싱글벙글 우리집 막내' 이런 레시피명이 나오면 곤란하다.
+이때는 List<Restaurant> restaurants가 0개이면 hashTag로 검색하게 하면 좋을것같다.
+hashTag도 없는경우는 재료 0번째값을 가져와 검색하면 될텐데
+어찌됐건 String값으로 넘기는것을 Restaurant 객체를 넘겨주는것으로 해야할것같다. Router를 참조하는 곳을 잘 찾아내야할것같다.
