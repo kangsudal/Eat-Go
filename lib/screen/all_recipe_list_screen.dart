@@ -134,7 +134,7 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
                               onTap: () {
                                 //todo: 옳바른 recipeId 넣어주기
                                 context.go(
-                                    '/home/all_recipe_list/recipe_detail/aaaaaaa');
+                                    '/home/all_recipe_list/recipe_detail/${recipes[index].recipeId}');
                               },
                               title: Text(recipes[index].title),
                             );

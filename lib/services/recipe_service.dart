@@ -177,8 +177,8 @@ class RecipeService {
         final recipeData = doc.data();
 
         // `recipeData`와 `doc.id`를 출력하여 확인
-        debugPrint('Recipe Data: $recipeData');
-        debugPrint('Document ID (recipeId): ${doc.id}');
+        // debugPrint('Recipe Data: $recipeData');
+        // debugPrint('Document ID (recipeId): ${doc.id}');
 
         return Recipe.fromJson({
           ...recipeData,

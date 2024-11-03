@@ -48,7 +48,7 @@ class RecipeDetailViewModel
         return;
       }
       final isBookmarked =
-          currentEatGoUser.bookmarkRecipeIds.any((b) => b == recipe.recipeId);
+          currentEatGoUser.bookmarkRecipeIds.contains(recipe.recipeId);
 
       if (isBookmarked) {
         updatedEatGoUser = currentEatGoUser.copyWith(

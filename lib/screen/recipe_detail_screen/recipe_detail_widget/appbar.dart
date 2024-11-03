@@ -4,7 +4,7 @@ import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RecipeDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
+class RecipeDetailAppBar extends ConsumerWidget implements PreferredSizeWidget{
   final Recipe recipe;
 
   const RecipeDetailAppBar({super.key, required this.recipe});
@@ -96,7 +96,7 @@ class RecipeDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 user.bookmarkRecipeIds.contains(recipe.recipeId);
             return IconButton(
               onPressed: () async {
-                ref.read(homeViewModelProvider.notifier).toggleBookmark(user);
+                ref.read(recipeDetailViewModelProvider(recipe.recipeId).notifier).toggleBookmark(user);
               },
               icon: isBookmarked == false
                   ? const Icon(Icons.bookmark_border_sharp)

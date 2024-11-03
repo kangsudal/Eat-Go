@@ -53,8 +53,8 @@ class BookmarkScreen extends ConsumerWidget {
                         padding: const EdgeInsets.only(bottom: 20.0),
                         child: GestureDetector(
                           onTap: () {
-                            context
-                                .go('/home/bookmark/recipe_detail/${recipe.recipeId}');
+                            context.go(
+                                '/home/bookmark/recipe_detail/${recipe.recipeId}');
                           },
                           child: CustomListTile(
                             leading: Container(
@@ -67,6 +67,11 @@ class BookmarkScreen extends ConsumerWidget {
                                         CircularProgressIndicator(
                                   value: downloadProgress.progress,
                                 ),
+                                errorWidget: (context, _, __) {
+                                  return const Center(
+                                    child: Icon(Icons.report_problem_outlined),
+                                  );
+                                },
                               ),
                             ),
                             mid: Text(recipe.title),
