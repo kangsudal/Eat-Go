@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 
 class AdminScreen extends StatelessWidget {
   const AdminScreen({super.key});
@@ -15,6 +19,7 @@ class AdminScreen extends StatelessWidget {
               onPressed: () async {
                 // 버튼 클릭 시 일회성 작업 실행
                 // await updateRecipesCollection();
+                textSearch("가지볶음");
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -62,17 +67,60 @@ class AdminScreen extends StatelessWidget {
       for (var doc in querySnapshot.docs) {
         // batch에 업데이트 작업 추가: recipeId 필드를 삭제하고, createdBy 값을 업데이트
         batch.update(doc.reference, {
-          'recipeId': FieldValue.delete(),  // recipeId 필드 삭제
-          'createdBy': 'DY1monVBKWcN2xVu17L91JqOgsh2',  // createdBy 값 업데이트
+          'recipeId': FieldValue.delete(), // recipeId 필드 삭제
+          'createdBy': 'DY1monVBKWcN2xVu17L91JqOgsh2', // createdBy 값 업데이트
         });
       }
 
       // batch 실행
       await batch.commit();
       print("recipes 컬렉션의 모든 문서가 성공적으로 업데이트되었습니다.");
-
     } catch (e) {
       print("업데이트 중 오류 발생: $e");
+    }
+  }
+
+  void textSearch(String queryValue) async {
+    final location = await Geolocator.getCurrentPosition();
+    var headers = {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': 'your_api_key',//todo: 내 api키로 바꾸기
+      'X-Goog-FieldMask': 'places.id,'
+          'places.displayName,'
+          'places.photos,'
+          'places.businessStatus,'
+          'places.rating,'
+          'places.priceLevel,'
+          'places.websiteUri,'
+          'places.googleMapsUri,'
+          'places.formattedAddress,'
+          'places.nationalPhoneNumber'
+    };
+    var request = http.Request('POST',
+        Uri.parse('https://places.googleapis.com/v1/places:searchText'));
+    request.body = json.encode({
+      "textQuery": queryValue,
+      "languageCode": "ko",
+      "locationBias": {
+        "circle": {
+          "center": {
+            "latitude": location.latitude,
+            "longitude": location.longitude,
+          },
+          "radius": 50000.0
+        }
+      }
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String result = await response.stream.bytesToString();
+      print(result);
+      // do something with the result
+    } else {
+      print(response.reasonPhrase);
     }
   }
 }
