@@ -7,3 +7,7 @@ context.go('/home/restaurant/${recipe.title}');
 이때는 List<Restaurant> restaurants가 0개이면 hashTag로 검색하게 하면 좋을것같다.
 hashTag도 없는경우는 재료 0번째값을 가져와 검색하면 될텐데
 어찌됐건 String값으로 넘기는것을 Restaurant 객체를 넘겨주는것으로 해야할것같다. Router를 참조하는 곳을 잘 찾아내야할것같다.
+
+3.홈화면 필터
+  1)전체끄기 기능
+  2)키워드 오른쪽에 개수 넣기(키워드&스위치 필터한 결과값, 후보 수)

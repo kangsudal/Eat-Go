@@ -20,6 +20,7 @@ Repository는 데이터의 출처를 관리하는 책임이 있고, Services는 
 
  */
 import 'dart:convert'; // For jsonDecode
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:flutter/material.dart';
@@ -250,12 +251,12 @@ class RecipeService {
       return null;
     }
     try {
-      // 랜덤 ID보다 큰 문서 중 첫 번째 문서를 가져옴
+      // 랜덤 ID보다 큰 문서 중 5개 문서를 가져옴
       QuerySnapshot querySnapshot = await _firestore
           .collection('recipes')
           .where('category', whereIn: selectedCategories)
           .where(FieldPath.documentId, isGreaterThanOrEqualTo: randomId)
-          .limit(1)
+          .limit(10)
           .get();
 
       // 쿼리 결과가 없으면(랜덤하게 생성된 ID보다 큰 문서가 없다면) null 반환
@@ -263,8 +264,9 @@ class RecipeService {
         debugPrint("RecipeService - 랜덤하게 생성된 ID보다 큰 문서가 없습니다.");
         return null;
       }
-      Map<String, Object?> dataMap =
-          querySnapshot.docs.first.data() as Map<String, Object?>;
+      final randomDoc =
+          querySnapshot.docs[Random().nextInt(querySnapshot.docs.length)];
+      Map<String, Object?> dataMap = randomDoc.data() as Map<String, Object?>;
       return Recipe.fromJson({
         ...dataMap,
         'recipeId': querySnapshot.docs.first.id,

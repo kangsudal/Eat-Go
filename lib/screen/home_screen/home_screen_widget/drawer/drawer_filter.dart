@@ -10,7 +10,7 @@ class DrawerFilter extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categories = ref.watch(categoriesProvider);
-    int count = -999;
+    // int count = -999;
 
     TextStyle style = TextStyle(
       color: EatGoPalette.mainTextColor,
@@ -49,7 +49,7 @@ class DrawerFilter extends ConsumerWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              /*SizedBox(
                 width: 48,
                 child: FittedBox(
                   fit: BoxFit.fitWidth,
@@ -62,7 +62,7 @@ class DrawerFilter extends ConsumerWidget {
                     ),
                   ),
                 ),
-              ),
+              ),*/
             ],
           ),
         ),
