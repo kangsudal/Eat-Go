@@ -59,7 +59,7 @@ class UserRepository {
       await userService.updateUserInfo(updatedUser: updatedUser);
       return true;
     } catch (e) {
-      debugPrint('UserRepository 오류 발생 - 회원 탈퇴 로직: $e');
+      debugPrint('UserRepository 오류 발생 - 회원 업데이트 로직: $e');
       return false;
     }
   }

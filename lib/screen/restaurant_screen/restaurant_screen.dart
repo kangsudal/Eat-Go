@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:eat_go/model/author_attribution_model.dart';
+import 'package:eat_go/model/photo_model.dart';
 import 'package:eat_go/model/restaurant_model.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/restaurant_screen/restaurant_screen_back_button.dart';
@@ -25,7 +27,7 @@ class RestaurantScreen extends ConsumerStatefulWidget {
 class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
   bool isDialogOpen = false; // 다이얼로그 열려져있는지 체크
   final Completer<GoogleMapController> googleMapControllerCompleter =
-  Completer();
+      Completer();
   Set<Marker> markers = {}; // 마커를 저장할 Set
 
   void fetchMarkers(List<Restaurant> restaurants) {
@@ -38,7 +40,27 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
           snippet: restaurant.formattedAddress,
           onTap: () {
             openExternalBrowser(restaurant.googleMapsUri);
-          },),
+            // if (restaurant.photos != null) {
+            //   Photo lastPhoto =
+            //       restaurant.photos![restaurant.photos!.length - 1];
+            //   debugPrint('lastPhoto.googleMapsUri:${lastPhoto.googleMapsUri}');
+            //   debugPrint('lastPhoto.name:${lastPhoto.name}');
+            //   debugPrint(
+            //       'lastPhoto.flagContentUri:${lastPhoto.flagContentUri}');
+            //   if (lastPhoto.authorAttributions.isNotEmpty) {
+            //     int length = lastPhoto.authorAttributions.length;
+            //     AuthorAttribution lastAuthorAttribution =
+            //         lastPhoto.authorAttributions[length - 1];
+            //     debugPrint(
+            //         'lastAuthorAttribution.displayName:${lastAuthorAttribution.displayName}');
+            //     debugPrint(
+            //         'lastAuthorAttribution.uri:${lastAuthorAttribution.uri}');
+            //     debugPrint(
+            //         'lastAuthorAttribution.photoUri:${lastAuthorAttribution.photoUri}');
+            //   }
+            // }
+          },
+        ),
       );
     }).toSet();
     debugPrint('${restaurants.length}개의 마커 패치 완료');
@@ -58,7 +80,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
             closeDialogIfOpen();
             return currentPositionState.when(data: (currentPosition) {
               final restaurantViewModelState =
-              ref.watch(restaurantViewModelProvider(widget.recipeTitle));
+                  ref.watch(restaurantViewModelProvider(widget.recipeTitle));
               if (currentPosition == null) {
                 return const Center(
                   child: Text('현재 위치를 가져오는데 실패했습니다.'),
@@ -129,8 +151,10 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
     );
   }
 
-  Widget buildGoogleMap(List<Restaurant> restaurants,
-      Position currentPosition,) {
+  Widget buildGoogleMap(
+    List<Restaurant> restaurants,
+    Position currentPosition,
+  ) {
     fetchMarkers(restaurants);
     CameraPosition initialPosition = CameraPosition(
       target: LatLng(
