@@ -15,7 +15,7 @@ import 'package:eat_go/viewmodels/bookmark_viewmodel.dart';
 import 'package:eat_go/viewmodels/home_viewmodel.dart';
 import 'package:eat_go/provider/current_eatgo_user_notifier.dart';
 import 'package:eat_go/viewmodels/recipe_detail_viewmodel.dart';
-import 'package:eat_go/viewmodels/recipe_viewmodel.dart';
+import 'package:eat_go/viewmodels/all_recipe_list_viewmodel.dart';
 import 'package:eat_go/viewmodels/restaurant_viewmodel.dart';
 import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
 import 'package:eat_go/viewmodels/setting_viewmodel.dart';
@@ -34,8 +34,8 @@ final recipeServiceProvider =
     Provider((ref) => RecipeService(firestore: ref.watch(firestoreProvider)));
 final recipeRepositoryProvider = Provider(
     (ref) => RecipeRepository(recipeService: ref.watch(recipeServiceProvider)));
-final recipeViewModelProvider =
-    AsyncNotifierProvider<RecipeViewModel, List<Recipe>>(RecipeViewModel.new);
+final allRecipeListViewModelProvider =
+    AsyncNotifierProvider<AllRecipeListViewModel, List<Recipe>>(AllRecipeListViewModel.new);
 //RecipeViewModel: 레시피 목록을 서버에서 가져오거나, 로딩 중, 에러 상태를 처리함.
 //StateNotifierProvider: View 화면에 전달하는 도구
 

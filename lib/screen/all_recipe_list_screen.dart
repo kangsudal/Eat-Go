@@ -23,7 +23,7 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
     final categories = ref.watch(allRecipeListScreenCategoriesProvider);
     final keywords = ref.watch(allRecipeListScreenKeywordsProvider);
     final AsyncValue<List<Recipe>> recipeState = ref.watch(
-        recipeViewModelProvider); // ViewModel의 상태를 구독, 레시피 데이터를 가져오는데 로딩중, 성공, 실패 나타냄
+        allRecipeListViewModelProvider); // ViewModel의 상태를 구독, 레시피 데이터를 가져오는데 로딩중, 성공, 실패 나타냄
     return Scaffold(
       appBar: AppBar(
         title: const Text('전체'),

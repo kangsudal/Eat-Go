@@ -27,7 +27,7 @@ import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RecipeViewModel extends AsyncNotifier<List<Recipe>> {
+class AllRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
   late final RecipeRepository _recipeRepository;
 
   @override
