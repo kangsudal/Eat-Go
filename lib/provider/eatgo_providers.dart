@@ -141,3 +141,15 @@ final restaurantRepositoryProvider = Provider(
     restaurantService: RestaurantService(),
   ),
 );
+
+// <홈화면 - drawer 필터>
+final categoriesProvider = StateProvider<Map<String, bool>>((ref) {
+  return {
+    '밥': true,
+    '후식': true,
+    '반찬': true,
+    '일품': true,
+    '국&찌개': true,
+    '기타': true,
+  };
+});

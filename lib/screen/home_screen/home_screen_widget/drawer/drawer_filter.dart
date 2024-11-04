@@ -1,28 +1,15 @@
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-
-class DrawerFilter extends StatefulWidget {
+class DrawerFilter extends ConsumerWidget {
   const DrawerFilter({super.key});
 
   @override
-  State<DrawerFilter> createState() => _DrawerFilterState();
-}
-
-class _DrawerFilterState extends State<DrawerFilter> {
-  Map<String, bool> categories = {
-    '밥': false,
-    '후식': true,
-    '반찬': true,
-    '일품': true,
-    '국&찌개': true,
-    '기타': true,
-  };
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categories = ref.watch(categoriesProvider);
     int count = -999;
 
     TextStyle style = TextStyle(
@@ -81,7 +68,7 @@ class _DrawerFilterState extends State<DrawerFilter> {
         ),
         const SizedBox(height: 8),
         ...categories.entries.map(
-              (element) {
+          (element) {
             return Padding(
               padding: EdgeInsets.only(left: 17, bottom: 4),
               child: Row(
@@ -90,9 +77,8 @@ class _DrawerFilterState extends State<DrawerFilter> {
                   CupertinoSwitch(
                     value: element.value,
                     onChanged: (isTrue) {
-                      setState(() {
-                        categories[element.key] = isTrue;
-                        // debugPrint('${element.key}: ${categories[element.key]}');
+                      ref.read(categoriesProvider.notifier).update((state) {
+                        return {...state, element.key: isTrue};
                       });
                     },
                     activeColor: pointColor,

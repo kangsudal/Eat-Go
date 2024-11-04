@@ -26,7 +26,7 @@ class HomeScreenDrawer extends StatelessWidget {
           child: ListView(
             children: [
               DrawerMainMenu(),
-              // DrawerFilter(),
+              DrawerFilter(),
               DrawerFooter(),
             ],
           ),
