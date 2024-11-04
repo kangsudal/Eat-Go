@@ -4,12 +4,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DrawerFilter extends ConsumerWidget {
+class DrawerFilter extends ConsumerStatefulWidget {
   const DrawerFilter({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DrawerFilter> createState() => _DrawerFilterState();
+}
+
+class _DrawerFilterState extends ConsumerState<DrawerFilter> {
+  final TextEditingController textEditingController = TextEditingController();
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final categories = ref.watch(categoriesProvider);
+    final keywords = ref.watch(keywordsProvider);
+    textEditingController.text = keywords;
     // int count = -999;
 
     TextStyle style = TextStyle(
@@ -37,6 +52,8 @@ class DrawerFilter extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: TextField(
+                    controller: textEditingController,
+                    //텍스트필드의 상태를 유지할 수 있게함. 매번 새로 렌더링될 때 controller의 현재 값을 표시
                     decoration: InputDecoration(
                       hintText: "예: '두부 버섯' 띄어쓰기로 구분합니다",
                       hintStyle: TextStyle(
@@ -46,7 +63,7 @@ class DrawerFilter extends ConsumerWidget {
                       ),
                       border: OutlineInputBorder(),
                     ),
-                    onChanged: (text){
+                    onChanged: (text) {
                       // TextField의 값이 변경될 때마다 keywordProvider 업데이트
                       ref.read(keywordsProvider.notifier).state = text;
                     },
