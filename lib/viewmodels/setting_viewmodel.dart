@@ -63,7 +63,6 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
           // 3. Firestore에서 사용자 데이터 삭제
           _userRepository.deleteUserData(uid)
         ],
-        eagerError: true,
       );
       state = const AsyncValue.data(null);
       return true;

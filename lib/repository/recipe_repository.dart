@@ -45,7 +45,7 @@ class RecipeRepository {
     required String keywords,
   }) async {
     try {
-      return _recipeService.getFilteredRandomRecipe(
+      return _recipeService.getRandomRecipeWithKeywords(
           categories: categories, keywords: keywords);
     } catch (e) {
       debugPrint('RecipeRepository - 랜덤 레시피 생성중 오류 발생 : $e');

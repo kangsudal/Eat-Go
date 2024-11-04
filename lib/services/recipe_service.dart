@@ -238,19 +238,14 @@ class RecipeService {
     }
   }
 
-  Future<Recipe?> getFilteredRandomRecipe({
+  Future<Recipe?> getRandomRecipeWithoutKeywords({
     required Map<String, dynamic> categories,
-    required String keywords, // 키워드 필터 ('두부 버섯')
   }) async {
     //1. true인 카테고리 라벨 목록 생성
     List<String> selectedCategories =
         categories.keys.where((key) => categories[key] == true).toList();
 
-    //2. 키워드 필터 생성
-    List<String> keywordList =
-        keywords.trim().isNotEmpty ? keywords.trim().split(' ') : [];
-
-    //3. 랜덤 시작점
+    //2. 랜덤 시작점
     String randomId = generateRandomDocId();
     if (randomId == '') {
       debugPrint("RecipeService - Random Doc Id가 ''입니다.");
@@ -262,11 +257,7 @@ class RecipeService {
           .collection('recipes')
           .where('category', whereIn: selectedCategories);
 
-      //2. 키워드 필터가 있는 경우, keywordList에 있는 키워드들이 포함된 모든 문서
-      if (keywordList.isNotEmpty) {
-        query = query.where('title', arrayContainsAny: keywordList);
-      }
-      //3. 랜덤 ID보다 큰 문서 중 7개 문서를 가져옴
+      //2. 랜덤 ID보다 큰 문서 중 7개 문서를 가져옴
       query = query
           .where(FieldPath.documentId, isGreaterThanOrEqualTo: randomId)
           .limit(7);
@@ -276,11 +267,83 @@ class RecipeService {
 
       // 쿼리 결과가 없으면(랜덤하게 생성된 ID보다 큰 문서가 없다면) null 반환
       if (querySnapshot.docs.isEmpty) {
-        debugPrint("RecipeService - 랜덤하게 생성된 ID보다 큰 문서가 없습니다.");
+        debugPrint(
+            "RecipeService - 조건에 맞는 문서가 없습니다(랜덤하게 생성된 ID보다 큰 문서가 없을 가능성이있습니다)");
         return null;
       }
 
       // 결과가 있는 경우 무작위로 선택
+      final randomDoc =
+          querySnapshot.docs[Random().nextInt(querySnapshot.docs.length)];
+      Map<String, Object?> dataMap = randomDoc.data() as Map<String, Object?>;
+      return Recipe.fromJson({
+        ...dataMap,
+        'recipeId': randomDoc.id,
+      });
+    } catch (e) {
+      debugPrint('RecipeService - 랜덤 레시피 생성중 오류발생: $e');
+      return null;
+    }
+  }
+
+  Future<Recipe?> getRandomRecipeWithKeywords({
+    required Map<String, dynamic> categories,
+    required String keywords, // 키워드 필터 ('두부 버섯')
+  }) async {
+    //1. true인 카테고리 라벨 목록 생성
+    List<String> selectedCategories =
+        categories.keys.where((key) => categories[key] == true).toList();
+
+    //2. 키워드 필터 생성
+    List<String> keywordList =
+        keywords.trim().isNotEmpty ? keywords.trim().split(' ') : [];
+
+    try {
+      //1. 카테고리 필터 쿼리
+      Query query = _firestore
+          .collection('recipes')
+          .where('category', whereIn: selectedCategories);
+
+      //쿼리 실행
+      QuerySnapshot querySnapshot = await query.get();
+
+      // 쿼리 결과가 없으면(랜덤하게 생성된 ID보다 큰 문서가 없다면) null 반환
+      if (querySnapshot.docs.isEmpty) {
+        debugPrint("RecipeService - 조건에 맞는 문서가 없습니다.");
+        return null;
+      }
+
+      //2. 키워드 필터가 있는 경우, keywordList에 있는 키워드들이 포함된 모든 문서
+      if (keywordList.isNotEmpty) {
+        // 필터링: title, hashTag, descriptions에서 키워드가 포함된 레시피 찾기
+        List<DocumentSnapshot> filteredDocs = querySnapshot.docs.where((doc) {
+          final title = doc['title'] as String;
+          final ingredients = doc['ingredients'] as String;
+          final hashTag =
+              doc['hashTag'] as String? ?? ''; // 해시태그가 없을 경우 빈 문자열로 처리
+
+          // 키워드 리스트를 돌며 title, hashTag, descriptions에서 일치 여부 확인
+          return keywordList.any(
+            (keyword) =>
+                title.contains(keyword) ||
+                ingredients.contains(keyword) ||
+                hashTag.contains(keyword),
+          );
+        }).toList();
+
+        // 필터링된 문서들을 Recipe 객체로 변환
+        List<Recipe> filteredRecipes = filteredDocs.map((doc) {
+          return Recipe.fromJson({
+            ...doc.data() as Map<String, dynamic>,
+            'recipeId': doc.id, // Firestore 문서 ID를 recipeId로 할당
+          });
+        }).toList();
+
+        return filteredRecipes[Random().nextInt(filteredRecipes.length)];
+      }
+
+      // 키워드 필터가 없는경우 카테고리 필터만 된 상태에서 무작위로 선택
+      // (사실상 이경우까지 오지않게, getRandomRecipeWithoutKeywords로 보내야한다.안전빵으로 넣어놓음, 비용차이 10배)
       final randomDoc =
           querySnapshot.docs[Random().nextInt(querySnapshot.docs.length)];
       Map<String, Object?> dataMap = randomDoc.data() as Map<String, Object?>;
