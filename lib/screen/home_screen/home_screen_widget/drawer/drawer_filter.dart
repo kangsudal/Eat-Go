@@ -22,8 +22,8 @@ class _DrawerFilterState extends ConsumerState<DrawerFilter> {
 
   @override
   Widget build(BuildContext context) {
-    final categories = ref.watch(categoriesProvider);
-    final keywords = ref.watch(keywordsProvider);
+    final categories = ref.watch(homeScreenCategoriesProvider);
+    final keywords = ref.watch(homeScreenKeywordsProvider);
     textEditingController.text = keywords;
     // int count = -999;
 
@@ -65,7 +65,7 @@ class _DrawerFilterState extends ConsumerState<DrawerFilter> {
                     ),
                     onChanged: (text) {
                       // TextField의 값이 변경될 때마다 keywordProvider 업데이트
-                      ref.read(keywordsProvider.notifier).state = text;
+                      ref.read(homeScreenKeywordsProvider.notifier).state = text;
                     },
                   ),
                 ),
@@ -98,7 +98,7 @@ class _DrawerFilterState extends ConsumerState<DrawerFilter> {
                   CupertinoSwitch(
                     value: element.value,
                     onChanged: (isTrue) {
-                      ref.read(categoriesProvider.notifier).update((state) {
+                      ref.read(homeScreenCategoriesProvider.notifier).update((state) {
                         return {...state, element.key: isTrue};
                       });
                     },

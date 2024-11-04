@@ -28,8 +28,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final homeViewModel = ref.read(homeViewModelProvider.notifier);
     final isShaking = ref.watch(shakeProvider);
-    final categories = ref.watch(categoriesProvider);
-    final keywords = ref.watch(keywordsProvider);
+    final categories = ref.watch(homeScreenCategoriesProvider);
+    final keywords = ref.watch(homeScreenKeywordsProvider);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -143,7 +143,8 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                             data: (user) {
                               if (user == null) {
                                 debugPrint('HomeScreen - 사용자를 불러오지 못했습니다.');
-                                return const Icon(Icons.report_problem_outlined);
+                                return const Icon(
+                                    Icons.report_problem_outlined);
                               }
                               final isBookmarked = user.bookmarkRecipeIds
                                   .contains(widget.randomRecipe.recipeId);
@@ -155,7 +156,8 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                                 },
                                 child: CircleAvatar(
                                   radius: 22,
-                                  backgroundColor: EatGoPalette.backgroundColor1,
+                                  backgroundColor:
+                                      EatGoPalette.backgroundColor1,
                                   child: Icon(
                                     isBookmarked == false
                                         ? Icons.bookmark_border_sharp
@@ -179,9 +181,8 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                         ? loadingProgress.cumulativeBytesLoaded /
                             loadingProgress.expectedTotalBytes!
                         : null;
-          
-                    return Center(
-                        child: CircularProgressIndicator(value: progress));
+
+                    return CircularProgressIndicator(value: progress);
                   }
                 },
                 errorBuilder: (_, __, ___) => Text('이미지가 없습니다.'),

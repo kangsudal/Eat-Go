@@ -15,35 +15,25 @@ class AllRecipeListScreen extends ConsumerStatefulWidget {
 
 class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
   final TextEditingController searchTextController = TextEditingController();
-  Map<String, bool> categories = {
-    '밥': true,
-    '후식': true,
-    '반찬': true,
-    '일품': true,
-    '국&찌개': true,
-    '기타': true,
-  };
+  final ExpansionTileController expansionTileController =
+      ExpansionTileController();
 
   @override
   Widget build(BuildContext context) {
+    final categories = ref.watch(allRecipeListScreenCategoriesProvider);
+    final keywords = ref.watch(allRecipeListScreenKeywordsProvider);
     final AsyncValue<List<Recipe>> recipeState = ref.watch(
         recipeViewModelProvider); // ViewModel의 상태를 구독, 레시피 데이터를 가져오는데 로딩중, 성공, 실패 나타냄
     return Scaffold(
       appBar: AppBar(
         title: const Text('전체'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /*const SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextField(
               controller: searchTextController,
               decoration: InputDecoration(
@@ -55,30 +45,73 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
                   borderSide:
                       BorderSide(color: EatGoPalette.lineColor, width: 1.0),
                 ),
-                labelText: '검색',
+                // labelText: '검색',
                 labelStyle: TextStyle(
                   color: EatGoPalette.subTextColor,
                 ),
                 hintText: '예:두부 버섯(띄어쓰기로 구분합니다)',
                 hintStyle: TextStyle(color: EatGoPalette.subTextColor),
-                suffixIcon: IconButton(
-                  icon: const Icon(
-                    Icons.undo,
-                    color: pointColor,
-                  ),
-                  onPressed: () {
-                    searchTextController.text = '';
-                    //검색조건 모두 초기화
-                  },
+                suffixIcon: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Visibility(
+                      visible: keywords.isNotEmpty ||
+                          categories.containsValue(false),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.clear,
+                          color: pointColor,
+                        ),
+                        onPressed: () {
+                          searchTextController.text = '';
+                          //검색조건 모두 초기화
+                          //검색창
+                          ref
+                              .read(
+                                  allRecipeListScreenKeywordsProvider.notifier)
+                              .state = '';
+                          //카테고리 체크박스
+                          ref
+                              .read(allRecipeListScreenCategoriesProvider
+                                  .notifier)
+                              .state = {
+                            '밥': true,
+                            '후식': true,
+                            '반찬': true,
+                            '일품': true,
+                            '국&찌개': true,
+                            '기타': true,
+                          };
+                        },
+                      ),
+                    ),
+                    Container(
+                      width: 50,
+                      height: 60,
+                      decoration: const BoxDecoration(
+                        color: pointColor,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          bottomRight: Radius.circular(8),
+                        ),
+                      ),
+                      child: const Icon(Icons.search, color: Colors.white),
+                    ),
+                  ],
                 ),
               ),
               onSubmitted: (value) {
                 //검색 필드와 체크박스 두가지를 체크하여 필터하기
               },
+              onChanged: (text) {
+                // TextField의 값이 변경될 때마다 keywordProvider 업데이트
+                ref.read(allRecipeListScreenKeywordsProvider.notifier).state =
+                    text;
+              },
             ),
             const SizedBox(height: 5),
             Row(
-              children: categories.keys.map((String key) {
+              children: categories.entries.map((element) {
                 return Expanded(
                   child: Center(
                     child: Wrap(
@@ -87,21 +120,26 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
                       spacing: -5,
                       children: [
                         Checkbox(
-                          value: categories[key],
-                          onChanged: (bool? value) {
-                            setState(() {
-                              categories[key] = !categories[key]!;
-                              // 체크박스 토글시 리스트 필터를 적용
+                          value: element.value,
+                          onChanged: (bool? isTrue) {
+                            ref
+                                .read(allRecipeListScreenCategoriesProvider
+                                    .notifier)
+                                .update((state) {
+                              return {
+                                ...state,
+                                element.key: isTrue ?? false,
+                              };
                             });
                           },
                         ),
-                        Text(key),
+                        Text(element.key),
                       ],
                     ),
                   ),
                 );
               }).toList(),
-            ),*/
+            ),
             const SizedBox(height: 20),
             Expanded(
               child: recipeState.when(

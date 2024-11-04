@@ -143,7 +143,7 @@ final restaurantRepositoryProvider = Provider(
 );
 
 // <홈화면 - drawer 필터>
-final categoriesProvider = StateProvider<Map<String, bool>>((ref) {
+final homeScreenCategoriesProvider = StateProvider<Map<String, bool>>((ref) {
   return {
     '밥': true,
     '후식': true,
@@ -154,4 +154,19 @@ final categoriesProvider = StateProvider<Map<String, bool>>((ref) {
   };
 });
 
-final keywordsProvider = StateProvider<String>((ref) => '');
+final homeScreenKeywordsProvider = StateProvider<String>((ref) => '');
+
+//<전체 페이지 - 필터>
+final allRecipeListScreenCategoriesProvider =
+    StateProvider<Map<String, bool>>((ref) {
+  return {
+    '밥': true,
+    '후식': true,
+    '반찬': true,
+    '일품': true,
+    '국&찌개': true,
+    '기타': true,
+  };
+});
+
+final allRecipeListScreenKeywordsProvider = StateProvider<String>((ref) => '');
