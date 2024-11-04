@@ -213,7 +213,7 @@ class RecipeService {
           .toList(); // 존재하는 문서만 필터링
 
       List<Recipe> bookmarkedRecipeList = snapshots.map((snapshot) {
-        final recipeData = snapshot.data()??{};
+        final recipeData = snapshot.data() ?? {};
         return Recipe.fromJson({
           ...recipeData,
           'recipeId': snapshot.id, // Firestore 문서 ID를 recipeId로 추가
@@ -289,6 +289,20 @@ class RecipeService {
       return recipe;
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+  Future<bool> updateRecipeData({required Recipe updatedRecipe}) async {
+    try {
+      Map<String, dynamic> recipeMap = updatedRecipe.toJson();
+      await _firestore
+          .collection('recipes')
+          .doc(updatedRecipe.recipeId)
+          .update(recipeMap);
+      return true;
+    } catch (e) {
+      debugPrint('RecipeService - 레시피 데이터 업데이트 중 오류 발생: $e');
+      return false;
     }
   }
 }

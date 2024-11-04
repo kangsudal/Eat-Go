@@ -38,29 +38,45 @@ class BookmarkViewModel extends FamilyAsyncNotifier<List<Recipe>?, EatGoUser> {
   void toggleBookmark({Recipe? recipe}) async {
     try {
       EatGoUser? updatedEatGoUser;
+      Recipe? updatedRecipe;
       if (recipe == null) {
         debugPrint('BookmarkViewModel - recipe 값이 null입니다.');
         return;
       }
       final isBookmarked =
-          _currentEatGoUser.bookmarkRecipeIds.any((b) => b == recipe.recipeId);
+          _currentEatGoUser.bookmarkRecipeIds.contains(recipe.recipeId);
 
       if (isBookmarked) {
+        // 1. 유저 컬렉션에 북마크 기록 업데이트
         updatedEatGoUser = _currentEatGoUser.copyWith(
           bookmarkRecipeIds: _currentEatGoUser.bookmarkRecipeIds
               .where((b) =>
                   b != recipe.recipeId) //현재 레시피와 ID가 다른 레시피들만 남긴다는 의미입니다.
               .toList(),
         );
+        // 2. 레시피 컬렉션에 북마크 기록 업데이트
+        List<String> updatedBookmarkedBy =
+            List<String>.from(recipe.bookmarkedBy)
+              ..remove(_currentEatGoUser
+                  .uid); //List<String>.from():bookmarkedBy의 복사본을 만들어서 수정
+        updatedRecipe = recipe.copyWith(bookmarkedBy: updatedBookmarkedBy);
       } else {
+        // 1. 유저 컬렉션에 북마크 기록 업데이트
         updatedEatGoUser = _currentEatGoUser.copyWith(
           bookmarkRecipeIds: [
             ..._currentEatGoUser.bookmarkRecipeIds,
             recipe.recipeId,
           ],
         );
+        // 2. 레시피 컬렉션에 북마크 기록 업데이트
+        List<String> updatedBookmarkedBy =
+            List<String>.from(recipe.bookmarkedBy)..add(_currentEatGoUser.uid);
+        updatedRecipe = recipe.copyWith(bookmarkedBy: updatedBookmarkedBy);
       }
+      // 1. 유저 컬렉션에 북마크 기록 업데이트
       await _userRepository.updateUserData(updatedUser: updatedEatGoUser);
+      // 2. 레시피 컬렉션에 북마크 기록 업데이트
+      await _recipeRepository.updateRecipeData(updatedRecipe: updatedRecipe);
     } catch (e) {
       debugPrint('BookmarkViewModel - 북마크 토글하는데 실패하였습니다.$e');
     }

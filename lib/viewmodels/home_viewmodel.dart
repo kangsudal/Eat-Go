@@ -65,6 +65,7 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
   void toggleBookmark(EatGoUser? currentEatGoUser) async {
     try {
       EatGoUser? updatedEatGoUser;
+      Recipe updatedRecipe;
       Recipe? recipe = state.value;
       if (currentEatGoUser == null) {
         debugPrint(
@@ -79,25 +80,42 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
           currentEatGoUser.bookmarkRecipeIds.contains(recipe.recipeId);
 
       if (isBookmarked) {
+        // 1. 유저 컬렉션에 북마크 기록 업데이트
         updatedEatGoUser = currentEatGoUser.copyWith(
           bookmarkRecipeIds: currentEatGoUser.bookmarkRecipeIds
               .where((b) =>
                   b != recipe.recipeId) //현재 레시피와 ID가 다른 레시피들만 남긴다는 의미입니다.
               .toList(),
         );
+        // 2. 레시피 컬렉션에 북마크 기록 업데이트
+        List<String> updatedBookmarkedBy =
+            List<String>.from(recipe.bookmarkedBy)
+              ..remove(currentEatGoUser
+                  .uid); //List<String>.from():bookmarkedBy의 복사본을 만들어서 수정
+        updatedRecipe = recipe.copyWith(bookmarkedBy: updatedBookmarkedBy);
       } else {
+        // 1. 유저 컬렉션에 북마크 기록 업데이트
         updatedEatGoUser = currentEatGoUser.copyWith(
           bookmarkRecipeIds: [
             ...currentEatGoUser.bookmarkRecipeIds,
             recipe.recipeId,
           ],
         );
+        // 2. 레시피 컬렉션에 북마크 기록 업데이트
+        List<String> updatedBookmarkedBy =
+            List<String>.from(recipe.bookmarkedBy)..add(currentEatGoUser.uid);
+        updatedRecipe = recipe.copyWith(bookmarkedBy: updatedBookmarkedBy);
       }
+      // 1. 유저 컬렉션에 북마크 기록 업데이트
       await _userRepository.updateUserData(updatedUser: updatedEatGoUser);
       ref.read(currentEatGoUserProvider.notifier).state = AsyncValue.data(
-          updatedEatGoUser); //getCurrentUser랑 다른점은 네트워크 호출을 안한다는 점이다.
-    } catch (e) {
+          updatedEatGoUser); //getCurrentUser랑 다른점은 네트워크 호출을 안한다는 점이다. 이 라인을 넣어야 current
+      // 2. 레시피 컬렉션에 북마크 기록 업데이트
+      await _recipeRepository.updateRecipeData(updatedRecipe: updatedRecipe);
+      state = AsyncValue.data(updatedRecipe); // HomeViewModel의 상태를 업데이트
+    } catch (e,stackTrace) {
       debugPrint('HomeViewModel - 북마크 토글하는데 실패하였습니다.$e');
+      state = AsyncValue.error(e,stackTrace);
     }
   }
 }

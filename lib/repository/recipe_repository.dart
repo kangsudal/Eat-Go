@@ -57,4 +57,14 @@ class RecipeRepository {
       throw Exception(e);
     }
   }
+
+  Future<bool> updateRecipeData({required Recipe updatedRecipe}) async {
+    try {
+      await _recipeService.updateRecipeData(updatedRecipe: updatedRecipe);
+      return true;
+    } catch (e) {
+      debugPrint('RecipeRepository - 레시피 업데이트 중 오류가 발생하였습니다. $e');
+      return false;
+    }
+  }
 }
