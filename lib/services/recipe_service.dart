@@ -331,6 +331,12 @@ class RecipeService {
           );
         }).toList();
 
+        // 필터링된 문서들이 없다면 null 반환
+        if (filteredDocs.isEmpty) {
+          debugPrint("RecipeService - 키워드와 일치하는 문서가 없습니다.");
+          return null;
+        }
+
         // 필터링된 문서들을 Recipe 객체로 변환
         List<Recipe> filteredRecipes = filteredDocs.map((doc) {
           return Recipe.fromJson({
@@ -342,15 +348,9 @@ class RecipeService {
         return filteredRecipes[Random().nextInt(filteredRecipes.length)];
       }
 
-      // 키워드 필터가 없는경우 카테고리 필터만 된 상태에서 무작위로 선택
-      // (사실상 이경우까지 오지않게, getRandomRecipeWithoutKeywords로 보내야한다.안전빵으로 넣어놓음, 비용차이 10배)
-      final randomDoc =
-          querySnapshot.docs[Random().nextInt(querySnapshot.docs.length)];
-      Map<String, Object?> dataMap = randomDoc.data() as Map<String, Object?>;
-      return Recipe.fromJson({
-        ...dataMap,
-        'recipeId': randomDoc.id,
-      });
+      //키워드가 비어있는 경우 이 메서드는 null을 반하여 상위 메서드에서 다른 로직이 작동하도록 합니다.
+      //(getRandomRecipeWithoutKeywords가 호출될 수 있게 합니다.)
+      return null;
     } catch (e) {
       debugPrint('RecipeService - 랜덤 레시피 생성중 오류발생: $e');
       return null;

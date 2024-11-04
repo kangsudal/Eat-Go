@@ -132,7 +132,6 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return ListTile(
                               onTap: () {
-                                //todo: 옳바른 recipeId 넣어주기
                                 context.go(
                                     '/home/all_recipe_list/recipe_detail/${recipes[index].recipeId}');
                               },

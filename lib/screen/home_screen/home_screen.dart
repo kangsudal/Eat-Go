@@ -200,7 +200,6 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //todo: GoRouter로 바꾸기
             GestureDetector(
               onTap: () {
                 context.go('/home/restaurant/${widget.randomRecipe.title}');

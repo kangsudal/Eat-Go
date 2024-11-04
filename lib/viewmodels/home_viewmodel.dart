@@ -97,7 +97,7 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
 
     // 최대 재시도 횟수를 초과하면 실패
     debugPrint('HomeViewModel - 최대 재시도 횟수를 초과');
-    state = AsyncValue.error("레시피를 가져오지 못했습니다. 다시 시도해주세요.", StackTrace.current);
+    state = AsyncValue.error("조건에 맞는 레시피가 없습니다. 다시 시도해주세요.", StackTrace.current);
   }
 
   //북마크 상태를 토글하는 메서드
