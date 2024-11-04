@@ -20,12 +20,13 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
     return null;
   }
 
-  Future<Recipe?> getRandomFilteredRecipeByCategories(
-    Map<String, dynamic> categories,
-  ) async {
+  Future<Recipe?> getRandomFilteredRecipeByCategories({
+    required Map<String, dynamic> categories,
+    required String keywords,
+  }) async {
     try {
-      Recipe? randomRecipe = await _recipeRepository
-          .getRandomFilteredRecipeByCategories(categories: categories);
+      Recipe? randomRecipe = await _recipeRepository.getFilteredRandomRecipe(
+          categories: categories, keywords: keywords);
       if (randomRecipe != null) {
         return randomRecipe;
       }
@@ -40,13 +41,15 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
   Future<void> fetchRandomRecipeWithRetry({
     int maxRetries = 5,
     required Map<String, bool> categories,
+    required String keywords,
   }) async {
     state = const AsyncValue.loading(); // 로딩 상태로 변경
     int retries = 0;
 
     while (retries < maxRetries) {
       try {
-        Recipe? recipe = await getRandomFilteredRecipeByCategories(categories);
+        Recipe? recipe = await getRandomFilteredRecipeByCategories(
+            categories: categories, keywords: keywords);
 
         if (recipe != null) {
           state = AsyncValue.data(recipe); // 성공적으로 레시피를 가져오면 상태 업데이트

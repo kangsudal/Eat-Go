@@ -46,6 +46,10 @@ class DrawerFilter extends ConsumerWidget {
                       ),
                       border: OutlineInputBorder(),
                     ),
+                    onChanged: (text){
+                      // TextField의 값이 변경될 때마다 keywordProvider 업데이트
+                      ref.read(keywordsProvider.notifier).state = text;
+                    },
                   ),
                 ),
               ),

@@ -238,38 +238,55 @@ class RecipeService {
     }
   }
 
-  Future<Recipe?> getRandomFilteredRecipeByCategories({
+  Future<Recipe?> getFilteredRandomRecipe({
     required Map<String, dynamic> categories,
+    required String keywords, // 키워드 필터 ('두부 버섯')
   }) async {
-    //true인 카테고리 라벨 목록 생성
+    //1. true인 카테고리 라벨 목록 생성
     List<String> selectedCategories =
         categories.keys.where((key) => categories[key] == true).toList();
 
+    //2. 키워드 필터 생성
+    List<String> keywordList =
+        keywords.trim().isNotEmpty ? keywords.trim().split(' ') : [];
+
+    //3. 랜덤 시작점
     String randomId = generateRandomDocId();
     if (randomId == '') {
       debugPrint("RecipeService - Random Doc Id가 ''입니다.");
       return null;
     }
     try {
-      // 랜덤 ID보다 큰 문서 중 5개 문서를 가져옴
-      QuerySnapshot querySnapshot = await _firestore
+      //1. 카테고리 필터 쿼리
+      Query query = _firestore
           .collection('recipes')
-          .where('category', whereIn: selectedCategories)
+          .where('category', whereIn: selectedCategories);
+
+      //2. 키워드 필터가 있는 경우, keywordList에 있는 키워드들이 포함된 모든 문서
+      if (keywordList.isNotEmpty) {
+        query = query.where('title', arrayContainsAny: keywordList);
+      }
+      //3. 랜덤 ID보다 큰 문서 중 7개 문서를 가져옴
+      query = query
           .where(FieldPath.documentId, isGreaterThanOrEqualTo: randomId)
-          .limit(10)
-          .get();
+          .limit(7);
+
+      //쿼리 실행
+      QuerySnapshot querySnapshot = await query.get();
 
       // 쿼리 결과가 없으면(랜덤하게 생성된 ID보다 큰 문서가 없다면) null 반환
       if (querySnapshot.docs.isEmpty) {
         debugPrint("RecipeService - 랜덤하게 생성된 ID보다 큰 문서가 없습니다.");
         return null;
       }
+
+      // 결과가 있는 경우 무작위로 선택
       final randomDoc =
           querySnapshot.docs[Random().nextInt(querySnapshot.docs.length)];
       Map<String, Object?> dataMap = randomDoc.data() as Map<String, Object?>;
       return Recipe.fromJson({
         ...dataMap,
-        'recipeId': querySnapshot.docs.first.id,
+        'recipeId': randomDoc.id,
       });
     } catch (e) {
       debugPrint('RecipeService - 랜덤 레시피 생성중 오류발생: $e');

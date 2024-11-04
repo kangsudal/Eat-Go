@@ -38,10 +38,10 @@ class ShakeNotifier extends Notifier<bool> {
 
       if (acceleration > shakeThreshold && state) {
         // 흔들림 발생 시 레시피 불러오기 메서드 실행
-        final selectedCategories = ref.read(categoriesProvider);
-        ref
-            .read(homeViewModelProvider.notifier)
-            .fetchRandomRecipeWithRetry(categories: selectedCategories);
+        final selectedCategories = ref.watch(categoriesProvider);
+        final keywords = ref.watch(keywordsProvider);
+        ref.read(homeViewModelProvider.notifier).fetchRandomRecipeWithRetry(
+            categories: selectedCategories, keywords: keywords);
       }
     });
   }

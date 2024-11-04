@@ -40,11 +40,13 @@ class RecipeRepository {
     }
   }
 
-  Future<Recipe?> getRandomFilteredRecipeByCategories({
+  Future<Recipe?> getFilteredRandomRecipe({
     required Map<String, dynamic> categories,
+    required String keywords,
   }) async {
     try {
-      return _recipeService.getRandomFilteredRecipeByCategories(categories: categories);
+      return _recipeService.getFilteredRandomRecipe(
+          categories: categories, keywords: keywords);
     } catch (e) {
       debugPrint('RecipeRepository - 랜덤 레시피 생성중 오류 발생 : $e');
       return null;

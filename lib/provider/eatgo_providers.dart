@@ -114,7 +114,7 @@ final locationServiceStatusProvider = StreamProvider.autoDispose<bool>((ref) {
 // 현재 위치
 final currentPositionProvider = FutureProvider<Position?>((ref) async {
   final isLocationEnabledAndPermissionGranted =
-  await ref.watch(locationServiceStatusProvider.future);
+      await ref.watch(locationServiceStatusProvider.future);
 
   // 권한과 위치 서비스가 허용된 경우에만 위치 데이터 요청
   if (isLocationEnabledAndPermissionGranted) {
@@ -153,3 +153,5 @@ final categoriesProvider = StateProvider<Map<String, bool>>((ref) {
     '기타': true,
   };
 });
+
+final keywordsProvider = StateProvider<String>((ref) => '');
