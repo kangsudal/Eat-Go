@@ -20,18 +20,38 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
     return null;
   }
 
-  Future<Recipe?> getRandomFilteredRecipeByCategories({
+  //TextField에 키워드가 비어있을때 호출(비용절감을 위해)
+  Future<Recipe?> getFilteredRandomRecipeWithoutKeyword({
     required Map<String, dynamic> categories,
-    required String keywords,
   }) async {
     try {
-      Recipe? randomRecipe = await _recipeRepository.getFilteredRandomRecipe(
-          categories: categories, keywords: keywords);
+      Recipe? randomRecipe =
+          await _recipeRepository.getFilteredRandomRecipeWithoutKeyword(
+        categories: categories,
+      );
       if (randomRecipe != null) {
         return randomRecipe;
       }
     } catch (e) {
-      debugPrint('RecipeViewModel - 랜덤 doc ID 생성중 오류 발생 : $e');
+      debugPrint('RecipeViewModel - 랜덤 레시피 생성(keyword 없이)중 오류 발생 : $e');
+      return null;
+    }
+    return null;
+  }
+
+  Future<Recipe?> getFilteredRandomRecipeWithKeyword({
+    required Map<String, dynamic> categories,
+    required String keywords,
+  }) async {
+    try {
+      Recipe? randomRecipe =
+          await _recipeRepository.getFilteredRandomRecipeWithKeyword(
+              categories: categories, keywords: keywords);
+      if (randomRecipe != null) {
+        return randomRecipe;
+      }
+    } catch (e) {
+      debugPrint('RecipeViewModel - 랜덤 레시피 생성(with keyword)중 오류 발생 : $e');
       return null;
     }
     return null;
@@ -48,8 +68,19 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
 
     while (retries < maxRetries) {
       try {
-        Recipe? recipe = await getRandomFilteredRecipeByCategories(
-            categories: categories, keywords: keywords);
+        // 키워드가 비어있다면 getRandomRecipeWithoutKeywords를 호출하고
+        // 키워드가 있다면 getRandomRecipeWithKeywords를 호출합니다.
+        Recipe? recipe;
+        if (keywords.trim().isEmpty) {
+          recipe = await getFilteredRandomRecipeWithoutKeyword(
+            categories: categories,
+          );
+        } else {
+          recipe = await getFilteredRandomRecipeWithKeyword(
+            categories: categories,
+            keywords: keywords,
+          );
+        }
 
         if (recipe != null) {
           state = AsyncValue.data(recipe); // 성공적으로 레시피를 가져오면 상태 업데이트

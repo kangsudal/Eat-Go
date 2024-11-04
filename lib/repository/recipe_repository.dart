@@ -40,12 +40,25 @@ class RecipeRepository {
     }
   }
 
-  Future<Recipe?> getFilteredRandomRecipe({
+  Future<Recipe?> getFilteredRandomRecipeWithoutKeyword({
+    required Map<String, dynamic> categories,
+  }) async {
+    try {
+      return _recipeService.getFilteredRandomRecipeWithoutKeywords(
+        categories: categories,
+      );
+    } catch (e) {
+      debugPrint('RecipeRepository - 랜덤 레시피 생성중(keyword 없이) 오류 발생 : $e');
+      return null;
+    }
+  }
+
+  Future<Recipe?> getFilteredRandomRecipeWithKeyword({
     required Map<String, dynamic> categories,
     required String keywords,
   }) async {
     try {
-      return _recipeService.getRandomRecipeWithKeywords(
+      return _recipeService.getFilteredRandomRecipeWithKeywords(
           categories: categories, keywords: keywords);
     } catch (e) {
       debugPrint('RecipeRepository - 랜덤 레시피 생성중 오류 발생 : $e');

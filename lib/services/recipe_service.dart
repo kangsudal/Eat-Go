@@ -238,7 +238,7 @@ class RecipeService {
     }
   }
 
-  Future<Recipe?> getRandomRecipeWithoutKeywords({
+  Future<Recipe?> getFilteredRandomRecipeWithoutKeywords({
     required Map<String, dynamic> categories,
   }) async {
     //1. true인 카테고리 라벨 목록 생성
@@ -286,7 +286,7 @@ class RecipeService {
     }
   }
 
-  Future<Recipe?> getRandomRecipeWithKeywords({
+  Future<Recipe?> getFilteredRandomRecipeWithKeywords({
     required Map<String, dynamic> categories,
     required String keywords, // 키워드 필터 ('두부 버섯')
   }) async {
