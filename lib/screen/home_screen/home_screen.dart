@@ -28,6 +28,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final homeViewModel = ref.read(homeViewModelProvider.notifier);
     final isShaking = ref.watch(shakeProvider);
+    final categories = ref.watch(categoriesProvider);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -57,7 +58,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         visible: isShaking,
         child: FloatingActionButton(
           onPressed: () {
-            homeViewModel.fetchRandomRecipeWithRetry();
+            homeViewModel.fetchRandomRecipeWithRetry(categories: categories);
           },
           child: Icon(
             Icons.refresh,

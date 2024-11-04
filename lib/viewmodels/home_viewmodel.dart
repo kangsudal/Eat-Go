@@ -20,9 +20,12 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
     return null;
   }
 
-  Future<Recipe?> getRandomRecipeByAutoId() async {
+  Future<Recipe?> getRandomFilteredRecipeByCategories(
+    Map<String, dynamic> categories,
+  ) async {
     try {
-      Recipe? randomRecipe = await _recipeRepository.getRandomRecipeByAutoId();
+      Recipe? randomRecipe = await _recipeRepository
+          .getRandomFilteredRecipeByCategories(categories: categories);
       if (randomRecipe != null) {
         return randomRecipe;
       }
@@ -34,13 +37,16 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
   }
 
   // 랜덤 레시피 가져오기 (결과가 없을 경우 재시도)
-  Future<void> fetchRandomRecipeWithRetry({int maxRetries = 5}) async {
+  Future<void> fetchRandomRecipeWithRetry({
+    int maxRetries = 5,
+    required Map<String, bool> categories,
+  }) async {
     state = const AsyncValue.loading(); // 로딩 상태로 변경
     int retries = 0;
 
     while (retries < maxRetries) {
       try {
-        Recipe? recipe = await getRandomRecipeByAutoId();
+        Recipe? recipe = await getRandomFilteredRecipeByCategories(categories);
 
         if (recipe != null) {
           state = AsyncValue.data(recipe); // 성공적으로 레시피를 가져오면 상태 업데이트
@@ -113,9 +119,9 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
       // 2. 레시피 컬렉션에 북마크 기록 업데이트
       await _recipeRepository.updateRecipeData(updatedRecipe: updatedRecipe);
       state = AsyncValue.data(updatedRecipe); // HomeViewModel의 상태를 업데이트
-    } catch (e,stackTrace) {
+    } catch (e, stackTrace) {
       debugPrint('HomeViewModel - 북마크 토글하는데 실패하였습니다.$e');
-      state = AsyncValue.error(e,stackTrace);
+      state = AsyncValue.error(e, stackTrace);
     }
   }
 }

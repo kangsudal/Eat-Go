@@ -237,16 +237,23 @@ class RecipeService {
     }
   }
 
-  Future<Recipe?> getRandomRecipeByAutoId() async {
+  Future<Recipe?> getRandomFilteredRecipeByCategories({
+    required Map<String, dynamic> categories,
+  }) async {
+    //true인 카테고리 라벨 목록 생성
+    List<String> selectedCategories =
+        categories.keys.where((key) => categories[key] == true).toList();
+
+    String randomId = generateRandomDocId();
+    if (randomId == '') {
+      debugPrint("RecipeService - Random Doc Id가 ''입니다.");
+      return null;
+    }
     try {
-      String randomId = generateRandomDocId();
-      if (randomId == '') {
-        debugPrint("RecipeService - Random Doc Id가 ''입니다.");
-        return null;
-      }
       // 랜덤 ID보다 큰 문서 중 첫 번째 문서를 가져옴
       QuerySnapshot querySnapshot = await _firestore
           .collection('recipes')
+          .where('category', whereIn: selectedCategories)
           .where(FieldPath.documentId, isGreaterThanOrEqualTo: randomId)
           .limit(1)
           .get();
