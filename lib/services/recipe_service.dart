@@ -286,6 +286,7 @@ class RecipeService {
     }
   }
 
+  //홈화면 랜덤 레시피
   Future<Recipe?> getFilteredRandomRecipeWithKeywords({
     required Map<String, dynamic> categories,
     required String keywords, // 키워드 필터 ('두부 버섯')
@@ -323,7 +324,7 @@ class RecipeService {
               doc['hashTag'] as String? ?? ''; // 해시태그가 없을 경우 빈 문자열로 처리
 
           // 키워드 리스트를 돌며 title, hashTag, descriptions에서 일치 여부 확인
-          return keywordList.any(
+          return keywordList.every(
             (keyword) =>
                 title.contains(keyword) ||
                 ingredients.contains(keyword) ||
@@ -357,6 +358,81 @@ class RecipeService {
     }
   }
 
+  //전체 화면 페이지
+  Future<List<Recipe>?> getFilteredRecipeList({
+    required Map<String, dynamic> categories,
+    required String keywords, // 키워드 필터 ('두부 버섯')
+  }) async {
+    // 1. true인 카테고리 라벨 목록 생성
+    List<String> selectedCategories =
+        categories.keys.where((key) => categories[key] == true).toList();
+
+    // 2. 키워드 필터 생성
+    List<String> keywordList =
+        keywords.trim().isNotEmpty ? keywords.trim().split(' ') : [];
+
+    try {
+      // 카테고리 필터 쿼리 생성
+      Query query = _firestore
+          .collection('recipes')
+          .where('category', whereIn: selectedCategories);
+
+      // 쿼리 실행
+      QuerySnapshot querySnapshot = await query.get();
+
+      // 쿼리 결과가 없으면 빈 리스트 반환
+      if (querySnapshot.docs.isEmpty) {
+        debugPrint("RecipeService - 조건에 맞는 문서가 없습니다.");
+        return [];
+      }
+
+      // 키워드가 없는 경우 모든 결과 반환
+      if (keywordList.isEmpty) {
+        return convertToRecipes(querySnapshot.docs);
+      }
+
+      // 키워드 필터가 있는 경우 필터링된 결과 반환
+      List<DocumentSnapshot> filteredDocs = querySnapshot.docs.where((doc) {
+        final title = doc['title'] as String;
+        final ingredients = doc['ingredients'] as String;
+        final hashTag =
+            doc['hashTag'] as String? ?? ''; // 해시태그가 없을 경우 빈 문자열로 처리
+
+        // 키워드 리스트를 돌며 title, ingredients, hashTag에서 일치 여부 확인
+        return keywordList.every(
+          (keyword) =>
+              title.contains(keyword) ||
+              ingredients.contains(keyword) ||
+              hashTag.contains(keyword),
+        );
+      }).toList();
+
+      // 필터링된 문서들이 없다면 빈 리스트 반환
+      if (filteredDocs.isEmpty) {
+        debugPrint("RecipeService - 키워드와 일치하는 문서가 없습니다.");
+        return [];
+      }
+
+      // 필터링된 문서들을 Recipe 객체로 변환 후 반환
+      return convertToRecipes(filteredDocs);
+    } catch (e) {
+      debugPrint('RecipeService - 필터된 전체 레시피 생성 중 오류 발생: $e');
+      return [];
+    }
+  }
+
+  // Recipe 변환 함수 (공통 로직을 함수로 추출)
+  List<Recipe> convertToRecipes(List<DocumentSnapshot> docs) {
+    return docs.map((doc) {
+      final recipeData = doc.data() as Map<String, dynamic>;
+      return Recipe.fromJson({
+        ...recipeData,
+        'recipeId': doc.id,
+      });
+    }).toList();
+  }
+
+  //상세 레시피 페이지
   Future<Recipe> getRecipeById({required String recipeId}) async {
     try {
       DocumentReference docReference =

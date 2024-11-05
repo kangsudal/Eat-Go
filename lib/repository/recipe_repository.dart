@@ -40,6 +40,7 @@ class RecipeRepository {
     }
   }
 
+  //홈 화면
   Future<Recipe?> getFilteredRandomRecipeWithoutKeyword({
     required Map<String, dynamic> categories,
   }) async {
@@ -53,6 +54,7 @@ class RecipeRepository {
     }
   }
 
+  //홈화면
   Future<Recipe?> getFilteredRandomRecipeWithKeyword({
     required Map<String, dynamic> categories,
     required String keywords,
@@ -64,6 +66,24 @@ class RecipeRepository {
       debugPrint('RecipeRepository - 랜덤 레시피 생성중 오류 발생 : $e');
       return null;
     }
+  }
+
+  //전체 레시피 페이지 사용(필터)
+  Future<List<Recipe>?> getFilteredRecipeList({
+    categories,
+    keywords,
+  }) async {
+    try {
+      List<Recipe>? recipeList = await _recipeService.getFilteredRecipeList(
+          categories: categories, keywords: keywords);
+      if (recipeList != null) {
+        return recipeList;
+      }
+    } catch (e) {
+      debugPrint('RecipeRepository - getFilteredRecipeList 에러 발생:$e');
+      return null;
+    }
+    return null;
   }
 
   Future<Recipe> getRecipeById({required String recipeId}) async {

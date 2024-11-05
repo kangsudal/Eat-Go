@@ -31,7 +31,7 @@ class AllRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
   late final RecipeRepository _recipeRepository;
 
   @override
-  Future<List<Recipe>> build() async{
+  Future<List<Recipe>> build() async {
     _recipeRepository = ref.read(recipeRepositoryProvider); // 의존성 주입
     return await fetchRecipes();
   }
@@ -63,13 +63,47 @@ class AllRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
     }
   }
 
-  // 레시피 목록 Future
-  Future<List<Recipe>> recipesFuture() async {
+  Future<void> fetchFilteredRecipes({
+    required Map<String, bool> categories,
+    required String keywords,
+  }) async {
+    state = const AsyncValue.loading();
+
     try {
-      return await _recipeRepository.getRecipesFuture();
-    } catch (e) {
-      debugPrint('레시피 가져오는 중 오류 발생: $e');
-      return [];
+      List<Recipe>? recipeList;
+      recipeList = await getFilteredRecipeListWithKeyword(
+        categories: categories,
+        keywords: keywords,
+      );
+      if (recipeList != null) {
+        state = AsyncValue.data(recipeList);
+      }
+    } catch (e, stackTrace) {
+      debugPrint('AllRecipeListViewModel - $e');
+      state = AsyncValue.error(
+          "조건에 맞는 레시피 리스트가 없습니다.", stackTrace); // 에러가 발생하면 에러 상태로 업데이트
     }
+  }
+
+  //필터하기
+  Future<List<Recipe>?> getFilteredRecipeListWithKeyword({
+    categories,
+    keywords,
+  }) async {
+    state = const AsyncValue.loading();
+    try {
+      List<Recipe>? recipeList = await _recipeRepository.getFilteredRecipeList(
+          categories: categories, keywords: keywords);
+      if (recipeList != null) {
+        state = AsyncValue.data(recipeList);
+        return recipeList;
+      }
+    } catch (error, stackTrace) {
+      debugPrint('AllRecipeListViewModel - WithKeyword 에러 발생');
+      state = AsyncValue.error(error, stackTrace);
+      return null;
+    }
+    state = AsyncValue.error('데이터를 불러오는데 문제가 생겼습니다.', StackTrace.current);
+    return null;
   }
 }

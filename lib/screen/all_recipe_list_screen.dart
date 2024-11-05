@@ -24,6 +24,9 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
     final keywords = ref.watch(allRecipeListScreenKeywordsProvider);
     final AsyncValue<List<Recipe>> recipeState = ref.watch(
         allRecipeListViewModelProvider); // ViewModel의 상태를 구독, 레시피 데이터를 가져오는데 로딩중, 성공, 실패 나타냄
+    final allRecipeListViewModel =
+        ref.read(allRecipeListViewModelProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('전체'),
@@ -85,17 +88,23 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
                         },
                       ),
                     ),
-                    Container(
-                      width: 50,
-                      height: 60,
-                      decoration: const BoxDecoration(
-                        color: pointColor,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(8),
-                          bottomRight: Radius.circular(8),
+                    GestureDetector(
+                      onTap: () {
+                        allRecipeListViewModel.fetchFilteredRecipes(
+                            categories: categories, keywords: keywords);
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 60,
+                        decoration: const BoxDecoration(
+                          color: pointColor,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(8),
+                            bottomRight: Radius.circular(8),
+                          ),
                         ),
+                        child: const Icon(Icons.search, color: Colors.white),
                       ),
-                      child: const Icon(Icons.search, color: Colors.white),
                     ),
                   ],
                 ),
