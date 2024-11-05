@@ -80,6 +80,7 @@ class RecipeDetailScreen extends ConsumerWidget {
         ),
         SizedBox(height: 20),
         Container(
+          padding: const EdgeInsets.all(15.0),
           decoration: BoxDecoration(
             border: Border.all(
               width: 1,
@@ -114,16 +115,7 @@ class RecipeDetailScreen extends ConsumerWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('$index.'),
-                  SizedBox(width: 5),
-                  Expanded(
-                    child: Text(validDescriptions[index].description),
-                  ),
-                ],
-              ),
+              child: Text(validDescriptions[index].description),
             ),
           ),
           SizedBox(height: 20),
