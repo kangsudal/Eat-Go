@@ -15,6 +15,71 @@ class AuthService {
     return user?.uid; // 현재 로그인된 사용자의 UID를 반환, 없으면 null
   }
 
+  Future<bool> reauthenticateWithSocialLogin() async {
+    try {
+      late final AuthCredential credential;
+      // 구글 계정으로 로그인된 경우
+      if (auth.currentUser!.providerData
+          .any((profile) => profile.providerId == 'google.com')) {
+        final GoogleSignIn googleSignIn = GoogleSignIn();
+        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+        if (googleUser == null) {
+          return false; // 사용자가 로그인 취소
+        }
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+
+        credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+      }
+      // 애플 계정으로 로그인된 경우
+      else if (auth.currentUser!.providerData
+          .any((profile) => profile.providerId == 'apple.com')) {
+        try {
+          final AuthorizationCredentialAppleID appleCredential =
+              await SignInWithApple.getAppleIDCredential(
+            scopes: [
+              AppleIDAuthorizationScopes.email,
+              // AppleIDAuthorizationScopes.fullName,
+            ], //scopes의 내용으로 user의 email, fullName을 선택 동의로 받아올수 있음
+          );
+
+          // Apple의 인증 자격(credential)을 기반으로 OAuth 인증 자격을 생성
+          // 'apple.com'은 OAuth 공급자로, Apple OAuth 인증을 나타냄
+          // OAuth 인증 자격(OAuth Credential)은 OAuth 프로세스에서 사용자의 신원과 권한을 증명하는 데 사용되는 토큰을 포함하는 객체.
+          // 이를 통해 사용자는 비밀번호를 제공하지 않고도 서비스에 로그인하거나 권한을 부여할 수 있음
+          credential = OAuthProvider('apple.com').credential(
+            idToken: appleCredential.identityToken,
+            accessToken: appleCredential.authorizationCode,
+          );
+        } on SignInWithAppleAuthorizationException catch (e) {
+          if (e.code == AuthorizationErrorCode.canceled) {
+            // 사용자가 로그인 창을 취소한 경우
+            debugPrint('Apple 로그인 취소됨');
+            return false;
+          } else {
+            // Apple 로그인 중 다른 오류 발생
+            debugPrint('Apple 로그인 오류: ${e.message}');
+            return false;
+          }
+        }
+      } else {
+        return false; //지원하지 않는 공급자
+      }
+      // 재인증 수행
+      await auth.currentUser!.reauthenticateWithCredential(credential);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      debugPrint('재인증 오류: ${e.code}');
+      return false; // 에러 발생 시 false 반환
+    } catch (e) {
+      debugPrint('AuthService - reauthenticateWithSocialLogin : $e');
+      throw Exception('재인증에 실패하였습니다.:$e');
+    }
+  }
+
   // 사용자 계정 삭제
   Future<void> deleteUserAccount() async {
     try {

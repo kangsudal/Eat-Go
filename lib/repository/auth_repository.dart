@@ -22,6 +22,10 @@ class AuthRepository {
     }
   }
 
+  Future<bool> reauthenticateWithSocialLogin() async {
+    return await _authService.reauthenticateWithSocialLogin();
+  }
+
   Future<UserCredential?> authenticateWithGoogle() async {
     return await _authService.authenticateWithGoogle();
   }

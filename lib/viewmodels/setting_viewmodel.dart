@@ -50,20 +50,28 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
   Future<bool> deleteUserAccountAndData() async {
     state = const AsyncValue.loading();
     try {
-      // 1. 현재 로그인된 사용자 UID 가져오기
+      // 1. 재인증 수행
+      bool isReauthenticated =
+          await _authRepository.reauthenticateWithSocialLogin();
+      if (!isReauthenticated) {
+        // 재인증 실패 시 탈퇴 중단
+        state = const AsyncValue.data(null);
+        return false;
+      }
+
+      // 2. 현재 로그인된 사용자 UID 가져오기
       String? uid = _authRepository.getCurrentUserUid();
       if (uid == null) {
         state = const AsyncValue.data(null);
         return false;
       }
-      Future.wait(
-        [
-          // 2. 계정 삭제
-          _authRepository.deleteUserAccount(),
-          // 3. Firestore에서 사용자 데이터 삭제
-          _userRepository.deleteUserData(uid)
-        ],
-      );
+
+      // 3. Firestore에서 사용자 데이터 삭제
+      await _userRepository.deleteUserData(uid);
+
+      // 4. 계정 삭제
+      await _authRepository.deleteUserAccount();
+
       state = const AsyncValue.data(null);
       return true;
     } catch (e, stackTrace) {
