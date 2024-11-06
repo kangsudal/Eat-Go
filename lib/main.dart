@@ -101,6 +101,7 @@ matches 리스트의 마지막 요소의 matchedLocation을 가져옵니다.
         scaffoldBackgroundColor: EatGoPalette.backgroundColor1,
       ),
       routerConfig: myRouter,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
