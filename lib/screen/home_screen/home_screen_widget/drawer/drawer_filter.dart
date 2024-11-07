@@ -14,18 +14,24 @@ class DrawerFilter extends ConsumerStatefulWidget {
 class _DrawerFilterState extends ConsumerState<DrawerFilter> {
   final TextEditingController textEditingController = TextEditingController();
 
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      textEditingController.text = ref.watch(homeScreenKeywordsProvider);
+    });
+  }
   @override
   void dispose() {
     textEditingController.dispose();
+    print('aa');
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(homeScreenCategoriesProvider);
-    final keywords = ref.watch(homeScreenKeywordsProvider);
-    textEditingController.text = keywords;
-    // int count = -999;
 
     TextStyle style = TextStyle(
       color: EatGoPalette.mainTextColor,
