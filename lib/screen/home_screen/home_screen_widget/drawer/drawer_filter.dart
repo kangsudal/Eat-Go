@@ -25,7 +25,6 @@ class _DrawerFilterState extends ConsumerState<DrawerFilter> {
   @override
   void dispose() {
     textEditingController.dispose();
-    print('aa');
     super.dispose();
   }
 
