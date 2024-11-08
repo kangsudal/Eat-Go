@@ -82,6 +82,13 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
   }
 
   @override
+  void dispose() {
+    //GoogleMapController와 같은 컨트롤러를 사용할 때는 중복 생성되지 않도록 처리
+    googleMapControllerCompleter.future.then((controller) => controller.dispose());
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final locationServiceStatus = ref.watch(locationServiceStatusProvider);
     return Scaffold(
@@ -181,6 +188,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
     return Stack(
       children: [
         GoogleMap(
+          key: const ValueKey('unique_google_map'), //맵 중복생성 안되게
           initialCameraPosition: initialPosition,
           myLocationButtonEnabled: false,
           zoomControlsEnabled: false,
