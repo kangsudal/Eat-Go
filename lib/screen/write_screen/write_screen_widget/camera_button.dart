@@ -145,10 +145,10 @@ class _CameraButtonState extends ConsumerState<CameraButton> {
       if (pickedImage != null) {
         String imagePath = pickedImage.path;
         // 이미지 URL 업데이트
-        // setState(() {
-        //   imageFile = File(imagePath);
-        // });
-        widget.viewModel.updateIngredientsImgUrl(File(pickedImage.path));
+        setState(() {
+          imageFile = File(imagePath);
+        });
+        widget.viewModel.updateIngredientsImgUrl(imageFile);
       }
     } catch (errorMsg) {
       debugPrint('CameraButton 에러: $errorMsg');
