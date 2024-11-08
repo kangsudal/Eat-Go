@@ -1,18 +1,25 @@
 import 'dart:io';
 
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
+import 'package:eat_go/viewmodels/recipe_write_base_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 //사진 or 카메라로 이미지를 업로드하는 버튼
-class CameraButton extends StatefulWidget {
-  const CameraButton({super.key});
+class CameraButton extends ConsumerStatefulWidget {
+  final RecipeWriteBaseViewModel viewModel;
+  const CameraButton({
+    super.key,
+    required this.viewModel,
+  });
 
   @override
-  State<CameraButton> createState() => _CameraButtonState();
+  ConsumerState<CameraButton> createState() => _CameraButtonState();
 }
 
-class _CameraButtonState extends State<CameraButton> {
+class _CameraButtonState extends ConsumerState<CameraButton> {
   File? imageFile;
 
   @override
@@ -137,12 +144,14 @@ class _CameraButtonState extends State<CameraButton> {
 
       if (pickedImage != null) {
         String imagePath = pickedImage.path;
-        setState(() {
-          imageFile = File(imagePath);
-        });
+        // 이미지 URL 업데이트
+        // setState(() {
+        //   imageFile = File(imagePath);
+        // });
+        widget.viewModel.updateIngredientsImgUrl(File(pickedImage.path));
       }
     } catch (errorMsg) {
-      print(errorMsg.toString());
+      debugPrint('CameraButton 에러: $errorMsg');
       setState(() {
         imageFile = null;
       });

@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:eat_go/model/description_model.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class WriteViewModel extends Notifier<Recipe> {
+class RecipeWriteBaseViewModel extends Notifier<Recipe> {
   @override
   Recipe build() {
     return Recipe(
@@ -27,16 +29,20 @@ class WriteViewModel extends Notifier<Recipe> {
     state = state.copyWith(title: newTitle);
   }
 
-  void updateCategory(String newCategory) {
-    state = state.copyWith(category: newCategory);
-  }
-
   void updateIngredients(String newIngredients) {
     state = state.copyWith(ingredients: newIngredients);
   }
 
+  void updateIngredientsImgUrl(File? imageFile) {
+    state = state.copyWith(ingredientsImgUrl: imageFile?.path ?? '');
+  }
+
   void addDescription(Description description) {
     state = state.copyWith(descriptions: [...state.descriptions, description]);
+  }
+
+  void updateCategory(String newCategory) {
+    state = state.copyWith(category: newCategory);
   }
 
   void updateCompletedImgUrl(String url) {

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/build_recipe_explain_and_img_sets.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/completed_recipe.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/ingredients_text_and_img_input.dart';
@@ -10,16 +11,21 @@ import 'package:eat_go/screen/write_screen/write_screen_widget/recipe_name_text_
 import 'package:eat_go/screen/write_screen/write_screen_widget/camera_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-class WriteScreen extends StatefulWidget {
-  const WriteScreen({super.key});
+class RecipeWriteScreen extends ConsumerStatefulWidget {
+  final bool isEditMode;
+  const RecipeWriteScreen({
+    super.key,
+    this.isEditMode = false,
+  });
 
   @override
-  State<WriteScreen> createState() => _WriteScreenState();
+  ConsumerState<RecipeWriteScreen> createState() => _RecipeWriteScreenState();
 }
 
-class _WriteScreenState extends State<WriteScreen> {
+class _RecipeWriteScreenState extends ConsumerState<RecipeWriteScreen> {
   final ScrollController _scrollController = ScrollController();
   List<RecipeExplainInput> recipeExplainInputs = [
     RecipeExplainInput(
@@ -41,6 +47,16 @@ class _WriteScreenState extends State<WriteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = ref.watch(
+      widget.isEditMode
+          ? recipeEditViewModelProvider.notifier
+          : recipeCreateViewModelProvider.notifier,
+    );
+    final recipe = ref.watch(
+      widget.isEditMode
+          ? recipeEditViewModelProvider
+          : recipeCreateViewModelProvider,
+    );
     return Scaffold(
       appBar: AppBar(
         shape: Border(
@@ -79,22 +95,28 @@ class _WriteScreenState extends State<WriteScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //레시피 이름을 입력하는 텍스트 필드
-                RecipeNameTextField(),
+                RecipeNameTextField(
+                  viewModel: viewModel,
+                ),
                 SizedBox(height: 30),
                 //레시피 종류를 입력하는 라디오 버튼들
                 RecipeCategoryPanel(),
                 SizedBox(height: 30),
                 //재료 입력 텍스트 필드
-                IngredientsTextAndImgInput(),
+                IngredientsTextAndImgInput(viewModel: viewModel),
                 SizedBox(height: 30),
                 //설명을 입력하는 텍스트필드&이미지 위젯 리스트
-                ...buildRecipeExplainAndImgInputSets(recipeExplainInputs),
+                ...buildRecipeExplainAndImgInputSets(
+                    recipeExplainInputs: recipeExplainInputs,
+                    viewModel: viewModel),
                 const SizedBox(height: 10),
                 //설명과 사진 입력 세트 추가버튼
                 _addRecipeExplainAndImgSetButton(),
                 const SizedBox(height: 30),
                 //완성된 요리 모습 업로드
-                CompletedRecipe(),
+                CompletedRecipe(
+                  viewModel: viewModel,
+                ),
                 SizedBox(height: 30),
               ],
             ),

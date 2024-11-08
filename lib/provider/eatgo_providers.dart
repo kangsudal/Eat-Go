@@ -14,12 +14,14 @@ import 'package:eat_go/repository/user_repository.dart';
 import 'package:eat_go/viewmodels/bookmark_viewmodel.dart';
 import 'package:eat_go/viewmodels/home_viewmodel.dart';
 import 'package:eat_go/provider/current_eatgo_user_notifier.dart';
+import 'package:eat_go/viewmodels/recipe_create_viewmodel.dart';
 import 'package:eat_go/viewmodels/recipe_detail_viewmodel.dart';
 import 'package:eat_go/viewmodels/all_recipe_list_viewmodel.dart';
+import 'package:eat_go/viewmodels/recipe_edit_viewmodel.dart';
 import 'package:eat_go/viewmodels/restaurant_viewmodel.dart';
 import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
 import 'package:eat_go/viewmodels/setting_viewmodel.dart';
-import 'package:eat_go/viewmodels/write_viewmodel.dart';
+import 'package:eat_go/viewmodels/recipe_write_base_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -174,4 +176,9 @@ final allRecipeListScreenCategoriesProvider =
 final allRecipeListScreenKeywordsProvider = StateProvider<String>((ref) => '');
 
 //<나의 레시피 작성하기 페이지>
-final writeViewModelProvider = NotifierProvider(WriteViewModel.new);
+//첫 포스팅
+final recipeCreateViewModelProvider =
+    NotifierProvider<RecipeCreateViewModel, Recipe>(RecipeCreateViewModel.new);
+//포스팅 수정
+final recipeEditViewModelProvider =
+    NotifierProvider<RecipeEditViewModel, Recipe>(RecipeEditViewModel.new);

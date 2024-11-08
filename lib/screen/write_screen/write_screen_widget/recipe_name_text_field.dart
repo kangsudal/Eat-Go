@@ -1,16 +1,20 @@
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
-import 'package:eat_go/viewmodels/write_viewmodel.dart';
+import 'package:eat_go/viewmodels/recipe_write_base_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //레시피 이름을 입력하는 텍스트 필드
 class RecipeNameTextField extends ConsumerWidget {
-  const RecipeNameTextField({super.key});
+  final RecipeWriteBaseViewModel viewModel;
+
+  const RecipeNameTextField({
+    super.key,
+    required this.viewModel,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final writeViewModel = ref.read(writeViewModelProvider.notifier);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -29,9 +33,9 @@ class RecipeNameTextField extends ConsumerWidget {
               borderSide: BorderSide(color: EatGoPalette.lineColor, width: 1),
             ),
           ),
-          validator: (value) => writeViewModel.validateTitle(value ?? ''),
+          validator: (value) => viewModel.validateTitle(value ?? ''),
           onSaved: (value) {
-            writeViewModel.updateTitle(value ?? '');
+            viewModel.updateTitle(value ?? '');
           },
         ),
       ],
