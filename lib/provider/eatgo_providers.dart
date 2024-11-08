@@ -19,6 +19,7 @@ import 'package:eat_go/viewmodels/all_recipe_list_viewmodel.dart';
 import 'package:eat_go/viewmodels/restaurant_viewmodel.dart';
 import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
 import 'package:eat_go/viewmodels/setting_viewmodel.dart';
+import 'package:eat_go/viewmodels/write_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,7 +36,8 @@ final recipeServiceProvider =
 final recipeRepositoryProvider = Provider(
     (ref) => RecipeRepository(recipeService: ref.watch(recipeServiceProvider)));
 final allRecipeListViewModelProvider =
-    AsyncNotifierProvider<AllRecipeListViewModel, List<Recipe>>(AllRecipeListViewModel.new);
+    AsyncNotifierProvider<AllRecipeListViewModel, List<Recipe>>(
+        AllRecipeListViewModel.new);
 //RecipeViewModel: 레시피 목록을 서버에서 가져오거나, 로딩 중, 에러 상태를 처리함.
 //StateNotifierProvider: View 화면에 전달하는 도구
 
@@ -170,3 +172,6 @@ final allRecipeListScreenCategoriesProvider =
 });
 
 final allRecipeListScreenKeywordsProvider = StateProvider<String>((ref) => '');
+
+//<나의 레시피 작성하기 페이지>
+final writeViewModelProvider = NotifierProvider(WriteViewModel.new);

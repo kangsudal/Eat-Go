@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/build_recipe_explain_and_img_sets.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/completed_recipe.dart';
-import 'package:eat_go/screen/write_screen/write_screen_widget/ingredients_text_field.dart';
+import 'package:eat_go/screen/write_screen/write_screen_widget/ingredients_text_and_img_input.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/recipe_category_panel.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/recipe_explain_input.dart';
 import 'package:eat_go/screen/write_screen/write_screen_widget/recipe_name_text_field.dart';
@@ -27,6 +27,7 @@ class _WriteScreenState extends State<WriteScreen> {
       globalKeyForScroll: GlobalKey(), //스크롤을 위해 설명 widget들에게 할당해줌
     ),
   ];
+  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -72,28 +73,31 @@ class _WriteScreenState extends State<WriteScreen> {
         controller: _scrollController,
         child: Padding(
           padding: const EdgeInsets.only(left: 30.0, right: 30, top: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //레시피 이름을 입력하는 텍스트 필드
-              RecipeNameTextField(),
-              SizedBox(height: 30),
-              //레시피 종류를 입력하는 라디오 버튼들
-              RecipeCategoryPanel(),
-              SizedBox(height: 30),
-              //재료 입력 텍스트 필드
-              IngredientsTextField(),
-              SizedBox(height: 30),
-              //설명을 입력하는 텍스트필드&이미지 위젯 리스트
-              ...buildRecipeExplainAndImgInputSets(recipeExplainInputs),
-              const SizedBox(height: 10),
-              //설명과 사진 입력 세트 추가버튼
-              _addRecipeExplainAndImgSetButton(),
-              const SizedBox(height: 30),
-              //완성된 요리 모습 업로드
-              CompletedRecipe(),
-              SizedBox(height: 30),
-            ],
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //레시피 이름을 입력하는 텍스트 필드
+                RecipeNameTextField(),
+                SizedBox(height: 30),
+                //레시피 종류를 입력하는 라디오 버튼들
+                RecipeCategoryPanel(),
+                SizedBox(height: 30),
+                //재료 입력 텍스트 필드
+                IngredientsTextAndImgInput(),
+                SizedBox(height: 30),
+                //설명을 입력하는 텍스트필드&이미지 위젯 리스트
+                ...buildRecipeExplainAndImgInputSets(recipeExplainInputs),
+                const SizedBox(height: 10),
+                //설명과 사진 입력 세트 추가버튼
+                _addRecipeExplainAndImgSetButton(),
+                const SizedBox(height: 30),
+                //완성된 요리 모습 업로드
+                CompletedRecipe(),
+                SizedBox(height: 30),
+              ],
+            ),
           ),
         ),
       ),

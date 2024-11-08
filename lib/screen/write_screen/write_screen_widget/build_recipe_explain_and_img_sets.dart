@@ -32,7 +32,7 @@ class RecipeExplainAndImg extends StatelessWidget {
       children: [
         Text('설명${index + 1}', style: const TextStyle(fontSize: 15)),
         const SizedBox(height: 8),
-        TextField(
+        TextFormField(
           controller: recipeExplainInputs[index].textEditingController,
           minLines: 4,
           maxLines: 4,
