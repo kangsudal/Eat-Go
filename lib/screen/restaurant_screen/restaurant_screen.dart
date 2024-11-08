@@ -29,8 +29,9 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
   final Completer<GoogleMapController> googleMapControllerCompleter =
       Completer();
   Set<Marker> markers = {}; // 마커를 저장할 Set
+  BitmapDescriptor customIcon = BitmapDescriptor.defaultMarker;
 
-  void fetchMarkers(List<Restaurant> restaurants) {
+  void fetchMarkers(List<Restaurant> restaurants) async {
     markers = restaurants.map((restaurant) {
       return Marker(
         markerId: MarkerId(restaurant.id),
@@ -61,9 +62,23 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
             // }
           },
         ),
+        icon: customIcon,
       );
     }).toSet();
     debugPrint('${restaurants.length}개의 마커 패치 완료');
+  }
+
+  Future<void> createCustomMapIcon() async {
+    customIcon = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(35, 43)),
+      'assets/icons/map-marker.png',
+    );
+  }
+
+  @override
+  void initState() {
+    createCustomMapIcon();
+    super.initState();
   }
 
   @override
