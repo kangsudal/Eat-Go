@@ -144,6 +144,8 @@ class _MyRecipeScreenState extends ConsumerState<MyRecipeListScreen> {
                                             alignment: Alignment.centerLeft,
                                             child: Text(element.title)),
                                       ),
+                                      /*
+                                      각 셀 아래에 있는 조회수 등의 메타정보
                                       Container(
                                         // color: Colors.pink,
                                         child: Row(
@@ -206,7 +208,7 @@ class _MyRecipeScreenState extends ConsumerState<MyRecipeListScreen> {
                                             ),
                                           ],
                                         ),
-                                      ),
+                                      ),*/
                                     ],
                                   ),
                                 ),
