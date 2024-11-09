@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/write_screen/recipe_write_screen.dart';
-import 'package:eat_go/screen/write_screen/write_screen_widget/camera_button.dart';
-import 'package:eat_go/screen/write_screen/write_screen_widget/recipe_explain_input.dart';
+import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen.dart';
+import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/camera_button.dart';
+import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/recipe_explain_input.dart';
 import 'package:eat_go/viewmodels/recipe_write_base_viewmodel.dart';
 import 'package:flutter/material.dart';
 

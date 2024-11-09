@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:eat_go/model/fake_recipe.dart';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/custom_widget/custom_list_tile.dart';
-import 'package:eat_go/screen/write_screen/recipe_write_screen.dart';
+import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -207,6 +207,7 @@ class _MyRecipeScreenState extends State<MyRecipeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          //todo: goRouter로 바꾸기
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => RecipeWriteScreen(),
