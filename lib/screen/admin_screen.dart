@@ -20,7 +20,8 @@ class AdminScreen extends StatelessWidget {
               onPressed: () async {
                 // 버튼 클릭 시 일회성 작업 실행
                 // await updateRecipesCollection();
-                textSearch("가지볶음");
+                // textSearch("가지볶음");
+                // await updateAllRecipesChangeCreatedBy();
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -84,7 +85,7 @@ class AdminScreen extends StatelessWidget {
   void textSearch(String queryValue) async {
     final location = await Geolocator.getCurrentPosition();
     var headers = {
-      'Accept':'*/*',
+      'Accept': '*/*',
       'Content-Type': 'application/json',
       'X-Goog-Api-Key': dotenv.env['GOOGLE_MAPS_API_KEY']!,
       'X-Goog-FieldMask': 'places.id,'
@@ -125,5 +126,26 @@ class AdminScreen extends StatelessWidget {
     } else {
       print(response.reasonPhrase);
     }
+  }
+
+  // 모든 레시피 문서를 작성자 업데이트
+  Future<void> updateAllRecipesChangeCreatedBy() async {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    WriteBatch batch = _firestore.batch();
+
+    // 레시피 컬렉션의 모든 문서를 참조
+    QuerySnapshot<Map<String, dynamic>> recipesSnapshot =
+        await _firestore.collection('recipes').get();
+
+    for (var doc in recipesSnapshot.docs) {
+      // userClapCounts 필드를 삭제하고 clapRecords를 빈 리스트로 초기화
+      batch.update(doc.reference, {
+        'createdBy': 'ujNZ5NNbSaZ4ng6ec4lqAcsSldc2', // ClapRecord 리스트로 초기화
+      });
+    }
+
+    // 일괄 업데이트 실행
+    await batch.commit();
+    print("모든 레시피 문서가 업데이트되었습니다.");
   }
 }
