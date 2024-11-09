@@ -147,28 +147,54 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
 
   void handleWithdrawal() async {
     final settingViewModel = ref.read(settingViewModelProvider.notifier);
-    // 페이지가 닫히기 전에 상태를 복원(저장안하고 떠났을때)
-    final currentUser = ref.read(settingViewModelProvider).asData?.value;
-    try {
-      // 계정 및 데이터 삭제
-      final result = await settingViewModel.deleteUserAccountAndData();
+    showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          content:
+          const Text('정말로 탈퇴하시겠습니까?'),
+          actions: [
+            CupertinoDialogAction(
+              child: const Text('예'),
+              onPressed: () async{
 
-      if (result == false) {
-        debugPrint('SettingScreen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('오류가 발생했습니다.')),
-          );
-        }
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('성공적으로 탈퇴 처리가 되었습니다.')),
-          );
-        }
-      }
-    } catch (e) {
-      debugPrint('SettingScreen 오류 발 생 - 계정 삭제 실패 : $e');
-    }
+                // 페이지가 닫히기 전에 상태를 복원(저장안하고 떠났을때)
+                final currentUser = ref.read(settingViewModelProvider).asData?.value;
+                try {
+                  // 계정 및 데이터 삭제
+                  final result = await settingViewModel.deleteUserAccountAndData();
+
+                  if (result == false) {
+                    debugPrint('SettingScreen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('오류가 발생했습니다.')),
+                      );
+                    }
+                  } else {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('성공적으로 탈퇴 처리가 되었습니다.')),
+                      );
+                    }
+                  }
+                } catch (e) {
+                  debugPrint('SettingScreen 오류 발 생 - 계정 삭제 실패 : $e');
+                }
+                if(context.mounted) {
+                  Navigator.pop(context);
+                }
+              },
+            ),
+            CupertinoDialogAction(
+              child: const Text('아니오'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
