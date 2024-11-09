@@ -80,6 +80,7 @@ class RecipeDetailScreen extends ConsumerWidget {
         ),
         SizedBox(height: 20),
         Container(
+          width: double.infinity,
           padding: const EdgeInsets.all(15.0),
           decoration: BoxDecoration(
             border: Border.all(

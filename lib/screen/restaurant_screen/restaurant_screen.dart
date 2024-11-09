@@ -70,8 +70,8 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
 
   Future<void> createCustomMapIcon() async {
     customIcon = await BitmapDescriptor.asset(
-      const ImageConfiguration(size: Size(35, 43)),
-      'assets/icons/map-marker.png',
+      const ImageConfiguration(size: Size(35, 47)),
+      'assets/icons/map-marker-clover.png',
     );
   }
 
