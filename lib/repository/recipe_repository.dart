@@ -104,4 +104,13 @@ class RecipeRepository {
       return false;
     }
   }
+
+  Future<List<Recipe>> fetchRecipesByCreatedBy({required String createdBy}) async {
+    try {
+      return _recipeService.fetchRecipesByCreatedBy(createdBy: createdBy);
+    } catch (e) {
+      debugPrint('레시피를 가져오는 중 오류 발생: $e');
+      return [];
+    }
+  }
 }

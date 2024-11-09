@@ -4,7 +4,7 @@ import 'package:eat_go/screen/all_recipe_list_screen.dart';
 import 'package:eat_go/screen/bookmark_screen.dart';
 import 'package:eat_go/screen/history_screen.dart';
 import 'package:eat_go/screen/home_screen/home_screen.dart';
-import 'package:eat_go/screen/my_recipe_screen.dart';
+import 'package:eat_go/screen/my_recipe_list_screen.dart';
 import 'package:eat_go/screen/path_error_screen.dart';
 import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_screen.dart';
 import 'package:eat_go/screen/restaurant_screen/restaurant_screen.dart';
@@ -144,9 +144,9 @@ final myRouterProvider = Provider<GoRouter>((ref) {
           ),
           //Drawer - 나의 레시피
           GoRoute(
-            path: 'my_recipe',
+            path: 'my_recipe_list',
             builder: (BuildContext context, GoRouterState state) =>
-                const MyRecipeScreen(),
+                const MyRecipeListScreen(),
             routes: <RouteBase>[
               // 나의 레시피 - 각 레시피 타일 클릭했을때
               goRouteRecipeDetail(),

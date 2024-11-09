@@ -470,4 +470,27 @@ class RecipeService {
       return false;
     }
   }
+
+  Future<List<Recipe>> fetchRecipesByCreatedBy(
+      {required String createdBy}) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection('recipes')
+          .where('createdBy', isEqualTo: createdBy)
+          .get();
+
+      // 쿼리 결과가 없으면 빈 리스트 반환
+      if (snapshot.docs.isEmpty) {
+        debugPrint("RecipeService -fetchRecipesByCreatedBy- 조건에 맞는 문서가 없습니다.");
+        return [];
+      }
+
+      // 각 문서를 Recipe 객체로 변환
+      return convertToRecipes(snapshot.docs);
+    } catch (e) {
+      debugPrint('RecipeService fetchRecipesByCreatedBy- 레시피를 가져오는 중 오류 발생: $e');
+      throw Exception(
+          'RecipeService fetchRecipesByCreatedBy- 레시피를 가져오는 중 오류 발생: $e'); // 오류 발생 시 빈 리스트 반환
+    }
+  }
 }

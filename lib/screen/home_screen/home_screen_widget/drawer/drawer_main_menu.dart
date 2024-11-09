@@ -38,7 +38,7 @@ class DrawerMainMenu extends StatelessWidget {
             style: style,
           ),
           onTap: () {
-            context.go('/home/my_recipe');
+            context.go('/home/my_recipe_list');
           },
         ),
         const Divider(thickness: 1),

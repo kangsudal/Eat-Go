@@ -14,6 +14,7 @@ import 'package:eat_go/repository/user_repository.dart';
 import 'package:eat_go/viewmodels/bookmark_viewmodel.dart';
 import 'package:eat_go/viewmodels/home_viewmodel.dart';
 import 'package:eat_go/provider/current_eatgo_user_notifier.dart';
+import 'package:eat_go/viewmodels/my_recipe_viewmodel.dart';
 import 'package:eat_go/viewmodels/recipe_create_viewmodel.dart';
 import 'package:eat_go/viewmodels/recipe_detail_viewmodel.dart';
 import 'package:eat_go/viewmodels/all_recipe_list_viewmodel.dart';
@@ -182,3 +183,8 @@ final recipeCreateViewModelProvider =
 //포스팅 수정
 final recipeEditViewModelProvider =
     NotifierProvider<RecipeEditViewModel, Recipe>(RecipeEditViewModel.new);
+
+//<나의 레시피 페이지(목록)>
+final myRecipeListViewModelProvider =
+    AsyncNotifierProvider<MyRecipeListViewModel, List<Recipe>>(
+        MyRecipeListViewModel.new);
