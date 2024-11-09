@@ -84,14 +84,25 @@ class _MyRecipeScreenState extends ConsumerState<MyRecipeListScreen> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                '${currentEatGoUser.displayName}님께서 올려주신 소중한 레시피',
-                                style: TextStyle(
-                                  color: EatGoPalette.subTextColor,
+                              RichText(
+                                text: TextSpan(
+                                  text: currentEatGoUser.displayName,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      color: pointColor,
+                                      fontWeight: FontWeight.bold),
+                                  children: [
+                                    TextSpan(
+                                      text: '님께서 올려주신 소중한 레시피',
+                                      style: TextStyle(
+                                          color: EatGoPalette.subTextColor,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              SortBar(),
-                              IncreaseGraphBox(),
+                              // SortBar(),
+                              // IncreaseGraphBox(),
                               SizedBox(height: 30),
                             ],
                           );
@@ -101,9 +112,8 @@ class _MyRecipeScreenState extends ConsumerState<MyRecipeListScreen> {
                             padding: const EdgeInsets.only(bottom: 20.0),
                             child: GestureDetector(
                               onTap: () {
-                                //todo: 옳바른 recipeId 넣어주기
                                 context.go(
-                                    '/home/my_recipe/recipe_detail/${element.recipeId}');
+                                    '/home/my_recipe_list/recipe_detail/${element.recipeId}');
                               },
                               child: CustomListTile(
                                 leading: SizedBox(
@@ -136,7 +146,7 @@ class _MyRecipeScreenState extends ConsumerState<MyRecipeListScreen> {
                                       ),
                                       Container(
                                         // color: Colors.pink,
-                                        child: const Row(
+                                        child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
@@ -178,10 +188,11 @@ class _MyRecipeScreenState extends ConsumerState<MyRecipeListScreen> {
                                             SizedBox(width: 7),
                                             Row(
                                               children: [
-                                                Icon(
-                                                  Icons.check_circle_outline,
+                                                Image.asset(
+                                                  'assets/icons/icon-clap.png',
                                                   color: pointColor,
-                                                  size: 17,
+                                                  width: 15,
+                                                  height: 15,
                                                 ),
                                                 SizedBox(width: 1),
                                                 Text(
@@ -356,9 +367,11 @@ class SortBar extends StatelessWidget {
             color: pointColor,
           ),
         ),
-        Icon(
-          Icons.check_circle_outline,
+        Image.asset(
+          'assets/icons/icon-clap.png',
           color: pointColor,
+          width: 20,
+          height: 20,
         ),
         Text(
           ' ${-99}',
