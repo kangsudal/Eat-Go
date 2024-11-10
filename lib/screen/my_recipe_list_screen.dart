@@ -45,7 +45,7 @@ class MyRecipeListScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          'assets/pencil-img.png',
+                          'assets/images/pencil-img.png',
                           width: 150,
                           height: 150,
                         ),

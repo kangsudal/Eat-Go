@@ -32,15 +32,15 @@ class DrawerMainMenu extends StatelessWidget {
             context.go('/home/bookmark');
           },
         ),
-        ListTile(
-          title: Text(
-            '나의 레시피',
-            style: style,
-          ),
-          onTap: () {
-            context.go('/home/my_recipe_list');
-          },
-        ),
+        // ListTile(
+        //   title: Text(
+        //     '나의 레시피',
+        //     style: style,
+        //   ),
+        //   onTap: () {
+        //     context.go('/home/my_recipe_list');
+        //   },
+        // ),
         const Divider(thickness: 1),
       ],
     );

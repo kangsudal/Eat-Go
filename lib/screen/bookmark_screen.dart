@@ -41,8 +41,21 @@ class BookmarkScreen extends ConsumerWidget {
                     );
                   }
                   if (bookmarkedRecipeList.isEmpty) {
-                    return const Center(
-                      child: Text('북마크한 레시피가 없습니다.'),
+                    return Align(
+                      alignment: const Alignment(0, -0.3),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/memo-no-result.png',
+                            width: 200,
+                            height: 200,
+                          ),
+                          const SizedBox(height:10),
+                          const Text('아직 북마크한 레시피가 없습니다.'),
+                        ],
+                      ),
                     );
                   }
                   return ListView.builder(

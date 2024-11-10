@@ -93,7 +93,22 @@ class ContentWidget extends ConsumerWidget {
             );
           }
         },
-        error: (error, stackTrace) => Text('$error'),
+        error: (error, stackTrace) => Align(
+          alignment: const Alignment(0, -0.3),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/memo-no-result.png',
+                width: 200,
+                height: 200,
+              ),
+              const SizedBox(height:10),
+               Text('$error'),
+            ],
+          ),
+        ),
         loading: () => const CircularProgressIndicator(),
       ),
     );

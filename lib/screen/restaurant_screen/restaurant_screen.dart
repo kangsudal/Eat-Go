@@ -84,7 +84,8 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
   @override
   void dispose() {
     //GoogleMapController와 같은 컨트롤러를 사용할 때는 중복 생성되지 않도록 처리
-    googleMapControllerCompleter.future.then((controller) => controller.dispose());
+    googleMapControllerCompleter.future
+        .then((controller) => controller.dispose());
     super.dispose();
   }
 
@@ -113,7 +114,22 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                 if (restaurants.isEmpty) {
                   return Scaffold(
                     appBar: AppBar(),
-                    body: const Center(child: Text('관련된 식당이 없습니다!')),
+                    body: Align(
+                      alignment: const Alignment(0, -0.3),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/memo-no-result.png',
+                            width: 200,
+                            height: 200,
+                          ),
+                          const SizedBox(height:10),
+                          const Text('관련된 식당이 없습니다!'),
+                        ],
+                      ),
+                    ),
                   );
                 } else {
                   return buildGoogleMap(restaurants, currentPosition);

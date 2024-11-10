@@ -162,7 +162,22 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
                 // 데이터 상태 처리
                 data: (recipes) {
                   if (recipes.isEmpty) {
-                    return const Center(child: Text('레시피가 없습니다.'));
+                    return Align(
+                      alignment: const Alignment(0, -0.3),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/memo-no-result.png',
+                            width: 200,
+                            height: 200,
+                          ),
+                          const SizedBox(height:10),
+                          const Text('조건에 맞는 레시피가 없습니다.'),
+                        ],
+                      ),
+                    );
                   }
 
                   return Column(
