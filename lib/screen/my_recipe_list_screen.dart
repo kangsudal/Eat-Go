@@ -13,16 +13,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
-class MyRecipeListScreen extends ConsumerStatefulWidget {
+class MyRecipeListScreen extends ConsumerWidget {
   const MyRecipeListScreen({super.key});
-
   @override
-  ConsumerState<MyRecipeListScreen> createState() => _MyRecipeScreenState();
-}
-
-class _MyRecipeScreenState extends ConsumerState<MyRecipeListScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final myRecipeListViewModel =
         ref.watch(myRecipeListViewModelProvider.notifier);
     final myRecipeListState = ref.watch(myRecipeListViewModelProvider);
@@ -32,246 +26,255 @@ class _MyRecipeScreenState extends ConsumerState<MyRecipeListScreen> {
       appBar: AppBar(
         title: const Text('나의 레시피'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 30.0, right: 30),
-        child: myRecipeListState.when(
-            data: (recipeList) {
-              return currentEatGoUser.when(
-                  data: (currentEatGoUser) {
-                    if (currentEatGoUser == null) {
-                      return const Center(
-                        child: Text('현재 사용자를 불러오지 못하였습니다.'),
-                      );
-                    }
-                    if (recipeList.isEmpty) {
-                      return Align(
-                        alignment: const Alignment(0, -0.3),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/pencil-img.png',
-                              width: 150,
-                              height: 150,
+      body: currentEatGoUser.when(
+        data: (currentEatGoUser) {
+          if (currentEatGoUser == null) {
+            return const Center(
+              child: Text('현재 사용자를 불러오지 못하였습니다.'),
+            );
+          }
+          return Padding(
+            padding: const EdgeInsets.only(left: 30.0, right: 30),
+            child: myRecipeListState.when(
+              data: (recipeList) {
+                if (recipeList.isEmpty) {
+                  return Align(
+                    alignment: const Alignment(0, -0.3),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/pencil-img.png',
+                          width: 150,
+                          height: 150,
+                        ),
+                        RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: currentEatGoUser.displayName,
+                            style: const TextStyle(
+                                fontSize: 18,
+                                color: pointColor,
+                                fontWeight: FontWeight.bold),
+                            children: const [
+                              TextSpan(
+                                text: '님만의 \n특별한 레시피를 작성해주세요!',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: recipeList.length + 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == 0) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              text: currentEatGoUser.displayName,
+                              style: const TextStyle(
+                                  fontSize: 15,
+                                  color: pointColor,
+                                  fontWeight: FontWeight.bold),
+                              children: [
+                                TextSpan(
+                                  text: '님께서 올려주신 소중한 레시피',
+                                  style: TextStyle(
+                                      color: EatGoPalette.subTextColor,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
                             ),
-                            RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                text: currentEatGoUser.displayName,
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    color: pointColor,
-                                    fontWeight: FontWeight.bold),
-                                children: const [
-                                  TextSpan(
-                                    text: '님만의 \n특별한 레시피를 작성해주세요!',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w400),
+                          ),
+                          // SortBar(),
+                          // IncreaseGraphBox(),
+                          SizedBox(height: 30),
+                        ],
+                      );
+                    } else {
+                      Recipe element = recipeList[index - 1];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            context.go(
+                                '/home/my_recipe_list/recipe_detail/${element.recipeId}');
+                          },
+                          child: CustomListTile(
+                            leading: SizedBox(
+                              width: 70,
+                              height: 70,
+                              child: CachedNetworkImage(
+                                imageUrl: element.completedImgUrl,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) =>
+                                        CircularProgressIndicator(
+                                  value: downloadProgress.progress,
+                                ),
+                                errorWidget: (context, _, __) => const Center(
+                                    child: Icon(Icons.report_problem_outlined)),
+                              ),
+                            ),
+                            mid: SizedBox(
+                              height: 70,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(element.title)),
+                                  ),
+                                  /*
+                            각 셀 아래에 있는 조회수 등의 메타정보
+                            Container(
+                              // color: Colors.pink,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.remove_red_eye,
+                                        color: pointColor,
+                                        size: 17,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        '-99',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: pointColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(width: 7),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.bookmark,
+                                        color: pointColor,
+                                        size: 17,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        '-99',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: pointColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(width: 7),
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/icons/icon-clap.png',
+                                        color: pointColor,
+                                        width: 15,
+                                        height: 15,
+                                      ),
+                                      SizedBox(width: 1),
+                                      Text(
+                                        '-99',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: pointColor,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
+                            ),*/
+                                ],
+                              ),
                             ),
-                          ],
+                            trailing: PopupMenuButton(
+                              icon: Icon(Icons.more_vert),
+                              iconColor: pointColor,
+                              itemBuilder: (BuildContext context) {
+                                return [
+                                  PopupMenuItem(
+                                      child: Text('수정'),
+                                      onTap: () {
+                                        //todo: GoRouter로
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                RecipeWriteScreen(
+                                              isEditMode: true,
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                  PopupMenuItem(
+                                    child: Text('삭제'),
+                                    onTap: () {
+                                      showCupertinoDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return CupertinoAlertDialog(
+                                            content: Text('나의 레시피에서 삭제하시겠습니까?'),
+                                            actions: [
+                                              CupertinoDialogAction(
+                                                child: const Text('예'),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                              CupertinoDialogAction(
+                                                child: const Text('아니오'),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ];
+                              },
+                            ),
+                          ),
                         ),
                       );
                     }
-                    return ListView.builder(
-                      itemCount: recipeList.length + 1,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (index == 0) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                  text: currentEatGoUser.displayName,
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      color: pointColor,
-                                      fontWeight: FontWeight.bold),
-                                  children: [
-                                    TextSpan(
-                                      text: '님께서 올려주신 소중한 레시피',
-                                      style: TextStyle(
-                                          color: EatGoPalette.subTextColor,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              // SortBar(),
-                              // IncreaseGraphBox(),
-                              SizedBox(height: 30),
-                            ],
-                          );
-                        } else {
-                          Recipe element = recipeList[index - 1];
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 20.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                context.go(
-                                    '/home/my_recipe_list/recipe_detail/${element.recipeId}');
-                              },
-                              child: CustomListTile(
-                                leading: SizedBox(
-                                  width: 70,
-                                  height: 70,
-                                  child: CachedNetworkImage(
-                                    imageUrl: element.completedImgUrl,
-                                    progressIndicatorBuilder:
-                                        (context, url, downloadProgress) =>
-                                            CircularProgressIndicator(
-                                      value: downloadProgress.progress,
-                                    ),
-                                    errorWidget: (context, _, __) =>
-                                        const Center(
-                                            child: Icon(
-                                                Icons.report_problem_outlined)),
-                                  ),
-                                ),
-                                mid: SizedBox(
-                                  height: 70,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    // mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(element.title)),
-                                      ),
-                                      /*
-                                      각 셀 아래에 있는 조회수 등의 메타정보
-                                      Container(
-                                        // color: Colors.pink,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.remove_red_eye,
-                                                  color: pointColor,
-                                                  size: 17,
-                                                ),
-                                                SizedBox(width: 4),
-                                                Text(
-                                                  '-99',
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: pointColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(width: 7),
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.bookmark,
-                                                  color: pointColor,
-                                                  size: 17,
-                                                ),
-                                                SizedBox(width: 4),
-                                                Text(
-                                                  '-99',
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: pointColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(width: 7),
-                                            Row(
-                                              children: [
-                                                Image.asset(
-                                                  'assets/icons/icon-clap.png',
-                                                  color: pointColor,
-                                                  width: 15,
-                                                  height: 15,
-                                                ),
-                                                SizedBox(width: 1),
-                                                Text(
-                                                  '-99',
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: pointColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),*/
-                                    ],
-                                  ),
-                                ),
-                                trailing: PopupMenuButton(
-                                  icon: Icon(Icons.more_vert),
-                                  iconColor: pointColor,
-                                  itemBuilder: (BuildContext context) {
-                                    return [
-                                      PopupMenuItem(
-                                        child: Text('수정'),
-                                      ),
-                                      PopupMenuItem(
-                                        child: Text('삭제'),
-                                        onTap: () {
-                                          showCupertinoDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return CupertinoAlertDialog(
-                                                content:
-                                                    Text('나의 레시피에서 삭제하시겠습니까?'),
-                                                actions: [
-                                                  CupertinoDialogAction(
-                                                    child: const Text('예'),
-                                                    onPressed: () {
-                                                      setState(() {});
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                  CupertinoDialogAction(
-                                                    child: const Text('아니오'),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ),
-                                    ];
-                                  },
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    );
                   },
-                  error: (error, stackTrace) {
-                    return const Center(
-                      child: Text('오류가 발생하였습니다.'),
-                    );
-                  },
-                  loading: () => const CircularProgressIndicator());
-            },
-            error: (error, stackTrace) {
-              return Center(child: Text(error.toString()));
-            },
-            loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                )),
+                );
+              },
+              error: (error, stackTrace) {
+                debugPrint('$stackTrace:$error');
+                return const Center(
+                  child: Text('오류가 발생하였습니다.'),
+                );
+              },
+              loading: () => Center(child: const CircularProgressIndicator()),
+            ),
+          );
+        },
+        error: (error, stackTrace) {
+          debugPrint('$stackTrace:$error');
+          return const Center(
+            child: Text('오류가 발생하였습니다.'),
+          );
+        },
+        loading: () => Center(child: const CircularProgressIndicator()),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

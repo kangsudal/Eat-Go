@@ -76,6 +76,8 @@ class _RecipeWriteScreenState extends ConsumerState<RecipeWriteScreen> {
             ),
           ),
         ),
+          title: Text(widget.isEditMode ? "레시피 수정" : "레시피 작성"),
+        centerTitle: true,
         actions: [
           TextButton(
             onPressed: () {

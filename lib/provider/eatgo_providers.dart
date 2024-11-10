@@ -64,16 +64,16 @@ final authStateProvider = StreamProvider<User?>((ref) async* {
 
 // AuthService Provider(인증 관련 서비스 제공) : 로그인/로그아웃과 같은 인증 관련 로직
 final authServiceProvider =
-    Provider((ref) => AuthService(auth: ref.watch(authProvider)));
-final authRepositoryProvider = Provider(
+    Provider<AuthService>((ref) => AuthService(auth: ref.watch(authProvider)));
+final authRepositoryProvider = Provider<AuthRepository>(
     (ref) => AuthRepository(authService: ref.watch(authServiceProvider)));
 // AuthRepository: 인증을 처리하는 역할 (예: 로그인, 로그아웃, fireauth에서 계정 삭제).
 
 // UserRepository Provider(데이터베이스와 상호작용) : Firebase Firestore와 상호작용
 final userServiceProvider =
-    Provider((ref) => UserService(firestore: ref.watch(firestoreProvider)));
+    Provider<UserService>((ref) => UserService(firestore: ref.watch(firestoreProvider)));
 
-final userRepositoryProvider = Provider(
+final userRepositoryProvider = Provider<UserRepository>(
     (ref) => UserRepository(userService: ref.watch(userServiceProvider)));
 // UserRepository: 사용자 데이터를 다루는 역할 (auth에 저장 못하는 사용자 정보(Apple email, bookmarks) 저장, 불러오기, 업데이트).
 
