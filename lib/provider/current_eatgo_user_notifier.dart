@@ -8,8 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CurrentEatGoUserNotifier extends AsyncNotifier<EatGoUser?> {
-  late final AuthRepository _authRepository;
-  late final UserRepository _userRepository;
+  late AuthRepository _authRepository;
+  late UserRepository _userRepository;
 
   @override
   FutureOr<EatGoUser?> build() async {

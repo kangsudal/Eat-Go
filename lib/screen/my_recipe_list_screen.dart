@@ -259,7 +259,7 @@ class MyRecipeListScreen extends ConsumerWidget {
                 );
               },
               error: (error, stackTrace) {
-                debugPrint('$stackTrace:$error');
+                debugPrint('MyRecipeListScreen-262:$error');
                 return const Center(
                   child: Text('오류가 발생하였습니다.'),
                 );
@@ -269,7 +269,7 @@ class MyRecipeListScreen extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) {
-          debugPrint('$stackTrace:$error');
+          debugPrint('MyRecipeListScreen-272:$error');
           return const Center(
             child: Text('오류가 발생하였습니다.'),
           );

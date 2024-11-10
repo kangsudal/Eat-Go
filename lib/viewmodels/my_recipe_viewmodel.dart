@@ -8,8 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MyRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
-  late final RecipeRepository _recipeRepository;
-  late final AuthRepository _authRepository;
+  late RecipeRepository _recipeRepository;
+  late AuthRepository _authRepository;
 
   @override
   Future<List<Recipe>> build() async {
@@ -20,6 +20,7 @@ class MyRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
 
   // 레시피 목록을 서버에서 가져와 상태를 업데이트하는 메서드
   Future<List<Recipe>> fetchMyRecipes() async {
+    state = const AsyncValue.loading();
     String? currentUserUid = _authRepository.getCurrentUserUid();
     try {
       if (currentUserUid != null) {
