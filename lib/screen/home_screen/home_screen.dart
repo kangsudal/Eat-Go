@@ -55,18 +55,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ],
       ),
       endDrawer: const HomeScreenDrawer(),
-      floatingActionButton: Visibility(
-        visible: isShaking,
-        child: FloatingActionButton(
-          onPressed: () {
-            homeViewModel.fetchRandomRecipeWithRetry(
-                categories: categories, keywords: keywords);
-          },
-          child: Icon(
-            Icons.refresh,
-            color: EatGoPalette.backgroundColor1,
-            size: 45,
-          ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          homeViewModel.fetchRandomRecipeWithRetry(
+              categories: categories, keywords: keywords);
+        },
+        child: Icon(
+          Icons.refresh,
+          color: EatGoPalette.backgroundColor1,
+          size: 45,
         ),
       ),
       body: ContentWidget(),

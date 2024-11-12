@@ -60,7 +60,8 @@ dependencies:
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
 
-  sensors_plus: ^6.1.0
+  sensors_plus: ^6.1.0 # 흔들기 감지(자이로 센서)
+  vibration: ^2.0.1 # 진동
 
   google_maps_flutter: ^2.9.0
   geolocator: ^13.0.1
