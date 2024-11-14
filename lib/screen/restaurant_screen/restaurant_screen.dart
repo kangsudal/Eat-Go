@@ -231,19 +231,12 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("권한 설정 필요"),
-          content: Text('GPS가 켜져있어야 하고, 위치 권한도 허용으로 바꿔주셔야해요'),
+          title: const Text("권한 설정 필요"),
+          content: const Text('사용자 위치를 기준으로  주변 식당을 추천하기위해 GPS가 켜져있어야 하고, 위치 권한도 허용으로 바꿔주셔야해요'),
           actions: [
             TextButton(
               onPressed: checkAndRequestPermissions,
-              child: Text('권한 설정으로 이동'),
-            ),
-            TextButton(
-              child: Text("닫기"),
-              onPressed: () {
-                closeDialogIfOpen();
-                context.pop(); // 지도 화면에서 이전 화면으로 이동
-              },
+              child: const Text('계속'),
             ),
           ],
         );
