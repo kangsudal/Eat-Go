@@ -7,6 +7,7 @@ import 'package:eat_go/palette.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/animated_text_widget.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
+import 'package:eat_go/screen/home_screen/home_screen_widget/need_sign_in_dialog.dart';
 import 'package:eat_go/viewmodels/home_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final isShaking = ref.watch(shakeProvider);
     final categories = ref.watch(homeScreenCategoriesProvider);
     final keywords = ref.watch(homeScreenKeywordsProvider);
+    final currentEatGoUser = ref.watch(currentEatGoUserProvider);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -44,13 +46,42 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               : const Icon(Icons.lock, color: Colors.red),
         ),
         actions: [
-          IconButton(
-            iconSize: 40,
-            color: pointColor,
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              _scaffoldKey.currentState!.openEndDrawer();
+          currentEatGoUser.when(
+            data: (user) {
+              if (user != null) {
+                return IconButton(
+                  iconSize: 40,
+                  color: pointColor,
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    _scaffoldKey.currentState!.openEndDrawer();
+                  },
+                );
+              } else {
+                return IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const NeedSignInDialog();
+                      },
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.person,
+                    color: pointColor,
+                  ),
+                );
+              }
             },
+            error: (error, stackTrace) {
+              return Center(
+                child: Icon(Icons.report_problem_outlined),
+              );
+            },
+            loading: () => Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
         ],
       ),
@@ -101,8 +132,8 @@ class ContentWidget extends ConsumerWidget {
                 width: 200,
                 height: 200,
               ),
-              const SizedBox(height:10),
-               Text('$error'),
+              const SizedBox(height: 10),
+              Text('$error'),
             ],
           ),
         ),
@@ -154,9 +185,26 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                           child: currentEatGoUser.when(
                             data: (user) {
                               if (user == null) {
-                                debugPrint('HomeScreen - 사용자를 불러오지 못했습니다.');
-                                return const Icon(
-                                    Icons.report_problem_outlined);
+                                return GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return const NeedSignInDialog();
+                                      },
+                                    );
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 22,
+                                    backgroundColor:
+                                        EatGoPalette.backgroundColor1,
+                                    child: Icon(
+                                      Icons.bookmark_border_sharp,
+                                      color: pointColor,
+                                      size: 30,
+                                    ),
+                                  ),
+                                );
                               }
                               final isBookmarked = user.bookmarkRecipeIds
                                   .contains(widget.randomRecipe.recipeId);

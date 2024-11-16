@@ -44,7 +44,7 @@ final myRouterProvider = Provider<GoRouter>((ref) {
   );
 
   final router = GoRouter(
-    initialLocation: '/loading', //'/admin',//
+    initialLocation: '/home', //'/admin',//
     redirect: (context, state) {
       // if (kDebugMode) {
       //   // 디버깅 모드에서는 항상 /admin으로 접근 가능하게 설정
@@ -58,15 +58,26 @@ final myRouterProvider = Provider<GoRouter>((ref) {
         return '/loading';
       }
 
+      //todo: 에러 페이지 만들어주기
       // 에러가 발생했을 때도 로딩 화면이나 에러 페이지로 리디렉션
       if (authState.hasError) {
+        debugPrint('Authentication error occurred: ${authState.error}');
         return '/sign_in'; // 예시로 로그인 화면으로 보내도록 처리
       }
 
-      if ((user == null) && (state.matchedLocation != '/sign_in')) {
-        // debugPrint("로그인페이지로 가!");
-        return '/sign_in'; // 로그인이 안 되어있으면 로그인 페이지로 이동
+      // 로그인이 필요한 페이지 접근 시 리디렉션
+      final loggedInRequiredRoutes = [
+        '/home/all_recipe_list',
+        '/home/bookmark',
+        '/home/my_recipe_list',
+        '/home/setting',
+      ];
+
+      if (user == null &&
+          loggedInRequiredRoutes.contains(state.matchedLocation)) {
+        return '/sign_in'; // 로그인이 안 되어 있고 로그인이 필요한 페이지 접근할 경우 로그인 페이지로 리디렉션
       }
+
       if ((user != null) && (state.matchedLocation == '/sign_in')) {
         // debugPrint("로그인 했잖아. 홈페이지로 가!");
         return '/home'; // 로그인되어 있으면 홈 화면으로 이동
