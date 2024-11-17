@@ -125,7 +125,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                             width: 200,
                             height: 200,
                           ),
-                          const SizedBox(height:10),
+                          const SizedBox(height: 10),
                           const Text('관련된 식당이 없습니다!'),
                         ],
                       ),
@@ -232,8 +232,18 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("권한 설정 필요"),
-          content: const Text('사용자 위치를 기준으로  주변 식당을 추천하기위해 GPS가 켜져있어야 하고, 위치 권한도 허용으로 바꿔주셔야해요'),
+          content: const Text(
+              '사용자 위치를 기준으로  주변 식당을 추천하기위해 GPS가 켜져있어야 하고, 위치 권한도 허용으로 바꿔주셔야해요'),
           actions: [
+            TextButton(
+              onPressed: () {
+                context.pop();
+              },
+              child: const Text(
+                '닫기',
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
             TextButton(
               onPressed: checkAndRequestPermissions,
               child: const Text('계속'),
