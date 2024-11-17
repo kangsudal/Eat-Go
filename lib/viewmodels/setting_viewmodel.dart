@@ -86,8 +86,6 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
     state = const AsyncValue.loading();
     try {
       await _authRepository.signOut();
-      ref.invalidate(authServiceProvider); // 인증 상태 무효화
-      ref.invalidate(currentEatGoUserProvider); // 사용자 정보 무효화
       state = const AsyncValue.data(null); // 로그아웃 성공 시 상태 업데이트
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);

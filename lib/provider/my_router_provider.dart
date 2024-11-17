@@ -202,7 +202,12 @@ final myRouterProvider = Provider<GoRouter>((ref) {
   ref.listen<AsyncValue<User?>>(
     authStateProvider,
     (previous, next) {
-      router.refresh(); // 상태 변경 시 라우터 새로고침
+      ref.invalidate(authServiceProvider); // 인증 상태 무효화
+      ref.invalidate(currentEatGoUserProvider);
+      // 사용자 상태 무효화:
+      // - 로그아웃 시 currentEatGoUserProvider를 초기화하여 기존 사용자 데이터를 제거합니다.
+      // - 로그인 시, 새 사용자 데이터를 가져오게 만듭니다.
+      router.refresh(); // 상태 변경 시 라우터 새로고침하여 UI 반영
     },
   );
 

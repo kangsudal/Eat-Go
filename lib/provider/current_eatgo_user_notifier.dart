@@ -35,7 +35,7 @@ class CurrentEatGoUserNotifier extends AsyncNotifier<EatGoUser?> {
         state = AsyncValue.data(user);
         return user;
       } else {
-        state = AsyncValue.error('사용자 UID를 가져올 수 없습니다.', StackTrace.current);
+        state = const AsyncValue.data(null);
         debugPrint('CurrentEatGoUserNotifier - getCurrentUserUid()값이 null로 반환');
         return null;
       }

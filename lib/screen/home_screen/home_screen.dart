@@ -97,13 +97,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           size: 45,
         ),
       ),
-      body: ContentWidget(),
+      body: ContentWidget(
+        currentEatGoUser: currentEatGoUser,
+      ),
     );
   }
 }
 
 class ContentWidget extends ConsumerWidget {
-  const ContentWidget({super.key});
+  const ContentWidget({super.key, required this.currentEatGoUser});
+
+  final AsyncValue<EatGoUser?> currentEatGoUser;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -118,6 +122,7 @@ class ContentWidget extends ConsumerWidget {
           } else {
             return RecipeWidget(
               randomRecipe: randomRecipe,
+              currentEatGoUser: currentEatGoUser,
             );
           }
         },
@@ -143,19 +148,17 @@ class ContentWidget extends ConsumerWidget {
   }
 }
 
-class RecipeWidget extends ConsumerStatefulWidget {
-  const RecipeWidget({super.key, required this.randomRecipe});
+class RecipeWidget extends ConsumerWidget {
+  const RecipeWidget({
+    super.key,
+    required this.randomRecipe,
+    required this.currentEatGoUser,
+  });
 
   final Recipe randomRecipe;
-
+  final AsyncValue<EatGoUser?> currentEatGoUser;
   @override
-  ConsumerState<RecipeWidget> createState() => _RecipeWidgetState();
-}
-
-class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
-  @override
-  Widget build(BuildContext context) {
-    final currentEatGoUser = ref.watch(currentEatGoUserProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -170,7 +173,7 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                 maxWidth: 500,
               ),
               child: Image.network(
-                widget.randomRecipe.completedImgUrl,
+                randomRecipe.completedImgUrl,
                 fit: BoxFit.contain,
                 loadingBuilder: (BuildContext context, Widget child,
                     ImageChunkEvent? loadingProgress) {
@@ -207,7 +210,7 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
                                 );
                               }
                               final isBookmarked = user.bookmarkRecipeIds
-                                  .contains(widget.randomRecipe.recipeId);
+                                  .contains(randomRecipe.recipeId);
                               return GestureDetector(
                                 onTap: () async {
                                   ref
@@ -252,7 +255,7 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
         ),
         SizedBox(height: 30),
         Text(
-          widget.randomRecipe.title, //포니언 스프
+          randomRecipe.title, //포니언 스프
           style: const TextStyle(
             fontSize: 40,
             color: pointColor,
@@ -265,7 +268,7 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
           children: [
             GestureDetector(
               onTap: () {
-                context.go('/home/restaurant/${widget.randomRecipe.title}');
+                context.go('/home/restaurant/${randomRecipe.title}');
               },
               child: Container(
                 width: 110,
@@ -293,9 +296,8 @@ class _RecipeWidgetState extends ConsumerState<RecipeWidget> {
             const SizedBox(width: 15),
             GestureDetector(
               onTap: () {
-                debugPrint('recipeId:${widget.randomRecipe.recipeId}');
-                context
-                    .go('/home/recipe_detail/${widget.randomRecipe.recipeId}');
+                debugPrint('recipeId:${randomRecipe.recipeId}');
+                context.go('/home/recipe_detail/${randomRecipe.recipeId}');
               },
               child: Container(
                 width: 110,
