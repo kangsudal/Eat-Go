@@ -94,12 +94,6 @@ final myRouterProvider = Provider<GoRouter>((ref) {
           ref.watch(shakeProvider.notifier).disableShake();
         });
       }
-      // 이건 web을 위한 코드.
-      if (state.matchedLocation == '/home') {
-        WidgetsBinding.instance.addPostFrameCallback((duration) {
-          ref.watch(shakeProvider.notifier).enableShake();
-        });
-      }
       return null; // 리디렉션이 필요 없으면 null 반환
     },
     routes: <RouteBase>[
