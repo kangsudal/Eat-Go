@@ -237,6 +237,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
           actions: [
             TextButton(
               onPressed: () {
+                closeDialogIfOpen();
                 context.pop();
               },
               child: const Text(
