@@ -1,6 +1,7 @@
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
+import 'package:eat_go/screen/home_screen/home_screen_widget/need_sign_in_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -89,8 +90,26 @@ class RecipeDetailAppBar extends ConsumerWidget implements PreferredSizeWidget{
         currentEatGoUser.when(
           data: (user) {
             if (user == null) {
-              debugPrint('RecipeDetailAppBar - 사용자를 불러오지 못했습니다.');
-              return const Icon(Icons.report_problem_outlined);
+              return GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const NeedSignInDialog();
+                    },
+                  );
+                },
+                child: CircleAvatar(
+                  radius: 22,
+                  backgroundColor:
+                  EatGoPalette.backgroundColor1,
+                  child: Icon(
+                    Icons.bookmark_border_sharp,
+                    color: pointColor,
+                    size: 30,
+                  ),
+                ),
+              );
             }
             final isBookmarked =
                 user.bookmarkRecipeIds.contains(recipe.recipeId);
