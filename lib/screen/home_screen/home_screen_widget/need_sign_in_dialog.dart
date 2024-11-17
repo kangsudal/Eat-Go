@@ -24,7 +24,7 @@ class NeedSignInDialog extends StatelessWidget {
         TextButton(
           child: const Text('로그인'),
           onPressed: () {
-            context.go('/sign_in');
+            context.push('/sign_in');
           },
         ),
       ],

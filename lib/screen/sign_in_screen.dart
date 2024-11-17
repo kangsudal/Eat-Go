@@ -17,6 +17,7 @@ class SignInScreen extends ConsumerWidget {
     return Stack(
       children: [
         Scaffold(
+          appBar: AppBar(),
           body: Align(
             alignment: Alignment.center,
             child: Column(
@@ -66,7 +67,11 @@ class SignInScreen extends ConsumerWidget {
                       bool success = await signInViewModel.signInWithGoogle();
                       if (success) {
                         if (context.mounted) {
-                          context.go("/home");
+                          if (context.canPop()) {
+                            context.pop();
+                          } else {
+                            context.go('/home');
+                          }
                         }
                         return;
                       }
