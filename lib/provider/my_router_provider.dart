@@ -75,7 +75,7 @@ final myRouterProvider = Provider<GoRouter>((ref) {
 
       if (user == null &&
           loggedInRequiredRoutes.contains(state.matchedLocation)) {
-        return '/sign_in'; // 로그인이 안 되어 있고 로그인이 필요한 페이지 접근할 경우 로그인 페이지로 리디렉션
+        return '/home'; // 로그인이 안 되어 있고 로그인이 필요한 페이지 접근할 경우 홈 페이지로 리디렉션
       }
 
       if ((user != null) && (state.matchedLocation == '/sign_in')) {
@@ -202,6 +202,7 @@ final myRouterProvider = Provider<GoRouter>((ref) {
   ref.listen<AsyncValue<User?>>(
     authStateProvider,
     (previous, next) {
+      debugPrint('Invalidate authServiceProvider and currentEatGoUserProvider.');
       ref.invalidate(authServiceProvider); // 인증 상태 무효화
       ref.invalidate(currentEatGoUserProvider);
       // 사용자 상태 무효화:

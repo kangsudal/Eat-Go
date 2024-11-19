@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
-  late final AuthRepository _authRepository;
+  late AuthRepository _authRepository;
   late final UserRepository _userRepository;
 
   @override
