@@ -60,6 +60,8 @@ class SignInViewModel extends AsyncNotifier<void> {
         User? user = userCredentila.user;
         if (user != null) {
           await userRepository.saveUser(user);
+          // 강제 데이터 갱신
+          await ref.read(currentEatGoUserProvider.notifier).getCurrentUser();//☆☆☆☆☆☆ 없으면 리다이렉트가 너무 빨라서 갱신이 안됨. 강제로 갱신해줘야함.
           state = const AsyncValue.data(null); // 로그인 성공 상태
           return true;
         }
