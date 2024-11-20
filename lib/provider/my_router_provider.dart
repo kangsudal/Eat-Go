@@ -202,7 +202,6 @@ final myRouterProvider = Provider<GoRouter>((ref) {
   ref.listen<AsyncValue<User?>>(
     authStateProvider,
     (previous, next) {
-      debugPrint('Invalidate authServiceProvider and currentEatGoUserProvider.');
       ref.invalidate(authServiceProvider); // 인증 상태 무효화
       ref.invalidate(currentEatGoUserProvider);
       // 사용자 상태 무효화:

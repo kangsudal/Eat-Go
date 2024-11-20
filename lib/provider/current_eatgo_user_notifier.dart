@@ -28,7 +28,7 @@ class CurrentEatGoUserNotifier extends AsyncNotifier<EatGoUser?> {
         // Firestore에서 사용자 데이터를 가져오지 못한 경우
         if (userMap == null) {
           state = const AsyncValue.data(null); // 사용자 정보가 없으면 null로 설정
-          debugPrint('CurrentEatGoUserNotifier 오류 발생 - userMap이 null로 반환되었습니다.');
+          debugPrint('CurrentEatGoUserNotifier - userMap이 null로 반환되었습니다.');
           return null;
         }
         EatGoUser user = EatGoUser.fromJson(userMap);
