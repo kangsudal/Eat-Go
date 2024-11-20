@@ -60,9 +60,9 @@ class SignInViewModel extends AsyncNotifier<void> {
         User? user = userCredentila.user;
         if (user != null) {
           await userRepository.saveUser(user);
-          // 강제 데이터 갱신
+          // 강제 데이터 갱신 todo:무조건 이해하기
           await ref.read(currentEatGoUserProvider.notifier).getCurrentUser();//☆☆☆☆☆☆ 없으면 리다이렉트가 너무 빨라서 갱신이 안됨. 강제로 갱신해줘야함.
-          state = const AsyncValue.data(null); // 로그인 성공 상태
+          state = const AsyncValue.data(null); // 로그인 성공 상태 todo:null보단 구체적 상태값을 갖도록.
           return true;
         }
       }
