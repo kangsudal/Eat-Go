@@ -71,12 +71,8 @@ class SignInScreen extends ConsumerWidget {
                   ),
                   onTap: () async {
                     try {
-                      bool success = await signInViewModel.signInWithGoogle();
+                      await signInViewModel.signInWithGoogle();
                       //authStateProvider에서 인증상태 변화 감지 -> GoRouter redirect 실행됨 -> Home으로 이동
-                      if (success == false) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('인증 실패하였습니다.')));
-                      }
                     } on FirebaseAuthException catch (error) {
                       debugPrint(
                           'Google 로그인 실패(FirebaseAuthException): ${error.toString()}');

@@ -32,6 +32,9 @@ class SignInViewModel extends AsyncNotifier<void> {
         User? user = userCredential.user;
         if (user != null) {
           await userRepository.saveUser(user);
+          await ref
+              .read(currentEatGoUserProvider.notifier)
+              .getCurrentUser(); //☆☆☆☆☆☆ 없으면 리다이렉트가 너무 빨라서 갱신이 안됨. 강제로 갱신해줘야함.
           state = const AsyncValue.data(null); // 로그인 성공 상태
           return true; // 로그인 성공
         }
@@ -46,7 +49,7 @@ class SignInViewModel extends AsyncNotifier<void> {
     }
   }
 
-  // Google 로그인 및 사용자 정보 저장
+  // Apple 로그인 및 사용자 정보 저장
   Future<void> signInWithApple() async {
     try {
       state = const AsyncValue.loading();
