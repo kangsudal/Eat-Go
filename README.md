@@ -19,6 +19,11 @@
 ## 📸 스크린샷
 <img width="1021" alt="image" src="https://github.com/user-attachments/assets/bdafbe27-bb91-4fb2-be02-3cd55fb53aef">
 
+## 스토어
+[<img src="https://github.com/user-attachments/assets/eae0bc49-ca8e-4051-b7a8-d0332b520d7d" width="100" height="40"/>](https://apps.apple.com/app/eat-go/id6738037068) 출시완료
+<br>
+[<img src="https://github.com/user-attachments/assets/70a9cb50-e8ce-4f35-8948-203cb82ed4fe" width="100" height="40"/>]() 심사중
+
 ## 🎬 데모 영상
 
 [Watch the video](https://www.youtube.com/watch?v=J6zWyVfZNvc)
@@ -55,11 +60,6 @@
 - **디자인**: 강수경
 - **개발**: 강수경
 - **배포**: 강수경
-
-<!--## 스토어
- 1. [플레이스토어](https://)
-2. [앱스토어](https://)-->
-
 
 <br>
 
