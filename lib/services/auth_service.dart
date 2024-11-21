@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -159,5 +161,8 @@ class AuthService {
   // Firebase 로그아웃
   Future<void> signOut() async {
     await auth.signOut();
+    // GoogleSignIn 로그아웃 및 연결 해제
+    GoogleSignIn googleSignIn = GoogleSignIn();
+    await googleSignIn.disconnect();
   }
 }

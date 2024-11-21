@@ -58,12 +58,14 @@ class SignInScreen extends ConsumerWidget {
                       children: [
                         Image.asset('assets/icons/Google.png'),
                         const SizedBox(width: 5),
-                        const Text(
-                          'Continue with Google',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
+                        const FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            'Continue with Google',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ],
@@ -107,12 +109,14 @@ class SignInScreen extends ConsumerWidget {
                         children: [
                           Image.asset('assets/icons/Apple.png'),
                           const SizedBox(width: 5),
-                          const Text(
-                            'Continue with Apple',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
+                          const FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Continue with Apple',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ],
