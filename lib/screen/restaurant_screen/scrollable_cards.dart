@@ -3,6 +3,7 @@ import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ScrollableCards extends StatelessWidget {
   ScrollableCards({
@@ -74,8 +75,10 @@ class ScrollableCards extends StatelessWidget {
                 animateToRestaurant(restaurantLocation);
               },
               scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext context, index) => GestureDetector(
-                /*onTap: () {
+              itemBuilder: (BuildContext context, index) {
+                Restaurant restaurant = restaurantList[index];
+                return GestureDetector(
+                  /*onTap: () {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -130,22 +133,101 @@ class ScrollableCards extends StatelessWidget {
                     },
                   );
                 },*/
-                child: Container(
-                  margin: EdgeInsets.only(right: 20, bottom: 30),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
-                        blurRadius: 20.0,
-                        spreadRadius: -10.0,
-                        offset: const Offset(8, 10),
-                      ),
-                    ],
+                  child: Container(
+                    margin: EdgeInsets.only(right: 20, bottom: 30),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.5),
+                          blurRadius: 20.0,
+                          spreadRadius: -10.0,
+                          offset: const Offset(8, 10),
+                        ),
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    restaurant.displayName,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  if (restaurant.rating != null)
+                                    Row(
+                                      children: [
+                                        Text('${restaurant.rating}'),
+                                        for (int i = 0;
+                                            i < restaurant.rating!.floor();
+                                            i++)
+                                          Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                        // 소수 부분(반 별)
+                                        if (restaurant.rating! -
+                                                restaurant.rating!.floor() >=
+                                            0.5)
+                                          Icon(
+                                            Icons.star_half,
+                                            color: Colors.amber,
+                                          ),
+                                        // 빈 별
+                                        for (int i = 0;
+                                            i <
+                                                (5 -
+                                                    restaurant.rating!
+                                                        .ceil()); // 총 별의 갯수(5개)에서 표시된 별의 갯수 빼기
+                                            i++)
+                                          Icon(
+                                            Icons.star_border,
+                                            color: Colors.grey,
+                                          ),
+                                      ],
+                                    ),
+                                  Expanded(
+                                    child: FittedBox(
+                                      fit:BoxFit.scaleDown,
+                                        child: Text(
+                                            '${restaurant.formattedAddress}')),
+                                  ),
+                                  // Text('${restaurant.businessStatus}'),
+                                ],
+                              ),
+                            ),
+                            if (restaurant.photos != null)
+                              if (restaurant.photos!.isNotEmpty)
+                                Image.network(
+                                    'https://places.googleapis.com/v1/${restaurant.photos![0].name}/media?key=${dotenv.env['GOOGLE_MAPS_API_KEY']}&max_width_px=100'),
+                          ],
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            padding: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFDCEADF),
+                              borderRadius: BorderRadius.circular(7),
+                            ),
+                            child: Text(
+                              '${index + 1}/${restaurantList.length}',
+                              style: TextStyle(color: Color(0xFF1B7338)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
               itemCount: itemCount,
             ),
           ),

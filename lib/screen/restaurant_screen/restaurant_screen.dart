@@ -196,8 +196,8 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
     fetchMarkers(restaurants);
     CameraPosition initialPosition = CameraPosition(
       target: LatLng(
-        currentPosition.latitude,
-        currentPosition.longitude,
+        restaurants[0].location.latitude,
+        restaurants[0].location.longitude,
       ),
       zoom: 12,
     );
