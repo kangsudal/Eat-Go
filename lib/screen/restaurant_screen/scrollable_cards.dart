@@ -1,22 +1,28 @@
+import 'package:eat_go/model/restaurant_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ScrollableCards extends StatelessWidget {
-  const ScrollableCards({
+  ScrollableCards({
     super.key,
     required this.itemCount,
     required this.googleMapControllerFuture,
+    required this.restaurantList,
   });
 
   final int itemCount;
   final Future<GoogleMapController> googleMapControllerFuture;
+  final PageController pageController =
+      PageController(initialPage: 0, viewportFraction: 0.7);
+  final List<Restaurant> restaurantList;
 
   void animateToMyLocation() async {
     final location = await Geolocator.getCurrentPosition();
     // debugPrint('lat:${location.latitude}, long:${location.longitude}');
-    final GoogleMapController googleMapController = await googleMapControllerFuture;
+    final GoogleMapController googleMapController =
+        await googleMapControllerFuture;
     googleMapController.animateCamera(
       CameraUpdate.newLatLng(
         LatLng(
@@ -24,6 +30,15 @@ class ScrollableCards extends StatelessWidget {
           location.longitude,
         ),
       ),
+    );
+  }
+
+  void animateToRestaurant(LatLng restaurantLocation) async {
+    final GoogleMapController googleMapController =
+        await googleMapControllerFuture;
+    // 지도 카메라를 해당 좌표로 이동
+    googleMapController.animateCamera(
+      CameraUpdate.newLatLng(restaurantLocation),
     );
   }
 
@@ -49,10 +64,18 @@ class ScrollableCards extends StatelessWidget {
           ),
           SizedBox(
             height: 120, //card사이즈의 height값이 여기에 맞춰진다.
-            child: ListView.builder(
+            child: PageView.builder(
+              controller: pageController,
+              onPageChanged: (int i) {
+                LatLng restaurantLocation = LatLng(
+                  restaurantList[i].location.latitude,
+                  restaurantList[i].location.longitude,
+                );
+                animateToRestaurant(restaurantLocation);
+              },
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, index) => GestureDetector(
-                onTap: () {
+                /*onTap: () {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -106,12 +129,9 @@ class ScrollableCards extends StatelessWidget {
                       );
                     },
                   );
-                },
+                },*/
                 child: Container(
-                  margin: index == itemCount - 1
-                      ? EdgeInsets.only(left: 20, right: 20, bottom: 30)
-                      : EdgeInsets.only(left: 20, bottom: 30),
-                  width: 240,
+                  margin: EdgeInsets.only(right: 20, bottom: 30),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),

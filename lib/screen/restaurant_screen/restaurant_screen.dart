@@ -218,9 +218,11 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
         ),
         // KeywordSuggestionCard(),
         RestaurantScreenBackButton(),
-        // ScrollableCards(
-        //     itemCount: restaurants.length,
-        //     googleMapControllerFuture: googleMapControllerCompleter.future),
+        ScrollableCards(
+          itemCount: restaurants.length,
+          googleMapControllerFuture: googleMapControllerCompleter.future,
+          restaurantList: restaurants,
+        ),
       ],
     );
   }
