@@ -31,6 +31,8 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
   Set<Marker> markers = {}; // 마커를 저장할 Set
   BitmapDescriptor customIcon = BitmapDescriptor.defaultMarker;
 
+  TextEditingController textEditingController = TextEditingController();
+
   void fetchMarkers(List<Restaurant> restaurants) async {
     markers = restaurants.map((restaurant) {
       return Marker(
@@ -127,6 +129,57 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                           ),
                           const SizedBox(height: 10),
                           const Text('관련된 식당이 없습니다!'),
+                          const SizedBox(height: 10),
+                          OutlinedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  String editedKeyword = widget.recipeTitle;
+                                  return SimpleDialog(
+                                    title: Text('검색어 수정'),
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        24.0, 12.0, 24.0, 16.0),
+                                    children: [
+                                      TextField(
+                                        controller: textEditingController,
+                                        decoration: InputDecoration(
+                                          hintText: widget.recipeTitle,
+                                          hintStyle:
+                                              TextStyle(color: Colors.grey),
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              context.pop();
+                                            },
+                                            child: Text(
+                                              '취소',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              context.go(
+                                                  '/home/restaurant/${textEditingController.text}');
+                                              context.pop();
+                                            },
+                                            child: Text('재탐색'),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Text('검색어 직접 수정하여 재탐색'),
+                          ),
                         ],
                       ),
                     ),
