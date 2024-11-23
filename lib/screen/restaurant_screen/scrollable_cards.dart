@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ScrollableCards extends StatelessWidget {
   ScrollableCards({
@@ -17,6 +19,7 @@ class ScrollableCards extends StatelessWidget {
   final Future<GoogleMapController> googleMapControllerFuture;
   final PageController pageController =
       PageController(initialPage: 0, viewportFraction: 0.7);
+  final PageController pageController2 = PageController(initialPage: 0);
   final List<Restaurant> restaurantList;
 
   void animateToMyLocation() async {
@@ -78,61 +81,180 @@ class ScrollableCards extends StatelessWidget {
               itemBuilder: (BuildContext context, index) {
                 Restaurant restaurant = restaurantList[index];
                 return GestureDetector(
-                  /*onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Column(
-                        children: [
-                          Dialog(
-                            child:
-                                LayoutBuilder(builder: (context, constraints) {
-                              final dialogWidth = constraints.maxWidth;
-                              return Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                ),
-                                height: 500,
-                                // width: 100,
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 180, //사진 슬라이드 높이
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemBuilder:
-                                            (BuildContext context, index) {
-                                          return Container(
-                                            // height: 10,
-                                            width: dialogWidth,
-                                            decoration: BoxDecoration(
-                                              color: Colors.primaries[index],
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Column(
+                          children: [
+                            Dialog(
+                              child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                final dialogWidth = constraints.maxWidth;
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                  height: 500,
+                                  // width: 100,
+                                  child: Column(
+                                    children: [
+                                      if (restaurant.photos != null)
+                                        Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 300, //사진 슬라이드 높이
+                                              child: PageView.builder(
+                                                controller: pageController2,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        index) {
+                                                  return Image.network(
+                                                      fit: BoxFit.cover,
+                                                      'https://places.googleapis.com/v1/${restaurant.photos![index].name}/media?key=${dotenv.env['GOOGLE_MAPS_API_KEY']}&max_height_px=300');
+                                                },
+                                                itemCount:
+                                                    restaurant.photos!.length,
+                                              ),
                                             ),
-                                          );
-                                        },
-                                        itemCount: Colors.primaries.length,
+                                            Padding(
+                                              padding: EdgeInsets.only(top: 7),
+                                              child: SmoothPageIndicator(
+                                                controller: pageController2,
+                                                count:
+                                                    restaurant.photos!.length,
+                                                effect: ExpandingDotsEffect(
+                                                  dotHeight: 8,
+                                                  dotWidth: 8,
+                                                  activeDotColor: pointColor,
+                                                  dotColor: Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text(
+                                                restaurant.displayName,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                              if (restaurant.rating != null)
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                        '${restaurant.rating}'),
+                                                    for (int i = 0;
+                                                        i <
+                                                            restaurant.rating!
+                                                                .floor();
+                                                        i++)
+                                                      Icon(
+                                                        Icons.star,
+                                                        color: Colors.amber,
+                                                      ),
+                                                    // 소수 부분(반 별)
+                                                    if (restaurant.rating! -
+                                                            restaurant.rating!
+                                                                .floor() >=
+                                                        0.5)
+                                                      Icon(
+                                                        Icons.star_half,
+                                                        color: Colors.amber,
+                                                      ),
+                                                    // 빈 별
+                                                    for (int i = 0;
+                                                        i <
+                                                            (5 -
+                                                                restaurant
+                                                                    .rating!
+                                                                    .ceil()); // 총 별의 갯수(5개)에서 표시된 별의 갯수 빼기
+                                                        i++)
+                                                      Icon(
+                                                        Icons.star_border,
+                                                        color: Colors.grey,
+                                                      ),
+                                                  ],
+                                                ),
+                                              if (restaurant.websiteUri != null)
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    final url = Uri.parse(
+                                                        restaurant.websiteUri!);
+                                                    if (await canLaunchUrl(
+                                                        url)) {
+                                                      launchUrl(url,
+                                                          mode: LaunchMode
+                                                              .externalApplication); //외부 브라우저로 열기
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    '웹 사이트: ${restaurant.websiteUri}',
+                                                    style: TextStyle(
+                                                      color: Colors.indigo,
+                                                    ),
+                                                  ),
+                                                ),
+                                              Text(
+                                                  '${restaurant.formattedAddress}'),
+                                              Flexible(
+                                                child: Align(
+                                                  alignment: Alignment.center,
+                                                  child: GestureDetector(
+                                                    onTap: () async {
+                                                      final url = Uri.parse(
+                                                          restaurant
+                                                              .googleMapsUri);
+                                                      if (await canLaunchUrl(
+                                                          url)) {
+                                                        launchUrl(url,
+                                                            mode: LaunchMode
+                                                                .externalApplication); //외부 브라우저로 열기
+                                                      }
+                                                    },
+                                                    child: Image.asset(
+                                                      'assets/icons/icon-googlemaps.jpeg',
+                                                      fit: BoxFit.contain,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
-                          ),
-                          FloatingActionButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Icon(
-                              Icons.clear,
-                              color: pointColor,
+                                    ],
+                                  ),
+                                );
+                              }),
                             ),
-                            backgroundColor: Colors.white,
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },*/
+                            FloatingActionButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Icon(
+                                Icons.clear,
+                                color: pointColor,
+                              ),
+                              backgroundColor: Colors.white,
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                   child: Container(
                     margin: EdgeInsets.only(right: 20, bottom: 30),
                     padding: EdgeInsets.all(10),
@@ -195,7 +317,7 @@ class ScrollableCards extends StatelessWidget {
                                     ),
                                   Expanded(
                                     child: FittedBox(
-                                      fit:BoxFit.scaleDown,
+                                        fit: BoxFit.scaleDown,
                                         child: Text(
                                             '${restaurant.formattedAddress}')),
                                   ),
