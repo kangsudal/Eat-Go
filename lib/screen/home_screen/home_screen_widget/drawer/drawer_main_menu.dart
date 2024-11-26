@@ -24,9 +24,17 @@ class DrawerMainMenu extends StatelessWidget {
           },
         ),
         ListTile(
-          title: Text(
-            '관심 항목',
-            style: style,
+          title: Row(
+            children: [
+              Text(
+                '관심 항목',
+                style: style,
+              ),
+              Icon(
+                Icons.bookmark,
+                color: pointColor,
+              ),
+            ],
           ),
           onTap: () {
             context.go('/home/bookmark');
