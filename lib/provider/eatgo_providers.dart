@@ -5,6 +5,7 @@ import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/provider/shake_notifier.dart';
 import 'package:eat_go/repository/restaurant_repository.dart';
 import 'package:eat_go/services/auth_service.dart';
+import 'package:eat_go/services/location_service.dart';
 import 'package:eat_go/services/recipe_service.dart';
 import 'package:eat_go/services/restaurant_service.dart';
 import 'package:eat_go/services/user_service.dart';
