@@ -63,6 +63,11 @@
 
 <br>
 
+## Eat-Go! – App Store 음식 및 음료 카테고리 TOP 10 달성 🎉
+<img width="464" alt="인기차트 10위" src="https://github.com/user-attachments/assets/c7f1aef3-29d4-4769-9a73-97464a7d5855">
+
+<br>
+
 ## Class Diagram
 ```mermaid
 classDiagram
