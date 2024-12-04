@@ -99,119 +99,96 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
       body: locationServiceStatus.when(
         data: (isPermissionGrantedAndGPSEnabled) {
           if (isPermissionGrantedAndGPSEnabled == true) {
-            final currentPositionState = ref.watch(currentPositionProvider);
             // 1. GPS 상태와 위치 권한이 모두 활성화된 경우
             // 1-1. 권한과 GPS가 활성화되었으므로 다이얼로그 닫기
             closeDialogIfOpen();
-            return currentPositionState.when(data: (currentPosition) {
-              final restaurantViewModelState =
-                  ref.watch(restaurantViewModelProvider(widget.recipeTitle));
-              if (currentPosition == null) {
-                return const Center(
-                  child: Text('현재 위치를 가져오는데 실패했습니다.'),
-                );
-              }
+            final restaurantViewModelState =
+                ref.watch(restaurantViewModelProvider(widget.recipeTitle));
 
-              return restaurantViewModelState.when(data: (restaurants) {
-                if (restaurants.isEmpty) {
-                  return Scaffold(
-                    appBar: AppBar(),
-                    body: Align(
-                      alignment: const Alignment(0, -0.3),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/memo-no-result.png',
-                            width: 200,
-                            height: 200,
-                          ),
-                          const SizedBox(height: 10),
-                          const Text('관련된 식당이 없습니다!'),
-                          const SizedBox(height: 10),
-                          OutlinedButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  String editedKeyword = widget.recipeTitle;
-                                  return SimpleDialog(
-                                    title: Text('검색어 수정'),
-                                    contentPadding: EdgeInsets.fromLTRB(
-                                        24.0, 12.0, 24.0, 16.0),
-                                    children: [
-                                      TextField(
-                                        controller: textEditingController,
-                                        decoration: InputDecoration(
-                                          hintText: widget.recipeTitle,
-                                          hintStyle:
-                                              TextStyle(color: Colors.grey),
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          TextButton(
-                                            onPressed: () {
-                                              context.pop();
-                                            },
-                                            child: Text(
-                                              '취소',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              context.go(
-                                                  '/home/restaurant/${textEditingController.text}');
-                                              context.pop();
-                                            },
-                                            child: Text('재탐색'),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            child: Text('검색어 직접 수정하여 재탐색'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                } else {
-                  return buildGoogleMap(restaurants, currentPosition);
-                }
-              }, error: (error, stackTrace) {
-                debugPrint(
-                    'RestaurantScreen - RestaurantViewModelState의 data를 불러오지 못했습니다.$error');
+            return restaurantViewModelState.when(data: (restaurants) {
+              if (restaurants.isEmpty) {
                 return Scaffold(
                   appBar: AppBar(),
-                  body: Center(
-                    child: Text('레스토랑 리스트 정보을를 불러오지 못했습니다.'),
+                  body: Align(
+                    alignment: const Alignment(0, -0.3),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/memo-no-result.png',
+                          width: 200,
+                          height: 200,
+                        ),
+                        const SizedBox(height: 10),
+                        const Text('관련된 식당이 없습니다!'),
+                        const SizedBox(height: 10),
+                        OutlinedButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SimpleDialog(
+                                  title: Text('검색어 수정'),
+                                  contentPadding: EdgeInsets.fromLTRB(
+                                      24.0, 12.0, 24.0, 16.0),
+                                  children: [
+                                    TextField(
+                                      controller: textEditingController,
+                                      decoration: InputDecoration(
+                                        hintText: widget.recipeTitle,
+                                        hintStyle:
+                                            TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            context.pop();
+                                          },
+                                          child: Text(
+                                            '취소',
+                                            style:
+                                                TextStyle(color: Colors.grey),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            context.go(
+                                                '/home/restaurant/${textEditingController.text}');
+                                            context.pop();
+                                          },
+                                          child: Text('재탐색'),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: Text('검색어 직접 수정하여 재탐색'),
+                        ),
+                      ],
+                    ),
                   ),
                 );
-              }, loading: () {
-                debugPrint('currentPositionState를 가지고오고있는 중입니다.');
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              });
+              } else {
+                return buildGoogleMap(restaurants);
+              }
             }, error: (error, stackTrace) {
-              debugPrint('$error');
+              debugPrint(
+                  'RestaurantScreen - RestaurantViewModelState의 data를 불러오지 못했습니다.$error');
               return Scaffold(
                 appBar: AppBar(),
                 body: Center(
-                  child: Text('오류가 발생했습니다.'),
+                  child: Text('레스토랑 리스트 정보을를 불러오지 못했습니다.'),
                 ),
               );
             }, loading: () {
-              debugPrint('currentPositionState를 불러오고있습니다.');
+              debugPrint('currentPositionState를 가지고오고있는 중입니다.');
               return const Center(
                 child: CircularProgressIndicator(),
               );
@@ -242,10 +219,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
     );
   }
 
-  Widget buildGoogleMap(
-    List<Restaurant> restaurants,
-    Position currentPosition,
-  ) {
+  Widget buildGoogleMap(List<Restaurant> restaurants) {
     fetchMarkers(restaurants);
     CameraPosition initialPosition = CameraPosition(
       target: LatLng(

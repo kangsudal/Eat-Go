@@ -114,28 +114,7 @@ final shakeProvider = NotifierProvider<ShakeNotifier, bool>(ShakeNotifier.new);
 //<식당찾기 페이지>
 // 위치 권한 및 GPS 상태 모니터링
 final locationServiceStatusProvider = StreamProvider.autoDispose<bool>((ref) {
-  return locationServiceStatusStream();
-});
-
-// 현재 위치
-final currentPositionProvider = FutureProvider<Position?>((ref) async {
-  final isLocationEnabledAndPermissionGranted =
-      await ref.watch(locationServiceStatusProvider.future);
-
-  // 권한과 위치 서비스가 허용된 경우에만 위치 데이터 요청
-  if (isLocationEnabledAndPermissionGranted) {
-    try {
-      debugPrint('위치 데이터를 요청합니다.');
-      return await Geolocator.getCurrentPosition();
-    } catch (e) {
-      debugPrint("Error fetching current position: $e");
-      return null;
-    }
-  } else {
-    // 위치 권한이나 GPS가 비활성화된 경우 null 반환
-    debugPrint('currentPositionProvider - 위치 권한이나 GPS가 비활성화된 경우 null 반환');
-    return null;
-  }
+  return LocationService.locationServiceStatusStream();
 });
 
 final restaurantViewModelProvider = AsyncNotifierProvider.family

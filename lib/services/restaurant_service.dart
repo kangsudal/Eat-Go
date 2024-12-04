@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'package:eat_go/model/restaurant_model.dart';
+import 'package:eat_go/services/location_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 class RestaurantService {
   // text(ex.레시피명)으로 장소 데이터들 가져오는 메서드
   Future<List<Restaurant>> fetchRestaurantByTextSearch(
       {required String keyword}) async {
-    final location = await Geolocator.getCurrentPosition();
+    Position location = await LocationService.getCurrentPosition();
     var headers = {
       'Content-Type': 'application/json',
       'X-Goog-Api-Key': dotenv.env['GOOGLE_MAPS_API_KEY']!,
