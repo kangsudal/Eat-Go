@@ -34,6 +34,10 @@ class AuthRepository {
     return await _authService.authenticateWithApple();
   }
 
+  Future<User?> currentUser() async {
+    return await _authService.currentUser();
+  }
+
   Future<void> signOut() async {
     await _authService.signOut();
   }

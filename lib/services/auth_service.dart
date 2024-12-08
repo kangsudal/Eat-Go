@@ -158,6 +158,11 @@ class AuthService {
     }
   }
 
+  Future<User?> currentUser() async {
+    User? user = auth.currentUser;
+    return user;
+  }
+
   // Firebase 로그아웃
   Future<void> signOut() async {
     await auth.signOut();

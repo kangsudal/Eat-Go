@@ -48,6 +48,7 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
 
   // 사용자 계정 삭제 및 데이터 삭제
   Future<bool> deleteUserAccountAndData() async {
+    //todo: 이메일 로그인 탈퇴기능 넣기
     state = const AsyncValue.loading();
     try {
       // 1. 재인증 수행

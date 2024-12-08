@@ -48,6 +48,7 @@ dependencies:
   google_sign_in: ^6.2.1
   flutter_image_compress: ^2.3.0 # 이미지 압축
   cached_network_image: ^3.4.1
+  firebase_ui_auth: ^1.16.0
 
   firebase_core: ^3.5.0
   firebase_auth: ^5.3.0

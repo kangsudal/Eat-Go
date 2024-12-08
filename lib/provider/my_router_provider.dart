@@ -10,6 +10,7 @@ import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_screen.dart';
 import 'package:eat_go/screen/restaurant_screen/restaurant_screen.dart';
 import 'package:eat_go/screen/setting_screen.dart';
 import 'package:eat_go/screen/sign_in_screen.dart';
+import 'package:eat_go/screen/sign_in_with_email.dart';
 import 'package:eat_go/screen/yummy_treat_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -181,6 +182,11 @@ final myRouterProvider = Provider<GoRouter>((ref) {
         path: '/sign_in',
         builder: (BuildContext context, GoRouterState state) =>
             const SignInScreen(),
+      ),
+      GoRoute(
+        path: '/sign_in_with_email',
+        builder: (BuildContext context, GoRouterState state) =>
+        const SignInWithEmail(),
       ),
       GoRoute(
         path: '/loading',
