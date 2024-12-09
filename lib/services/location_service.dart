@@ -27,14 +27,4 @@ class LocationService {
       await Future.delayed(interval);
     }
   }
-
-// 현재 사용자 위치
-  static Future<Position> getCurrentPosition() async {
-    try {
-      return await Geolocator.getCurrentPosition();
-    } catch (e) {
-      debugPrint("Error fetching current position: $e");
-      throw Exception(e);
-    }
-  }
 }

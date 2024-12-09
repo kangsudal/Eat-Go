@@ -10,7 +10,7 @@ class RestaurantService {
   // text(ex.레시피명)으로 장소 데이터들 가져오는 메서드
   Future<List<Restaurant>> fetchRestaurantByTextSearch(
       {required String keyword}) async {
-    Position location = await LocationService.getCurrentPosition();
+    Position location = await Geolocator.getCurrentPosition();
     var headers = {
       'Content-Type': 'application/json',
       'X-Goog-Api-Key': dotenv.env['GOOGLE_MAPS_API_KEY']!,
