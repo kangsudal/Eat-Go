@@ -1,6 +1,7 @@
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/palette.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -146,42 +147,49 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
   }
 
   void handleWithdrawal() async {
-    final settingViewModel = ref.read(settingViewModelProvider.notifier);
     showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          content:
-          const Text('정말로 탈퇴하시겠습니까?'),
+          content: const Text('정말로 탈퇴하시겠습니까?'),
           actions: [
             CupertinoDialogAction(
               child: const Text('예'),
-              onPressed: () async{
-
-                // 페이지가 닫히기 전에 상태를 복원(저장안하고 떠났을때)
-                final currentUser = ref.read(settingViewModelProvider).asData?.value;
+              onPressed: () async {
+                final settingViewModel =
+                    ref.read(settingViewModelProvider.notifier);
                 try {
-                  // 계정 및 데이터 삭제
-                  final result = await settingViewModel.deleteUserAccountAndData();
-
-                  if (result == false) {
-                    debugPrint('SettingScreen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('오류가 발생했습니다.')),
-                      );
-                    }
+                  // 재인증 실행
+                  bool reauthenticateSuccess = false;
+                  if (settingViewModel.isEmailPasswordLoginProvider()) {
+                    //현재 사용자가 이메일 로그인 기반이면 다이얼로그로 입력받아 재인증
+                    reauthenticateSuccess = await showReauthenticateDialog(
+                      context: context,
+                      providers: [
+                        EmailAuthProvider(),
+                      ],
+                    );
                   } else {
+                    //현재 사용자가 소셜 로그인 기반이면
+                    reauthenticateSuccess = await settingViewModel.reauthenticateWithSocialLogin();
+                  }
+                  if (reauthenticateSuccess) {
+                    // 재인증 성공시
+                    // 계정 및 데이터 삭제
+                    deleteUserAccountAndData();
+                  } else {
+                    debugPrint(
+                        'SettingScreen - 재인증에 실패했습니다: reauthenticateSucess = false');
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('성공적으로 탈퇴 처리가 되었습니다.')),
+                        const SnackBar(content: Text('재인증에 실패했습니다.')),
                       );
                     }
                   }
                 } catch (e) {
                   debugPrint('SettingScreen 오류 발 생 - 계정 삭제 실패 : $e');
                 }
-                if(context.mounted) {
+                if (context.mounted) {
                   Navigator.pop(context);
                 }
               },
@@ -196,5 +204,24 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         );
       },
     );
+  }
+
+  Future<void> deleteUserAccountAndData() async {
+    final settingViewModel = ref.read(settingViewModelProvider.notifier);
+    final result = await settingViewModel.deleteUserAccountAndData();
+    if (result == false) {
+      debugPrint('SettingScreen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('오류가 발생했습니다.')),
+        );
+      }
+    } else {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('성공적으로 탈퇴 처리가 되었습니다.')),
+        );
+      }
+    }
   }
 }

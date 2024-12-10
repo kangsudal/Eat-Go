@@ -17,6 +17,12 @@ class AuthService {
     return user?.uid; // 현재 로그인된 사용자의 UID를 반환, 없으면 null
   }
 
+  bool isEmailPasswordLoginProvider() {
+    //제공자가 이메일/패스워드면
+    return auth.currentUser!.providerData
+        .any((profile) => profile.providerId == 'password');
+  }
+
   Future<bool> reauthenticateWithSocialLogin() async {
     try {
       late final AuthCredential credential;

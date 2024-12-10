@@ -46,31 +46,40 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
     return null;
   }
 
+  // 사용자 로그인 타입 체크
+  bool isEmailPasswordLoginProvider() {
+    try{
+      return _authRepository.isEmailPasswordLoginProvider();
+    }catch(e){
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> reauthenticateWithSocialLogin() async {
+    bool isReauthenticated =
+        await _authRepository.reauthenticateWithSocialLogin();
+    if (!isReauthenticated) {
+      // 재인증 실패 시 탈퇴 중단
+      return false;
+    }
+    return true;
+  }
+
   // 사용자 계정 삭제 및 데이터 삭제
   Future<bool> deleteUserAccountAndData() async {
-    //todo: 이메일 로그인 탈퇴기능 넣기
     state = const AsyncValue.loading();
     try {
-      // 1. 재인증 수행
-      bool isReauthenticated =
-          await _authRepository.reauthenticateWithSocialLogin();
-      if (!isReauthenticated) {
-        // 재인증 실패 시 탈퇴 중단
-        state = const AsyncValue.data(null);
-        return false;
-      }
-
-      // 2. 현재 로그인된 사용자 UID 가져오기
+      // 1. 현재 로그인된 사용자 UID 가져오기
       String? uid = _authRepository.getCurrentUserUid();
       if (uid == null) {
         state = const AsyncValue.data(null);
         return false;
       }
 
-      // 3. Firestore에서 사용자 데이터 삭제
+      // 2. Firestore에서 사용자 데이터 삭제
       await _userRepository.deleteUserData(uid);
 
-      // 4. 계정 삭제
+      // 3. FireAuth에서 계정 삭제
       await _authRepository.deleteUserAccount();
 
       state = const AsyncValue.data(null);

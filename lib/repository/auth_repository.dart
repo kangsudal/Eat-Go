@@ -22,6 +22,15 @@ class AuthRepository {
     }
   }
 
+  // 사용자 로그인 타입 체크
+  bool isEmailPasswordLoginProvider() {
+    try{
+      return _authService.isEmailPasswordLoginProvider();
+    }catch(e){
+      throw Exception(e);
+    }
+  }
+
   Future<bool> reauthenticateWithSocialLogin() async {
     return await _authService.reauthenticateWithSocialLogin();
   }
