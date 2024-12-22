@@ -289,6 +289,18 @@ Google Places API를 통해 가져온 음식점 정보를 저장하는 클래스
 <br>
 `location`: 위도와 경도를 포함한 위치
 
+## 프로젝트를 하면서 가장 어려웠던 상황은?
+인증과 관련된 기능에서 상태 관리와 타이밍 이슈가 가장 어려웠습니다. 특히, 사용자가 탈퇴 후 재가입 시 현재 User 데이터가 갱신되지 않는 문제가 있었습니다.
+<br>
+
+이는 DB에 데이터가 저장되기 전에 인증이 완료되어 홈 화면으로 리다이렉트가 이루어졌고, 이로 인해 화면 갱신이 먼저 이뤄지면서 데이터베이스에서 null 값을 읽어오는 상황이었습니다.
+<br>
+
+이 문제를 해결하기 위해, 명시적으로 상태를 갱신하는 메서드(`signInViewModel.signInWithGoogle()`)를 작성하고 호출하여 화면에서 올바른 데이터를 반영할 수 있도록 수정하였습니다. 이를 통해 인증과 상태 관리 간의 타이밍 문제를 효과적으로 해결할 수 있었습니다.
+<br>
+[0bd64c](https://github.com/kangsudal/Eat-Go/commit/0bd64c057eb0cfcb9a8ba0135d71211bb095d869#diff-1d3db75ec69a30fc42b472889b887cf588d72b497023136dbbda4512bb6bc388R74)
+[da4e25](https://github.com/kangsudal/Eat-Go/commit/da4e25e7e5bdaeb61b667d96a6aab343eaa4762c#diff-aa62413470e4747ba0805ff442318cc50230b9f0931037164a35e871cf55bc44R64)
+
 ## 코드 실행 방법
 추가예정
 
