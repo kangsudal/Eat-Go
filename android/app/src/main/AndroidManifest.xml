@@ -20,7 +20,7 @@
         </intent>
     </queries>
     <application
-        android:label="Eat-Go!"
+        android:label="Eat-Go"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
 
