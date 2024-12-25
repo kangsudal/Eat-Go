@@ -1,4 +1,4 @@
-package com.kangsudal.eat_go
+package com.kangsudal.eatgo
 
 import io.flutter.embedding.android.FlutterActivity
 
