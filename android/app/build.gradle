@@ -40,7 +40,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.kangsudal.eatgo"
-    compileSdkVersion 34
+    compileSdkVersion 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
