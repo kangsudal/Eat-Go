@@ -54,3 +54,13 @@ firebase.json
 # google map api key
 /ios/Flutter/EatGo.xcconfig
 *.env
+
+# signing keys
+/android/key.properties
+*.keystore
+*.jks
+
+# local properties
+/android/local.properties
+.vscode/settings.json
+.claude/
