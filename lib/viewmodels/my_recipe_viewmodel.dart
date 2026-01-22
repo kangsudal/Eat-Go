@@ -4,7 +4,7 @@ import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MyRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
@@ -30,7 +30,7 @@ class MyRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
         state = AsyncValue.data(recipes); // 성공 시 데이터 상태로 업데이트
         return recipes;
       } else {
-        debugPrint('currentUserUid가 null입니다.');
+        logger.w('currentUserUid가 null입니다.');
         state =
             AsyncValue.error('현재 접속된 사용자를 불러오지 못하였습니다.', StackTrace.current);
         return [];

@@ -4,8 +4,8 @@ import 'dart:async';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SignInViewModel extends AsyncNotifier<void> {
@@ -44,7 +44,7 @@ class SignInViewModel extends AsyncNotifier<void> {
       ); // 실패 상태 설정
       return false;
     } catch (e, stackTrace) {
-      debugPrint('SignInViewModel 오류 발생 - Google 로그인 중 오류 발생: $e');
+      logger.e('SignInViewModel 오류 발생 - Google 로그인 중 오류 발생', error: e);
       state = AsyncValue.error(e, stackTrace); // 에러 상태로 전환
       return false;
     }
@@ -76,7 +76,7 @@ class SignInViewModel extends AsyncNotifier<void> {
         }
       });
     } catch (e, stackTrace) {
-      debugPrint('SignInViewModel 오류 발생 - Apple 로그인 중 오류 발생: $e');
+      logger.e('SignInViewModel 오류 발생 - Apple 로그인 중 오류 발생', error: e);
       state = AsyncValue.error(e, stackTrace); // 에러 상태로 전환
       throw Exception(e);
     }
@@ -102,7 +102,7 @@ class SignInViewModel extends AsyncNotifier<void> {
         StackTrace.current,
       ); // 실패 상태 설정
     } catch (e, stackTrace) {
-      debugPrint('SignInViewModel 오류 발생 - 이메일 로그인 중 오류 발생: $e');
+      logger.e('SignInViewModel 오류 발생 - 이메일 로그인 중 오류 발생', error: e);
       state = AsyncValue.error(e, stackTrace); // 에러 상태로 전환
     }
   }

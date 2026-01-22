@@ -3,7 +3,7 @@
 
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/services/recipe_service.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:eat_go/utils/app_logger.dart';
 
 class RecipeRepository {
   RecipeRepository({required RecipeService recipeService})
@@ -24,7 +24,7 @@ class RecipeRepository {
     try {
       return _recipeService.fetchRecipesFuture();
     } catch (e) {
-      debugPrint('레시피를 가져오는 중 오류 발생: $e');
+      logger.e('레시피를 가져오는 중 오류 발생', error: e);
       return [];
     }
   }
@@ -35,7 +35,7 @@ class RecipeRepository {
     try {
       return _recipeService.fetchRecipesFutureByIds(bookmarkedRecipeIds);
     } catch (e) {
-      debugPrint('레시피를 가져오는 중 오류 발생: $e');
+      logger.e('레시피를 가져오는 중 오류 발생', error: e);
       return [];
     }
   }
@@ -49,7 +49,7 @@ class RecipeRepository {
         categories: categories,
       );
     } catch (e) {
-      debugPrint('RecipeRepository - 랜덤 레시피 생성중(keyword 없이) 오류 발생 : $e');
+      logger.e('RecipeRepository - 랜덤 레시피 생성중(keyword 없이) 오류 발생', error: e);
       return null;
     }
   }
@@ -65,7 +65,7 @@ class RecipeRepository {
         keywords: keywords,
       );
     } catch (e) {
-      debugPrint('RecipeRepository - 랜덤 레시피 생성중 오류 발생 : $e');
+      logger.e('RecipeRepository - 랜덤 레시피 생성중 오류 발생', error: e);
       return null;
     }
   }
@@ -85,7 +85,7 @@ class RecipeRepository {
         return recipeList;
       }
     } catch (e) {
-      debugPrint('RecipeRepository - getFilteredRecipeList 에러 발생:$e');
+      logger.e('RecipeRepository - getFilteredRecipeList 에러 발생', error: e);
       return null;
     }
     return null;
@@ -95,7 +95,7 @@ class RecipeRepository {
     try {
       return _recipeService.getRecipeById(recipeId: recipeId);
     } catch (e) {
-      debugPrint('RecipeRepository - 레시피 생성중 오류 발생 : $e');
+      logger.e('RecipeRepository - 레시피 생성중 오류 발생', error: e);
       throw Exception(e);
     }
   }
@@ -105,7 +105,7 @@ class RecipeRepository {
       await _recipeService.updateRecipeData(updatedRecipe: updatedRecipe);
       return true;
     } catch (e) {
-      debugPrint('RecipeRepository - 레시피 업데이트 중 오류가 발생하였습니다. $e');
+      logger.e('RecipeRepository - 레시피 업데이트 중 오류가 발생하였습니다', error: e);
       return false;
     }
   }
@@ -116,7 +116,7 @@ class RecipeRepository {
     try {
       return _recipeService.fetchRecipesByCreatedBy(createdBy: createdBy);
     } catch (e) {
-      debugPrint('레시피를 가져오는 중 오류 발생: $e');
+      logger.e('레시피를 가져오는 중 오류 발생', error: e);
       return [];
     }
   }

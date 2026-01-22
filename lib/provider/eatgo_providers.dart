@@ -13,6 +13,7 @@ import 'package:eat_go/services/location_service.dart';
 import 'package:eat_go/services/recipe_service.dart';
 import 'package:eat_go/services/restaurant_service.dart';
 import 'package:eat_go/services/user_service.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:eat_go/viewmodels/all_recipe_list_viewmodel.dart';
 import 'package:eat_go/viewmodels/bookmark_viewmodel.dart';
 import 'package:eat_go/viewmodels/home_viewmodel.dart';
@@ -24,7 +25,6 @@ import 'package:eat_go/viewmodels/restaurant_viewmodel.dart';
 import 'package:eat_go/viewmodels/setting_viewmodel.dart';
 import 'package:eat_go/viewmodels/sign_in_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //Provider: 간단한 의존성 주입 도구로, 특정 클래스를 전역적으로 쉽게 사용할 수 있도록 만들어줍니다.
@@ -56,10 +56,10 @@ final authStateProvider = StreamProvider<User?>((ref) async* {
       await auth.currentUser?.reload();
     }
   } catch (e) {
-    debugPrint('User 정보 reload 하는데 에러 발생: $e');
+    logger.e('User 정보 reload 하는데 에러 발생', error: e);
   }
   yield* auth.authStateChanges().handleError((error) {
-    debugPrint('Error in authStateChanges: $error');
+    logger.e('Error in authStateChanges', error: error);
   }); // 로그인 상태 변경 스트림 반환
 });
 

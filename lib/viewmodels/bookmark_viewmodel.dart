@@ -5,7 +5,7 @@ import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BookmarkViewModel extends FamilyAsyncNotifier<List<Recipe>?, EatGoUser> {
@@ -28,7 +28,7 @@ class BookmarkViewModel extends FamilyAsyncNotifier<List<Recipe>?, EatGoUser> {
           await _recipeRepository.getRecipesFutureByIds(bookmarkRecipeIds);
       return recipeList;
     } catch (e) {
-      debugPrint('BookmarkViewModel - 북마크레시피들을 불러오는데 오류 발생 : $e');
+      logger.e('BookmarkViewModel - 북마크레시피들을 불러오는데 오류 발생', error: e);
       return null;
     }
   }
@@ -40,7 +40,7 @@ class BookmarkViewModel extends FamilyAsyncNotifier<List<Recipe>?, EatGoUser> {
       EatGoUser? updatedEatGoUser;
       Recipe? updatedRecipe;
       if (recipe == null) {
-        debugPrint('BookmarkViewModel - recipe 값이 null입니다.');
+        logger.w('BookmarkViewModel - recipe 값이 null입니다.');
         return;
       }
       final isBookmarked =
@@ -80,7 +80,7 @@ class BookmarkViewModel extends FamilyAsyncNotifier<List<Recipe>?, EatGoUser> {
       // 2. 레시피 컬렉션에 북마크 기록 업데이트
       await _recipeRepository.updateRecipeData(updatedRecipe: updatedRecipe);
     } catch (e) {
-      debugPrint('BookmarkViewModel - 북마크 토글하는데 실패하였습니다.$e');
+      logger.e('BookmarkViewModel - 북마크 토글하는데 실패하였습니다', error: e);
     }
   }
 }

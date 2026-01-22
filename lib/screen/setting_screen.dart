@@ -1,6 +1,7 @@
 import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                   settingViewState.when(
                     loading: () => const CircularProgressIndicator(),
                     error: (error, stackTrace) {
-                      debugPrint('SettingScreen 오류 발생 - 회원 설정 화면: $error');
+                      logger.e('SettingScreen 오류 발생 - 회원 설정 화면', error: error);
                       // 에러 발생 시 SnackBar 표시
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('오류가 발생했습니다.')),
@@ -114,8 +115,9 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                             try {
                               await settingViewModel.signOut();
                             } catch (e) {
-                              debugPrint(
-                                'SettingScreen 오류 발생 - 로그아웃 처리에 오류가 발생하였습니다.$e',
+                              logger.e(
+                                'SettingScreen 오류 발생 - 로그아웃 처리에 오류가 발생하였습니다',
+                                error: e,
                               );
                             }
                           },
@@ -179,7 +181,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                     // 계정 및 데이터 삭제
                     await deleteUserAccountAndData();
                   } else {
-                    debugPrint(
+                    logger.w(
                       'SettingScreen - 재인증에 실패했습니다: reauthenticateSucess = false',
                     );
                     if (context.mounted) {
@@ -189,7 +191,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                     }
                   }
                 } catch (e) {
-                  debugPrint('SettingScreen 오류 발 생 - 계정 삭제 실패 : $e');
+                  logger.e('SettingScreen 오류 발생 - 계정 삭제 실패', error: e);
                 }
                 if (context.mounted) {
                   Navigator.pop(context);
@@ -212,7 +214,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
     final settingViewModel = ref.read(settingViewModelProvider.notifier);
     final result = await settingViewModel.deleteUserAccountAndData();
     if (result == false) {
-      debugPrint('SettingScreen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
+      logger.w('SettingScreen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('오류가 발생했습니다.')),

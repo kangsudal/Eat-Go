@@ -1,3 +1,4 @@
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +9,7 @@ class PathErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(error);
+    logger.e(error);
     return Scaffold(
       body: Center(
         child: Column(

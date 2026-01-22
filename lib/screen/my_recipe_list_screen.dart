@@ -4,6 +4,7 @@ import 'package:eat_go/palette.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/custom_widget/custom_list_tile.dart';
 import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -263,7 +264,7 @@ class MyRecipeListScreen extends ConsumerWidget {
                 );
               },
               error: (error, stackTrace) {
-                debugPrint('MyRecipeListScreen-262:$error');
+                logger.e('MyRecipeListScreen-262', error: error);
                 return const Center(
                   child: Text('오류가 발생하였습니다.'),
                 );
@@ -273,7 +274,7 @@ class MyRecipeListScreen extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) {
-          debugPrint('MyRecipeListScreen-272:$error');
+          logger.e('MyRecipeListScreen-272', error: error);
           return const Center(
             child: Text('오류가 발생하였습니다.'),
           );

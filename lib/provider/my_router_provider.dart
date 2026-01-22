@@ -13,6 +13,7 @@ import 'package:eat_go/screen/setting_screen.dart';
 import 'package:eat_go/screen/sign_in_screen.dart';
 import 'package:eat_go/screen/sign_in_with_email.dart';
 import 'package:eat_go/screen/yummy_treat_screen.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,18 +27,18 @@ final myRouterProvider = Provider<GoRouter>((ref) {
   final user = authState.when(
     data: (user) {
       if (user != null) {
-        debugPrint('User logged in: ${user.email}');
+        logger.i('User logged in: ${user.email}');
       } else {
-        debugPrint('No user logged in');
+        logger.d('No user logged in');
       }
       return user;
     },
     loading: () {
-      debugPrint('Checking user authentication...');
+      logger.d('Checking user authentication...');
       return null; // 로딩 중에는 사용자 데이터가 없으므로 null 반환
     },
     error: (error, stackTrace) {
-      debugPrint('Error in authState: $error');
+      logger.e('Error in authState', error: error);
       return null; // 에러 발생 시도 null로 처리
     },
   );
@@ -60,7 +61,7 @@ final myRouterProvider = Provider<GoRouter>((ref) {
       //todo: 에러 페이지 만들어주기
       // 에러가 발생했을 때도 로딩 화면이나 에러 페이지로 리디렉션
       if (authState.hasError) {
-        debugPrint('Authentication error occurred: ${authState.error}');
+        logger.e('Authentication error occurred', error: authState.error);
         return '/sign_in'; // 예시로 로그인 화면으로 보내도록 처리
       }
 

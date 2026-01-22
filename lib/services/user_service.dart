@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/user_model.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 
 class UserService {
   UserService({required this.firestore});
@@ -61,7 +61,7 @@ class UserService {
       await firestore.collection('users').doc(updatedUser.uid).update(userMap);
       return true;
     } catch (e) {
-      debugPrint('UserService - 사용자 데이터 업데이트 중 오류 발생: $e');
+      logger.e('UserService - 사용자 데이터 업데이트 중 오류 발생', error: e);
       return false;
     }
   }

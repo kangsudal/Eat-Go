@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:eat_go/viewmodels/recipe_write_base_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -150,7 +151,7 @@ class _CameraButtonState extends ConsumerState<CameraButton> {
         widget.viewModel.updateIngredientsImgUrl(imageFile);
       }
     } catch (errorMsg) {
-      debugPrint('CameraButton 에러: $errorMsg');
+      logger.e('CameraButton 에러', error: errorMsg);
       setState(() {
         imageFile = null;
       });

@@ -1,30 +1,9 @@
-/*
-class WriteData {
-  //final Firebase fbService;
-
-  void upload() {
-    // image thumbnail 생성
-    // image 원본
-    // fbService.upload(image1,thumbnail);
-  }
-
-  void delete() {
-    // fbService.delete();
-  }
-
-  void change() {
-    // data -> 가공,연산 -> 가공된결과
-    // fbService.change(가공된 결과);
-  }
-  // +어떤 스크린이 어떤스크린이랑 데이터를 공유하는지 잘 분류해야한다.
-}
-*/
 import 'dart:async';
 
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
-import 'package:flutter/material.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AllRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
@@ -81,7 +60,7 @@ class AllRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
         state = AsyncValue.data(recipeList);
       }
     } catch (e, stackTrace) {
-      debugPrint('AllRecipeListViewModel - $e');
+      logger.e('AllRecipeListViewModel', error: e);
       state = AsyncValue.error(
         '조건에 맞는 레시피 리스트가 없습니다.',
         stackTrace,
@@ -106,7 +85,7 @@ class AllRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
         return recipeList;
       }
     } catch (error, stackTrace) {
-      debugPrint('AllRecipeListViewModel - WithKeyword 에러 발생');
+      logger.e('AllRecipeListViewModel - WithKeyword 에러 발생', error: error);
       state = AsyncValue.error(error, stackTrace);
       return null;
     }

@@ -6,6 +6,7 @@ import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/ing
 import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/recipe_category_panel.dart';
 import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/recipe_explain_input.dart';
 import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/recipe_name_text_field.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -143,7 +144,7 @@ class _RecipeWriteScreenState extends ConsumerState<RecipeWriteScreen> {
           curve: Curves.easeInOut,
         );
       } else {
-        print('Context is null, ensureVisible not called.');
+        logger.e('Context is null, ensureVisible not called.');
       }
     });
   }

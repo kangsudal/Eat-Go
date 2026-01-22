@@ -24,7 +24,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/recipe_model.dart';
-import 'package:flutter/material.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 
@@ -166,9 +166,9 @@ class RecipeService {
         // Firestore에 JSON 데이터 저장
         await _firestore.collection(collectionName).add(insertMap);
       }
-      print('JSON 데이터가 Firestore에 성공적으로 업로드되었습니다.');
+      logger.i('JSON 데이터가 Firestore에 성공적으로 업로드되었습니다.');
     } catch (e) {
-      print('JSON 데이터 업로드 중 오류 발생: $e');
+      logger.e('JSON 데이터 업로드 중 오류 발생', error: e);
     }
   }
 
@@ -192,7 +192,7 @@ class RecipeService {
         });
       }).toList();
     } catch (e) {
-      debugPrint('RecipeService - 레시피를 가져오는 중 오류 발생: $e');
+      logger.e('RecipeService - 레시피를 가져오는 중 오류 발생', error: e);
       return []; // 오류 발생 시 빈 리스트 반환
     }
   }
@@ -229,7 +229,7 @@ class RecipeService {
 
       return bookmarkedRecipeList;
     } catch (e) {
-      debugPrint('RecipeService - 레시피를 가져오는 중 오류 발생: $e');
+      logger.e('RecipeService - 레시피를 가져오는 중 오류 발생', error: e);
       return []; // 오류 발생 시 빈 리스트 반환
     }
   }
@@ -239,7 +239,7 @@ class RecipeService {
       final String randomId = _firestore.collection('dummy').doc().id;
       return randomId;
     } catch (e) {
-      debugPrint('RecipeRepository - 랜덤 doc ID 생성중 오류 발생 : $e');
+      logger.e('RecipeRepository - 랜덤 doc ID 생성중 오류 발생', error: e);
       return '';
     }
   }
@@ -254,7 +254,7 @@ class RecipeService {
     //2. 랜덤 시작점
     final String randomId = generateRandomDocId();
     if (randomId == '') {
-      debugPrint("RecipeService - Random Doc Id가 ''입니다.");
+      logger.w("RecipeService - Random Doc Id가 ''입니다.");
       return null;
     }
     try {
@@ -273,7 +273,7 @@ class RecipeService {
 
       // 쿼리 결과가 없으면(랜덤하게 생성된 ID보다 큰 문서가 없다면) null 반환
       if (querySnapshot.docs.isEmpty) {
-        debugPrint(
+        logger.w(
           'RecipeService - 조건에 맞는 문서가 없습니다(랜덤하게 생성된 ID보다 큰 문서가 없을 가능성이있습니다)',
         );
         return null;
@@ -289,7 +289,7 @@ class RecipeService {
         'recipeId': randomDoc.id,
       });
     } catch (e) {
-      debugPrint('RecipeService - 랜덤 레시피 생성중 오류발생: $e');
+      logger.e('RecipeService - 랜덤 레시피 생성중 오류발생', error: e);
       return null;
     }
   }
@@ -318,7 +318,7 @@ class RecipeService {
 
       // 쿼리 결과가 없으면(랜덤하게 생성된 ID보다 큰 문서가 없다면) null 반환
       if (querySnapshot.docs.isEmpty) {
-        debugPrint('RecipeService - 조건에 맞는 문서가 없습니다.');
+        logger.w('RecipeService - 조건에 맞는 문서가 없습니다.');
         return null;
       }
 
@@ -343,7 +343,7 @@ class RecipeService {
 
         // 필터링된 문서들이 없다면 null 반환
         if (filteredDocs.isEmpty) {
-          debugPrint('RecipeService - 키워드와 일치하는 문서가 없습니다.');
+          logger.w('RecipeService - 키워드와 일치하는 문서가 없습니다.');
           return null;
         }
 
@@ -362,7 +362,7 @@ class RecipeService {
       //(getRandomRecipeWithoutKeywords가 호출될 수 있게 합니다.)
       return null;
     } catch (e) {
-      debugPrint('RecipeService - 랜덤 레시피 생성중 오류발생: $e');
+      logger.e('RecipeService - 랜덤 레시피 생성중 오류발생', error: e);
       return null;
     }
   }
@@ -391,7 +391,7 @@ class RecipeService {
 
       // 쿼리 결과가 없으면 빈 리스트 반환
       if (querySnapshot.docs.isEmpty) {
-        debugPrint('RecipeService - 조건에 맞는 문서가 없습니다.');
+        logger.w('RecipeService - 조건에 맞는 문서가 없습니다.');
         return [];
       }
 
@@ -419,14 +419,14 @@ class RecipeService {
 
       // 필터링된 문서들이 없다면 빈 리스트 반환
       if (filteredDocs.isEmpty) {
-        debugPrint('RecipeService - 키워드와 일치하는 문서가 없습니다.');
+        logger.w('RecipeService - 키워드와 일치하는 문서가 없습니다.');
         return [];
       }
 
       // 필터링된 문서들을 Recipe 객체로 변환 후 반환
       return convertToRecipes(filteredDocs);
     } catch (e) {
-      debugPrint('RecipeService - 필터된 전체 레시피 생성 중 오류 발생: $e');
+      logger.e('RecipeService - 필터된 전체 레시피 생성 중 오류 발생', error: e);
       return [];
     }
   }
@@ -476,7 +476,7 @@ class RecipeService {
           .update(recipeMap);
       return true;
     } catch (e) {
-      debugPrint('RecipeService - 레시피 데이터 업데이트 중 오류 발생: $e');
+      logger.e('RecipeService - 레시피 데이터 업데이트 중 오류 발생', error: e);
       return false;
     }
   }
@@ -492,15 +492,16 @@ class RecipeService {
 
       // 쿼리 결과가 없으면 빈 리스트 반환
       if (snapshot.docs.isEmpty) {
-        debugPrint('RecipeService -fetchRecipesByCreatedBy- 조건에 맞는 문서가 없습니다.');
+        logger.w('RecipeService -fetchRecipesByCreatedBy- 조건에 맞는 문서가 없습니다.');
         return [];
       }
 
       // 각 문서를 Recipe 객체로 변환
       return convertToRecipes(snapshot.docs);
     } catch (e) {
-      debugPrint(
-        'RecipeService fetchRecipesByCreatedBy- 레시피를 가져오는 중 오류 발생: $e',
+      logger.e(
+        'RecipeService fetchRecipesByCreatedBy- 레시피를 가져오는 중 오류 발생',
+        error: e,
       );
       throw Exception(
         'RecipeService fetchRecipesByCreatedBy- 레시피를 가져오는 중 오류 발생: $e',

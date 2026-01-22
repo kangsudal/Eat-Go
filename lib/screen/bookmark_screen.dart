@@ -3,6 +3,7 @@ import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/custom_widget/custom_list_tile.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -138,7 +139,7 @@ class BookmarkScreen extends ConsumerWidget {
                 );
               },
               error: (error, stackTrace) {
-                debugPrint('BookmarkScreen - $error');
+                logger.e('BookmarkScreen', error: error);
                 return const Center(child: Text('리스트를 불러오는데 실패하였습니다.'));
               },
               loading: () => const Center(

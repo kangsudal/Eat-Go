@@ -1,6 +1,5 @@
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -62,11 +61,11 @@ class AuthService {
         } on SignInWithAppleAuthorizationException catch (e) {
           if (e.code == AuthorizationErrorCode.canceled) {
             // 사용자가 로그인 창을 취소한 경우
-            debugPrint('Apple 로그인 취소됨');
+            logger.w('Apple 로그인 취소됨');
             return false;
           } else {
             // Apple 로그인 중 다른 오류 발생
-            debugPrint('Apple 로그인 오류: ${e.message}');
+            logger.e('Apple 로그인 오류', error: e);
             return false;
           }
         }
@@ -77,10 +76,10 @@ class AuthService {
       await auth.currentUser!.reauthenticateWithCredential(credential);
       return true;
     } on FirebaseAuthException catch (e) {
-      debugPrint('재인증 오류: ${e.code}');
+      logger.e('재인증 오류: ${e.code}', error: e);
       return false; // 에러 발생 시 false 반환
     } catch (e) {
-      debugPrint('AuthService - reauthenticateWithSocialLogin : $e');
+      logger.e('AuthService - reauthenticateWithSocialLogin', error: e);
       throw Exception('재인증에 실패하였습니다.:$e');
     }
   }
@@ -95,7 +94,7 @@ class AuthService {
         throw Exception('사용자가 로그인되어 있지 않습니다.');
       }
     } catch (e) {
-      debugPrint('AuthRepository 오류 발생 - 회원 데이터 삭제 실패: $e');
+      logger.e('AuthRepository 오류 발생 - 회원 데이터 삭제 실패', error: e);
       throw Exception(e);
     }
   }
@@ -125,7 +124,7 @@ class AuthService {
 
       return authResult;
     } catch (e) {
-      debugPrint('Google 로그인 실패: $e');
+      logger.e('Google 로그인 실패', error: e);
       return null;
     }
   }
@@ -156,7 +155,7 @@ class AuthService {
 
       return authResult; // 로그인 처리 후, 로그인된 사용자의 UserCredential 객체를 반환
     } catch (e) {
-      debugPrint('AuthRepository 오류 발생 - Apple 로그인 실패: $e');
+      logger.e('AuthRepository 오류 발생 - Apple 로그인 실패', error: e);
       return null;
     }
   }

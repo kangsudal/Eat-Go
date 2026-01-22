@@ -5,6 +5,7 @@ import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/animated_text_widget.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/need_sign_in_dialog.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -295,7 +296,7 @@ class RecipeWidget extends ConsumerWidget {
             const SizedBox(width: 15),
             GestureDetector(
               onTap: () {
-                debugPrint('recipeId:${randomRecipe.recipeId}');
+                logger.d('recipeId:${randomRecipe.recipeId}');
                 context.go('/home/recipe_detail/${randomRecipe.recipeId}');
               },
               child: Container(

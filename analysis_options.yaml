@@ -22,7 +22,7 @@ linter:
     prefer_final_fields: true                # 재할당 없는 필드는 final 사용
 
     # === 안전한 코드 ===
-    avoid_print: false                        # print() 대신 logger 사용 권장 (릴리즈에서 노출 방지)
+    avoid_print: true                        # print() 대신 logger 사용 권장 (릴리즈에서 노출 방지)
     unawaited_futures: true                  # Future 반환값 무시 방지 (비동기 버그 예방)
     avoid_empty_else: true                   # 빈 else 블록 금지
     avoid_returning_null_for_future: true    # Future에서 null 반환 금지

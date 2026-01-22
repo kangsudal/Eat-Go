@@ -1,8 +1,8 @@
 //UserRepository: 사용자 정보(Firebase DB에서 사용자 데이터 가져오기, 업데이트 등)를 관리.
 import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/services/user_service.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 
 /*
   책임: 사용자 데이터(User Data)와 관련된 비즈니스 로직을 처리합니다.
@@ -24,7 +24,7 @@ class UserRepository {
     try {
       await userService.saveUserInfo(user);
     } catch (e) {
-      debugPrint('UserRepository에서 사용자 정보 저장 오류: $e');
+      logger.e('UserRepository에서 사용자 정보 저장 오류', error: e);
     }
   }
 
@@ -33,7 +33,7 @@ class UserRepository {
     try {
       return await userService.getUserInfo(uid);
     } catch (e) {
-      debugPrint('UserRepository에서 사용자 정보 로드 오류: $e');
+      logger.e('UserRepository에서 사용자 정보 로드 오류', error: e);
     }
     return null;
   }
@@ -44,7 +44,7 @@ class UserRepository {
       // Firestore에서 사용자 데이터 삭제
       await userService.deleteUserInfo(uid);
     } catch (e) {
-      debugPrint('UserRepository 오류 발생 - 회원 탈퇴 로직: $e');
+      logger.e('UserRepository 오류 발생 - 회원 탈퇴 로직', error: e);
       throw Exception(e);
     }
   }
@@ -57,7 +57,7 @@ class UserRepository {
       await userService.updateUserInfo(updatedUser: updatedUser);
       return true;
     } catch (e) {
-      debugPrint('UserRepository 오류 발생 - 회원 업데이트 로직: $e');
+      logger.e('UserRepository 오류 발생 - 회원 업데이트 로직', error: e);
       return false;
     }
   }

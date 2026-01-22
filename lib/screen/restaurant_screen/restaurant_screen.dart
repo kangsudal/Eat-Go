@@ -4,6 +4,7 @@ import 'package:eat_go/model/restaurant_model.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/restaurant_screen/restaurant_screen_back_button.dart';
 import 'package:eat_go/screen/restaurant_screen/scrollable_cards.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -62,7 +63,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
         icon: customIcon,
       );
     }).toSet();
-    debugPrint('${restaurants.length}개의 마커 패치 완료');
+    logger.d('${restaurants.length}개의 마커 패치 완료');
   }
 
   Future<void> createCustomMapIcon() async {
@@ -183,8 +184,9 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                 }
               },
               error: (error, stackTrace) {
-                debugPrint(
-                  'RestaurantScreen - RestaurantViewModelState의 data를 불러오지 못했습니다.$error',
+                logger.e(
+                  'RestaurantScreen - RestaurantViewModelState의 data를 불러오지 못했습니다',
+                  error: error,
                 );
                 return Scaffold(
                   appBar: AppBar(),
@@ -194,7 +196,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
                 );
               },
               loading: () {
-                debugPrint('currentPositionState를 가지고오고있는 중입니다.');
+                logger.d('currentPositionState를 가지고오고있는 중입니다.');
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
@@ -213,7 +215,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
           }
         },
         error: (error, stackTrace) {
-          debugPrint('RestaurantScreen - $error');
+          logger.e('RestaurantScreen', error: error);
           return Scaffold(
             appBar: AppBar(),
             body: const Center(
@@ -222,7 +224,7 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
           );
         },
         loading: () {
-          debugPrint('locationServiceStatus를 불러오고있습니다.');
+          logger.d('locationServiceStatus를 불러오고있습니다.');
           return const Center(child: CircularProgressIndicator());
         },
       ),

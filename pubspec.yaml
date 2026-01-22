@@ -70,6 +70,7 @@ dependencies:
   url_launcher: ^6.3.1
   smooth_page_indicator: ^1.2.0+3
   http: ^1.2.0
+  logger: ^2.5.0
 
 dev_dependencies:
   flutter_test:

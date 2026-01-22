@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:eat_go/model/restaurant_model.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -61,14 +61,14 @@ class RestaurantService {
           try {
             restaurants.add(Restaurant.fromJson(place));
           } catch (e) {
-            debugPrint('Error parsing place: $e'); // JSON 구조가 예상과 다를 경우 로그로 확인
+            logger.e('Error parsing place', error: e); // JSON 구조가 예상과 다를 경우 로그로 확인
           }
         }
       }
       return restaurants;
     } else {
-      debugPrint('Request failed with status: ${response.statusCode}');
-      debugPrint('Error: ${response.reasonPhrase}');
+      logger.e('Request failed with status: ${response.statusCode}');
+      logger.e('Error: ${response.reasonPhrase}');
       return [];
     }
   }

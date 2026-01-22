@@ -5,7 +5,7 @@ import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeViewModel extends AsyncNotifier<Recipe?> {
@@ -33,7 +33,7 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
         return randomRecipe;
       }
     } catch (e) {
-      debugPrint('RecipeViewModel - 랜덤 레시피 생성(keyword 없이)중 오류 발생 : $e');
+      logger.e('RecipeViewModel - 랜덤 레시피 생성(keyword 없이)중 오류 발생', error: e);
       return null;
     }
     return null;
@@ -53,7 +53,7 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
         return randomRecipe;
       }
     } catch (e) {
-      debugPrint('RecipeViewModel - 랜덤 레시피 생성(with keyword)중 오류 발생 : $e');
+      logger.e('RecipeViewModel - 랜덤 레시피 생성(with keyword)중 오류 발생', error: e);
       return null;
     }
     return null;
@@ -90,7 +90,7 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
         }
         // recipe == null 이면 계속진행하여 retries++;로 간다.
       } catch (e, stackTrace) {
-        debugPrint('HomeViewModel - $e');
+        logger.e('HomeViewModel', error: e);
         state = AsyncValue.error(e, stackTrace); // 에러가 발생하면 에러 상태로 업데이트
         return;
       }
@@ -98,7 +98,7 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
     }
 
     // 최대 재시도 횟수를 초과하면 실패
-    debugPrint('HomeViewModel - 최대 재시도 횟수를 초과');
+    logger.w('HomeViewModel - 최대 재시도 횟수를 초과');
     state =
         AsyncValue.error('조건에 맞는 레시피가 없습니다. 다시 시도해주세요.', StackTrace.current);
   }
@@ -111,13 +111,13 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
       Recipe updatedRecipe;
       final Recipe? recipe = state.value;
       if (currentEatGoUser == null) {
-        debugPrint(
+        logger.w(
           'HomeViewModel - getCurrentUser가 null입니다. 현재 로그인된 사용자가 없는것 같습니다.',
         );
         return;
       }
       if (recipe == null) {
-        debugPrint('HomeViewModel - recipe 값이 null입니다.');
+        logger.w('HomeViewModel - recipe 값이 null입니다.');
         return;
       }
       final isBookmarked =
@@ -161,7 +161,7 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
       await _recipeRepository.updateRecipeData(updatedRecipe: updatedRecipe);
       state = AsyncValue.data(updatedRecipe); // HomeViewModel의 상태를 업데이트
     } catch (e, stackTrace) {
-      debugPrint('HomeViewModel - 북마크 토글하는데 실패하였습니다.$e');
+      logger.e('HomeViewModel - 북마크 토글하는데 실패하였습니다', error: e);
       state = AsyncValue.error(e, stackTrace);
     }
   }

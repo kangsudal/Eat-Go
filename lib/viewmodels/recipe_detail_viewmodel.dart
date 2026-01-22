@@ -5,7 +5,7 @@ import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RecipeDetailViewModel
@@ -41,13 +41,13 @@ class RecipeDetailViewModel
       Recipe updatedRecipe;
       final Recipe? recipe = state.value;
       if (currentEatGoUser == null) {
-        debugPrint(
+        logger.w(
           'RecipeDetailViewModel - getCurrentUser가 null입니다. 현재 로그인된 사용자가 없는것 같습니다.',
         );
         return;
       }
       if (recipe == null) {
-        debugPrint('RecipeDetailViewModel - recipe 값이 null입니다.');
+        logger.w('RecipeDetailViewModel - recipe 값이 null입니다.');
         return;
       }
       final isBookmarked =
@@ -93,7 +93,7 @@ class RecipeDetailViewModel
       ); //getCurrentUser랑 다른점은 네트워크 호출을 안한다는 점이다. 이 부분을 넣어야 currentEatGoUser가 갱신되고 appBar의 action에 있는 북마크가 다시그려진다.
       state = AsyncValue.data(updatedRecipe); // RecipeDetailViewModel의 상태를 업데이트
     } catch (e, stackTrace) {
-      debugPrint('RecipeDetailViewModel - 북마크 토글하는데 실패하였습니다.$e');
+      logger.e('RecipeDetailViewModel - 북마크 토글하는데 실패하였습니다', error: e);
       state = AsyncValue.error(e, stackTrace);
     }
   }

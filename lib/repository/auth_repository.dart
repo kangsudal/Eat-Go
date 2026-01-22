@@ -1,8 +1,8 @@
 // auth_repository.dart
 // AuthRepository: Firebase Auth와 관련된 작업(로그인, 로그아웃, UID 가져오기 등)을 관리.
 import 'package:eat_go/services/auth_service.dart';
+import 'package:eat_go/utils/app_logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 
 class AuthRepository {
   AuthRepository({required authService}) : _authService = authService;
@@ -17,7 +17,7 @@ class AuthRepository {
     try {
       await _authService.deleteUserAccount(); // Firebase Authentication에서 계정 삭제
     } catch (e) {
-      debugPrint('AuthRepository 오류 발생 - 계정 삭제 실패: $e');
+      logger.e('AuthRepository 오류 발생 - 계정 삭제 실패', error: e);
     }
   }
 
