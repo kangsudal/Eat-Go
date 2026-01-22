@@ -10,19 +10,31 @@
 include: package:flutter_lints/flutter.yaml
 
 linter:
-  # The lint rules applied to this project can be customized in the
-  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
-  # included above or to enable additional rules. A list of all available lints
-  # and their documentation is published at https://dart.dev/lints.
-  #
-  # Instead of disabling a lint rule for the entire project in the
-  # section below, it can also be suppressed for a single line of code
-  # or a specific dart file by using the `// ignore: name_of_lint` and
-  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
-  # producing the lint.
   rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    # === 코드 품질 ===
+    prefer_const_constructors: true          # const 생성자 사용 가능하면 const 붙이기 (성능 향상)
+    prefer_const_declarations: true          # 변경 안 되는 변수는 const로 선언
+    prefer_final_locals: true                # 재할당 없는 지역 변수는 final 사용
+    prefer_final_fields: true                # 재할당 없는 필드는 final 사용
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+    # === 안전한 코드 ===
+    avoid_print: true                        # print() 대신 logger 사용 권장 (릴리즈에서 노출 방지)
+    unawaited_futures: true                  # Future 반환값 무시 방지 (비동기 버그 예방)
+    avoid_empty_else: true                   # 빈 else 블록 금지
+    avoid_returning_null_for_future: true    # Future에서 null 반환 금지
+    cancel_subscriptions: true               # Stream 구독 취소 누락 방지 (메모리 누수 예방)
+    close_sinks: true                        # Sink 닫기 누락 방지 (메모리 누수 예방)
+
+    # === 코드 스타일 ===
+    prefer_single_quotes: true               # 문자열에 작은따옴표 사용 (일관성)
+    require_trailing_commas: true            # 여러 줄일 때 마지막에 콤마 필수 (git diff 깔끔)
+    sort_constructors_first: true            # 생성자를 클래스 상단에 배치
+    sort_child_properties_last: true         # child/children 속성을 마지막에 배치 (가독성)
+
+    # === import 관리 ===
+    always_use_package_imports: true         # 상대 경로 대신 package import 사용 (리팩토링 용이)
+    directives_ordering: true                # import/export 순서 정렬
+
+    # === 타입 안전 ===
+    always_declare_return_types: true        # 함수 반환 타입 항상 명시
+    avoid_dynamic_calls: true                # dynamic 타입 호출 금지 (타입 안전성)
