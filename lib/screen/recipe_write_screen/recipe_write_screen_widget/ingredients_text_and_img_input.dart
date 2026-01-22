@@ -1,5 +1,4 @@
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/camera_button.dart';
 import 'package:eat_go/viewmodels/recipe_write_base_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //재료 입력 테스트 필드
 class IngredientsTextAndImgInput extends ConsumerWidget {
-  final RecipeWriteBaseViewModel viewModel;
   const IngredientsTextAndImgInput({
     super.key,
     required this.viewModel,
   });
+  final RecipeWriteBaseViewModel viewModel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,7 +25,7 @@ class IngredientsTextAndImgInput extends ConsumerWidget {
           maxLength: 200,
           keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: EatGoPalette.lineColor, width: 1),
             ),

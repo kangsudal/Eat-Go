@@ -4,9 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class UserService {
-  final FirebaseFirestore firestore;
-
   UserService({required this.firestore});
+  final FirebaseFirestore firestore;
 
   // Firebase에 사용자 정보를 저장하는 메서드
   Future<void> saveUserInfo(User user) async {
@@ -18,7 +17,7 @@ class UserService {
         // 최초 로그인일 때만 Firestore에 사용자 정보 저장
         await userDoc.set({
           'uid': user.uid,
-          'displayName': user.email!.split("@")[0], // user.displayName
+          'displayName': user.email!.split('@')[0], // user.displayName
           'email': user.email,
           'supportAmount': 0, //후원 비용
           'isPremium': false, //프리미엄 상태 FieldValue.serverTimestamp()
@@ -56,7 +55,7 @@ class UserService {
 
   Future<bool> updateUserInfo({required EatGoUser updatedUser}) async {
     try {
-      Map<String, dynamic> userMap = updatedUser.toJson();
+      final Map<String, dynamic> userMap = updatedUser.toJson();
       // debugPrint(userMap.toString());
       // Firestore에서 uid로 저장된 사용자 문서 삭제
       await firestore.collection('users').doc(updatedUser.uid).update(userMap);

@@ -21,6 +21,7 @@ Repository는 데이터의 출처를 관리하는 책임이 있고, Services는 
  */
 import 'dart:convert'; // For jsonDecode
 import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +29,10 @@ import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 
 class RecipeService {
-  final FirebaseFirestore _firestore;
-  final Uuid uuid = const Uuid();
-
   RecipeService({required FirebaseFirestore firestore})
       : _firestore = firestore;
+  final FirebaseFirestore _firestore;
+  final Uuid uuid = const Uuid();
 
   // Firestore에서 실시간으로 레시피 목록을 가져오는 Stream
   Stream<List<Recipe>> fetchRecipesStream() {
@@ -52,99 +52,104 @@ class RecipeService {
   // 로컬 텍스트 파일 -> 파이어스토어
   // JSON 파일을 읽고 Firestore에 저장하는 함수
   Future<void> uploadJsonToFirestore(
-      String filePath, String collectionName) async {
+    String filePath,
+    String collectionName,
+  ) async {
     try {
       // 로컬 파일에서 JSON 읽기
-      String jsonString = await rootBundle.loadString(filePath);
+      final String jsonString = await rootBundle.loadString(filePath);
 
       // JSON 데이터를 Map으로 변환
-      Map<String, dynamic> jsonData = jsonDecode(jsonString);
+      final Map<String, dynamic> jsonData = jsonDecode(jsonString);
+      final Map<String, dynamic> cookrcp01 =
+          jsonData['COOKRCP01'] as Map<String, dynamic>;
 
-      for (Map<String, dynamic> item in jsonData['COOKRCP01']["row"]) {
-        Map<String, dynamic> insertMap = {
-          'title': item["RCP_NM"],
-          'ingredients': item["RCP_PARTS_DTLS"],
-          'ingredientsImgUrl': item["ATT_FILE_NO_MK"],
+      for (final Map<String, dynamic> item
+          in cookrcp01['row'] as List<dynamic>) {
+        final Map<String, dynamic> insertMap = {
+          'title': item['RCP_NM'],
+          'ingredients': item['RCP_PARTS_DTLS'],
+          'ingredientsImgUrl': item['ATT_FILE_NO_MK'],
           //ATT_FILE_NO_MK에는 썸네일이나 재료용 사진이 들어가 있다.
           'descriptions': [
             {
-              'description': item["MANUAL01"],
+              'description': item['MANUAL01'],
               'descriptionImgUrl': item['MANUAL_IMG01'],
             },
             {
-              'description': item["MANUAL02"],
+              'description': item['MANUAL02'],
               'descriptionImgUrl': item['MANUAL_IMG02'],
             },
             {
-              'description': item["MANUAL03"],
+              'description': item['MANUAL03'],
               'descriptionImgUrl': item['MANUAL_IMG03'],
             },
             {
-              'description': item["MANUAL04"],
+              'description': item['MANUAL04'],
               'descriptionImgUrl': item['MANUAL_IMG04'],
             },
             {
-              'description': item["MANUAL05"],
+              'description': item['MANUAL05'],
               'descriptionImgUrl': item['MANUAL_IMG05'],
             },
             {
-              'description': item["MANUAL06"],
+              'description': item['MANUAL06'],
               'descriptionImgUrl': item['MANUAL_IMG06'],
             },
             {
-              'description': item["MANUAL07"],
+              'description': item['MANUAL07'],
               'descriptionImgUrl': item['MANUAL_IMG07'],
             },
             {
-              'description': item["MANUAL08"],
+              'description': item['MANUAL08'],
               'descriptionImgUrl': item['MANUAL_IMG08'],
             },
             {
-              'description': item["MANUAL09"],
+              'description': item['MANUAL09'],
               'descriptionImgUrl': item['MANUAL_IMG09'],
             },
             {
-              'description': item["MANUAL10"],
+              'description': item['MANUAL10'],
               'descriptionImgUrl': item['MANUAL_IMG10'],
             },
             {
-              'description': item["MANUAL11"],
+              'description': item['MANUAL11'],
               'descriptionImgUrl': item['MANUAL_IMG11'],
             },
             {
-              'description': item["MANUAL12"],
+              'description': item['MANUAL12'],
               'descriptionImgUrl': item['MANUAL_IMG12'],
             },
             {
-              'description': item["MANUAL13"],
+              'description': item['MANUAL13'],
               'descriptionImgUrl': item['MANUAL_IMG13'],
             },
             {
-              'description': item["MANUAL14"],
+              'description': item['MANUAL14'],
               'descriptionImgUrl': item['MANUAL_IMG14'],
             },
             {
-              'description': item["MANUAL15"],
+              'description': item['MANUAL15'],
               'descriptionImgUrl': item['MANUAL_IMG15'],
             },
             {
-              'description': item["MANUAL16"],
+              'description': item['MANUAL16'],
               'descriptionImgUrl': item['MANUAL_IMG16'],
             },
             {
-              'description': item["MANUAL17"],
+              'description': item['MANUAL17'],
               'descriptionImgUrl': item['MANUAL_IMG17'],
             },
             {
-              'description': item["MANUAL18"],
+              'description': item['MANUAL18'],
               'descriptionImgUrl': item['MANUAL_IMG18'],
             },
             {
-              'description': item["MANUAL19"],
+              'description': item['MANUAL19'],
               'descriptionImgUrl': item['MANUAL_IMG19'],
             },
             {
-              'description': item["MANUAL20"],
+              'description': item['MANUAL20'],
               'descriptionImgUrl': item['MANUAL_IMG20'],
             },
           ],
@@ -170,7 +175,7 @@ class RecipeService {
   Future<List<Recipe>> fetchRecipesFuture() async {
     try {
       // Firestore의 모든 레시피 문서를 가져옴
-      QuerySnapshot<Map<String, dynamic>> snapshot =
+      final QuerySnapshot<Map<String, dynamic>> snapshot =
           await _firestore.collection('recipes').get();
 
       // 각 문서를 Recipe 객체로 변환
@@ -193,14 +198,15 @@ class RecipeService {
   }
 
   Future<List<Recipe>> fetchRecipesFutureByIds(
-      List<String> bookmarkedRecipeIds) async {
+    List<String> bookmarkedRecipeIds,
+  ) async {
     try {
       if (bookmarkedRecipeIds.isEmpty) {
         return []; // ID 리스트가 비어있으면 빈 리스트 반환
       }
 
       // Firestore에서 각 recipeId로 병렬로 get() 요청
-      List<Future<DocumentSnapshot<Map<String, dynamic>>>> futures =
+      final List<Future<DocumentSnapshot<Map<String, dynamic>>>> futures =
           bookmarkedRecipeIds.map((recipeId) {
         return _firestore.collection('recipes').doc(recipeId).get();
       }).toList();
@@ -213,7 +219,7 @@ class RecipeService {
           .where((snapshot) => snapshot.exists)
           .toList(); // 존재하는 문서만 필터링
 
-      List<Recipe> bookmarkedRecipeList = snapshots.map((snapshot) {
+      final List<Recipe> bookmarkedRecipeList = snapshots.map((snapshot) {
         final recipeData = snapshot.data() ?? {};
         return Recipe.fromJson({
           ...recipeData,
@@ -230,7 +236,7 @@ class RecipeService {
 
   String generateRandomDocId() {
     try {
-      String randomId = _firestore.collection('dummy').doc().id;
+      final String randomId = _firestore.collection('dummy').doc().id;
       return randomId;
     } catch (e) {
       debugPrint('RecipeRepository - 랜덤 doc ID 생성중 오류 발생 : $e');
@@ -242,11 +248,11 @@ class RecipeService {
     required Map<String, dynamic> categories,
   }) async {
     //1. true인 카테고리 라벨 목록 생성
-    List<String> selectedCategories =
+    final List<String> selectedCategories =
         categories.keys.where((key) => categories[key] == true).toList();
 
     //2. 랜덤 시작점
-    String randomId = generateRandomDocId();
+    final String randomId = generateRandomDocId();
     if (randomId == '') {
       debugPrint("RecipeService - Random Doc Id가 ''입니다.");
       return null;
@@ -263,19 +269,21 @@ class RecipeService {
           .limit(7);
 
       //쿼리 실행
-      QuerySnapshot querySnapshot = await query.get();
+      final QuerySnapshot querySnapshot = await query.get();
 
       // 쿼리 결과가 없으면(랜덤하게 생성된 ID보다 큰 문서가 없다면) null 반환
       if (querySnapshot.docs.isEmpty) {
         debugPrint(
-            "RecipeService - 조건에 맞는 문서가 없습니다(랜덤하게 생성된 ID보다 큰 문서가 없을 가능성이있습니다)");
+          'RecipeService - 조건에 맞는 문서가 없습니다(랜덤하게 생성된 ID보다 큰 문서가 없을 가능성이있습니다)',
+        );
         return null;
       }
 
       // 결과가 있는 경우 무작위로 선택
       final randomDoc =
           querySnapshot.docs[Random().nextInt(querySnapshot.docs.length)];
-      Map<String, Object?> dataMap = randomDoc.data() as Map<String, Object?>;
+      final Map<String, Object?> dataMap =
+          randomDoc.data() as Map<String, Object?>;
       return Recipe.fromJson({
         ...dataMap,
         'recipeId': randomDoc.id,
@@ -292,32 +300,33 @@ class RecipeService {
     required String keywords, // 키워드 필터 ('두부 버섯')
   }) async {
     //1. true인 카테고리 라벨 목록 생성
-    List<String> selectedCategories =
+    final List<String> selectedCategories =
         categories.keys.where((key) => categories[key] == true).toList();
 
     //2. 키워드 필터 생성
-    List<String> keywordList =
+    final List<String> keywordList =
         keywords.trim().isNotEmpty ? keywords.trim().split(' ') : [];
 
     try {
       //1. 카테고리 필터 쿼리
-      Query query = _firestore
+      final Query query = _firestore
           .collection('recipes')
           .where('category', whereIn: selectedCategories);
 
       //쿼리 실행
-      QuerySnapshot querySnapshot = await query.get();
+      final QuerySnapshot querySnapshot = await query.get();
 
       // 쿼리 결과가 없으면(랜덤하게 생성된 ID보다 큰 문서가 없다면) null 반환
       if (querySnapshot.docs.isEmpty) {
-        debugPrint("RecipeService - 조건에 맞는 문서가 없습니다.");
+        debugPrint('RecipeService - 조건에 맞는 문서가 없습니다.');
         return null;
       }
 
       //2. 키워드 필터가 있는 경우, keywordList에 있는 키워드들이 포함된 모든 문서
       if (keywordList.isNotEmpty) {
         // 필터링: title, hashTag, descriptions에서 키워드가 포함된 레시피 찾기
-        List<DocumentSnapshot> filteredDocs = querySnapshot.docs.where((doc) {
+        final List<DocumentSnapshot> filteredDocs =
+            querySnapshot.docs.where((doc) {
           final title = doc['title'] as String;
           final ingredients = doc['ingredients'] as String;
           final hashTag =
@@ -334,12 +343,12 @@ class RecipeService {
 
         // 필터링된 문서들이 없다면 null 반환
         if (filteredDocs.isEmpty) {
-          debugPrint("RecipeService - 키워드와 일치하는 문서가 없습니다.");
+          debugPrint('RecipeService - 키워드와 일치하는 문서가 없습니다.');
           return null;
         }
 
         // 필터링된 문서들을 Recipe 객체로 변환
-        List<Recipe> filteredRecipes = filteredDocs.map((doc) {
+        final List<Recipe> filteredRecipes = filteredDocs.map((doc) {
           return Recipe.fromJson({
             ...doc.data() as Map<String, dynamic>,
             'recipeId': doc.id, // Firestore 문서 ID를 recipeId로 할당
@@ -364,25 +373,25 @@ class RecipeService {
     required String keywords, // 키워드 필터 ('두부 버섯')
   }) async {
     // 1. true인 카테고리 라벨 목록 생성
-    List<String> selectedCategories =
+    final List<String> selectedCategories =
         categories.keys.where((key) => categories[key] == true).toList();
 
     // 2. 키워드 필터 생성
-    List<String> keywordList =
+    final List<String> keywordList =
         keywords.trim().isNotEmpty ? keywords.trim().split(' ') : [];
 
     try {
       // 카테고리 필터 쿼리 생성
-      Query query = _firestore
+      final Query query = _firestore
           .collection('recipes')
           .where('category', whereIn: selectedCategories);
 
       // 쿼리 실행
-      QuerySnapshot querySnapshot = await query.get();
+      final QuerySnapshot querySnapshot = await query.get();
 
       // 쿼리 결과가 없으면 빈 리스트 반환
       if (querySnapshot.docs.isEmpty) {
-        debugPrint("RecipeService - 조건에 맞는 문서가 없습니다.");
+        debugPrint('RecipeService - 조건에 맞는 문서가 없습니다.');
         return [];
       }
 
@@ -392,7 +401,8 @@ class RecipeService {
       }
 
       // 키워드 필터가 있는 경우 필터링된 결과 반환
-      List<DocumentSnapshot> filteredDocs = querySnapshot.docs.where((doc) {
+      final List<DocumentSnapshot> filteredDocs =
+          querySnapshot.docs.where((doc) {
         final title = doc['title'] as String;
         final ingredients = doc['ingredients'] as String;
         final hashTag =
@@ -409,7 +419,7 @@ class RecipeService {
 
       // 필터링된 문서들이 없다면 빈 리스트 반환
       if (filteredDocs.isEmpty) {
-        debugPrint("RecipeService - 키워드와 일치하는 문서가 없습니다.");
+        debugPrint('RecipeService - 키워드와 일치하는 문서가 없습니다.');
         return [];
       }
 
@@ -435,7 +445,7 @@ class RecipeService {
   //상세 레시피 페이지
   Future<Recipe> getRecipeById({required String recipeId}) async {
     try {
-      DocumentReference docReference =
+      final DocumentReference docReference =
           _firestore.collection('recipes').doc(recipeId);
       final docSnapshot = await docReference.get();
 
@@ -459,7 +469,7 @@ class RecipeService {
 
   Future<bool> updateRecipeData({required Recipe updatedRecipe}) async {
     try {
-      Map<String, dynamic> recipeMap = updatedRecipe.toJson();
+      final Map<String, dynamic> recipeMap = updatedRecipe.toJson();
       await _firestore
           .collection('recipes')
           .doc(updatedRecipe.recipeId)
@@ -471,26 +481,30 @@ class RecipeService {
     }
   }
 
-  Future<List<Recipe>> fetchRecipesByCreatedBy(
-      {required String createdBy}) async {
+  Future<List<Recipe>> fetchRecipesByCreatedBy({
+    required String createdBy,
+  }) async {
     try {
-      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+      final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
           .collection('recipes')
           .where('createdBy', isEqualTo: createdBy)
           .get();
 
       // 쿼리 결과가 없으면 빈 리스트 반환
       if (snapshot.docs.isEmpty) {
-        debugPrint("RecipeService -fetchRecipesByCreatedBy- 조건에 맞는 문서가 없습니다.");
+        debugPrint('RecipeService -fetchRecipesByCreatedBy- 조건에 맞는 문서가 없습니다.');
         return [];
       }
 
       // 각 문서를 Recipe 객체로 변환
       return convertToRecipes(snapshot.docs);
     } catch (e) {
-      debugPrint('RecipeService fetchRecipesByCreatedBy- 레시피를 가져오는 중 오류 발생: $e');
+      debugPrint(
+        'RecipeService fetchRecipesByCreatedBy- 레시피를 가져오는 중 오류 발생: $e',
+      );
       throw Exception(
-          'RecipeService fetchRecipesByCreatedBy- 레시피를 가져오는 중 오류 발생: $e'); // 오류 발생 시 빈 리스트 반환
+        'RecipeService fetchRecipesByCreatedBy- 레시피를 가져오는 중 오류 발생: $e',
+      ); // 오류 발생 시 빈 리스트 반환
     }
   }
 }

@@ -21,10 +21,10 @@ sealed class RecipeReport with _$RecipeReport {
 }
 
 enum ReportStatus {
-  @JsonValue("inProgress")
+  @JsonValue('inProgress')
   inProgress, //처리중
-  @JsonValue("complete")
+  @JsonValue('complete')
   complete, //완료
-  @JsonValue("invalidation")
+  @JsonValue('invalidation')
   invalidation, //무효화
 }

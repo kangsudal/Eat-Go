@@ -1,10 +1,9 @@
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/top3_more_screen/top3_more_screen_widget/top3_card.dart';
 import 'package:eat_go/screen/top3_more_screen/top3_more_screen.dart';
+import 'package:eat_go/screen/top3_more_screen/top3_more_screen_widget/top3_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:uuid/uuid.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -15,11 +14,11 @@ class HistoryScreen extends StatefulWidget {
 
 class _HistoryScreenState extends State<HistoryScreen> {
   late int confirmedRecipeCount;
-  BorderRadius borderRadius = BorderRadius.vertical(
-    top: const Radius.circular(30),
+  BorderRadius borderRadius = const BorderRadius.vertical(
+    top: Radius.circular(30),
   );
   bool _isPanelOpen = false;
-  PanelController _slidingController = PanelController();
+  final PanelController _slidingController = PanelController();
 
   @override
   void initState() {
@@ -57,13 +56,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
         maxHeight: MediaQuery.of(context).size.height,
         onPanelOpened: () {
           setState(() {
-            borderRadius = BorderRadius.all(Radius.zero);
+            borderRadius = const BorderRadius.all(Radius.zero);
           });
         },
         onPanelClosed: () {
           setState(() {
-            borderRadius = BorderRadius.vertical(
-              top: const Radius.circular(30),
+            borderRadius = const BorderRadius.vertical(
+              top: Radius.circular(30),
             );
           });
         },
@@ -91,12 +90,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   fontSize: 16,
                 ),
               ),
-              SizedBox(height: 13),
+              const SizedBox(height: 13),
               Expanded(
                 child: ListView.separated(
                   physics: _isPanelOpen
-                      ? AlwaysScrollableScrollPhysics()
-                      : NeverScrollableScrollPhysics(),
+                      ? const AlwaysScrollableScrollPhysics()
+                      : const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return ListTile(
                       onTap: () {
@@ -121,7 +120,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       trailing: Column(
                         children: [
                           IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               size: 30,
                               Icons.delete,
                               color: pointColor,
@@ -132,7 +131,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     insetPadding: EdgeInsets.zero,
-                                    title: Text(
+                                    title: const Text(
                                       '이 기록을 삭제하시겠습니까?',
                                       style: TextStyle(
                                         fontSize: 15,
@@ -143,13 +142,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: Text('예'),
+                                        child: const Text('예'),
                                       ),
                                       TextButton(
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: Text('아니오'),
+                                        child: const Text('아니오'),
                                       ),
                                     ],
                                   );
@@ -162,7 +161,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
-                    return Divider();
+                    return const Divider();
                   },
                   itemCount: confirmedRecipeCount,
                 ),
@@ -170,7 +169,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ],
           ),
         ),
-        body: BackgroundWidget(),
+        body: const BackgroundWidget(),
       ),
     );
   }
@@ -185,39 +184,36 @@ class BackgroundWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 30.0, right: 30, top: 10),
-      child: Container(
-        // decoration: BoxDecoration(color: Colors.yellow),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '가장 자주 먹는 음식 TOP 3',
-              style: TextStyle(
-                color: EatGoPalette.subTextColor,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '가장 자주 먹는 음식 TOP 3',
+            style: TextStyle(
+              color: EatGoPalette.subTextColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 13),
+          const Top3Cards(),
+          Align(
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const Top3MoreScreen(),
+                  ),
+                );
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('더보기'),
               ),
             ),
-            SizedBox(height: 13),
-            Top3Cards(),
-            Align(
-              alignment: Alignment.centerRight,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => Top3MoreScreen(),
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text('더보기'),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -239,8 +235,8 @@ class Top3Cards extends StatelessWidget {
           },
           child: Container(
             color: Colors.transparent,
-            margin: EdgeInsets.only(bottom: 5),
-            child: Top3Card(),
+            margin: const EdgeInsets.only(bottom: 5),
+            child: const Top3Card(),
           ),
         ),
         GestureDetector(
@@ -250,9 +246,9 @@ class Top3Cards extends StatelessWidget {
           },
           child: Container(
             color: Colors.transparent,
-            margin: EdgeInsets.only(bottom: 5),
+            margin: const EdgeInsets.only(bottom: 5),
             // color: Colors.purple,
-            child: Top3Card(),
+            child: const Top3Card(),
           ),
         ),
         GestureDetector(
@@ -262,9 +258,9 @@ class Top3Cards extends StatelessWidget {
           },
           child: Container(
             color: Colors.transparent,
-            margin: EdgeInsets.only(bottom: 5),
+            margin: const EdgeInsets.only(bottom: 5),
             // color: Colors.purple,
-            child: Top3Card(),
+            child: const Top3Card(),
           ),
         ),
       ],

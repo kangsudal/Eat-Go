@@ -7,7 +7,7 @@ class DrawerMainMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle style = TextStyle(
+    final TextStyle style = TextStyle(
       color: EatGoPalette.mainTextColor,
       fontSize: 22,
       fontWeight: FontWeight.w600,
@@ -30,7 +30,7 @@ class DrawerMainMenu extends StatelessWidget {
                 '관심 항목',
                 style: style,
               ),
-              Icon(
+              const Icon(
                 Icons.bookmark,
                 color: pointColor,
               ),

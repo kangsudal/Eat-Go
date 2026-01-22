@@ -25,7 +25,8 @@ class AdminScreen extends StatelessWidget {
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                      content: Text('All users updated successfully!')),
+                    content: Text('All users updated successfully!'),
+                  ),
                 );
               },
               child: const Text('Update All Users'),
@@ -38,12 +39,12 @@ class AdminScreen extends StatelessWidget {
 
   // Firestore의 모든 레시피 문서를 업데이트
   Future<void> updateAllRecipes() async {
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    WriteBatch batch = _firestore.batch();
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final WriteBatch batch = firestore.batch();
 
     // 레시피 컬렉션의 모든 문서를 참조
-    QuerySnapshot<Map<String, dynamic>> recipesSnapshot =
-        await _firestore.collection('recipes').get();
+    final QuerySnapshot<Map<String, dynamic>> recipesSnapshot =
+        await firestore.collection('recipes').get();
 
     for (var doc in recipesSnapshot.docs) {
       // userClapCounts 필드를 삭제하고 clapRecords를 빈 리스트로 초기화
@@ -55,7 +56,7 @@ class AdminScreen extends StatelessWidget {
 
     // 일괄 업데이트 실행
     await batch.commit();
-    print("모든 레시피 문서가 업데이트되었습니다.");
+    print('모든 레시피 문서가 업데이트되었습니다.');
   }
 
   /*Future<void> updateRecipesCollection() async {
@@ -82,10 +83,9 @@ class AdminScreen extends StatelessWidget {
     }
   }*/
 
-
   void textSearch(String queryValue) async {
     final location = await Geolocator.getCurrentPosition();
-    var headers = {
+    final headers = {
       'Accept': '*/*',
       'Content-Type': 'application/json',
       'X-Goog-Api-Key': dotenv.env['GOOGLE_MAPS_API_KEY']!,
@@ -99,29 +99,31 @@ class AdminScreen extends StatelessWidget {
           'places.googleMapsUri,'
           'places.formattedAddress,'
           // 'places.nationalPhoneNumber' places.location과 함께 사용하면 Bad Request가 뜬다.
-          'places.location'
+          'places.location',
     };
-    var request = http.Request('POST',
-        Uri.parse('https://places.googleapis.com/v1/places:searchText'));
+    final request = http.Request(
+      'POST',
+      Uri.parse('https://places.googleapis.com/v1/places:searchText'),
+    );
     request.body = json.encode({
-      "textQuery": queryValue,
-      "languageCode": "ko",
-      "locationBias": {
-        "circle": {
-          "center": {
-            "latitude": location.latitude,
-            "longitude": location.longitude,
+      'textQuery': queryValue,
+      'languageCode': 'ko',
+      'locationBias': {
+        'circle': {
+          'center': {
+            'latitude': location.latitude,
+            'longitude': location.longitude,
           },
-          "radius": 50000.0
-        }
-      }
+          'radius': 50000.0,
+        },
+      },
     });
     request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
+    final http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      String result = await response.stream.bytesToString();
+      final String result = await response.stream.bytesToString();
       print(result);
       // do something with the result
     } else {

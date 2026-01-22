@@ -31,25 +31,28 @@ class ShakeNotifier extends Notifier<bool> {
         17.0; // 흔들림 감지 임계값( 숫자가 올라갈수록 더 세게 흔들어야한다. 15는너무낮고 20은 너무세다)
     _accelerometerSubscription =
         accelerometerEventStream().listen((event) async {
-      double gX = event.x;
-      double gY = event.y;
-      double gZ = event.z;
+      final double gX = event.x;
+      final double gY = event.y;
+      final double gZ = event.z;
 
       // 가속도 벡터 크기 계산
-      double acceleration = sqrt(gX * gX + gY * gY + gZ * gZ);
+      final double acceleration = sqrt(gX * gX + gY * gY + gZ * gZ);
 
       if (acceleration > shakeThreshold && state) {
         // 흔들림 발생 시 진동 실행
-        if (await Vibration.hasVibrator() ?? false) {
-          Vibration.vibrate();
+        if (await Vibration.hasVibrator()) {
+          await Vibration.vibrate();
         }
 
         // 흔들림 발생 시 레시피 불러오기 메서드 실행
         final selectedCategories = ref.watch(homeScreenCategoriesProvider);
         final keywords = ref.watch(homeScreenKeywordsProvider);
-        ref.read(homeViewModelProvider.notifier).fetchRandomRecipeWithRetry(
-            categories: selectedCategories, keywords: keywords);
-
+        await ref
+            .read(homeViewModelProvider.notifier)
+            .fetchRandomRecipeWithRetry(
+              categories: selectedCategories,
+              keywords: keywords,
+            );
       }
     });
   }

@@ -19,7 +19,8 @@ class RestaurantScreenBackButton extends StatelessWidget {
           onPressed: () {
             context.pop();
           },
-          child: Align(
+          backgroundColor: Colors.white,
+          child: const Align(
             alignment: Alignment(0.4, 0),
             child: Icon(
               Icons.arrow_back_ios,
@@ -27,7 +28,6 @@ class RestaurantScreenBackButton extends StatelessWidget {
               color: pointColor,
             ),
           ),
-          backgroundColor: Colors.white,
         ),
       ),
     );

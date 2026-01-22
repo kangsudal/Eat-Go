@@ -1,9 +1,9 @@
+import 'package:eat_go/model/author_attribution_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import 'author_attribution_model.dart';
 
 part 'photo_model.freezed.dart';
 part 'photo_model.g.dart';
+
 @freezed
 sealed class Photo with _$Photo {
   const factory Photo({

@@ -5,10 +5,9 @@ import 'package:eat_go/screen/home_screen/home_screen_widget/need_sign_in_dialog
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RecipeDetailAppBar extends ConsumerWidget implements PreferredSizeWidget{
-  final Recipe recipe;
-
+class RecipeDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
   const RecipeDetailAppBar({super.key, required this.recipe});
+  final Recipe recipe;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -101,9 +100,8 @@ class RecipeDetailAppBar extends ConsumerWidget implements PreferredSizeWidget{
                 },
                 child: CircleAvatar(
                   radius: 22,
-                  backgroundColor:
-                  EatGoPalette.backgroundColor1,
-                  child: Icon(
+                  backgroundColor: EatGoPalette.backgroundColor1,
+                  child: const Icon(
                     Icons.bookmark_border_sharp,
                     color: pointColor,
                     size: 30,
@@ -115,7 +113,11 @@ class RecipeDetailAppBar extends ConsumerWidget implements PreferredSizeWidget{
                 user.bookmarkRecipeIds.contains(recipe.recipeId);
             return IconButton(
               onPressed: () async {
-                ref.read(recipeDetailViewModelProvider(recipe.recipeId).notifier).toggleBookmark(user);
+                ref
+                    .read(
+                      recipeDetailViewModelProvider(recipe.recipeId).notifier,
+                    )
+                    .toggleBookmark(user);
               },
               icon: isBookmarked == false
                   ? const Icon(Icons.bookmark_border_sharp)

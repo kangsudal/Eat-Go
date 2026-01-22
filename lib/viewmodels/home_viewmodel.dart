@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/model/user_model.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,7 +25,7 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
     required Map<String, dynamic> categories,
   }) async {
     try {
-      Recipe? randomRecipe =
+      final Recipe? randomRecipe =
           await _recipeRepository.getFilteredRandomRecipeWithoutKeyword(
         categories: categories,
       );
@@ -44,9 +44,11 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
     required String keywords,
   }) async {
     try {
-      Recipe? randomRecipe =
+      final Recipe? randomRecipe =
           await _recipeRepository.getFilteredRandomRecipeWithKeyword(
-              categories: categories, keywords: keywords);
+        categories: categories,
+        keywords: keywords,
+      );
       if (randomRecipe != null) {
         return randomRecipe;
       }
@@ -97,7 +99,8 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
 
     // 최대 재시도 횟수를 초과하면 실패
     debugPrint('HomeViewModel - 최대 재시도 횟수를 초과');
-    state = AsyncValue.error("조건에 맞는 레시피가 없습니다. 다시 시도해주세요.", StackTrace.current);
+    state =
+        AsyncValue.error('조건에 맞는 레시피가 없습니다. 다시 시도해주세요.', StackTrace.current);
   }
 
   //북마크 상태를 토글하는 메서드
@@ -106,10 +109,11 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
     try {
       EatGoUser? updatedEatGoUser;
       Recipe updatedRecipe;
-      Recipe? recipe = state.value;
+      final Recipe? recipe = state.value;
       if (currentEatGoUser == null) {
         debugPrint(
-            'HomeViewModel - getCurrentUser가 null입니다. 현재 로그인된 사용자가 없는것 같습니다.');
+          'HomeViewModel - getCurrentUser가 null입니다. 현재 로그인된 사용자가 없는것 같습니다.',
+        );
         return;
       }
       if (recipe == null) {
@@ -123,15 +127,17 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
         // 1. 유저 컬렉션에 북마크 기록 업데이트
         updatedEatGoUser = currentEatGoUser.copyWith(
           bookmarkRecipeIds: currentEatGoUser.bookmarkRecipeIds
-              .where((b) =>
-                  b != recipe.recipeId) //현재 레시피와 ID가 다른 레시피들만 남긴다는 의미입니다.
+              .where(
+                (b) => b != recipe.recipeId,
+              ) //현재 레시피와 ID가 다른 레시피들만 남긴다는 의미입니다.
               .toList(),
         );
         // 2. 레시피 컬렉션에 북마크 기록 업데이트
-        List<String> updatedBookmarkedBy =
+        final List<String> updatedBookmarkedBy =
             List<String>.from(recipe.bookmarkedBy)
-              ..remove(currentEatGoUser
-                  .uid); //List<String>.from():bookmarkedBy의 복사본을 만들어서 수정
+              ..remove(
+                currentEatGoUser.uid,
+              ); //List<String>.from():bookmarkedBy의 복사본을 만들어서 수정
         updatedRecipe = recipe.copyWith(bookmarkedBy: updatedBookmarkedBy);
       } else {
         // 1. 유저 컬렉션에 북마크 기록 업데이트
@@ -142,14 +148,15 @@ class HomeViewModel extends AsyncNotifier<Recipe?> {
           ],
         );
         // 2. 레시피 컬렉션에 북마크 기록 업데이트
-        List<String> updatedBookmarkedBy =
+        final List<String> updatedBookmarkedBy =
             List<String>.from(recipe.bookmarkedBy)..add(currentEatGoUser.uid);
         updatedRecipe = recipe.copyWith(bookmarkedBy: updatedBookmarkedBy);
       }
       // 1. 유저 컬렉션에 북마크 기록 업데이트
       await _userRepository.updateUserData(updatedUser: updatedEatGoUser);
       ref.read(currentEatGoUserProvider.notifier).state = AsyncValue.data(
-          updatedEatGoUser); //getCurrentUser랑 다른점은 네트워크 호출을 안한다는 점이다. 이 라인을 넣어야 current
+        updatedEatGoUser,
+      ); //getCurrentUser랑 다른점은 네트워크 호출을 안한다는 점이다. 이 라인을 넣어야 current
       // 2. 레시피 컬렉션에 북마크 기록 업데이트
       await _recipeRepository.updateRecipeData(updatedRecipe: updatedRecipe);
       state = AsyncValue.data(updatedRecipe); // HomeViewModel의 상태를 업데이트

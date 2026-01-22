@@ -4,12 +4,11 @@ import 'package:eat_go/palette.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_widget/appbar.dart';
 import 'package:eat_go/screen/recipe_detail_screen/recipe_detail_widget/bottom_appbar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RecipeDetailScreen extends ConsumerWidget {
-  RecipeDetailScreen({
+  const RecipeDetailScreen({
     super.key,
     required this.recipeId,
   });
@@ -24,11 +23,11 @@ class RecipeDetailScreen extends ConsumerWidget {
 
     return recipeDetailViewState.when(
       data: (recipe) {
-        String ingredientsImgUrl = recipe.ingredientsImgUrl;
-        String ingredients = recipe.ingredients;
-        List<Description> descriptions = recipe.descriptions;
-        String title = recipe.title;
-        String completedImgUrl = recipe.completedImgUrl;
+        final String ingredientsImgUrl = recipe.ingredientsImgUrl;
+        final String ingredients = recipe.ingredients;
+        final List<Description> descriptions = recipe.descriptions;
+        final String title = recipe.title;
+        final String completedImgUrl = recipe.completedImgUrl;
         return Scaffold(
           appBar: RecipeDetailAppBar(recipe: recipe),
           body: SingleChildScrollView(
@@ -40,12 +39,14 @@ class RecipeDetailScreen extends ConsumerWidget {
                     ingredients: ingredients,
                     ingredientsImgUrl: ingredientsImgUrl,
                   ),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   ...buildRecipeExplainAndImgSets(descriptions),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   buildCompletedRecipe(
-                      title: title, completedImgUrl: completedImgUrl),
-                  SizedBox(height: 30)
+                    title: title,
+                    completedImgUrl: completedImgUrl,
+                  ),
+                  const SizedBox(height: 30),
                 ],
               ),
             ),
@@ -56,14 +57,16 @@ class RecipeDetailScreen extends ConsumerWidget {
       error: (error, stackTrace) => const Center(
         child: Text('오류가 발생하였습니다.'),
       ),
-      loading: () => Center(
+      loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
     );
   }
 
-  Column buildIngredients(
-      {required String ingredients, required String ingredientsImgUrl}) {
+  Column buildIngredients({
+    required String ingredients,
+    required String ingredientsImgUrl,
+  }) {
     return Column(
       children: [
         ClipRRect(
@@ -75,10 +78,10 @@ class RecipeDetailScreen extends ConsumerWidget {
               value: downloadProgress.progress,
             ),
             errorWidget: (context, _, __) =>
-                Center(child: Icon(Icons.report_problem_outlined)),
+                const Center(child: Icon(Icons.report_problem_outlined)),
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(15.0),
@@ -97,8 +100,10 @@ class RecipeDetailScreen extends ConsumerWidget {
 
   List<Column> buildRecipeExplainAndImgSets(List<Description> descriptions) {
     final validDescriptions = descriptions
-        .where((desc) =>
-            desc.description.isNotEmpty || desc.descriptionImgUrl.isNotEmpty)
+        .where(
+          (desc) =>
+              desc.description.isNotEmpty || desc.descriptionImgUrl.isNotEmpty,
+        )
         .toList();
 
     return List.generate(validDescriptions.length, (index) {
@@ -119,7 +124,7 @@ class RecipeDetailScreen extends ConsumerWidget {
               child: Text(validDescriptions[index].description),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: CachedNetworkImage(
@@ -129,7 +134,7 @@ class RecipeDetailScreen extends ConsumerWidget {
                 value: downloadProgress.progress,
               ),
               errorWidget: (context, _, __) =>
-                  Center(child: Icon(Icons.report_problem_outlined)),
+                  const Center(child: Icon(Icons.report_problem_outlined)),
             ),
           ),
           if (index != validDescriptions.length - 1) const SizedBox(height: 40),
@@ -138,17 +143,19 @@ class RecipeDetailScreen extends ConsumerWidget {
     });
   }
 
-  Column buildCompletedRecipe(
-      {required String title, required String completedImgUrl}) {
+  Column buildCompletedRecipe({
+    required String title,
+    required String completedImgUrl,
+  }) {
     return Column(
       children: [
         Text(
           '$title 완성!',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 30,
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: CachedNetworkImage(
@@ -158,7 +165,7 @@ class RecipeDetailScreen extends ConsumerWidget {
               value: downloadProgress.progress,
             ),
             errorWidget: (context, _, __) =>
-                Center(child: Icon(Icons.report_problem_outlined)),
+                const Center(child: Icon(Icons.report_problem_outlined)),
           ),
         ),
       ],

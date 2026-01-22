@@ -1,6 +1,5 @@
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/custom_widget/custom_list_tile.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -46,7 +45,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                     builder: (BuildContext context) {
                       return Theme(
                         data: Theme.of(context).copyWith(
-                          textTheme: TextTheme(
+                          textTheme: const TextTheme(
                             // titleLarge: TextStyle(
                             //   color: Colors.black,
                             //   fontSize: 20,
@@ -146,7 +145,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                     },
                   );
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.info_outline,
                   color: pointColor,
                 ),
@@ -181,7 +180,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                     },
                     child: selectedValue == YummyTreat.singleCoffee
                         ? CustomListTile(
-                            leading: SizedBox(
+                            leading: const SizedBox(
                               width: 50,
                               height: 50,
                               child: Icon(
@@ -190,7 +189,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                                 color: Colors.white,
                               ),
                             ),
-                            mid: Text(
+                            mid: const Text(
                               '커피 한잔 쏘기',
                               style: TextStyle(
                                 color: Colors.white,
@@ -199,21 +198,22 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                             trailing: Container(
                               width: 50,
                               height: 50,
-                              padding: EdgeInsets.only(left: 10),
-                              decoration: BoxDecoration(
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: const BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
                                     color: Colors.white,
                                   ),
                                 ),
                               ),
-                              child: Center(
-                                  child: Text(
-                                '\$3',
-                                style: TextStyle(
-                                  color: Colors.white,
+                              child: const Center(
+                                child: Text(
+                                  '\$3',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              )),
+                              ),
                             ),
                           ).copyWith(
                             boxDecoration: const BoxDecoration(
@@ -225,7 +225,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                             ),
                           )
                         : CustomListTile(
-                            leading: SizedBox(
+                            leading: const SizedBox(
                               width: 50,
                               height: 50,
                               child: Icon(
@@ -233,11 +233,11 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                                 size: 35,
                               ),
                             ),
-                            mid: Text('커피 한잔 쏘기'),
+                            mid: const Text('커피 한잔 쏘기'),
                             trailing: Container(
                               width: 50,
                               height: 50,
-                              padding: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               decoration: BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
@@ -245,13 +245,14 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                                   ),
                                 ),
                               ),
-                              child: Center(
-                                  child: Text(
-                                '\$3',
-                                style: TextStyle(
-                                  color: pointColor,
+                              child: const Center(
+                                child: Text(
+                                  '\$3',
+                                  style: TextStyle(
+                                    color: pointColor,
+                                  ),
                                 ),
-                              )),
+                              ),
                             ),
                           ),
                   ),
@@ -263,7 +264,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                     },
                     child: selectedValue == YummyTreat.fiveCupsOfCoffee
                         ? CustomListTile(
-                            leading: SizedBox(
+                            leading: const SizedBox(
                               width: 50,
                               height: 50,
                               child: Stack(
@@ -293,7 +294,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                                 ],
                               ),
                             ),
-                            mid: Text(
+                            mid: const Text(
                               '커피 다섯 잔의 기쁨',
                               style: TextStyle(
                                 color: Colors.white,
@@ -302,15 +303,15 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                             trailing: Container(
                               width: 50,
                               height: 50,
-                              padding: EdgeInsets.only(left: 10),
-                              decoration: BoxDecoration(
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: const BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
                                     color: Colors.white,
                                   ),
                                 ),
                               ),
-                              child: Center(
+                              child: const Center(
                                 child: Text(
                                   '\$15',
                                   style: TextStyle(
@@ -329,7 +330,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                             ),
                           )
                         : CustomListTile(
-                            leading: SizedBox(
+                            leading: const SizedBox(
                               width: 50,
                               height: 50,
                               child: Stack(
@@ -353,11 +354,11 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                                 ],
                               ),
                             ),
-                            mid: Text('커피 다섯 잔의 기쁨'),
+                            mid: const Text('커피 다섯 잔의 기쁨'),
                             trailing: Container(
                               width: 50,
                               height: 50,
-                              padding: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               decoration: BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
@@ -365,7 +366,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                                   ),
                                 ),
                               ),
-                              child: Center(
+                              child: const Center(
                                 child: Text(
                                   '\$15',
                                   style: TextStyle(
@@ -389,7 +390,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                               width: 50,
                               color: Colors.white,
                             ),
-                            mid: Text(
+                            mid: const Text(
                               '피자 한 판 선물',
                               style: TextStyle(
                                 color: Colors.white,
@@ -398,7 +399,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                             trailing: Container(
                               width: 50,
                               height: 50,
-                              padding: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               decoration: BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
@@ -406,7 +407,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                                   ),
                                 ),
                               ),
-                              child: Center(
+                              child: const Center(
                                 child: Text(
                                   '\$20',
                                   style: TextStyle(
@@ -429,11 +430,11 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                               'assets/icons/icon-pizza.png',
                               width: 50,
                             ),
-                            mid: Text('피자 한 판 선물'),
+                            mid: const Text('피자 한 판 선물'),
                             trailing: Container(
                               width: 50,
                               height: 50,
-                              padding: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               decoration: BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
@@ -441,7 +442,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                                   ),
                                 ),
                               ),
-                              child: Center(
+                              child: const Center(
                                 child: Text(
                                   '\$20',
                                   style: TextStyle(
@@ -465,7 +466,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                               width: 50,
                               color: Colors.white,
                             ),
-                            mid: Text(
+                            mid: const Text(
                               '일년 동안 피자 파티',
                               style: TextStyle(
                                 color: Colors.white,
@@ -474,15 +475,15 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                             trailing: Container(
                               height: 50,
                               width: 50,
-                              padding: EdgeInsets.only(left: 10),
-                              decoration: BoxDecoration(
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: const BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
                                     color: Colors.white,
                                   ),
                                 ),
                               ),
-                              child: Center(
+                              child: const Center(
                                 child: Text(
                                   '\$200',
                                   style: TextStyle(
@@ -506,11 +507,11 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                               width: 50,
                               color: EatGoPalette.mainTextColor,
                             ),
-                            mid: Text('일년 동안 피자 파티'),
+                            mid: const Text('일년 동안 피자 파티'),
                             trailing: Container(
                               height: 50,
                               width: 50,
-                              padding: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               decoration: BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
@@ -518,7 +519,7 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
                                   ),
                                 ),
                               ),
-                              child: Center(
+                              child: const Center(
                                 child: Text(
                                   '\$200',
                                   style: TextStyle(
@@ -537,15 +538,15 @@ class _YummyTreatScreenState extends State<YummyTreatScreen> {
               // height: 60,
               child: CupertinoButton(
                 color: pointColor,
+                onPressed: selectedValue != null ? () {} : null,
                 child: Text(
                   'CONTINUE',
                   style: GoogleFonts.poppins(
-                    color: selectedValue != null ? Colors.white: Colors.grey,
+                    color: selectedValue != null ? Colors.white : Colors.grey,
                     fontWeight: FontWeight.bold,
                     fontSize: 30,
                   ),
                 ),
-                onPressed: selectedValue != null ? () {} : null,
               ),
             ),
           ],

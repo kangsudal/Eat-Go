@@ -13,9 +13,9 @@ class Top3Card extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: pointColor,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             height: MediaQuery.of(context).size.height * 0.1,
             width: MediaQuery.of(context).size.height * 0.1,
@@ -25,12 +25,12 @@ class Top3Card extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   '레시피 명',
-                  style: const TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16),
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     const Icon(

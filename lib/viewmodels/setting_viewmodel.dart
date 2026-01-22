@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/user_model.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,9 +21,9 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
   Future<EatGoUser?> getCurrentUser() async {
     state = const AsyncValue.loading();
     try {
-      String? currentUserUid = _authRepository.getCurrentUserUid();
+      final String? currentUserUid = _authRepository.getCurrentUserUid();
       if (currentUserUid != null) {
-        Map<String, dynamic>? userMap =
+        final Map<String, dynamic>? userMap =
             await _userRepository.getUser(currentUserUid);
         // Firestore에서 사용자 데이터를 가져오지 못한 경우
         if (userMap == null) {
@@ -31,7 +31,7 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
           debugPrint('SettingViewModel 오류 발생 - userMap이 null로 반환되었습니다.');
           return null;
         }
-        EatGoUser user = EatGoUser.fromJson(userMap);
+        final EatGoUser user = EatGoUser.fromJson(userMap);
         state = AsyncValue.data(user);
         return user;
       } else {
@@ -48,15 +48,15 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
 
   // 사용자 로그인 타입 체크
   bool isEmailPasswordLoginProvider() {
-    try{
+    try {
       return _authRepository.isEmailPasswordLoginProvider();
-    }catch(e){
+    } catch (e) {
       throw Exception(e);
     }
   }
 
   Future<bool> reauthenticateWithSocialLogin() async {
-    bool isReauthenticated =
+    final bool isReauthenticated =
         await _authRepository.reauthenticateWithSocialLogin();
     if (!isReauthenticated) {
       // 재인증 실패 시 탈퇴 중단
@@ -70,7 +70,7 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
     state = const AsyncValue.loading();
     try {
       // 1. 현재 로그인된 사용자 UID 가져오기
-      String? uid = _authRepository.getCurrentUserUid();
+      final String? uid = _authRepository.getCurrentUserUid();
       if (uid == null) {
         state = const AsyncValue.data(null);
         return false;
@@ -105,7 +105,7 @@ class SettingViewModel extends AutoDisposeAsyncNotifier<EatGoUser?> {
 
   // 상태를 변경하되 Firestore에 즉시 저장하지 않음
   void togglePushNotification(bool isEnabled) {
-    EatGoUser? user = state.value;
+    final EatGoUser? user = state.value;
     if (user != null) {
       final updatedUser = user.copyWith(pushNotificationEnabled: isEnabled);
       state = AsyncValue.data(updatedUser);

@@ -1,7 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:eat_go/palette.dart';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -41,7 +39,7 @@ class _AboutThisAppScreenState extends State<AboutThisAppScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                const Row(
                   children: [
                     Text(
                       'Support',
@@ -53,11 +51,11 @@ class _AboutThisAppScreenState extends State<AboutThisAppScreen> {
                   ],
                 ),
                 ...buildSupporterLine(),
-                Divider(
+                const Divider(
                   thickness: 1,
                   height: 50,
                 ),
-                Text(
+                const Text(
                   'License:\n'
                   'Pizza Icons made by lapiyee from Flaticon.\n'
                   'Restaurant Icons made by Freepik from Flaticon.\n'
@@ -77,16 +75,18 @@ class _AboutThisAppScreenState extends State<AboutThisAppScreen> {
       '꿍까',
       'Jinny',
     ];
-    List<Row> supporterLine = [];
+    final List<Row> supporterLine = [];
     supporters.forEachIndexed((index, supporter) {
-      supporterLine.add(Row(
-        children: [
-          Text('${index + 1}. '),
-          Expanded(
-            child: Text(supporter),
-          ),
-        ],
-      ));
+      supporterLine.add(
+        Row(
+          children: [
+            Text('${index + 1}. '),
+            Expanded(
+              child: Text(supporter),
+            ),
+          ],
+        ),
+      );
     });
 
     return supporterLine;

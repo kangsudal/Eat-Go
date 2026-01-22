@@ -1,11 +1,10 @@
-import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class SettingScreen extends ConsumerStatefulWidget {
   const SettingScreen({super.key});
@@ -59,7 +58,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                             title: Text('안녕하세요! ${user.displayName}님.'),
                           ),
                           ListTile(
-                            leading: Text('Email:'),
+                            leading: const Text('Email:'),
                             title: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text(user.email),
@@ -74,8 +73,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                                 settingViewModel
                                     .togglePushNotification(isEnabled);
                               },
-                              activeColor: pointColor,
-                              trackColor: Colors.black,
+                              activeTrackColor: pointColor,
+                              inactiveTrackColor: Colors.black,
                             ),
                           ),
                         ],
@@ -116,7 +115,8 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                               await settingViewModel.signOut();
                             } catch (e) {
                               debugPrint(
-                                  'SettingScreen 오류 발생 - 로그아웃 처리에 오류가 발생하였습니다.$e');
+                                'SettingScreen 오류 발생 - 로그아웃 처리에 오류가 발생하였습니다.$e',
+                              );
                             }
                           },
                         ),
@@ -137,7 +137,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
         ),
         if (settingViewState is AsyncLoading)
           Container(
-            color: Colors.white.withOpacity(1), // 반투명 배경
+            color: Colors.white.withValues(alpha: 1), // 반투명 배경
             child: const Center(
               child: CircularProgressIndicator(), // 중앙에 로딩 인디케이터
             ),
@@ -147,7 +147,7 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
   }
 
   void handleWithdrawal() async {
-    showCupertinoDialog(
+    await showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
@@ -171,15 +171,17 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
                     );
                   } else {
                     //현재 사용자가 소셜 로그인 기반이면
-                    reauthenticateSuccess = await settingViewModel.reauthenticateWithSocialLogin();
+                    reauthenticateSuccess =
+                        await settingViewModel.reauthenticateWithSocialLogin();
                   }
                   if (reauthenticateSuccess) {
                     // 재인증 성공시
                     // 계정 및 데이터 삭제
-                    deleteUserAccountAndData();
+                    await deleteUserAccountAndData();
                   } else {
                     debugPrint(
-                        'SettingScreen - 재인증에 실패했습니다: reauthenticateSucess = false');
+                      'SettingScreen - 재인증에 실패했습니다: reauthenticateSucess = false',
+                    );
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('재인증에 실패했습니다.')),
@@ -211,13 +213,13 @@ class _SettingScreenState extends ConsumerState<SettingScreen> {
     final result = await settingViewModel.deleteUserAccountAndData();
     if (result == false) {
       debugPrint('SettingScreen 오류 발생 - 회원 설정 화면: EatGoUser 리턴값이 null입니다.');
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('오류가 발생했습니다.')),
         );
       }
     } else {
-      if (context.mounted) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('성공적으로 탈퇴 처리가 되었습니다.')),
         );

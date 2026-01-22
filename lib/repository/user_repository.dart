@@ -1,6 +1,5 @@
 //UserRepository: 사용자 정보(Firebase DB에서 사용자 데이터 가져오기, 업데이트 등)를 관리.
 import 'package:eat_go/model/user_model.dart';
-import 'package:eat_go/services/auth_service.dart';
 import 'package:eat_go/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,9 +16,8 @@ import 'package:flutter/cupertino.dart';
   사용자 프로필 관리
  */
 class UserRepository {
-  final UserService userService;
-
   UserRepository({required this.userService});
+  final UserService userService;
 
   // 사용자 정보 저장
   Future<void> saveUser(User user) async {

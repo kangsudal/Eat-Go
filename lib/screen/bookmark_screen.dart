@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/palette.dart';
@@ -34,114 +32,119 @@ class BookmarkScreen extends ConsumerWidget {
           return Padding(
             padding: const EdgeInsets.only(left: 30.0, right: 30),
             child: bookmarkViewState.when(
-                data: (bookmarkedRecipeList) {
-                  if (bookmarkedRecipeList == null) {
-                    return const Center(
-                      child: Text('리스트를 불러오는데 실패하였습니다.'),
-                    );
-                  }
-                  if (bookmarkedRecipeList.isEmpty) {
-                    return Align(
-                      alignment: const Alignment(0, -0.3),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/memo-no-result.png',
-                            width: 200,
-                            height: 200,
-                          ),
-                          const SizedBox(height:10),
-                          const Text('아직 북마크한 레시피가 없습니다.'),
-                        ],
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    itemCount: bookmarkedRecipeList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Recipe recipe = bookmarkedRecipeList[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 20.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            context.go(
-                                '/home/bookmark/recipe_detail/${recipe.recipeId}');
-                          },
-                          child: CustomListTile(
-                            leading: Container(
-                              width: 70,
-                              height: 70,
-                              child: CachedNetworkImage(
-                                imageUrl: recipe.completedImgUrl,
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) =>
-                                        CircularProgressIndicator(
-                                  value: downloadProgress.progress,
-                                ),
-                                errorWidget: (context, _, __) {
-                                  return const Center(
-                                    child: Icon(Icons.report_problem_outlined),
-                                  );
-                                },
+              data: (bookmarkedRecipeList) {
+                if (bookmarkedRecipeList == null) {
+                  return const Center(
+                    child: Text('리스트를 불러오는데 실패하였습니다.'),
+                  );
+                }
+                if (bookmarkedRecipeList.isEmpty) {
+                  return Align(
+                    alignment: const Alignment(0, -0.3),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/memo-no-result.png',
+                          width: 200,
+                          height: 200,
+                        ),
+                        const SizedBox(height: 10),
+                        const Text('아직 북마크한 레시피가 없습니다.'),
+                      ],
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: bookmarkedRecipeList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final Recipe recipe = bookmarkedRecipeList[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          context.go(
+                            '/home/bookmark/recipe_detail/${recipe.recipeId}',
+                          );
+                        },
+                        child: CustomListTile(
+                          leading: SizedBox(
+                            width: 70,
+                            height: 70,
+                            child: CachedNetworkImage(
+                              imageUrl: recipe.completedImgUrl,
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      CircularProgressIndicator(
+                                value: downloadProgress.progress,
                               ),
-                            ),
-                            mid: Text(recipe.title),
-                            trailing: IconButton(
-                              onPressed: () {
-                                showCupertinoDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return CupertinoAlertDialog(
-                                      content: Text('관심 항목에서 삭제하시겠습니까?'),
-                                      actions: [
-                                        CupertinoDialogAction(
-                                          child: const Text('예'),
-                                          onPressed: () async {
-                                            bookmarkViewModel.toggleBookmark(
-                                                recipe: recipe);
-                                            await ref
-                                                .read(currentEatGoUserProvider
-                                                    .notifier)
-                                                .getCurrentUser(); // 북마크 토글 후 사용자 정보 다시 불러오기
-                                            if (context.mounted) {
-                                              context.pop();
-                                            }
-                                          },
-                                        ),
-                                        CupertinoDialogAction(
-                                          child: const Text('아니오'),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
+                              errorWidget: (context, _, __) {
+                                return const Center(
+                                  child: Icon(Icons.report_problem_outlined),
                                 );
                               },
-                              icon: const Icon(
-                                Icons.delete,
-                                color: pointColor,
-                              ),
+                            ),
+                          ),
+                          mid: Text(recipe.title),
+                          trailing: IconButton(
+                            onPressed: () {
+                              showCupertinoDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CupertinoAlertDialog(
+                                    content: const Text('관심 항목에서 삭제하시겠습니까?'),
+                                    actions: [
+                                      CupertinoDialogAction(
+                                        child: const Text('예'),
+                                        onPressed: () async {
+                                          bookmarkViewModel.toggleBookmark(
+                                            recipe: recipe,
+                                          );
+                                          await ref
+                                              .read(
+                                                currentEatGoUserProvider
+                                                    .notifier,
+                                              )
+                                              .getCurrentUser(); // 북마크 토글 후 사용자 정보 다시 불러오기
+                                          if (context.mounted) {
+                                            context.pop();
+                                          }
+                                        },
+                                      ),
+                                      CupertinoDialogAction(
+                                        child: const Text('아니오'),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.delete,
+                              color: pointColor,
                             ),
                           ),
                         ),
-                      );
-                    },
-                    // children: bookmarkedRecipeList.map((FakeRecipe element) {
+                      ),
+                    );
+                  },
+                  // children: bookmarkedRecipeList.map((FakeRecipe element) {
 
-                    // }).toList(),
-                  );
-                },
-                error: (error, stackTrace) {
-                  debugPrint('BookmarkScreen - $error');
-                  return const Center(child: Text('리스트를 불러오는데 실패하였습니다.'));
-                },
-                loading: () => const Center(
-                      child: CircularProgressIndicator(),
-                    )),
+                  // }).toList(),
+                );
+              },
+              error: (error, stackTrace) {
+                debugPrint('BookmarkScreen - $error');
+                return const Center(child: Text('리스트를 불러오는데 실패하였습니다.'));
+              },
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
           );
         },
         error: (error, stackTrace) {

@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen.dart';
 import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/camera_button.dart';
 import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/recipe_explain_input.dart';
 import 'package:eat_go/viewmodels/recipe_write_base_viewmodel.dart';
@@ -22,16 +19,15 @@ List<Widget> buildRecipeExplainAndImgInputSets({
 }
 
 class RecipeExplainAndImg extends StatelessWidget {
-  final RecipeWriteBaseViewModel viewModel;
-  final int index;
-  final List<RecipeExplainInput> recipeExplainInputs;
-
   const RecipeExplainAndImg({
     super.key,
     required this.index,
     required this.recipeExplainInputs,
     required this.viewModel,
   });
+  final RecipeWriteBaseViewModel viewModel;
+  final int index;
+  final List<RecipeExplainInput> recipeExplainInputs;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +44,7 @@ class RecipeExplainAndImg extends StatelessWidget {
           maxLength: 150,
           keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: EatGoPalette.lineColor, width: 1),
             ),

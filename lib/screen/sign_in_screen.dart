@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -77,16 +77,21 @@ class SignInScreen extends ConsumerWidget {
                       //authStateProvider에서 인증상태 변화 감지 -> GoRouter redirect 실행됨 -> Home으로 이동
                     } on FirebaseAuthException catch (error) {
                       debugPrint(
-                          'Google 로그인 실패(FirebaseAuthException): ${error.toString()}');
-
+                        'Google 로그인 실패(FirebaseAuthException): ${error.toString()}',
+                      );
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('인증 실패하였습니다.')));
+                        const SnackBar(content: Text('인증 실패하였습니다.')),
+                      );
                     } catch (error) {
                       debugPrint(
-                          'Google 로그인 실패(FirebaseAuthException 제외): ${error.toString()}');
+                        'Google 로그인 실패(FirebaseAuthException 제외): ${error.toString()}',
+                      );
 
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('인증 실패하였습니다.')));
+                        const SnackBar(content: Text('인증 실패하였습니다.')),
+                      );
                     }
                   },
                 ),
@@ -130,16 +135,20 @@ class SignInScreen extends ConsumerWidget {
                           //authStateProvider에서 인증상태 변화 감지 -> GoRouter redirect 실행됨 -> Home으로 이동
                         } on FirebaseAuthException catch (error) {
                           debugPrint(
-                              'Apple 로그인 실패(FirebaseAuthException): ${error.toString()}');
-
+                            'Apple 로그인 실패(FirebaseAuthException): ${error.toString()}',
+                          );
+                          if (!context.mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('인증 실패하였습니다.')));
+                            const SnackBar(content: Text('인증 실패하였습니다.')),
+                          );
                         } catch (error) {
                           debugPrint(
-                              'Apple 로그인 실패(FirebaseAuthException 제외): ${error.toString()}');
-
+                            'Apple 로그인 실패(FirebaseAuthException 제외): ${error.toString()}',
+                          );
+                          if (!context.mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('인증 실패하였습니다.')));
+                            const SnackBar(content: Text('인증 실패하였습니다.')),
+                          );
                         }
                       },
                     ),

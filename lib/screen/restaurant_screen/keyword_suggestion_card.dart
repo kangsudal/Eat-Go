@@ -21,7 +21,7 @@ class KeywordSuggestionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.5),
+              color: Colors.black.withValues(alpha: 0.5),
               blurRadius: 20.0,
               spreadRadius: -10.0,
               offset: const Offset(8, 10),
@@ -35,7 +35,7 @@ class KeywordSuggestionCard extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: RichText(
-                  text: TextSpan(
+                  text: const TextSpan(
                     children: [
                       TextSpan(
                         text: '카레 파스타',
@@ -59,7 +59,7 @@ class KeywordSuggestionCard extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: RichText(
-                  text: TextSpan(
+                  text: const TextSpan(
                     children: [
                       TextSpan(
                         text: '카레 두부면 파스타',

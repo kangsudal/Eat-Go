@@ -21,8 +21,8 @@ class WriteData {
 */
 import 'dart:async';
 
-import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/recipe_model.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,7 +44,9 @@ class AllRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
       return recipes;
     } catch (e, stackTrace) {
       state = AsyncValue.error(
-          '데이터 로드 중 오류 발생: $e', stackTrace); // 실패 시 에러 상태로 업데이트
+        '데이터 로드 중 오류 발생: $e',
+        stackTrace,
+      ); // 실패 시 에러 상태로 업데이트
       return [];
     }
   }
@@ -81,7 +83,9 @@ class AllRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
     } catch (e, stackTrace) {
       debugPrint('AllRecipeListViewModel - $e');
       state = AsyncValue.error(
-          "조건에 맞는 레시피 리스트가 없습니다.", stackTrace); // 에러가 발생하면 에러 상태로 업데이트
+        '조건에 맞는 레시피 리스트가 없습니다.',
+        stackTrace,
+      ); // 에러가 발생하면 에러 상태로 업데이트
     }
   }
 
@@ -92,8 +96,11 @@ class AllRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
   }) async {
     state = const AsyncValue.loading();
     try {
-      List<Recipe>? recipeList = await _recipeRepository.getFilteredRecipeList(
-          categories: categories, keywords: keywords);
+      final List<Recipe>? recipeList =
+          await _recipeRepository.getFilteredRecipeList(
+        categories: categories,
+        keywords: keywords,
+      );
       if (recipeList != null) {
         state = AsyncValue.data(recipeList);
         return recipeList;

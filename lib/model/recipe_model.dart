@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/clap_record_model.dart';
-import 'package:eat_go/model/description_model.dart';
 import 'package:eat_go/model/converter/timestamp_converter.dart';
-
+import 'package:eat_go/model/description_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'recipe_model.freezed.dart';
-
 part 'recipe_model.g.dart';
 
 @freezed

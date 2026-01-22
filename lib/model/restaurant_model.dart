@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eat_go/model/converter/geopoint_latlng_converter.dart';
 import 'package:eat_go/model/photo_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 part 'restaurant_model.freezed.dart';
 part 'restaurant_model.g.dart';
 
@@ -10,11 +10,13 @@ part 'restaurant_model.g.dart';
 sealed class Restaurant with _$Restaurant {
   const factory Restaurant({
     required String id, // 장소 고유 ID
-    @JsonKey(fromJson: Restaurant._extractDisplayName) required String displayName, // 장소 이름
+    @JsonKey(fromJson: Restaurant._extractDisplayName)
+    required String displayName, // 장소 이름
     List<Photo>? photos, // 이미지 리스트 (URL)
     String? businessStatus, // 운영 상태
     @JsonKey(fromJson: Restaurant._parseRating) double? rating, // 평점
-    @JsonKey(fromJson: Restaurant._parsePriceLevel) int? priceLevel, // 가격대 (0 - 무료, 4 - 매우 비쌈)
+    @JsonKey(fromJson: Restaurant._parsePriceLevel)
+    int? priceLevel, // 가격대 (0 - 무료, 4 - 매우 비쌈)
     String? websiteUri, // 웹사이트 URL
     required String googleMapsUri, // 구글 장소 URL
     required String formattedAddress, // 위치 주소

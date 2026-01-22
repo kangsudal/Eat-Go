@@ -3,11 +3,6 @@ import 'package:eat_go/screen/custom_widget/custom_list_tile.dart';
 import 'package:flutter/material.dart';
 
 class CustomRadio<YummyTreat> extends StatefulWidget {
-  final YummyTreat value;
-  final YummyTreat groupValue;
-  final ValueChanged<YummyTreat?> onChanged;
-  final CustomListTile child;
-
   const CustomRadio({
     super.key,
     required this.value,
@@ -15,6 +10,10 @@ class CustomRadio<YummyTreat> extends StatefulWidget {
     required this.onChanged,
     required this.child,
   });
+  final YummyTreat value;
+  final YummyTreat groupValue;
+  final ValueChanged<YummyTreat?> onChanged;
+  final CustomListTile child;
 
   @override
   State<CustomRadio<YummyTreat>> createState() =>
@@ -36,17 +35,17 @@ class _CustomRadioState<YummyTreat> extends State<CustomRadio<YummyTreat>> {
     // print('isSelected: $isSelected'); //라디오 개수만큼 build돼서 그만큼 출력됨
 
     if (isSelected) {
-      this.currentChild = currentChild.copyWith(
-        boxDecoration: BoxDecoration(
+      currentChild = currentChild.copyWith(
+        boxDecoration: const BoxDecoration(
           color: pointColor,
           border: null,
-          borderRadius: const BorderRadius.all(
+          borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),
         ),
       );
     } else {
-      this.currentChild = currentChild.copyWith(
+      currentChild = currentChild.copyWith(
         boxDecoration: BoxDecoration(
           border: Border.all(color: EatGoPalette.lineColor),
           borderRadius: const BorderRadius.all(

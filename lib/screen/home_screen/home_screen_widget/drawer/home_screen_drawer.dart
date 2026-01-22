@@ -2,7 +2,6 @@ import 'package:eat_go/palette.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/drawer_filter.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/drawer_footer.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/drawer_main_menu.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreenDrawer extends StatelessWidget {
@@ -24,7 +23,7 @@ class HomeScreenDrawer extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0),
           child: ListView(
-            children: [
+            children: const [
               DrawerMainMenu(),
               DrawerFilter(),
               DrawerFooter(),

@@ -1,5 +1,3 @@
-import 'package:eat_go/palette.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -136,7 +134,7 @@ class DrawerFooter extends StatelessWidget {
         //   },
         // ),
         ListTile(
-          title: Text('SETTING'),
+          title: const Text('SETTING'),
           onTap: () {
             context.go('/home/setting');
           },

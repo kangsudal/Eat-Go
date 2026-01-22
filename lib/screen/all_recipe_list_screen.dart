@@ -1,6 +1,6 @@
-import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/palette.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -15,15 +15,15 @@ class AllRecipeListScreen extends ConsumerStatefulWidget {
 
 class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
   final TextEditingController searchTextController = TextEditingController();
-  final ExpansionTileController expansionTileController =
-      ExpansionTileController();
+  final ExpansibleController expansionTileController = ExpansibleController();
 
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(allRecipeListScreenCategoriesProvider);
     final keywords = ref.watch(allRecipeListScreenKeywordsProvider);
     final AsyncValue<List<Recipe>> recipeState = ref.watch(
-        allRecipeListViewModelProvider); // ViewModel의 상태를 구독, 레시피 데이터를 가져오는데 로딩중, 성공, 실패 나타냄
+      allRecipeListViewModelProvider,
+    ); // ViewModel의 상태를 구독, 레시피 데이터를 가져오는데 로딩중, 성공, 실패 나타냄
     final allRecipeListViewModel =
         ref.read(allRecipeListViewModelProvider.notifier);
 
@@ -71,12 +71,14 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
                           //검색창
                           ref
                               .read(
-                                  allRecipeListScreenKeywordsProvider.notifier)
+                                allRecipeListScreenKeywordsProvider.notifier,
+                              )
                               .state = '';
                           //카테고리 체크박스
                           ref
-                              .read(allRecipeListScreenCategoriesProvider
-                                  .notifier)
+                              .read(
+                                allRecipeListScreenCategoriesProvider.notifier,
+                              )
                               .state = {
                             '밥': true,
                             '후식': true,
@@ -91,7 +93,9 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
                     GestureDetector(
                       onTap: () {
                         allRecipeListViewModel.fetchFilteredRecipes(
-                            categories: categories, keywords: keywords);
+                          categories: categories,
+                          keywords: keywords,
+                        );
                       },
                       child: Container(
                         width: 50,
@@ -132,8 +136,9 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
                           value: element.value,
                           onChanged: (bool? isTrue) {
                             ref
-                                .read(allRecipeListScreenCategoriesProvider
-                                    .notifier)
+                                .read(
+                              allRecipeListScreenCategoriesProvider.notifier,
+                            )
                                 .update((state) {
                               return {
                                 ...state,
@@ -173,7 +178,7 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
                             width: 200,
                             height: 200,
                           ),
-                          const SizedBox(height:10),
+                          const SizedBox(height: 10),
                           const Text('조건에 맞는 레시피가 없습니다.'),
                         ],
                       ),
@@ -195,7 +200,8 @@ class _AllRecipeListScreenState extends ConsumerState<AllRecipeListScreen> {
                             return ListTile(
                               onTap: () {
                                 context.go(
-                                    '/home/all_recipe_list/recipe_detail/${recipes[index].recipeId}');
+                                  '/home/all_recipe_list/recipe_detail/${recipes[index].recipeId}',
+                                );
                               },
                               title: Text(recipes[index].title),
                             );

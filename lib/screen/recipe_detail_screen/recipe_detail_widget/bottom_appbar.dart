@@ -1,13 +1,12 @@
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/palette.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class RecipeDetailBottomAppBar extends ConsumerWidget {
-  final Recipe recipe;
   const RecipeDetailBottomAppBar({super.key, required this.recipe});
+  final Recipe recipe;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,7 +25,7 @@ class RecipeDetailBottomAppBar extends ConsumerWidget {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 // color: Colors.amber,
-                child: Row(
+                child: const Row(
                   children: [
                     Icon(
                       Icons.maps_home_work_sharp,

@@ -5,9 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class AuthRepository {
-  final AuthService _authService;
-
   AuthRepository({required authService}) : _authService = authService;
+  final AuthService _authService;
 
   String? getCurrentUserUid() {
     return _authService.getCurrentUserUid();
@@ -24,9 +23,9 @@ class AuthRepository {
 
   // 사용자 로그인 타입 체크
   bool isEmailPasswordLoginProvider() {
-    try{
+    try {
       return _authService.isEmailPasswordLoginProvider();
-    }catch(e){
+    } catch (e) {
       throw Exception(e);
     }
   }

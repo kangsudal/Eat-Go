@@ -1,3 +1,4 @@
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/about_this_app_screen.dart';
 import 'package:eat_go/screen/admin_screen.dart';
 import 'package:eat_go/screen/all_recipe_list_screen.dart';
@@ -13,12 +14,9 @@ import 'package:eat_go/screen/sign_in_screen.dart';
 import 'package:eat_go/screen/sign_in_with_email.dart';
 import 'package:eat_go/screen/yummy_treat_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'eatgo_providers.dart';
 
 final myRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider); // 로그인 상태(AsyncValue<User?>)
@@ -28,18 +26,18 @@ final myRouterProvider = Provider<GoRouter>((ref) {
   final user = authState.when(
     data: (user) {
       if (user != null) {
-        debugPrint("User logged in: ${user.email}");
+        debugPrint('User logged in: ${user.email}');
       } else {
-        debugPrint("No user logged in");
+        debugPrint('No user logged in');
       }
       return user;
     },
     loading: () {
-      debugPrint("Checking user authentication...");
+      debugPrint('Checking user authentication...');
       return null; // 로딩 중에는 사용자 데이터가 없으므로 null 반환
     },
     error: (error, stackTrace) {
-      debugPrint("Error in authState: $error");
+      debugPrint('Error in authState: $error');
       return null; // 에러 발생 시도 null로 처리
     },
   );
@@ -107,11 +105,12 @@ final myRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: 'restaurant/:recipe_title',
             builder: (BuildContext context, GoRouterState state) {
-              String? recipeTitle = state.pathParameters['recipe_title'];
+              final String? recipeTitle = state.pathParameters['recipe_title'];
               if (recipeTitle == null) {
                 // recipe_title가 없는 경우 에러 화면으로
-                return PathErrorScreen(
-                    error: 'Invalid recipe Title: Title is missing');
+                return const PathErrorScreen(
+                  error: 'Invalid recipe Title: Title is missing',
+                );
               }
               return RestaurantScreen(recipeTitle: recipeTitle);
             },
@@ -186,7 +185,7 @@ final myRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/sign_in_with_email',
         builder: (BuildContext context, GoRouterState state) =>
-        const SignInWithEmail(),
+            const SignInWithEmail(),
       ),
       GoRoute(
         path: '/loading',
@@ -224,28 +223,30 @@ GoRoute goRouteRecipeDetail() {
   return GoRoute(
     path: 'recipe_detail/:recipe_id',
     builder: (BuildContext context, GoRouterState state) {
-      String? recipeIdString = state.pathParameters['recipe_id'];
+      final String? recipeIdString = state.pathParameters['recipe_id'];
       if (recipeIdString == null) {
         // recipe_id가 없는 경우 에러 화면으로
-        return PathErrorScreen(error: 'Invalid recipe ID: ID is missing');
+        return const PathErrorScreen(error: 'Invalid recipe ID: ID is missing');
       }
       return RecipeDetailScreen(recipeId: recipeIdString);
     },
     routes: <RouteBase>[
       //레시피 상세보기화면에서 식당 버튼 눌렀을때
       GoRoute(
-          path: 'restaurant/:recipe_title',
-          builder: (BuildContext context, GoRouterState state) {
-            String? recipeTitle = state.pathParameters['recipe_title'];
-            if (recipeTitle == null) {
-              // recipe_title가 없는 경우 에러 화면으로
-              return PathErrorScreen(
-                  error: 'Invalid recipe Title: Title is missing');
-            }
-            return RestaurantScreen(
-              recipeTitle: recipeTitle,
+        path: 'restaurant/:recipe_title',
+        builder: (BuildContext context, GoRouterState state) {
+          final String? recipeTitle = state.pathParameters['recipe_title'];
+          if (recipeTitle == null) {
+            // recipe_title가 없는 경우 에러 화면으로
+            return const PathErrorScreen(
+              error: 'Invalid recipe Title: Title is missing',
             );
-          }),
+          }
+          return RestaurantScreen(
+            recipeTitle: recipeTitle,
+          );
+        },
+      ),
     ],
   );
 }

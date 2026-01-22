@@ -7,7 +7,8 @@ part of 'author_attribution_model.dart';
 // **************************************************************************
 
 _$AuthorAttributionImpl _$$AuthorAttributionImplFromJson(
-        Map<String, dynamic> json) =>
+  Map<String, dynamic> json,
+) =>
     _$AuthorAttributionImpl(
       displayName: json['displayName'] as String,
       uri: json['uri'] as String,
@@ -15,7 +16,8 @@ _$AuthorAttributionImpl _$$AuthorAttributionImplFromJson(
     );
 
 Map<String, dynamic> _$$AuthorAttributionImplToJson(
-        _$AuthorAttributionImpl instance) =>
+  _$AuthorAttributionImpl instance,
+) =>
     <String, dynamic>{
       'displayName': instance.displayName,
       'uri': instance.uri,

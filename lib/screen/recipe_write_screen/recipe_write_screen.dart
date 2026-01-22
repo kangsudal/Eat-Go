@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/build_recipe_explain_and_img_sets.dart';
@@ -8,18 +6,15 @@ import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/ing
 import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/recipe_category_panel.dart';
 import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/recipe_explain_input.dart';
 import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/recipe_name_text_field.dart';
-import 'package:eat_go/screen/recipe_write_screen/recipe_write_screen_widget/camera_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 
 class RecipeWriteScreen extends ConsumerStatefulWidget {
-  final bool isEditMode;
   const RecipeWriteScreen({
     super.key,
     this.isEditMode = false,
   });
+  final bool isEditMode;
 
   @override
   ConsumerState<RecipeWriteScreen> createState() => _RecipeWriteScreenState();
@@ -52,11 +47,7 @@ class _RecipeWriteScreenState extends ConsumerState<RecipeWriteScreen> {
           ? recipeEditViewModelProvider.notifier
           : recipeCreateViewModelProvider.notifier,
     );
-    final recipe = ref.watch(
-      widget.isEditMode
-          ? recipeEditViewModelProvider
-          : recipeCreateViewModelProvider,
-    );
+
     return Scaffold(
       appBar: AppBar(
         shape: Border(
@@ -76,14 +67,14 @@ class _RecipeWriteScreenState extends ConsumerState<RecipeWriteScreen> {
             ),
           ),
         ),
-          title: Text(widget.isEditMode ? "레시피 수정" : "레시피 작성"),
+        title: Text(widget.isEditMode ? '레시피 수정' : '레시피 작성'),
         centerTitle: true,
         actions: [
           TextButton(
             onPressed: () {
               //writeData.upload();
             },
-            child: Text('Post'),
+            child: const Text('Post'),
           ),
         ],
       ),
@@ -100,17 +91,18 @@ class _RecipeWriteScreenState extends ConsumerState<RecipeWriteScreen> {
                 RecipeNameTextField(
                   viewModel: viewModel,
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 //레시피 종류를 입력하는 라디오 버튼들
-                RecipeCategoryPanel(),
-                SizedBox(height: 30),
+                const RecipeCategoryPanel(),
+                const SizedBox(height: 30),
                 //재료 입력 텍스트 필드
                 IngredientsTextAndImgInput(viewModel: viewModel),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 //설명을 입력하는 텍스트필드&이미지 위젯 리스트
                 ...buildRecipeExplainAndImgInputSets(
-                    recipeExplainInputs: recipeExplainInputs,
-                    viewModel: viewModel),
+                  recipeExplainInputs: recipeExplainInputs,
+                  viewModel: viewModel,
+                ),
                 const SizedBox(height: 10),
                 //설명과 사진 입력 세트 추가버튼
                 _addRecipeExplainAndImgSetButton(),
@@ -119,7 +111,7 @@ class _RecipeWriteScreenState extends ConsumerState<RecipeWriteScreen> {
                 CompletedRecipe(
                   viewModel: viewModel,
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
               ],
             ),
           ),
@@ -147,24 +139,12 @@ class _RecipeWriteScreenState extends ConsumerState<RecipeWriteScreen> {
       if (context != null) {
         Scrollable.ensureVisible(
           context,
-          duration: Duration(milliseconds: 600),
+          duration: const Duration(milliseconds: 600),
           curve: Curves.easeInOut,
         );
       } else {
         print('Context is null, ensureVisible not called.');
       }
-    });
-  }
-
-  void _scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(seconds: 1),
-        curve: Curves.fastOutSlowIn,
-      );
-      print('페이지 끝 위치: ${_scrollController.position.maxScrollExtent},'
-          ' 현재 위치: ${_scrollController.position.pixels}');
     });
   }
 

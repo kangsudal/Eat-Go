@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:eat_go/palette.dart';
-import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/viewmodels/recipe_write_base_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,11 +8,11 @@ import 'package:image_picker/image_picker.dart';
 
 //사진 or 카메라로 이미지를 업로드하는 버튼
 class CameraButton extends ConsumerStatefulWidget {
-  final RecipeWriteBaseViewModel viewModel;
   const CameraButton({
     super.key,
     required this.viewModel,
   });
+  final RecipeWriteBaseViewModel viewModel;
 
   @override
   ConsumerState<CameraButton> createState() => _CameraButtonState();
@@ -39,7 +38,7 @@ class _CameraButtonState extends ConsumerState<CameraButton> {
                 border: Border.all(color: pointColor),
                 borderRadius: const BorderRadius.all(Radius.circular(5)),
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
@@ -73,7 +72,7 @@ class _CameraButtonState extends ConsumerState<CameraButton> {
                   onTap: () {
                     buildShowDialog(context);
                   },
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 15,
                     backgroundColor: Color(0xFFE1E1E1),
                     child: Icon(
@@ -93,7 +92,7 @@ class _CameraButtonState extends ConsumerState<CameraButton> {
                       imageFile = null;
                     });
                   },
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 15,
                     backgroundColor: Color(0xFFE1E1E1),
                     child: Icon(
@@ -143,7 +142,7 @@ class _CameraButtonState extends ConsumerState<CameraButton> {
           await ImagePicker().pickImage(source: cameraOrGallery);
 
       if (pickedImage != null) {
-        String imagePath = pickedImage.path;
+        final String imagePath = pickedImage.path;
         // 이미지 URL 업데이트
         setState(() {
           imageFile = File(imagePath);

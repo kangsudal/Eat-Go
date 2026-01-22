@@ -9,14 +9,14 @@ class CommentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BorderRadiusGeometry sheetBorderRadius =
+    const BorderRadiusGeometry sheetBorderRadius =
         BorderRadius.all(Radius.circular(10.0));
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
           isScrollControlled: true,
           context: context,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: sheetBorderRadius,
           ),
           builder: (BuildContext context) {
@@ -26,7 +26,7 @@ class CommentButton extends StatelessWidget {
                 heightFactor: 0.9,
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       height: 50,
                       child: Row(
                         children: [
@@ -34,12 +34,12 @@ class CommentButton extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.clear,
                               color: Colors.black,
                             ),
                           ),
-                          Text('댓글'),
+                          const Text('댓글'),
                         ],
                       ),
                     ),
@@ -54,29 +54,27 @@ class CommentButton extends StatelessWidget {
                               mid: Column(
                                 children: [
                                   title(),
-                                  SizedBox(height: 10),
-                                  Text(
-                                      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+                                  ),
                                 ],
                               ),
-                              trailing: Container(
-                                // color: Colors.blue,
-                                child: PopupMenuButton(
-                                  icon: Icon(
-                                    Icons.more_vert,
-                                    color: pointColor,
-                                  ),
-                                  itemBuilder: (BuildContext context) {
-                                    return [
-                                      PopupMenuItem(
-                                        child: Text('차단하기'),
-                                      ),
-                                      PopupMenuItem(
-                                        child: Text('신고하기'),
-                                      ),
-                                    ];
-                                  },
+                              trailing: PopupMenuButton(
+                                icon: const Icon(
+                                  Icons.more_vert,
+                                  color: pointColor,
                                 ),
+                                itemBuilder: (BuildContext context) {
+                                  return [
+                                    const PopupMenuItem(
+                                      child: Text('차단하기'),
+                                    ),
+                                    const PopupMenuItem(
+                                      child: Text('신고하기'),
+                                    ),
+                                  ];
+                                },
                               ),
                             ),
                           );
@@ -86,8 +84,8 @@ class CommentButton extends StatelessWidget {
                     ),
                     Container(
                       // height:30,
-                      margin: EdgeInsets.only(bottom: 30),
-                      padding: EdgeInsets.fromLTRB(15, 8, 0, 0),
+                      margin: const EdgeInsets.only(bottom: 30),
+                      padding: const EdgeInsets.fromLTRB(15, 8, 0, 0),
                       decoration: BoxDecoration(
                         border: Border(
                           top: BorderSide(
@@ -97,15 +95,16 @@ class CommentButton extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          Expanded(
+                          const Expanded(
                             child: TextField(
                               decoration: InputDecoration.collapsed(
-                                  hintText: '댓글을 입력해주세요 :)'),
+                                hintText: '댓글을 입력해주세요 :)',
+                              ),
                             ),
                           ),
                           TextButton(
                             onPressed: () {},
-                            child: Text(
+                            child: const Text(
                               '등록',
                               style: TextStyle(
                                 color: pointColor,
@@ -125,7 +124,7 @@ class CommentButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10),
         // color: Colors.amber,
-        child: Row(
+        child: const Row(
           children: [
             Icon(
               Icons.insert_comment_outlined,
@@ -145,23 +144,23 @@ class CommentButton extends StatelessWidget {
   Row title() {
     return Row(
       children: [
-        Text(
+        const Text(
           'kangsudal',
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(width: 3),
-        Icon(
+        const SizedBox(width: 3),
+        const Icon(
           Icons.check_circle_outline,
           color: pointColor,
           size: 16,
         ),
-        Text(
+        const Text(
           '4',
           style: TextStyle(color: pointColor),
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         Text(
           '1994.01.24',
           style: TextStyle(

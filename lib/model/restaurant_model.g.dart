@@ -10,7 +10,8 @@ _$RestaurantImpl _$$RestaurantImplFromJson(Map<String, dynamic> json) =>
     _$RestaurantImpl(
       id: json['id'] as String,
       displayName: Restaurant._extractDisplayName(
-          json['displayName'] as Map<String, dynamic>),
+        json['displayName'] as Map<String, dynamic>,
+      ),
       photos: (json['photos'] as List<dynamic>?)
           ?.map((e) => Photo.fromJson(e as Map<String, dynamic>))
           .toList(),

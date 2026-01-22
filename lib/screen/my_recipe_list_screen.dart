@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:eat_go/model/fake_recipe.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
@@ -11,14 +8,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:uuid/uuid.dart';
 
 class MyRecipeListScreen extends ConsumerWidget {
   const MyRecipeListScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final myRecipeListViewModel =
-        ref.watch(myRecipeListViewModelProvider.notifier);
     final myRecipeListState = ref.watch(myRecipeListViewModelProvider);
     final currentEatGoUser = ref.watch(currentEatGoUserProvider);
 
@@ -54,15 +48,17 @@ class MyRecipeListScreen extends ConsumerWidget {
                           text: TextSpan(
                             text: currentEatGoUser.displayName,
                             style: const TextStyle(
-                                fontSize: 18,
-                                color: pointColor,
-                                fontWeight: FontWeight.bold),
+                              fontSize: 18,
+                              color: pointColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                             children: const [
                               TextSpan(
                                 text: '님만의 \n특별한 레시피를 작성해주세요!',
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ],
                           ),
@@ -82,32 +78,35 @@ class MyRecipeListScreen extends ConsumerWidget {
                             text: TextSpan(
                               text: currentEatGoUser.displayName,
                               style: const TextStyle(
-                                  fontSize: 15,
-                                  color: pointColor,
-                                  fontWeight: FontWeight.bold),
+                                fontSize: 15,
+                                color: pointColor,
+                                fontWeight: FontWeight.bold,
+                              ),
                               children: [
                                 TextSpan(
                                   text: '님께서 올려주신 소중한 레시피',
                                   style: TextStyle(
-                                      color: EatGoPalette.subTextColor,
-                                      fontWeight: FontWeight.w400),
+                                    color: EatGoPalette.subTextColor,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
                           // SortBar(),
                           // IncreaseGraphBox(),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
                         ],
                       );
                     } else {
-                      Recipe element = recipeList[index - 1];
+                      final Recipe element = recipeList[index - 1];
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 20.0),
                         child: GestureDetector(
                           onTap: () {
                             context.go(
-                                '/home/my_recipe_list/recipe_detail/${element.recipeId}');
+                              '/home/my_recipe_list/recipe_detail/${element.recipeId}',
+                            );
                           },
                           child: CustomListTile(
                             leading: SizedBox(
@@ -121,7 +120,8 @@ class MyRecipeListScreen extends ConsumerWidget {
                                   value: downloadProgress.progress,
                                 ),
                                 errorWidget: (context, _, __) => const Center(
-                                    child: Icon(Icons.report_problem_outlined)),
+                                  child: Icon(Icons.report_problem_outlined),
+                                ),
                               ),
                             ),
                             mid: SizedBox(
@@ -132,8 +132,9 @@ class MyRecipeListScreen extends ConsumerWidget {
                                 children: [
                                   Expanded(
                                     child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(element.title)),
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(element.title),
+                                    ),
                                   ),
                                   /*
                             각 셀 아래에 있는 조회수 등의 메타정보
@@ -204,31 +205,34 @@ class MyRecipeListScreen extends ConsumerWidget {
                               ),
                             ),
                             trailing: PopupMenuButton(
-                              icon: Icon(Icons.more_vert),
+                              icon: const Icon(Icons.more_vert),
                               iconColor: pointColor,
                               itemBuilder: (BuildContext context) {
                                 return [
                                   PopupMenuItem(
-                                      child: Text('수정'),
-                                      onTap: () {
-                                        //todo: GoRouter로
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                RecipeWriteScreen(
-                                              isEditMode: true,
-                                            ),
+                                    child: const Text('수정'),
+                                    onTap: () {
+                                      //todo: GoRouter로
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const RecipeWriteScreen(
+                                            isEditMode: true,
                                           ),
-                                        );
-                                      }),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                   PopupMenuItem(
-                                    child: Text('삭제'),
+                                    child: const Text('삭제'),
                                     onTap: () {
                                       showCupertinoDialog(
                                         context: context,
                                         builder: (context) {
                                           return CupertinoAlertDialog(
-                                            content: Text('나의 레시피에서 삭제하시겠습니까?'),
+                                            content: const Text(
+                                              '나의 레시피에서 삭제하시겠습니까?',
+                                            ),
                                             actions: [
                                               CupertinoDialogAction(
                                                 child: const Text('예'),
@@ -264,7 +268,7 @@ class MyRecipeListScreen extends ConsumerWidget {
                   child: Text('오류가 발생하였습니다.'),
                 );
               },
-              loading: () => Center(child: const CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
             ),
           );
         },
@@ -274,14 +278,14 @@ class MyRecipeListScreen extends ConsumerWidget {
             child: Text('오류가 발생하였습니다.'),
           );
         },
-        loading: () => Center(child: const CircularProgressIndicator()),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           //todo: goRouter로 바꾸기
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => RecipeWriteScreen(),
+              builder: (context) => const RecipeWriteScreen(),
             ),
           );
         },
@@ -309,7 +313,7 @@ class IncreaseGraphBox extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('전체기간 레시피 조회수'),
@@ -320,12 +324,12 @@ class IncreaseGraphBox extends StatelessWidget {
               ],
             ),
             Container(
-              padding: EdgeInsets.all(3),
+              padding: const EdgeInsets.all(3),
               decoration: BoxDecoration(
-                color: Color(0xFFDCEADF),
+                color: const Color(0xFFDCEADF),
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Text(
+              child: const Text(
                 '+ 신규 조회수 -99회',
                 style: TextStyle(
                   color: Color(0xFF1B7338),
@@ -352,21 +356,21 @@ class SortBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
+        const Icon(
           Icons.remove_red_eye,
           color: pointColor,
         ),
-        Text(
+        const Text(
           ' ${-99}   ',
           style: TextStyle(
             color: pointColor,
           ),
         ),
-        Icon(
+        const Icon(
           Icons.bookmark,
           color: pointColor,
         ),
-        Text(
+        const Text(
           ' ${-99}   ',
           style: TextStyle(
             color: pointColor,
@@ -378,21 +382,21 @@ class SortBar extends StatelessWidget {
           width: 20,
           height: 20,
         ),
-        Text(
+        const Text(
           ' ${-99}',
           style: TextStyle(
             color: pointColor,
           ),
         ),
-        Spacer(),
+        const Spacer(),
         PopupMenuButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.sort,
             color: pointColor,
           ),
-          itemBuilder: (BuildContext) {
+          itemBuilder: (context) {
             return [
-              PopupMenuItem(
+              const PopupMenuItem(
                 child: Row(
                   children: [
                     Icon(Icons.access_time_outlined),
@@ -401,7 +405,7 @@ class SortBar extends StatelessWidget {
                   ],
                 ),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 child: Row(
                   children: [
                     Icon(Icons.remove_red_eye),
@@ -410,7 +414,7 @@ class SortBar extends StatelessWidget {
                   ],
                 ),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 child: Row(
                   children: [
                     Icon(Icons.bookmark),
@@ -419,7 +423,7 @@ class SortBar extends StatelessWidget {
                   ],
                 ),
               ),
-              PopupMenuItem(
+              const PopupMenuItem(
                 child: Row(
                   children: [
                     Icon(Icons.check_circle_outline),

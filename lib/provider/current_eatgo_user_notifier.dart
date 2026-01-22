@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/user_model.dart';
+import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/user_repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,9 +21,9 @@ class CurrentEatGoUserNotifier extends AsyncNotifier<EatGoUser?> {
   Future<EatGoUser?> getCurrentUser() async {
     state = const AsyncValue.loading();
     try {
-      String? currentUserUid = _authRepository.getCurrentUserUid();
+      final String? currentUserUid = _authRepository.getCurrentUserUid();
       if (currentUserUid != null) {
-        Map<String, dynamic>? userMap =
+        final Map<String, dynamic>? userMap =
             await _userRepository.getUser(currentUserUid);
         // Firestore에서 사용자 데이터를 가져오지 못한 경우
         if (userMap == null) {
@@ -31,7 +31,7 @@ class CurrentEatGoUserNotifier extends AsyncNotifier<EatGoUser?> {
           debugPrint('CurrentEatGoUserNotifier - userMap이 null로 반환되었습니다.');
           return null;
         }
-        EatGoUser user = EatGoUser.fromJson(userMap);
+        final EatGoUser user = EatGoUser.fromJson(userMap);
         state = AsyncValue.data(user);
         return user;
       } else {

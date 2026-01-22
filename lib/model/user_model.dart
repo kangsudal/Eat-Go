@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eat_go/model/recipe_model.dart';
-import 'package:eat_go/model/recipe_report_model.dart';
 import 'package:eat_go/model/converter/timestamp_converter.dart';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_model.freezed.dart';

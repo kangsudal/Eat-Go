@@ -14,7 +14,9 @@ _$EatGoUserImpl _$$EatGoUserImplFromJson(Map<String, dynamic> json) =>
       supportAmount: (json['supportAmount'] as num?)?.toDouble() ?? 0,
       isPremium: json['isPremium'] as bool? ?? false,
       premiumExpiration: _$JsonConverterFromJson<Timestamp, DateTime>(
-          json['premiumExpiration'], const TimestampConverter().fromJson),
+        json['premiumExpiration'],
+        const TimestampConverter().fromJson,
+      ),
       bookmarkRecipeIds: (json['bookmarkRecipeIds'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -38,7 +40,9 @@ Map<String, dynamic> _$$EatGoUserImplToJson(_$EatGoUserImpl instance) =>
       'supportAmount': instance.supportAmount,
       'isPremium': instance.isPremium,
       'premiumExpiration': _$JsonConverterToJson<Timestamp, DateTime>(
-          instance.premiumExpiration, const TimestampConverter().toJson),
+        instance.premiumExpiration,
+        const TimestampConverter().toJson,
+      ),
       'bookmarkRecipeIds': instance.bookmarkRecipeIds,
       'clappedRecipeIds': instance.clappedRecipeIds,
       'recipeReportIds': instance.recipeReportIds,

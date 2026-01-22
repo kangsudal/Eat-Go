@@ -6,10 +6,9 @@ import 'package:eat_go/services/recipe_service.dart';
 import 'package:flutter/cupertino.dart';
 
 class RecipeRepository {
-  final RecipeService _recipeService;
-
   RecipeRepository({required RecipeService recipeService})
       : _recipeService = recipeService;
+  final RecipeService _recipeService;
 
   // 레시피 목록을 실시간으로 가져오는 Stream
   Stream<List<Recipe>> getRecipesStream() {
@@ -31,7 +30,8 @@ class RecipeRepository {
   }
 
   Future<List<Recipe>> getRecipesFutureByIds(
-      List<String> bookmarkedRecipeIds) async {
+    List<String> bookmarkedRecipeIds,
+  ) async {
     try {
       return _recipeService.fetchRecipesFutureByIds(bookmarkedRecipeIds);
     } catch (e) {
@@ -61,7 +61,9 @@ class RecipeRepository {
   }) async {
     try {
       return _recipeService.getFilteredRandomRecipeWithKeywords(
-          categories: categories, keywords: keywords);
+        categories: categories,
+        keywords: keywords,
+      );
     } catch (e) {
       debugPrint('RecipeRepository - 랜덤 레시피 생성중 오류 발생 : $e');
       return null;
@@ -74,8 +76,11 @@ class RecipeRepository {
     keywords,
   }) async {
     try {
-      List<Recipe>? recipeList = await _recipeService.getFilteredRecipeList(
-          categories: categories, keywords: keywords);
+      final List<Recipe>? recipeList =
+          await _recipeService.getFilteredRecipeList(
+        categories: categories,
+        keywords: keywords,
+      );
       if (recipeList != null) {
         return recipeList;
       }
@@ -105,7 +110,9 @@ class RecipeRepository {
     }
   }
 
-  Future<List<Recipe>> fetchRecipesByCreatedBy({required String createdBy}) async {
+  Future<List<Recipe>> fetchRecipesByCreatedBy({
+    required String createdBy,
+  }) async {
     try {
       return _recipeService.fetchRecipesByCreatedBy(createdBy: createdBy);
     } catch (e) {

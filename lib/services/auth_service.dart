@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -7,13 +5,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthService {
-  final FirebaseAuth auth;
-
   AuthService({required this.auth});
+  final FirebaseAuth auth;
 
   // 현재 로그인된 사용자의 UID 가져오기
   String? getCurrentUserUid() {
-    User? user = auth.currentUser;
+    final User? user = auth.currentUser;
     return user?.uid; // 현재 로그인된 사용자의 UID를 반환, 없으면 null
   }
 
@@ -91,11 +88,11 @@ class AuthService {
   // 사용자 계정 삭제
   Future<void> deleteUserAccount() async {
     try {
-      User? user = auth.currentUser;
+      final User? user = auth.currentUser;
       if (user != null) {
         await user.delete(); // Firebase Authentication에서 사용자 계정 삭제
       } else {
-        throw Exception("사용자가 로그인되어 있지 않습니다.");
+        throw Exception('사용자가 로그인되어 있지 않습니다.');
       }
     } catch (e) {
       debugPrint('AuthRepository 오류 발생 - 회원 데이터 삭제 실패: $e');
@@ -165,7 +162,7 @@ class AuthService {
   }
 
   Future<User?> currentUser() async {
-    User? user = auth.currentUser;
+    final User? user = auth.currentUser;
     return user;
   }
 
@@ -173,7 +170,7 @@ class AuthService {
   Future<void> signOut() async {
     await auth.signOut();
     // GoogleSignIn 로그아웃 및 연결 해제
-    GoogleSignIn googleSignIn = GoogleSignIn();
+    final GoogleSignIn googleSignIn = GoogleSignIn();
     await googleSignIn.disconnect();
   }
 }

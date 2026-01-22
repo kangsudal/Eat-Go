@@ -21,140 +21,110 @@ class _RecipeCategoryPanelState extends State<RecipeCategoryPanel> {
   MenuCategory selectedValueGroup1 = MenuCategory.rice; // 선택된 값을 저장할 변수
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '종류',
-          style: TextStyle(
-            fontSize: 15,
+    return RadioGroup<MenuCategory>(
+      groupValue: selectedValueGroup1,
+      onChanged: (value) {
+        setState(() {
+          selectedValueGroup1 = value!;
+        });
+      },
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '종류',
+            style: TextStyle(
+              fontSize: 15,
+            ),
           ),
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Radio(
-                    value: MenuCategory.rice,
-                    groupValue: selectedValueGroup1,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValueGroup1 = value!;
-                      });
-                    },
-                  ),
-                  FittedBox(
-                    child: Text('밥'),
-                    fit: BoxFit.fitWidth,
-                  ),
-                ],
+          Row(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    Radio<MenuCategory>(
+                      value: MenuCategory.rice,
+                    ),
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text('밥'),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Row(
-                children: [
-                  Radio(
-                    value: MenuCategory.dessert,
-                    groupValue: selectedValueGroup1,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValueGroup1 = value!;
-                      });
-                    },
-                  ),
-                  FittedBox(
-                    child: Text('후식'),
-                    fit: BoxFit.fitWidth,
-                  ),
-                ],
+              Expanded(
+                child: Row(
+                  children: [
+                    Radio<MenuCategory>(
+                      value: MenuCategory.dessert,
+                    ),
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text('후식'),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Row(
-                children: [
-                  Radio(
-                    value: MenuCategory.sideDish,
-                    groupValue: selectedValueGroup1,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValueGroup1 = value!;
-                      });
-                    },
-                  ),
-                  FittedBox(
-                    child: Text('반찬'),
-                    fit: BoxFit.fitWidth,
-                  ),
-                ],
+              Expanded(
+                child: Row(
+                  children: [
+                    Radio<MenuCategory>(
+                      value: MenuCategory.sideDish,
+                    ),
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text('반찬'),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Radio(
-                    value: MenuCategory.mainDish,
-                    groupValue: selectedValueGroup1,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValueGroup1 = value!;
-                        print(selectedValueGroup1);
-                      });
-                    },
-                  ),
-                  FittedBox(
-                    child: Text('일품'),
-                    fit: BoxFit.fitWidth,
-                  ),
-                ],
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    Radio<MenuCategory>(
+                      value: MenuCategory.mainDish,
+                    ),
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text('일품'),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Row(
-                children: [
-                  Radio(
-                    value: MenuCategory.soupStew,
-                    groupValue: selectedValueGroup1,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValueGroup1 = value!;
-                        print(selectedValueGroup1);
-                      });
-                    },
-                  ),
-                  FittedBox(
-                    child: Text('국&찌개'),
-                    fit: BoxFit.fitWidth,
-                  ),
-                ],
+              Expanded(
+                child: Row(
+                  children: [
+                    Radio<MenuCategory>(
+                      value: MenuCategory.soupStew,
+                    ),
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text('국&찌개'),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Row(
-                children: [
-                  Radio(
-                    value: MenuCategory.others,
-                    groupValue: selectedValueGroup1,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValueGroup1 = value!;
-                      });
-                    },
-                  ),
-                  FittedBox(
-                    child: Text('기타'),
-                    fit: BoxFit.fitWidth,
-                  ),
-                ],
+              Expanded(
+                child: Row(
+                  children: [
+                    Radio<MenuCategory>(
+                      value: MenuCategory.others,
+                    ),
+                    FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text('기타'),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

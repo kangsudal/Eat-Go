@@ -2,13 +2,6 @@ import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
 
 class CustomListTile extends StatelessWidget {
-  //일반 ListTile은 leading의 height 제약이 있어서, 만듬
-  final Widget leading;
-  final Widget mid;
-  final Widget trailing;
-  final BoxDecoration? boxDecoration;
-  final CrossAxisAlignment crossAxisAlignment;
-
   CustomListTile({
     super.key,
     required this.leading,
@@ -22,6 +15,12 @@ class CustomListTile extends StatelessWidget {
               borderRadius: const BorderRadius.all(Radius.circular(10)),
             )),
         crossAxisAlignment = (crossAxisAlignment ?? CrossAxisAlignment.center);
+  //일반 ListTile은 leading의 height 제약이 있어서, 만듬
+  final Widget leading;
+  final Widget mid;
+  final Widget trailing;
+  final BoxDecoration? boxDecoration;
+  final CrossAxisAlignment crossAxisAlignment;
 
   @override
   Widget build(BuildContext context) {

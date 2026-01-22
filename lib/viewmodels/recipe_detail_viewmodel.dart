@@ -25,7 +25,8 @@ class RecipeDetailViewModel
 
   Future<Recipe> fetchRecipe({required String recipeId}) async {
     try {
-      Recipe recipe = await _recipeRepository.getRecipeById(recipeId: recipeId);
+      final Recipe recipe =
+          await _recipeRepository.getRecipeById(recipeId: recipeId);
       return recipe;
     } catch (e) {
       rethrow;
@@ -38,10 +39,11 @@ class RecipeDetailViewModel
     try {
       EatGoUser? updatedEatGoUser;
       Recipe updatedRecipe;
-      Recipe? recipe = state.value;
+      final Recipe? recipe = state.value;
       if (currentEatGoUser == null) {
         debugPrint(
-            'RecipeDetailViewModel - getCurrentUser가 null입니다. 현재 로그인된 사용자가 없는것 같습니다.');
+          'RecipeDetailViewModel - getCurrentUser가 null입니다. 현재 로그인된 사용자가 없는것 같습니다.',
+        );
         return;
       }
       if (recipe == null) {
@@ -55,16 +57,18 @@ class RecipeDetailViewModel
         // 1. 유저 컬렉션에 북마크 기록 업데이트
         updatedEatGoUser = currentEatGoUser.copyWith(
           bookmarkRecipeIds: currentEatGoUser.bookmarkRecipeIds
-              .where((b) =>
-                  b != recipe.recipeId) //현재 레시피와 ID가 다른 레시피들만 남긴다는 의미입니다.
+              .where(
+                (b) => b != recipe.recipeId,
+              ) //현재 레시피와 ID가 다른 레시피들만 남긴다는 의미입니다.
               .toList(),
         );
 
         // 2. 레시피 컬렉션에 북마크 기록 업데이트
-        List<String> updatedBookmarkedBy =
+        final List<String> updatedBookmarkedBy =
             List<String>.from(recipe.bookmarkedBy)
-              ..remove(currentEatGoUser
-                  .uid); //List<String>.from():bookmarkedBy의 복사본을 만들어서 수정
+              ..remove(
+                currentEatGoUser.uid,
+              ); //List<String>.from():bookmarkedBy의 복사본을 만들어서 수정
         updatedRecipe = recipe.copyWith(bookmarkedBy: updatedBookmarkedBy);
       } else {
         // 1. 유저 컬렉션에 북마크 기록 업데이트
@@ -75,7 +79,7 @@ class RecipeDetailViewModel
           ],
         );
         // 2. 레시피 컬렉션에 북마크 기록 업데이트
-        List<String> updatedBookmarkedBy =
+        final List<String> updatedBookmarkedBy =
             List<String>.from(recipe.bookmarkedBy)..add(currentEatGoUser.uid);
         updatedRecipe = recipe.copyWith(bookmarkedBy: updatedBookmarkedBy);
       }
@@ -85,7 +89,8 @@ class RecipeDetailViewModel
       await _recipeRepository.updateRecipeData(updatedRecipe: updatedRecipe);
 
       ref.read(currentEatGoUserProvider.notifier).state = AsyncValue.data(
-          updatedEatGoUser); //getCurrentUser랑 다른점은 네트워크 호출을 안한다는 점이다. 이 부분을 넣어야 currentEatGoUser가 갱신되고 appBar의 action에 있는 북마크가 다시그려진다.
+        updatedEatGoUser,
+      ); //getCurrentUser랑 다른점은 네트워크 호출을 안한다는 점이다. 이 부분을 넣어야 currentEatGoUser가 갱신되고 appBar의 action에 있는 북마크가 다시그려진다.
       state = AsyncValue.data(updatedRecipe); // RecipeDetailViewModel의 상태를 업데이트
     } catch (e, stackTrace) {
       debugPrint('RecipeDetailViewModel - 북마크 토글하는데 실패하였습니다.$e');

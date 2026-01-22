@@ -1,19 +1,13 @@
-import 'dart:math';
-
-import 'package:eat_go/model/user_model.dart';
-import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/model/recipe_model.dart';
+import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:eat_go/provider/eatgo_providers.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/animated_text_widget.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/drawer/home_screen_drawer.dart';
 import 'package:eat_go/screen/home_screen/home_screen_widget/need_sign_in_dialog.dart';
-import 'package:eat_go/viewmodels/home_viewmodel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -75,11 +69,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               }
             },
             error: (error, stackTrace) {
-              return Center(
+              return const Center(
                 child: Icon(Icons.report_problem_outlined),
               );
             },
-            loading: () => Center(
+            loading: () => const Center(
               child: CircularProgressIndicator(),
             ),
           ),
@@ -89,7 +83,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           homeViewModel.fetchRandomRecipeWithRetry(
-              categories: categories, keywords: keywords);
+            categories: categories,
+            keywords: keywords,
+          );
         },
         child: Icon(
           Icons.refresh,
@@ -116,9 +112,9 @@ class ContentWidget extends ConsumerWidget {
       alignment: const Alignment(0, -0.25),
       child: homeViewState.when(
         data: (randomRecipe) {
-          bool beforeShaked = randomRecipe == null;
+          final bool beforeShaked = randomRecipe == null;
           if (beforeShaked) {
-            return AnimatedTextWidget();
+            return const AnimatedTextWidget();
           } else {
             return RecipeWidget(
               randomRecipe: randomRecipe,
@@ -175,8 +171,11 @@ class RecipeWidget extends ConsumerWidget {
               child: Image.network(
                 randomRecipe.completedImgUrl,
                 fit: BoxFit.contain,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
+                loadingBuilder: (
+                  BuildContext context,
+                  Widget child,
+                  ImageChunkEvent? loadingProgress,
+                ) {
                   if (loadingProgress == null) {
                     // 이미지가 정상적으로 로드되었을 때
                     return Stack(
@@ -201,7 +200,7 @@ class RecipeWidget extends ConsumerWidget {
                                     radius: 22,
                                     backgroundColor:
                                         EatGoPalette.backgroundColor1,
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.bookmark_border_sharp,
                                       color: pointColor,
                                       size: 30,
@@ -248,12 +247,12 @@ class RecipeWidget extends ConsumerWidget {
                     return CircularProgressIndicator(value: progress);
                   }
                 },
-                errorBuilder: (_, __, ___) => Text('이미지가 없습니다.'),
+                errorBuilder: (_, __, ___) => const Text('이미지가 없습니다.'),
               ),
             ),
           ),
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
         Text(
           randomRecipe.title, //포니언 스프
           style: const TextStyle(
