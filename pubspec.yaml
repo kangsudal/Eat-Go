@@ -103,6 +103,8 @@ flutter:
     - assets/
     - assets/icons/
     - assets/images/
+    # 주의: .env 파일은 .gitignore에 포함되어야 함 (이미 설정됨)
+    # flutter_dotenv가 런타임에 로드하므로 assets에 포함 필요
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
