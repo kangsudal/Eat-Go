@@ -1,20 +1,20 @@
 import 'dart:async';
 
 import 'package:eat_go/model/recipe_model.dart';
-import 'package:eat_go/provider/eatgo_providers.dart';
+import 'package:eat_go/provider/auth_providers.dart';
+import 'package:eat_go/provider/recipe_providers.dart';
 import 'package:eat_go/repository/auth_repository.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MyRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
-  late RecipeRepository _recipeRepository;
-  late AuthRepository _authRepository;
+  // Late 초기화 대신 getter 사용으로 안전성 향상
+  AuthRepository get _authRepository => ref.watch(authRepositoryProvider);
+  RecipeRepository get _recipeRepository => ref.read(recipeRepositoryProvider);
 
   @override
   Future<List<Recipe>> build() async {
-    _authRepository = ref.watch(authRepositoryProvider);
-    _recipeRepository = ref.read(recipeRepositoryProvider);
     return await fetchMyRecipes();
   }
 

@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:eat_go/model/recipe_model.dart';
-import 'package:eat_go/provider/eatgo_providers.dart';
+import 'package:eat_go/provider/recipe_providers.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
 import 'package:eat_go/utils/app_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AllRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
-  late final RecipeRepository _recipeRepository;
+  // Late 초기화 대신 getter 사용으로 안전성 향상
+  RecipeRepository get _recipeRepository => ref.read(recipeRepositoryProvider);
 
   @override
   Future<List<Recipe>> build() async {
-    _recipeRepository = ref.read(recipeRepositoryProvider); // 의존성 주입
     return await fetchRecipes();
   }
 
@@ -68,7 +68,7 @@ class AllRecipeListViewModel extends AsyncNotifier<List<Recipe>> {
     }
   }
 
-  //필터하기
+  // 필터하기
   Future<List<Recipe>?> getFilteredRecipeListWithKeyword({
     categories,
     keywords,
