@@ -213,7 +213,7 @@ class RecipeWidget extends ConsumerWidget {
                                   .contains(randomRecipe.recipeId);
                               return GestureDetector(
                                 onTap: () async {
-                                  ref
+                                  await ref
                                       .read(homeViewModelProvider.notifier)
                                       .toggleBookmark(user);
                                 },

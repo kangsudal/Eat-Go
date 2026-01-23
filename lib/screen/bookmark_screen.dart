@@ -99,15 +99,10 @@ class BookmarkScreen extends ConsumerWidget {
                                       CupertinoDialogAction(
                                         child: const Text('예'),
                                         onPressed: () async {
-                                          bookmarkViewModel.toggleBookmark(
+                                          await bookmarkViewModel.toggleBookmark(
                                             recipe: recipe,
                                           );
-                                          await ref
-                                              .read(
-                                                currentEatGoUserProvider
-                                                    .notifier,
-                                              )
-                                              .getCurrentUser(); // 북마크 토글 후 사용자 정보 다시 불러오기
+                                          // 북마크 토글 시 이미 currentEatGoUserProvider가 업데이트됨
                                           if (context.mounted) {
                                             context.pop();
                                           }

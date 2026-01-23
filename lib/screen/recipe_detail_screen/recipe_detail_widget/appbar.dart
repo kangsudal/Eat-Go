@@ -113,7 +113,7 @@ class RecipeDetailAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 user.bookmarkRecipeIds.contains(recipe.recipeId);
             return IconButton(
               onPressed: () async {
-                ref
+                await ref
                     .read(
                       recipeDetailViewModelProvider(recipe.recipeId).notifier,
                     )
