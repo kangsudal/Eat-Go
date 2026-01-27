@@ -1,6 +1,7 @@
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/provider/user_providers.dart';
 import 'package:eat_go/repository/recipe_repository.dart';
+import 'package:eat_go/services/recipe_cache_service.dart';
 import 'package:eat_go/services/recipe_service.dart';
 import 'package:eat_go/viewmodels/all_recipe_list_viewmodel.dart';
 import 'package:eat_go/viewmodels/home_viewmodel.dart';
@@ -15,9 +16,17 @@ final recipeServiceProvider = Provider(
   (ref) => RecipeService(firestore: ref.watch(firestoreProvider)),
 );
 
+/// RecipeCacheService Provider (싱글톤)
+final recipeCacheServiceProvider = Provider(
+  (ref) => RecipeCacheService(),
+);
+
 /// RecipeRepository Provider
 final recipeRepositoryProvider = Provider(
-  (ref) => RecipeRepository(recipeService: ref.watch(recipeServiceProvider)),
+  (ref) => RecipeRepository(
+    recipeService: ref.watch(recipeServiceProvider),
+    cacheService: ref.watch(recipeCacheServiceProvider),
+  ),
 );
 
 /// 전체 레시피 목록 ViewModel Provider

@@ -2,13 +2,19 @@
 //결과를 viewmodel를 통해 view에게 전달
 
 import 'package:eat_go/model/recipe_model.dart';
+import 'package:eat_go/services/recipe_cache_service.dart';
 import 'package:eat_go/services/recipe_service.dart';
 import 'package:eat_go/utils/app_logger.dart';
 
 class RecipeRepository {
-  RecipeRepository({required RecipeService recipeService})
-      : _recipeService = recipeService;
+  RecipeRepository({
+    required RecipeService recipeService,
+    required RecipeCacheService cacheService,
+  })  : _recipeService = recipeService,
+        _cacheService = cacheService;
+
   final RecipeService _recipeService;
+  final RecipeCacheService _cacheService;
 
   // 레시피 목록을 실시간으로 가져오는 Stream
   Stream<List<Recipe>> getRecipesStream() {
@@ -32,8 +38,28 @@ class RecipeRepository {
   Future<List<Recipe>> getRecipesFutureByIds(
     List<String> bookmarkedRecipeIds,
   ) async {
+    if (bookmarkedRecipeIds.isEmpty) {
+      return [];
+    }
+
     try {
-      return _recipeService.fetchRecipesFutureByIds(bookmarkedRecipeIds);
+      // 캐시에서 가져올 수 있는 레시피
+      final cachedRecipes = _cacheService.getByIds(bookmarkedRecipeIds);
+      final missingIds = _cacheService.getMissingIds(bookmarkedRecipeIds);
+
+      // 캐시에 없는 레시피만 Firebase에서 가져옴
+      if (missingIds.isEmpty) {
+        return cachedRecipes;
+      }
+
+      final fetchedRecipes =
+          await _recipeService.fetchRecipesFutureByIds(missingIds);
+
+      // 새로 가져온 레시피를 캐시에 저장
+      _cacheService.setAll(fetchedRecipes);
+
+      // 캐시된 레시피와 새로 가져온 레시피를 합쳐서 반환
+      return [...cachedRecipes, ...fetchedRecipes];
     } catch (e) {
       logger.e('레시피를 가져오는 중 오류 발생', error: e);
       return [];
@@ -92,10 +118,19 @@ class RecipeRepository {
   }
 
   Future<Recipe> getRecipeById({required String recipeId}) async {
+    // 캐시 확인
+    final cachedRecipe = _cacheService.get(recipeId);
+    if (cachedRecipe != null) {
+      return cachedRecipe;
+    }
+
     try {
-      return _recipeService.getRecipeById(recipeId: recipeId);
+      final recipe = await _recipeService.getRecipeById(recipeId: recipeId);
+      // 캐시에 저장
+      _cacheService.set(recipeId, recipe);
+      return recipe;
     } catch (e) {
-      logger.e('RecipeRepository - 레시피 생성중 오류 발생', error: e);
+      logger.e('RecipeRepository - 레시피 조회 중 오류 발생', error: e);
       throw Exception(e);
     }
   }
@@ -103,6 +138,8 @@ class RecipeRepository {
   Future<bool> updateRecipeData({required Recipe updatedRecipe}) async {
     try {
       await _recipeService.updateRecipeData(updatedRecipe: updatedRecipe);
+      // 캐시 업데이트
+      _cacheService.set(updatedRecipe.recipeId, updatedRecipe);
       return true;
     } catch (e) {
       logger.e('RecipeRepository - 레시피 업데이트 중 오류가 발생하였습니다', error: e);
