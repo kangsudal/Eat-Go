@@ -22,82 +22,117 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final homeViewModel = ref.read(homeViewModelProvider.notifier);
-    final isShaking = ref.watch(shakeProvider);
-    final categories = ref.watch(homeScreenCategoriesProvider);
-    final keywords = ref.watch(homeScreenKeywordsProvider);
-    final currentEatGoUser = ref.watch(currentEatGoUserProvider);
-
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        centerTitle: false,
-        title: IconButton(
-          onPressed: () {
-            ref.read(shakeProvider.notifier).toggleShake();
-          },
-          icon: isShaking
-              ? const Icon(Icons.lock_open, color: pointColor)
-              : const Icon(Icons.lock, color: Colors.red),
-        ),
-        actions: [
-          currentEatGoUser.when(
-            data: (user) {
-              if (user != null) {
-                return IconButton(
-                  iconSize: 40,
-                  color: pointColor,
-                  icon: const Icon(Icons.menu),
-                  onPressed: () {
-                    _scaffoldKey.currentState!.openEndDrawer();
-                  },
-                );
-              } else {
-                return IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return const NeedSignInDialog();
-                      },
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.person,
-                    color: pointColor,
-                  ),
-                );
-              }
-            },
-            error: (error, stackTrace) {
-              return const Center(
-                child: Icon(Icons.report_problem_outlined),
-              );
-            },
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        ],
-      ),
+      appBar: _HomeAppBar(scaffoldKey: _scaffoldKey),
       endDrawer: const HomeScreenDrawer(),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: const _HomeFloatingActionButton(),
+      body: const _HomeBody(),
+    );
+  }
+}
+
+/// AppBar 위젯 - shakeProvider와 currentEatGoUserProvider만 watch
+class _HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
+  const _HomeAppBar({required this.scaffoldKey});
+
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isShaking = ref.watch(shakeProvider);
+    final currentEatGoUser = ref.watch(currentEatGoUserProvider);
+
+    return AppBar(
+      centerTitle: false,
+      title: IconButton(
         onPressed: () {
-          homeViewModel.fetchRandomRecipeWithRetry(
-            categories: categories,
-            keywords: keywords,
-          );
+          ref.read(shakeProvider.notifier).toggleShake();
         },
-        child: Icon(
-          Icons.refresh,
-          color: EatGoPalette.backgroundColor1,
-          size: 45,
-        ),
+        icon: isShaking
+            ? const Icon(Icons.lock_open, color: pointColor)
+            : const Icon(Icons.lock, color: Colors.red),
       ),
-      body: ContentWidget(
-        currentEatGoUser: currentEatGoUser,
+      actions: [
+        currentEatGoUser.when(
+          data: (user) {
+            if (user != null) {
+              return IconButton(
+                iconSize: 40,
+                color: pointColor,
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  scaffoldKey.currentState!.openEndDrawer();
+                },
+              );
+            } else {
+              return IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const NeedSignInDialog();
+                    },
+                  );
+                },
+                icon: const Icon(
+                  Icons.person,
+                  color: pointColor,
+                ),
+              );
+            }
+          },
+          error: (error, stackTrace) {
+            return const Center(
+              child: Icon(Icons.report_problem_outlined),
+            );
+          },
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// FloatingActionButton 위젯 - categories와 keywords만 watch
+class _HomeFloatingActionButton extends ConsumerWidget {
+  const _HomeFloatingActionButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categories = ref.watch(homeScreenCategoriesProvider);
+    final keywords = ref.watch(homeScreenKeywordsProvider);
+
+    return FloatingActionButton(
+      onPressed: () {
+        ref.read(homeViewModelProvider.notifier).fetchRandomRecipeWithRetry(
+              categories: categories,
+              keywords: keywords,
+            );
+      },
+      child: Icon(
+        Icons.refresh,
+        color: EatGoPalette.backgroundColor1,
+        size: 45,
       ),
     );
+  }
+}
+
+/// Body 위젯 - homeViewModelProvider와 currentEatGoUserProvider만 watch
+class _HomeBody extends ConsumerWidget {
+  const _HomeBody();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentEatGoUser = ref.watch(currentEatGoUserProvider);
+
+    return ContentWidget(currentEatGoUser: currentEatGoUser);
   }
 }
 
