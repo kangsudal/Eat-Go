@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eat_go/model/restaurant_model.dart';
 import 'package:eat_go/palette.dart';
 import 'package:flutter/material.dart';
@@ -111,9 +112,20 @@ class ScrollableCards extends StatelessWidget {
                                                     BuildContext context,
                                                     index,
                                                   ) {
-                                                    return Image.network(
+                                                    return CachedNetworkImage(
+                                                      imageUrl:
+                                                          'https://places.googleapis.com/v1/${restaurant.photos![index].name}/media?key=${dotenv.env['GOOGLE_MAPS_API_KEY']}&max_height_px=300',
                                                       fit: BoxFit.cover,
-                                                      'https://places.googleapis.com/v1/${restaurant.photos![index].name}/media?key=${dotenv.env['GOOGLE_MAPS_API_KEY']}&max_height_px=300',
+                                                      memCacheHeight: 300,
+                                                      progressIndicatorBuilder:
+                                                          (context, url, downloadProgress) =>
+                                                              Center(
+                                                        child: CircularProgressIndicator(
+                                                          value: downloadProgress.progress,
+                                                        ),
+                                                      ),
+                                                      errorWidget: (context, url, error) =>
+                                                          const Icon(Icons.error),
                                                     );
                                                   },
                                                   itemCount:
@@ -346,8 +358,23 @@ class ScrollableCards extends StatelessWidget {
                             ),
                             if (restaurant.photos != null)
                               if (restaurant.photos!.isNotEmpty)
-                                Image.network(
-                                  'https://places.googleapis.com/v1/${restaurant.photos![0].name}/media?key=${dotenv.env['GOOGLE_MAPS_API_KEY']}&max_width_px=100',
+                                CachedNetworkImage(
+                                  imageUrl:
+                                      'https://places.googleapis.com/v1/${restaurant.photos![0].name}/media?key=${dotenv.env['GOOGLE_MAPS_API_KEY']}&max_width_px=100',
+                                  width: 100,
+                                  memCacheWidth: 100,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          SizedBox(
+                                    width: 100,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        value: downloadProgress.progress,
+                                      ),
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                 ),
                           ],
                         ),

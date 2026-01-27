@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eat_go/model/recipe_model.dart';
 import 'package:eat_go/model/user_model.dart';
 import 'package:eat_go/palette.dart';
@@ -204,86 +205,77 @@ class RecipeWidget extends ConsumerWidget {
                 maxHeight: 500,
                 maxWidth: 500,
               ),
-              child: Image.network(
-                randomRecipe.completedImgUrl,
+              child: CachedNetworkImage(
+                imageUrl: randomRecipe.completedImgUrl,
                 fit: BoxFit.contain,
-                loadingBuilder: (
-                  BuildContext context,
-                  Widget child,
-                  ImageChunkEvent? loadingProgress,
-                ) {
-                  if (loadingProgress == null) {
-                    // 이미지가 정상적으로 로드되었을 때
-                    return Stack(
-                      children: [
-                        child,
-                        Positioned(
-                          top: 15,
-                          right: 15,
-                          child: currentEatGoUser.when(
-                            data: (user) {
-                              if (user == null) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return const NeedSignInDialog();
-                                      },
-                                    );
-                                  },
-                                  child: CircleAvatar(
-                                    radius: 22,
-                                    backgroundColor:
-                                        EatGoPalette.backgroundColor1,
-                                    child: const Icon(
-                                      Icons.bookmark_border_sharp,
-                                      color: pointColor,
-                                      size: 30,
-                                    ),
-                                  ),
-                                );
-                              }
-                              final isBookmarked = user.bookmarkRecipeIds
-                                  .contains(randomRecipe.recipeId);
+                memCacheHeight: 500,
+                memCacheWidth: 500,
+                imageBuilder: (context, imageProvider) {
+                  return Stack(
+                    children: [
+                      Image(image: imageProvider, fit: BoxFit.contain),
+                      Positioned(
+                        top: 15,
+                        right: 15,
+                        child: currentEatGoUser.when(
+                          data: (user) {
+                            if (user == null) {
                               return GestureDetector(
-                                onTap: () async {
-                                  await ref
-                                      .read(homeViewModelProvider.notifier)
-                                      .toggleBookmark(user);
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return const NeedSignInDialog();
+                                    },
+                                  );
                                 },
                                 child: CircleAvatar(
                                   radius: 22,
-                                  backgroundColor:
-                                      EatGoPalette.backgroundColor1,
-                                  child: Icon(
-                                    isBookmarked == false
-                                        ? Icons.bookmark_border_sharp
-                                        : Icons.bookmark,
+                                  backgroundColor: EatGoPalette.backgroundColor1,
+                                  child: const Icon(
+                                    Icons.bookmark_border_sharp,
                                     color: pointColor,
                                     size: 30,
                                   ),
                                 ),
                               );
-                            },
-                            error: (error, stackTrace) =>
-                                const Icon(Icons.report_problem_outlined),
-                            loading: () => const SizedBox(width: 0, height: 0),
-                          ),
+                            }
+                            final isBookmarked = user.bookmarkRecipeIds
+                                .contains(randomRecipe.recipeId);
+                            return GestureDetector(
+                              onTap: () async {
+                                await ref
+                                    .read(homeViewModelProvider.notifier)
+                                    .toggleBookmark(user);
+                              },
+                              child: CircleAvatar(
+                                radius: 22,
+                                backgroundColor: EatGoPalette.backgroundColor1,
+                                child: Icon(
+                                  isBookmarked == false
+                                      ? Icons.bookmark_border_sharp
+                                      : Icons.bookmark,
+                                  color: pointColor,
+                                  size: 30,
+                                ),
+                              ),
+                            );
+                          },
+                          error: (error, stackTrace) =>
+                              const Icon(Icons.report_problem_outlined),
+                          loading: () => const SizedBox(width: 0, height: 0),
                         ),
-                      ],
-                    );
-                  } else {
-                    // 로딩 중일 때, 진행률을 계산하고 표시
-                    final progress = loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                        : null;
-
-                    return CircularProgressIndicator(value: progress);
-                  }
+                      ),
+                    ],
+                  );
                 },
-                errorBuilder: (_, __, ___) => const Text('이미지가 없습니다.'),
+                progressIndicatorBuilder: (context, url, downloadProgress) {
+                  return CircularProgressIndicator(
+                    value: downloadProgress.progress,
+                  );
+                },
+                errorWidget: (context, url, error) =>
+                    const Text('이미지가 없습니다.'),
               ),
             ),
           ),
